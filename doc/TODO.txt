@@ -1,0 +1,17 @@
+
+Setting up googletests:
+
+https://code.google.com/p/googletest/wiki/
+###########################################################
+1) Compile the googletest project into static library
+e.g. make, cmake, msvc. (each has a special folder inside googletest)
+
+Our makefile does it automatically using make (cf. MAKE_EXTERNAL).
+
+2) Link googletest with your testing project
+
+add Include path to GTEST_ROOT/include
+link the static gtest lib with your project
+
+3) Done :)
+###########################################################
