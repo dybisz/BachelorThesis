@@ -2,6 +2,7 @@
 
 \usepackage{pdfpages}
 \usepackage{graphicx}
+\usepackage{longtable}
 %\usepackage[export]{adjustbox}
 %\usepackage{tabu}
 \usepackage{xcolor,colortbl}
@@ -170,6 +171,10 @@ As a user I want to:
 		monitor progress of single computation.
 	\item
 		close application at any time
+	\item
+		minimize application at any time.
+	\item 
+		resize application window.
 \end{itemize}
 
 
@@ -178,189 +183,144 @@ As a user I want to:
 \newpage
 
 \section{Functional Requirements}
-Priority
+In all tables of the following section we assume that priority can take following values:
 \begin{itemize} 
 \item 1 - must be implemented
 \item 2 - can be implemented optionally 
 \item 3 - is a nice addition, but not needed.
 \end{itemize} 
 
+\subsection{GUI}
+
 \begin{center}
 \hspace*{-2.1cm}
-	\begin{tabular}{| l | p{7cm} | p{5cm} | l |}
+	\begin{longtable}{| l | p{4cm} | p{3.5cm} | l |}
 	
 		\hline
 	  	ID & Requirement & Comments & Priority \\
 		\hline
 		
 		1 & 
-		The system provides a Grid options
-		allowing for changing the size, colour of cells and
-		enabling/disabling wrapping option&
-		The colour of cells represent a state of the cell.
-		In other words the user can choose in what state to put a cell into. &
+		The system provides option to load data file using buttun 'Load data' and
+		some window explorer to choose a file & 
+		 &
 		1 
 		\\ \hline
-
+		
 		1.1 & 
-		The system should allow grid maneuvers, zooming in/out and if the
-		entire grid is not visible in one screen, possibility of moving around the grid&
+		The system provides area over which one can drag and drop data file.
+		Following action will have similar results to requirement of id 1. & 
 		 &
 		1 
-		\\ \hline
-
+		\\ \hline		
+	
 		2 & 
-		The system provides a Rule editor in which
-		the user can create, edit and save rules. & 
+		When new data is loaded, one can adjust computation precision via various checkboxes, 			sliders etc. Implementation of this part will depend on used algorithm. & 
 		 &
 		1 
-		\\ \hline
+		\\ \hline		
+	
+			2.1 & 
+		Time estimation indicator, dynamically updated during usage of items from requirement 			of id 2 & 
+		 &
+		1 
+		\\ \hline		
 		
-		2.1 & 
-		By clicking create rule button in Rule editor, the application will open a fresh rule
-		creation window & 
+		3 & 
+		Application will have expanded list with possible output files. Choosing one will 				affect a way of saving result. & 
 		 &
 		1 
-		\\ \hline
+		\\ \hline			
 
-		2.2 & 
-		By clicking load button in Rule editor, the application will open a browser which
-		will allow the user to find saved rules & 
-		 &
-		1 
-		\\ \hline
-
-		2.3 & 
-		By clicking save button in Rule editor, the application will make sure that name for the
-		rule is provided and then will save the rule in specified by the user location & 
-		 &
-		1 
-
-		\\ \hline
-
-
-	  \hline
-	\end{tabular}
-\hspace*{-2.1cm}
-	\begin{tabular}{| l | p{7cm} | p{5cm} | l |}
-		\hline
-	  	ID & Requirement & Comments & Priority \\
-		\hline
-
-		2.4 & 
-		The system provides three different neighborhood environments
-		in which the user can create rules, 4-point, 8-point, 24-point  & 
-		See Glossary / Neighborhood for more information &
-		1 
-		\\ \hline
-		
-
-		2.5 & 
-		The application provides special file extension for saving and keeping rules & 
-		 &
-		1 
-		\\ \hline
-				
-		2.6 &
-		For 4-point and 8-point environments the system should provide a way to create rules
-		in which positions of neighbors relative to the cell are considered. If
-		a transition is not defined then this transition does not change the state of current cell
-		 &
-		The user can choose to what state current cell transitions, based on this cell's state 
-		and states of his neighbors &
-		1 
-		\\ \hline
-
-		2.7 &
-		For 24-point environment system should provide a may of creating rules in which 
-		the user specifies number of neighbors in each column
-		&	
-		This environment can be represented as a 5 by 5 matrix with the current cell in the middle &
-		1 
-		\\ \hline
-
-		2.8 &
-		For 4-point, 8-point and 24-point environments the system should provide a simplified
-		mode of creating rules in which the user inputs only number of neighbors in given state
-		in the neighborhood for a current cell state. &
-		The user inputs number of neighbors with given state which should appear for the
-		cell to transition to another specified state &
-		2 
-		\\ \hline
-				
 		3.1 & 
-		The system provides a step-by-step button which computes next generation & 
+		Option of .xls file on list described in 3 & 
 		 &
 		1 
-
-		\\ \hline
-
-
-
-	\end{tabular}
-\hspace*{-2.1cm}
-	\begin{tabular}{| l | p{7cm} | p{5cm} | l |}
-		\hline
-	  	ID & Requirement & Comments & Priority \\
-		 \hline
+		\\ \hline		
 
 		3.2 & 
-		The system provides next-N button which computes next N generations,
-		the N must be easily chosen by the user & 
-	 		&
-		1
-		\\ \hline
+		Option of latex table on list described in 3 & 
+		 &
+		1 
+		\\ \hline	
 
-		3.3 & 
-		The system provides a run button which will
-		start the animation of consecutive generations & 
+		4 & 
+		System will provide 'Choose Output Folder' button which will open window explorer and 			ask user to choose folder to save result from a test. & 
+		 &
+		1 
+		\\ \hline	
+	
+		4.1 & 
+		Label with path to the output folder, chosen in requirement number 4. & 
+		 &
+		2 
+		\\ \hline		
+		
+		5 & 
+		Opportunity to choose behaviour after crashing of a particular test - rerun or not & 
 		 &
 		1
 		\\ \hline
 		
-		3.4 & 
-		The system provides way to change speed of which the animation is drawn in the 'run' mode & 
-		 &
-		1
-		\\ \hline
-
-		4.1 & 
-		The application allow user to draw cells on the grid & 
+		6 & 
+		Button 'Start Computation', which will begin computing automaton for a loaded data. & 
 		 &
 		1
 		\\ \hline		
+		
+		7 & 
+		'Stop Computation' button, for each currently running computation. It will cause 				particular computation to break whatever it is doing right now. & 
+		 &
+		1
+		\\ \hline	
+		
+		8 & 
+		'Stop All Computations' button. All computations break whatever they are doing right 			now. & 
+		 &
+		1
+		\\ \hline		
+		
+		9 & 
+		System will provide a way of monitoring number of currently running computations. It 			can be in form of a label or some bar. & 
+		 &
+		1
+		\\ \hline	
 
-		4.2 & 
-		The application provides a way for user to save grid state into patterns, additionally
-		the pattern can have a rule attached to it, which later can be loaded into the grid.  & 
-		A pattern editor view component should be created.
-		The grid state consists of its size, states of cells and other grid options.&
+		9.1 & 
+		System will provide a way of monitoring estimated time of all currently running 				computations. It can be in form of a label or some bar. & 
+		 &
+		1
+		\\ \hline
+
+		9.2 & 
+		System will provide a way of monitoring estimated time of a particular computation. It 			can be in form of a label or some bar. & 
+		 &
+		1
+		\\ \hline
+
+		10 & 
+		By clicking some superior button (like e.g. 'X') user will be able to immediately 				close the application and terminate all computations.  & 
+		 &
+		1
+		\\ \hline
+	
+		10.1 & 
+		By clicking some superior button user will be able to minimize the program. & 
+		 &
 		2
-		\\ \hline				
+		\\ \hline	
 
-		4.3 & 
-		The application provides Browser window in which the 
-		user can browse saved rules and patterns & 
+		10.2 & 
+		By grabbing edges user will be able to resize application window. & 
 		 &
-		1 
+		3
 		\\ \hline
-	
-		4.4 & 
-		The application allows the user to have multiple grids opened. &
-		 &
-		2 
-		\\ \hline
+		
+	\end{longtable}
+\end{center}	
 
-		4.5 & 
-		The application should have example of simple game of Life called
-		Conway's Game of Life &
-		 &
-		2 
-		\\ \hline
-	
-	\end{tabular}
+\subsection{Console}
 
-\end{center}
 
 \newpage
 
