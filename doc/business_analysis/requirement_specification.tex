@@ -285,7 +285,7 @@ In all tables of the following section we assume that priority can take followin
 \item 3 - is a nice addition, but not needed.
 \end{itemize} 
 
-\subsection{GUI}
+\subsection{GUI} \label{GUI_func_req}
 
 \begin{center}
 \hspace*{-2.1cm}
@@ -419,10 +419,17 @@ In all tables of the following section we assume that priority can take followin
 
 \newpage
 
+%
+% NON_FUNCTIONAL REQUIREMENTS
+%
 \section{Non Functional Requirements}
-\subsection{Usability}
+
+%
+% USABILITY
+%
+\subsection{Usability} \label{usability}
 To begin with, difference between console and GUI application are infinitesimal. Purposes of both are to configure and start new computation along with monitoring currently running ones.
-Disparity appears in a way of executing mentioned tasks - GUI will obviously use graphical interface and console will use plain text. This facts implies that GUI will we just more user friendly - by its transparency and flexibility. In fact, all user interface elements (like e.g. buttons or checkboxes) will be tightly connected with specific flag in the console application.
+Disparity appears in a way of executing mentioned tasks - GUI will obviously use graphical interface and console will use plain text. This facts implies that GUI will be just more user friendly - by its transparency and flexibility. In fact, all user interface elements (like e.g. buttons or checkboxes) will be tightly connected with specific flag in the console application.
 
 \subsubsection{GUI}
 Optionally GUI should start with welcome screen containing name of the application, simple logo and maybe some short info. Next main window, containing of:
@@ -433,9 +440,38 @@ Optionally GUI should start with welcome screen containing name of the applicati
 \end{itemize} 
 should be showed. 
 
-From the visual point of view, we would only like user interface elements (like buttons, expandable lists) to be as transparent as possible and easily accessible - no need to hide options in some menus - just straight forward configurations. We also do not force any particular theme of the program - we just asking about ...
+From the visual point of view, we would only like user interface elements (like buttons, expandable lists) to be as transparent as possible and easily accessible - no need to hide options in some menus - just straight forward configurations. We also do not force any particular theme of the program - we live you to your own devices in that matter.
 
 \subsubsection{Console}
 
+%
+% RELIABILITY
+%
+\subsection{Reliability}
+As in \ref{usability}, differences (if some) are very small. It is again because we want GUI to be somehow higher abstraction layer to the console flags.
+
+\subsubsection{GUI}
+Any error must be at once reported - either to underneath console or to some part of GUI. In case of any fatal error (like e.g. crash of one of the computations) priority must be given to keep running all the others. As mentioned in section \ref{GUI_func_req} user can choose, which action should be performed after crash - rerunning of the computation or not. 
+
+In addition, because small number of options in Graphical User Interface, we would like to have maximal robustness of all interface elements. Each element should perform its task with non-blocking (considering GUI) routine. In other words, one must be able to e.g. add new computation, while others are being monitored.
+
+What is more, closing GUI during monitoring process must not force computations to stop - all task are continuing their work in background or in visible console windows.
+
+\subsubsection{Console}
+
+%
+% PERRFORMANCE
+%
+\subsection{Performance}
+In this section we will skip subdivision into GUI and Console, because we will focus on the core of the program. Undoubtedly, exact performance of the application will be mainly based on implemented algorithm hence only few remarks will be given.
+
+We want 
+
+
+%
+% SECURITY AND SAFETY
+%
+\subsection{Security and Safety}
+There is no known internal or external threat.
 
 \end{document}
