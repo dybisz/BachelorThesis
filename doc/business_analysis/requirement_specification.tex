@@ -117,12 +117,13 @@ Version         & Date         & Who        & Description        \\ \hline
 
 \section{Glossary} 
 
+\newpage
 \section{Goal}
 The main goal of this project is to deploy application, which will create an automaton for given input data. Produced automaton will be a an accurate classifier of objects represented
 by the input data. The program is dedicated to reasearch laboratory, hence it is lumbered with the following assuptions.
 
 
-First of all, all users will be scientists, so precision of calculations and reliability is vital. We want to be sure about results given by the application to such an extent, that they will be publishable. It is also carrying need for specific format of the output - by default latex tables and .xls files.
+First of all, all users will be scientists, so precision of calculations and reliability is vital. We want to be sure about results given by the application to such an extent, that they will be publishable. It is also carrying need for specific format of the output - by default latex tables and .xls files. Similarly input is in form of .xls files.
 
 
 Next thing that we want to stress out is platform and design. As for target system, linux is unquestionable choice. All work stations are running Arch Linux and we want the program to be operable on all of them. Although most of the researchers work inside the laboratory, some of us are using SSH protocol to communicate. This causes the need for plain console application - configurable using flags or simple question/answer scheme. 
@@ -132,103 +133,47 @@ But we do not want to limit ourselves only to this approach - finally vast major
 
 Last but not least, we will tackle resources consuption and critical situation handling. On this point let us be clear: we want accurate results - neither time nor memory are important. The assumtion of course holds to some reasonable extent - we do not want to wait a month for program's output, but we are rather used to wait for couple of days. Great solution in this case would be ability to adjust complexity of calculations and, what follows, time needed to complete. With such an estimation, we could easily schedule our work.
 
+\newpage
 \section{User stories}
-	\hspace{15pt} {\bf Grid editor}
-\begin{itemize}	
-	\item 
-		As a user, 
-		I want to open grid editor,
-		in order to change the grid size.
 
+%
+% GUI User Stories
+%
+\subsubsection{GUI}
+As a user I want to:
+\begin{itemize}
+	\item
+		load data using file explorer.
+	\item
+		load data using drag and drop procedure.
+	\item
+		adjust computation precision and see estimated time to complete.
+	\item
+		select output format as .xls file.
+	\item
+		select output format as latex table.
+	\item
+		select destination folder of the output
+	\item
+		decide if test should be rerun in case of failure/interruption.
 	\item 
-		As a user, 
-		I want to open grid editor,
-		in order to change color of each state of a cell.
-
+		start computation for loaded data.
+	\item
+		stop specific computation.
+	\item
+		stop all computations.
 	\item 
-		As a user, 
-		I want to open grid editor,
-		in order to enable/disable wrapping option.
-
-	\item 
-		As a user, 
-		I want to scroll my mouse roll over the grid,
-		in order to adjust the scale of the grid.
-
-	\item 
-		As a user, 
-		I want to select the brush,
-		in order to draw cells on the grid.
-
-	\vspace{30pt}
-	Rule editor
-	
-	\item 
-		As a user,
-		I want to open rule editor,
-		in order to create new rule.
-		
-	\item 
-		As a user,
-		I want to choose neighborhood environment,
-		in order to add new rule.
-		
-	\item 
-		As a user,
-		I want to define specific transition for a given state of cell,
-		in order to generate new state.
-		
-	\item 
-		As a user,
-		I want to click save/save as button in rule editor,
-		in order to save current rule.
-
-	\item 
-		As a user,
-		I want to click load button in rule editor,
-		in order to load current rule and possible edit it.
-
-	\vspace{30pt}
-	Application option
-	
-	\item 
-		As a user,
-		I want to move View components (e.g. rule editor / grid editor / browser),
-		in order to position them in different location.
-	\item 
-		As a user,
-		I want to click next generation button 
-		to compute next generation
-	\item 
-		As a user,
-		I want to click next N generations button,
-		to compute next N generations.
-	\item 
-		As a user,
-		I want to set the number of generation to skip by clicking next N generations button,
-		in order to compute next N generations.
-	\item 
-		As a user,
-		I want set the speed of computation of next generation in running mode,
-		to customize the speed of which the automaton is transitioning. \\
-		
-		Pattern editor
-	\item 
-		As a user,
-		I want to save a current state of grid into a pattern,
-		so that later I can load it into the program.
-
-	\item 
-		As a user,
-		I want to browse for my patterns in the browser window,
-		in order to load it to the pattern editor.
-
-	\item 
-		As a user,
-		I want to click change rule in the pattern editor,
-		in order to add a rule of my choosing to that pattern.
-		
+		monitor number of currently running computations
+	\item
+		monitor estimated time of all computations
+	\item
+		monitor progress of single computation.
+	\item
+		close application at any time
 \end{itemize}
+
+
+	
 
 \newpage
 
