@@ -31,7 +31,7 @@
 }
 
 \Large {\bf 
-	\\Requirement specification 
+	Requirement specification 
 }
 
 \vskip2ex
@@ -46,6 +46,7 @@
 \tableofcontents
 \newpage
 
+%------------------------------------------------------------------------------
 
 \section*{Document metric}
 
@@ -63,7 +64,7 @@ Name:          & \multicolumn{5}{l|}{Requirement specification}                 
 Topics:        & \multicolumn{5}{l|}{Business analysis of the product}                                                                                                                                       \\ \hline
 Author:        & \multicolumn{5}{l|}{Jakub Ciecierski, Bartlomiej Dybisz}                                                                                                                                                \\ \hline
 File:          & \multicolumn{5}{l|}{requirement\_specification.pdf}                                                                                                                                      \\ \hline
-Version no:    & 0.1                                                                      & \cellcolor[HTML]{C0C0C0}Status:  & Under development & \cellcolor[HTML]{C0C0C0}Opening date: & 2015-03-03 \\ \hline
+Version no:    & 0.1                                                                      & \cellcolor[HTML]{C0C0C0}Status:  & Under development & \cellcolor[HTML]{C0C0C0}Opening date: & 2015-10-27 \\ \hline
 Summary:       & \multicolumn{5}{l|}{Business analysis of research on pattern recognition by finite automata}                                                                                                           \\ \hline
 Authorized by: & \begin{tabular}[c]{@{}l@{}}Wladyslaw Homenda\end{tabular} & \multicolumn{3}{l|}{\cellcolor[HTML]{C0C0C0}Last modification date:}                         & 2015-10-27 \\ \hline
 \end{tabular}
@@ -219,8 +220,13 @@ But we do not want to limit ourselves only to this approach - finally vast major
 
 Last but not least, we will tackle resources consuption and critical situation handling. On this point let us be clear: we want accurate results - neither time nor memory are important. The assumtion of course holds to some reasonable extent - we do not want to wait a month for program's output, but we are rather used to wait for couple of days. Great solution in this case would be ability to adjust complexity of calculations and, what follows, time needed to complete. With such an estimation, we could easily schedule our work.
 
+%---------------------------------------------------------------
+
 \newpage
 \section{User stories}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
 
 %
 % Console / Default User Stories
@@ -230,12 +236,28 @@ As a user I want to:
 \begin{itemize}
 	\item 
 		modify configuration file in order to specify computations to my needs.
+
+	\item 
+		input specific flags that change corresponding variables saved in the configuration file.
 		
 	\item 
-		specify output log directory in order to store logs from the computations.
+		specify output log directory path in order to store logs from the computations in desired location.
 		
 	\item 
+		to be able to run many computing processes at once.
+	
+	\item
+		to be able to specify whether my computations shall be restarted automatically in case of a crash.
+
+	\item
+		to be able to specify which test bench should be ran after starting the computations.
+				
+
+		
 \end{itemize}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
 
 %
 % GUI User Stories
@@ -278,17 +300,107 @@ As a user I want to:
 \end{itemize}
 
 
-	
+	%---------------------------------------------------------------
 
 \newpage
 
 \section{Functional Requirements}
 In all tables of the following section we assume that priority can take following values:
 \begin{itemize} 
-\item 1 - must be implemented
-\item 2 - can be implemented optionally 
-\item 3 - is a nice addition, but not needed.
+	\item 1 - must be implemented
+	\item 2 - can be implemented optionally 
+	\item 3 - is a nice addition, but not essential.
 \end{itemize} 
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+
+\subsection{Console} \label{console_func_req}
+
+\begin{center}
+\hspace*{-2.1cm}
+	\begin{longtable}{| l | p{4cm} | p{3.5cm} | l |}
+	
+		\hline
+	  	ID & Requirement & Comments & Priority \\
+		\hline
+		
+		1 & 
+		
+		Configuration file should exist, containing all necessary variables in order to tweak the computational process & 
+		
+		The choice of format of the file is left to the developer &
+		 
+		1 
+		
+		\\ \hline
+				
+		2 & 
+		
+		Running the computations through the console should allow appliance of flags that override the variables saved in configuration file. & 
+		
+		The configuration file can be then seen as a set of default values &
+		 
+		1 
+		\\ \hline
+		
+		2.1 & 
+		
+		User should be able to choose the test bench which he wants to run.& 
+		
+		It should be available through both configuration file and by setting a appropriate flag &
+		 
+		1 
+		\\ \hline
+		
+
+		3 & 
+		
+		The output in the console should be clean and readable.
+		Each printout can be optionally stamped with the time of the print.& 
+		
+		&
+		 
+		1
+		\\ \hline
+		
+		
+		3.1 & 
+		
+		The output log should be also directed to files saved in directory of user's choice.& 
+		
+		If no directory has been chosen, then the logs shall not be saved to files&
+		 
+		1
+		\\ \hline
+		
+		
+		3.2 & 
+		
+		The output in the console should use color pallet to make the reading even easier& 
+		
+		&
+		 
+		2
+		\\ \hline
+		
+
+		4 & 
+		
+		After the computations are finished the time of computing should be printed& 
+		
+		&
+		 
+		1
+		\\ \hline		
+		
+	\end{longtable}
+\end{center}	
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+
 
 \subsection{GUI} \label{GUI_func_req}
 
@@ -419,8 +531,8 @@ In all tables of the following section we assume that priority can take followin
 	\end{longtable}
 \end{center}	
 
-\subsection{Console}
 
+%---------------------------------------------------------------
 
 \newpage
 
@@ -429,12 +541,18 @@ In all tables of the following section we assume that priority can take followin
 %
 \section{Non Functional Requirements}
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+
 %
 % USABILITY
 %
 \subsection{Usability} \label{usability}
 To begin with, difference between console and GUI application are infinitesimal. Purposes of both are to configure and start new computation along with monitoring currently running ones.
 Disparity appears in a way of executing mentioned tasks - GUI will obviously use graphical interface and console will use plain text. This facts implies that GUI will be just more user friendly - by its transparency and flexibility. In fact, all user interface elements (like e.g. buttons or checkboxes) will be tightly connected with specific flag in the console application.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
 
 \subsubsection{GUI}
 Optionally GUI should start with welcome screen containing name of the application, simple logo and maybe some short info. Next main window, containing of:
@@ -447,13 +565,22 @@ should be showed.
 
 From the visual point of view, we would only like user interface elements (like buttons, expandable lists) to be as transparent as possible and easily accessible - no need to hide options in some menus - just straight forward configurations. We also do not force any particular theme of the program - we live you to your own devices in that matter.
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+
 \subsubsection{Console}
+Console is reserved for those who can find their way around in Unix-based systems. Motivation for putting emphasize on the console usage is twofold. Firstly, running our application on a computational cluster might shorten the duration of the computations. In such a case after connecting to remote server, we often times end up without any graphical interface. Instead we have to be able to start the process with command prompt. Lastly, many users of this application might simply prefer the simplicity of the console.
+
+%---------------------------------------------------------------
 
 %
 % RELIABILITY
 %
 \subsection{Reliability}
 As in \ref{usability}, differences (if some) are very small. It is again because we want GUI to be somehow higher abstraction layer to the console flags.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
 
 \subsubsection{GUI}
 Any error must be at once reported - either to underneath console or to some part of GUI. In case of any fatal error (like e.g. crash of one of the computations) priority must be given to keep running all the others. As mentioned in section \ref{GUI_func_req} user can choose, which action should be performed after crash - rerunning of the computation or not. 
@@ -462,7 +589,13 @@ In addition, because small number of options in Graphical User Interface, we wou
 
 What is more, closing GUI during monitoring process must not force computations to stop - all task are continuing their work in background or in visible console windows.
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+
 \subsubsection{Console}
+By console reliability we really mean the actual stability of the algorithms. In this research it is not vital that the computations are perfectly reliable. We assume that if any process fails to finish due to unexpected disk failure, deficiency of memory or any other reason, the computations can be simply restarted at a later time.
+
+%---------------------------------------------------------------
 
 %
 % PERRFORMANCE
@@ -470,8 +603,12 @@ What is more, closing GUI during monitoring process must not force computations 
 \subsection{Performance}
 In this section we will skip subdivision into GUI and Console, because we will focus on the core of the program. Undoubtedly, exact performance of the application will be mainly based on implemented algorithm hence only few remarks will be given.
 
-We want 
+We want put emphasis on the quality of the results rather than the performance of application itself. The work shall focus on discovering the best possible methods for solving the problem of interest. Having said that, given the nature of complexity of given problem, the computations might take a long time to finish. Thus the developer of the algorithms must be inclined to implement them with reasonable performance.
 
+The usage of many computers should motivate the developers to split the computations into different test benches, thus into different processes. In doing so, multiple processes can be easily run on different computers, thus saving a lot of time. 
+
+
+%---------------------------------------------------------------
 
 %
 % SECURITY AND SAFETY
@@ -479,4 +616,11 @@ We want
 \subsection{Security and Safety}
 There is no known internal or external threat.
 
+%---------------------------------------------------------------
+
+\subsection{Risk Analysis}
+Without the doubt the biggest risk of this project is poor results of the research.
+
 \end{document}
+
+
