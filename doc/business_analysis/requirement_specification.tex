@@ -311,7 +311,7 @@ In all tables of the following section we assume that priority can take followin
 \item 3 - is a nice addition, but not needed.
 \end{itemize} 
 
-\subsection{GUI}
+\subsection{GUI} \label{GUI_func_req}
 
 \begin{center}
 \hspace*{-2.1cm}
@@ -453,7 +453,7 @@ In all tables of the following section we assume that priority can take followin
 %
 % USABILITY
 %
-\subsection{Usability}
+\subsection{Usability} \label{usability}
 To begin with, difference between console and GUI application are infinitesimal. Purposes of both are to configure and start new computation along with monitoring currently running ones.
 Disparity appears in a way of executing mentioned tasks - GUI will obviously use graphical interface and console will use plain text. This facts implies that GUI will be just more user friendly - by its transparency and flexibility. In fact, all user interface elements (like e.g. buttons or checkboxes) will be tightly connected with specific flag in the console application.
 
@@ -474,21 +474,30 @@ From the visual point of view, we would only like user interface elements (like 
 % RELIABILITY
 %
 \subsection{Reliability}
+As in \ref{usability}, differences (if some) are very small. It is again because we want GUI to be somehow higher abstraction layer to the console flags.
+
 \subsubsection{GUI}
+Any error must be at once reported - either to underneath console or to some part of GUI. In case of any fatal error (like e.g. crash of one of the computations) priority must be given to keep running all the others. As mentioned in section \ref{GUI_func_req} user can choose, which action should be performed after crash - rerunning of the computation or not. 
+
+In addition, because small number of options in Graphical User Interface, we would like to have maximal robustness of all interface elements. Each element should perform its task with non-blocking (considering GUI) routine. In other words, one must be able to e.g. add new computation, while others are being monitored.
+
+What is more, closing GUI during monitoring process must not force computations to stop - all task are continuing their work in background or in visible console windows.
+
 \subsubsection{Console}
 
 %
 % PERRFORMANCE
 %
 \subsection{Performance}
-\subsubsection{GUI}
-\subsubsection{Console}
+In this section we will skip subdivision into GUI and Console, because we will focus on the core of the program. Undoubtedly, exact performance of the application will be mainly based on implemented algorithm hence only few remarks will be given.
+
+We want 
+
 
 %
 % SECURITY AND SAFETY
 %
 \subsection{Security and Safety}
-\subsubsection{GUI}
-\subsubsection{Console}
+There is no known internal or external threat.
 
 \end{document}
