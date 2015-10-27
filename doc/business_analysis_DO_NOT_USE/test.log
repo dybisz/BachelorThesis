@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.10.23)  23 OCT 2015 16:15
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2015.10.23)  27 OCT 2015 07:21
 entering extended mode
  %&-line parsing enabled.
 **test.tex
@@ -535,45 +535,76 @@ Now handling font encoding PU ...
    defining Unicode char U+2026 (decimal 8230)
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
-)) (./test.aux)
+))
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texmf-texlive/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2001/02/13 v0.1j Color table columns (DPC)
+
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen122
+\extrarowheight=\dimen123
+\NC@list=\toks30
+\extratabsurround=\skip58
+\backup@length=\skip59
+)
+\everycr=\toks31
+\minrowclearance=\skip60
+) (./test.aux)
 \openout1 = `test.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 15.
-LaTeX Font Info:    Try loading font information for OT4+cmr on input line 15.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for OT4/cmr/m/n on input line 21.
+LaTeX Font Info:    Try loading font information for OT4+cmr on input line 21.
 
 (/usr/share/texmf-texlive/tex/latex/polski/ot4cmr.fd
 File: ot4cmr.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 15.
-LaTeX Font Info:    ... okay on input line 15.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 21.
+LaTeX Font Info:    ... okay on input line 21.
 
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count116
-\scratchdimen=\dimen122
+\scratchdimen=\dimen124
 \scratchbox=\box28
 \nofMPsegments=\count117
 \nofMParguments=\count118
-\everyMPshowfont=\toks30
+\everyMPshowfont=\toks32
 \MPscratchCnt=\count119
-\MPscratchDim=\dimen123
+\MPscratchDim=\dimen125
 \MPnumerator=\count120
-\everyMPtoPDFconversion=\toks31
+\everyMPtoPDFconversion=\toks33
 )
 *geometry auto-detecting driver*
 *geometry detected driver: pdftex*
@@ -616,7 +647,7 @@ driver: pdftex
 \@twosidetrue \@mparswitchtrue 
 (1in=72.27pt, 1cm=28.45pt)
 -----------------------
-Package hyperref Info: Link coloring OFF on input line 15.
+Package hyperref Info: Link coloring OFF on input line 21.
 (/usr/share/texmf-texlive/tex/latex/hyperref/nameref.sty
 Package: nameref 2007/05/29 v2.31 Cross-referencing by name of section
 
@@ -625,31 +656,31 @@ Package: refcount 2008/08/11 v3.1 Data extraction from references (HO)
 )
 \c@section@level=\count121
 )
-LaTeX Info: Redefining \ref on input line 15.
-LaTeX Info: Redefining \pageref on input line 15.
+LaTeX Info: Redefining \ref on input line 21.
+LaTeX Info: Redefining \pageref on input line 21.
  (./test.out)
 (./test.out)
 \@outlinefile=\write3
 \openout3 = `test.out'.
 
 \AtBeginShipoutBox=\box29
- <graphics/pw.pdf, id=55, 80.3pt x 80.3pt>
+ <graphics/pw.pdf, id=43, 80.3pt x 80.3pt>
 File: graphics/pw.pdf Graphic file (type pdf)
  <use graphics/pw.pdf>
-LaTeX Font Info:    Try loading font information for U+msa on input line 16.
+LaTeX Font Info:    Try loading font information for U+msa on input line 22.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 16.
+LaTeX Font Info:    Try loading font information for U+msb on input line 22.
 
 (/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
 )
-<graphics/mini.pdf, id=57, 80.3pt x 80.3pt>
+<graphics/mini.pdf, id=45, 80.3pt x 80.3pt>
 File: graphics/mini.pdf Graphic file (type pdf)
  <use graphics/mini.pdf>
-Overfull \hbox (32.43332pt too wide) in paragraph at lines 16--16
+Overfull \hbox (32.43332pt too wide) in paragraph at lines 22--22
   [] 
  []
 
@@ -667,122 +698,52 @@ hics/mini.pdf>] [2
 ] [4
 
 ]
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 23--24
-[]\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing 
-elit. Proin nibh au-gue, sus-cipit a, scelerisque
+Overfull \hbox (14.20422pt too wide) in paragraph at lines 29--44
+[]|  [] 
  []
 
+[5] [6
 
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 25--26
-[]\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing 
-elit. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 27--28
-[]\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing 
-elit. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 29--30
-[]\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing 
-elit. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Underfull \vbox (badness 1354) has occurred while \output is active []
-
- [5]
-
-Package Fancyhdr Warning: \headheight is too small (12.0pt): 
- Make it at least 13.59999pt.
- We now make it that large for the rest of the document.
- This may cause the page layout to be inconsistent, however.
-
-[6]
-Chapter 1.
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 33--34
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 37--38
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 41--42
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-[7
+] [7] [8
 
 ]
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 45--46
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 49--50
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 53--54
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 57--58
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
-[8]
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 61--62
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
+Chapter 1.
 [9] [10
 
 ]
-Appendix A.
-
-Overfull \hbox (9.19083pt too wide) in paragraph at lines 67--68
-\OT4/cmr/m/n/10.95 Lorem ip-sum do-lor sit amet, con-secte-tur adip-isic-ing el
-it. Proin nibh au-gue, sus-cipit a, scelerisque
- []
-
+Chapter 2.
 [11] [12
 
-] [13] (./test.aux) ) 
+]
+Chapter 3.
+[13] [14
+
+]
+Chapter 4.
+[15] [16
+
+]
+Chapter 5.
+[17] [18
+
+] [19] (./test.aux) ) 
 Here is how much of TeX's memory you used:
- 7700 strings out of 495026
- 100379 string characters out of 1181801
- 176106 words of memory out of 3000000
- 10722 multiletter control sequences out of 15000+50000
- 14866 words of font info for 45 fonts, out of 3000000 for 9000
+ 8235 strings out of 495026
+ 106449 string characters out of 1181801
+ 189096 words of memory out of 3000000
+ 11240 multiletter control sequences out of 15000+50000
+ 15862 words of font info for 50 fonts, out of 3000000 for 9000
  48 hyphenation exceptions out of 8191
- 45i,10n,45p,781b,340s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 45i,16n,45p,289b,341s stack positions out of 5000i,500n,10000p,200000b,50000s
 {/usr/share/texmf-texlive/fonts/enc/dvips/pl/plrm.enc}{/us
 r/share/texmf-texlive/fonts/enc/dvips/pl/plsc.enc}</usr/share/texmf-texlive/fon
 ts/type1/public/pl/plbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/pl/p
 lbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/pl/plcsc10.pfb></usr/sha
 re/texmf-texlive/fonts/type1/public/pl/plr10.pfb></usr/share/texmf-texlive/font
-s/type1/public/pl/plr12.pfb></usr/share/texmf-texlive/fonts/type1/public/pl/pls
-l10.pfb>
-Output written on test.pdf (13 pages, 222626 bytes).
+s/type1/public/pl/plr12.pfb>
+Output written on test.pdf (19 pages, 220126 bytes).
 PDF statistics:
- 162 PDF objects out of 1000 (max. 8388607)
- 27 named destinations out of 1000 (max. 500000)
- 115 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 168 PDF objects out of 1000 (max. 8388607)
+ 30 named destinations out of 1000 (max. 500000)
+ 91 words of extra memory for PDF output out of 10000 (max. 10000000)
 
