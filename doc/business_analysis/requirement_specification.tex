@@ -6,6 +6,9 @@
 %\usepackage[export]{adjustbox}
 %\usepackage{tabu}
 \usepackage{xcolor,colortbl}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
 
 \begin{document}
 
@@ -14,33 +17,47 @@
 {\large 27 October 2015}
 \end{flushright}
 
-\begin{flushleft}
-{\large Jakub Ciecierski\\
-	Bartlomiej Dybisz
-
-}
-\end{flushleft}
-
+\vskip20ex
 \hskip3cm
 
 \begin{center}
 
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/mini.png}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.9\linewidth]{images/pw.jpg}
+\end{subfigure}
+\end{figure}
+
+
+
+
 \Large {\bf
 	Bachelor Thesis \\
-	Finite automata for pattern recognition
+	Finite Automata for Pattern Recognition
 }
 
 \Large {\bf 
 	Requirement specification 
 }
-
+\end{center}
 \vskip2ex
 
-\vspace{60pt}
-\includegraphics[width=80mm]{images/mini.PNG} \\
-\end{center}
 
-\vskip20ex
+\vskip25ex
+
+\begin{flushleft}
+{\large Bartlomiej Dybisz \\
+Jakub Ciecierski
+
+}
+\end{flushleft}
 
 \newpage
 \tableofcontents
@@ -201,13 +218,17 @@ Automaton finished computations when all symbols were read. It accepts input if 
 
 
 \end{itemize}
+\begin{center}
+\includegraphics[scale=0.4]{images/automata.png}
+\end{center}
+
 
 %---------------------------------------------------------------
 
 \newpage
 \section{Goal}
 The main goal of this project is to deploy application, which will create an automaton for given input data. Produced automaton will be a an accurate classifier of objects represented
-by the input data. The program is dedicated to reasearch laboratory, hence it is lumbered with the following assuptions.
+by the input data. The program is dedicated to research laboratory, hence it is lumbered with the following assumptions.
 
 
 First of all, all users will be scientists, so precision of calculations and reliability is vital. We want to be sure about results given by the application to such an extent, that they will be publishable. It is also carrying need for specific format of the output - by default latex tables and .xls files. Similarly input is in form of .xls files.
@@ -215,10 +236,10 @@ First of all, all users will be scientists, so precision of calculations and rel
 
 Next thing that we want to stress out is platform and design. As for target system, linux is unquestionable choice. All work stations are running Arch Linux and we want the program to be operable on all of them. Although most of the researchers work inside the laboratory, some of us are using SSH protocol to communicate. This causes the need for plain console application - configurable using flags or simple question/answer scheme. 
 
-But we do not want to limit ourselves only to this approach - finally vast majority of us use computers via the standard X Window System and want to benefit from it. For those who does, we want to present simple GUI based program to configure, run and monitor the process of calculating automata. It will have all functionalites of console part, but will be more easy on the eye and simpler to use for non computer scientist.
+But we do not want to limit ourselves only to this approach - finally vast majority of us use computers via the standard X Window System and want to benefit from it. For those who does, we want to present simple GUI based program to configure, run and monitor the process of calculating automata. It will have all functionalities of console part, but will be easier on the eye and simpler to use for non computer scientist.
 
 
-Last but not least, we will tackle resources consuption and critical situation handling. On this point let us be clear: we want accurate results - neither time nor memory are important. The assumtion of course holds to some reasonable extent - we do not want to wait a month for program's output, but we are rather used to wait for couple of days. Great solution in this case would be ability to adjust complexity of calculations and, what follows, time needed to complete. With such an estimation, we could easily schedule our work.
+Last but not least, we will tackle resources consumption and critical situation handling. On this point let us be clear: we want accurate results - neither time nor memory are important. The assumption of course holds to some reasonable extent - we do not want to wait a month for program's output, but we are rather used to wait for couple of days. Great solution in this case would be ability to adjust complexity of calculations and, what follows, time needed to complete. With such an estimation, we could easily schedule our work.
 
 %---------------------------------------------------------------
 
@@ -549,13 +570,13 @@ In all tables of the following section we assume that priority can take followin
 %
 \subsection{Usability} \label{usability}
 To begin with, difference between console and GUI application are infinitesimal. Purposes of both are to configure and start new computation along with monitoring currently running ones.
-Disparity appears in a way of executing mentioned tasks - GUI will obviously use graphical interface and console will use plain text. This facts implies that GUI will be just more user friendly - by its transparency and flexibility. In fact, all user interface elements (like e.g. buttons or checkboxes) will be tightly connected with specific flag in the console application.
+Disparity appears in a way of executing mentioned tasks - GUI will obviously use graphical interface and console will use plain text. This facts implies that GUI will be more user friendly - by its transparency and flexibility. In fact, all user interface elements (like e.g. buttons or checkboxes) will be tightly connected with specific flag in the console application.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 
 \subsubsection{GUI}
-Optionally GUI should start with welcome screen containing name of the application, simple logo and maybe some short info. Next main window, containing of:
+Optionally GUI should start with welcome screen containing name of the application, simple logo and maybe some short info. Next, main window containing of:
 \begin{itemize} 
 \item 1 - Panel for new computation configuration
 \item 2 - Panel for monitoring of currently running computations
@@ -619,7 +640,7 @@ There is no known internal or external threat.
 %---------------------------------------------------------------
 
 \subsection{Risk Analysis}
-Without the doubt the biggest risk of this project is poor results of the research.
+From our point of view, main risk of this project are poor results from the computations. As we have mentioned, it is a purely research task with usage of methods that have never been used before. 
 
 \end{document}
 
