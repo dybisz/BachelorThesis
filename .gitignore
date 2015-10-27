@@ -8,3 +8,4 @@ doc/business_analysis/*.aux
 doc/business_analysis/*.log
 doc/business_analysis/*.toc
 doc/business_analysis/*.gz
+doc/business_analysis/*.pdf

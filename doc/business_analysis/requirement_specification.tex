@@ -2,6 +2,7 @@
 
 \usepackage{pdfpages}
 \usepackage{graphicx}
+\usepackage{longtable}
 %\usepackage[export]{adjustbox}
 %\usepackage{tabu}
 \usepackage{xcolor,colortbl}
@@ -219,290 +220,209 @@ Automaton finished computations when all symbols were read. It accepts input if 
 
 %---------------------------------------------------------------
 
+\newpage
+\section{Goal}
+The main goal of this project is to deploy application, which will create an automaton for given input data. Produced automaton will be a an accurate classifier of objects represented
+by the input data. The program is dedicated to reasearch laboratory, hence it is lumbered with the following assuptions.
+
+
+First of all, all users will be scientists, so precision of calculations and reliability is vital. We want to be sure about results given by the application to such an extent, that they will be publishable. It is also carrying need for specific format of the output - by default latex tables and .xls files. Similarly input is in form of .xls files.
+
+
+Next thing that we want to stress out is platform and design. As for target system, linux is unquestionable choice. All work stations are running Arch Linux and we want the program to be operable on all of them. Although most of the researchers work inside the laboratory, some of us are using SSH protocol to communicate. This causes the need for plain console application - configurable using flags or simple question/answer scheme. 
+
+But we do not want to limit ourselves only to this approach - finally vast majority of us use computers via the standard X Window System and want to benefit from it. For those who does, we want to present simple GUI based program to configure, run and monitor the process of calculating automata. It will have all functionalites of console part, but will be more easy on the eye and simpler to use for non computer scientist.
+
+
+Last but not least, we will tackle resources consuption and critical situation handling. On this point let us be clear: we want accurate results - neither time nor memory are important. The assumtion of course holds to some reasonable extent - we do not want to wait a month for program's output, but we are rather used to wait for couple of days. Great solution in this case would be ability to adjust complexity of calculations and, what follows, time needed to complete. With such an estimation, we could easily schedule our work.
+
+\newpage
 \section{User stories}
-	\hspace{15pt} {\bf Grid editor}
-\begin{itemize}	
-	\item 
-		As a user, 
-		I want to open grid editor,
-		in order to change the grid size.
 
+%
+% GUI User Stories
+%
+\subsubsection{GUI}
+As a user I want to:
+\begin{itemize}
+	\item
+		load data using file explorer.
+	\item
+		load data using drag and drop procedure.
+	\item
+		adjust computation precision and see estimated time to complete.
+	\item
+		select output format as .xls file.
+	\item
+		select output format as latex table.
+	\item
+		select destination folder of the output
+	\item
+		decide if test should be rerun in case of failure/interruption.
 	\item 
-		As a user, 
-		I want to open grid editor,
-		in order to change color of each state of a cell.
-
+		start computation for loaded data.
+	\item
+		stop specific computation.
+	\item
+		stop all computations.
 	\item 
-		As a user, 
-		I want to open grid editor,
-		in order to enable/disable wrapping option.
-
+		monitor number of currently running computations
+	\item
+		monitor estimated time of all computations
+	\item
+		monitor progress of single computation.
+	\item
+		close application at any time
+	\item
+		minimize application at any time.
 	\item 
-		As a user, 
-		I want to scroll my mouse roll over the grid,
-		in order to adjust the scale of the grid.
-
-	\item 
-		As a user, 
-		I want to select the brush,
-		in order to draw cells on the grid.
-
-	\vspace{30pt}
-	Rule editor
-	
-	\item 
-		As a user,
-		I want to open rule editor,
-		in order to create new rule.
-		
-	\item 
-		As a user,
-		I want to choose neighborhood environment,
-		in order to add new rule.
-		
-	\item 
-		As a user,
-		I want to define specific transition for a given state of cell,
-		in order to generate new state.
-		
-	\item 
-		As a user,
-		I want to click save/save as button in rule editor,
-		in order to save current rule.
-
-	\item 
-		As a user,
-		I want to click load button in rule editor,
-		in order to load current rule and possible edit it.
-
-	\vspace{30pt}
-	Application option
-	
-	\item 
-		As a user,
-		I want to move View components (e.g. rule editor / grid editor / browser),
-		in order to position them in different location.
-	\item 
-		As a user,
-		I want to click next generation button 
-		to compute next generation
-	\item 
-		As a user,
-		I want to click next N generations button,
-		to compute next N generations.
-	\item 
-		As a user,
-		I want to set the number of generation to skip by clicking next N generations button,
-		in order to compute next N generations.
-	\item 
-		As a user,
-		I want set the speed of computation of next generation in running mode,
-		to customize the speed of which the automaton is transitioning. \\
-		
-		Pattern editor
-	\item 
-		As a user,
-		I want to save a current state of grid into a pattern,
-		so that later I can load it into the program.
-
-	\item 
-		As a user,
-		I want to browse for my patterns in the browser window,
-		in order to load it to the pattern editor.
-
-	\item 
-		As a user,
-		I want to click change rule in the pattern editor,
-		in order to add a rule of my choosing to that pattern.
-		
+		resize application window.
 \end{itemize}
+
+
+	
 
 \newpage
 
 \section{Functional Requirements}
-Priority
+In all tables of the following section we assume that priority can take following values:
 \begin{itemize} 
 \item 1 - must be implemented
 \item 2 - can be implemented optionally 
 \item 3 - is a nice addition, but not needed.
 \end{itemize} 
 
+\subsection{GUI}
+
 \begin{center}
 \hspace*{-2.1cm}
-	\begin{tabular}{| l | p{7cm} | p{5cm} | l |}
+	\begin{longtable}{| l | p{4cm} | p{3.5cm} | l |}
 	
 		\hline
 	  	ID & Requirement & Comments & Priority \\
 		\hline
 		
 		1 & 
-		The system provides a Grid options
-		allowing for changing the size, colour of cells and
-		enabling/disabling wrapping option&
-		The colour of cells represent a state of the cell.
-		In other words the user can choose in what state to put a cell into. &
+		The system provides option to load data file using buttun 'Load data' and
+		some window explorer to choose a file & 
+		 &
 		1 
 		\\ \hline
-
+		
 		1.1 & 
-		The system should allow grid maneuvers, zooming in/out and if the
-		entire grid is not visible in one screen, possibility of moving around the grid&
+		The system provides area over which one can drag and drop data file.
+		Following action will have similar results to requirement of id 1. & 
 		 &
 		1 
-		\\ \hline
-
+		\\ \hline		
+	
 		2 & 
-		The system provides a Rule editor in which
-		the user can create, edit and save rules. & 
+		When new data is loaded, one can adjust computation precision via various checkboxes, 			sliders etc. Implementation of this part will depend on used algorithm. & 
 		 &
 		1 
-		\\ \hline
+		\\ \hline		
+	
+			2.1 & 
+		Time estimation indicator, dynamically updated during usage of items from requirement 			of id 2 & 
+		 &
+		1 
+		\\ \hline		
 		
-		2.1 & 
-		By clicking create rule button in Rule editor, the application will open a fresh rule
-		creation window & 
+		3 & 
+		Application will have expanded list with possible output files. Choosing one will 				affect a way of saving result. & 
 		 &
 		1 
-		\\ \hline
+		\\ \hline			
 
-		2.2 & 
-		By clicking load button in Rule editor, the application will open a browser which
-		will allow the user to find saved rules & 
-		 &
-		1 
-		\\ \hline
-
-		2.3 & 
-		By clicking save button in Rule editor, the application will make sure that name for the
-		rule is provided and then will save the rule in specified by the user location & 
-		 &
-		1 
-
-		\\ \hline
-
-
-	  \hline
-	\end{tabular}
-\hspace*{-2.1cm}
-	\begin{tabular}{| l | p{7cm} | p{5cm} | l |}
-		\hline
-	  	ID & Requirement & Comments & Priority \\
-		\hline
-
-		2.4 & 
-		The system provides three different neighborhood environments
-		in which the user can create rules, 4-point, 8-point, 24-point  & 
-		See Glossary / Neighborhood for more information &
-		1 
-		\\ \hline
-		
-
-		2.5 & 
-		The application provides special file extension for saving and keeping rules & 
-		 &
-		1 
-		\\ \hline
-				
-		2.6 &
-		For 4-point and 8-point environments the system should provide a way to create rules
-		in which positions of neighbors relative to the cell are considered. If
-		a transition is not defined then this transition does not change the state of current cell
-		 &
-		The user can choose to what state current cell transitions, based on this cell's state 
-		and states of his neighbors &
-		1 
-		\\ \hline
-
-		2.7 &
-		For 24-point environment system should provide a may of creating rules in which 
-		the user specifies number of neighbors in each column
-		&	
-		This environment can be represented as a 5 by 5 matrix with the current cell in the middle &
-		1 
-		\\ \hline
-
-		2.8 &
-		For 4-point, 8-point and 24-point environments the system should provide a simplified
-		mode of creating rules in which the user inputs only number of neighbors in given state
-		in the neighborhood for a current cell state. &
-		The user inputs number of neighbors with given state which should appear for the
-		cell to transition to another specified state &
-		2 
-		\\ \hline
-				
 		3.1 & 
-		The system provides a step-by-step button which computes next generation & 
+		Option of .xls file on list described in 3 & 
 		 &
 		1 
-
-		\\ \hline
-
-
-
-	\end{tabular}
-\hspace*{-2.1cm}
-	\begin{tabular}{| l | p{7cm} | p{5cm} | l |}
-		\hline
-	  	ID & Requirement & Comments & Priority \\
-		 \hline
+		\\ \hline		
 
 		3.2 & 
-		The system provides next-N button which computes next N generations,
-		the N must be easily chosen by the user & 
-	 		&
-		1
-		\\ \hline
+		Option of latex table on list described in 3 & 
+		 &
+		1 
+		\\ \hline	
 
-		3.3 & 
-		The system provides a run button which will
-		start the animation of consecutive generations & 
+		4 & 
+		System will provide 'Choose Output Folder' button which will open window explorer and 			ask user to choose folder to save result from a test. & 
+		 &
+		1 
+		\\ \hline	
+	
+		4.1 & 
+		Label with path to the output folder, chosen in requirement number 4. & 
+		 &
+		2 
+		\\ \hline		
+		
+		5 & 
+		Opportunity to choose behaviour after crashing of a particular test - rerun or not & 
 		 &
 		1
 		\\ \hline
 		
-		3.4 & 
-		The system provides way to change speed of which the animation is drawn in the 'run' mode & 
-		 &
-		1
-		\\ \hline
-
-		4.1 & 
-		The application allow user to draw cells on the grid & 
+		6 & 
+		Button 'Start Computation', which will begin computing automaton for a loaded data. & 
 		 &
 		1
 		\\ \hline		
+		
+		7 & 
+		'Stop Computation' button, for each currently running computation. It will cause 				particular computation to break whatever it is doing right now. & 
+		 &
+		1
+		\\ \hline	
+		
+		8 & 
+		'Stop All Computations' button. All computations break whatever they are doing right 			now. & 
+		 &
+		1
+		\\ \hline		
+		
+		9 & 
+		System will provide a way of monitoring number of currently running computations. It 			can be in form of a label or some bar. & 
+		 &
+		1
+		\\ \hline	
 
-		4.2 & 
-		The application provides a way for user to save grid state into patterns, additionally
-		the pattern can have a rule attached to it, which later can be loaded into the grid.  & 
-		A pattern editor view component should be created.
-		The grid state consists of its size, states of cells and other grid options.&
+		9.1 & 
+		System will provide a way of monitoring estimated time of all currently running 				computations. It can be in form of a label or some bar. & 
+		 &
+		1
+		\\ \hline
+
+		9.2 & 
+		System will provide a way of monitoring estimated time of a particular computation. It 			can be in form of a label or some bar. & 
+		 &
+		1
+		\\ \hline
+
+		10 & 
+		By clicking some superior button (like e.g. 'X') user will be able to immediately 				close the application and terminate all computations.  & 
+		 &
+		1
+		\\ \hline
+	
+		10.1 & 
+		By clicking some superior button user will be able to minimize the program. & 
+		 &
 		2
-		\\ \hline				
+		\\ \hline	
 
-		4.3 & 
-		The application provides Browser window in which the 
-		user can browse saved rules and patterns & 
+		10.2 & 
+		By grabbing edges user will be able to resize application window. & 
 		 &
-		1 
+		3
 		\\ \hline
-	
-		4.4 & 
-		The application allows the user to have multiple grids opened. &
-		 &
-		2 
-		\\ \hline
+		
+	\end{longtable}
+\end{center}	
 
-		4.5 & 
-		The application should have example of simple game of Life called
-		Conway's Game of Life &
-		 &
-		2 
-		\\ \hline
-	
-	\end{tabular}
+\subsection{Console}
 
-\end{center}
 
 \newpage
 
