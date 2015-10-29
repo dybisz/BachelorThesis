@@ -1,8 +1,9 @@
+http://pages.mini.pw.edu.pl/~andrzejczakm/Group%20Project%20Rules.pdf
 
-Setting up googletests:
-
-https://code.google.com/p/googletest/wiki/
 ###########################################################
+Setting up googletests:
+https://code.google.com/p/googletest/wiki/
+
 1) Compile the googletest project into static library
 e.g. make, cmake, msvc. (each has a special folder inside googletest)
 
@@ -15,3 +16,34 @@ link the static gtest lib with your project
 
 3) Done :)
 ###########################################################
+
+Lab1
+
+Add to Business Analysis:
+
+Choose Mode: Classic vs Iterative.
+Add Schedule
+
+###########################################################
+
+Lab2:
+Detailed requirements analysis.
+Preliminary architectural documentation.
+
+###########################################################
+
+Lab 3 
+Detailed architectural documentation.
+Preliminary implementation.
+
+###########################################################
+
+Lab 4 
+Technical documentation.
+Advanced implementation.
+
+###########################################################
+
+Lab 5 
+Finished set of documentations (including user manual) .
+Finished project.
