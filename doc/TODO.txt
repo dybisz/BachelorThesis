@@ -1,3 +1,14 @@
+###########################################################
+Unified Coding style:
+
+Important elements to Unify are:
+
+Insert Spaces for instead of Tabs - Tabs make the code poorly editted
+Spaces count for each Tab - e.g. 4
+Print Margin Column - e.g. 80
+
+###########################################################
+
 http://pages.mini.pw.edu.pl/~andrzejczakm/Group%20Project%20Rules.pdf
 
 ###########################################################

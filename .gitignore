@@ -9,3 +9,8 @@ doc/business_analysis/*.log
 doc/business_analysis/*.toc
 doc/business_analysis/*.gz
 doc/business_analysis/*.pdf
+
+
+# Eclipse stuff
+.cproject
+.project
