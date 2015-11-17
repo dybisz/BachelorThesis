@@ -9,9 +9,9 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{float}
-
+\usepackage{wrapfig}
 \usepackage[margin=0.65in]{geometry}
-
+\usepackage{url} % for bibliograpy links
 \begin{document}
 
 \vspace*{3ex}
@@ -161,7 +161,7 @@ Date         & Note        & Planned Progress          \\ \hline
 \section{Production Model}
 {\bf Waterfall} model is a model which was developed for software development; that is to create software. It is called as such because the model develops systematically from one phase to other in a downward fashion, like a waterfall.
 
-{\color{red} NICE DECRIPTION LOL}
+{\color{red} NICE DECRIPTION LOL2}
 
 \begin{center}
 
@@ -177,6 +177,17 @@ Date         & Note        & Planned Progress          \\ \hline
 
 
 %---- BD ----%
+\subsection{Graphical User Interface}
+
+%LOL
+\begin{wrapfigure}{c}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=0.3\textwidth]{images/javafx_logo.png}
+  \end{center}
+\end{wrapfigure}
+
+To create Graphical User Interface, we will use JavaFx technology. It is a set of graphics and media packages that enables developers to design, create, test, debug, and deploy rich client applications that operate consistently across diverse platforms. Written as a Java API, JavaFX application code can reference APIs from any Java library. For example, JavaFX applications can use Java API libraries to access native system capabilities and connect to server-based middleware applications \cite{javafx_description}. Since GUI will be simple and straight forward, this technology will provide cross-platform character of the application and help us develop it in no time. Only basic user interface elements such as buttons, text fields, label etc will be used, hence we do not demand any sophisticated API.
+
 
 
 
@@ -184,7 +195,7 @@ Date         & Note        & Planned Progress          \\ \hline
 
 
 %---------------------------------------------------------------
-\section{Algorithms}
+\section{Algorithms} \label{section:Algorithms}
 
 %---- JC ----%
 
@@ -225,6 +236,38 @@ Date         & Note        & Planned Progress          \\ \hline
 
 
 %---- BD ----%
+\newpage
+\subsection{Transition Table}
+Classes used to model behaviour of transition table are presented on figure \ref{fig:trans_table_class}. 
+
+
+\textcolor{red}{Remark:} It is worth to notice that in all consecutive classes, entries of transition tables stays as a vector of integers. Each table, beginning with \texttt{StandardTransitionTable}, provides its own way to read values from the vector either via overloading \texttt{operator ()} or by implementing methods.
+
+As one can see, starting from most general \texttt{TransitionTable} and going up on chains of inheritance classes broad they abilities. Base class provides only methods for loading automaton from file specified via \texttt{url} string. It is able to either load it symbol by symbol ( \texttt{\_loadOneSymbol()} ) or fill up all entries at once - \texttt{\_loadEntries()}. Entries at this level can not be interpreted using any transition table type - it is just raw data.
+
+Next, one can create \texttt{StandardTransitionTable}, which interprets \texttt{\_entries} as a table where columns represents symbols and rows are states. Classes, which will inherit from this one are provided with method \texttt{\_accessTransitionTable()} and for public usage \texttt{operator ()} has been overloaded. Both approaches force to pass symbol and state and as a results guarantee state. 
+
+Thrid  is \texttt{PerSymbolTransitionTable}, which is more suited for computer interpretation of automaton. It assumes that each symbol has its own table. Each table's column and rows represents consecutive states and entries takes values equal to either $0$ or $1$. Such a values describe situation when "two states are not connected" and "there is connection between states", repsectively. Simmiraly to \texttt{StandardTransitionTable}, there are two ways to acces table. Public access is provided by overloaded \texttt{operator ()} and protected access is anabled via \texttt{\_isTransition()} method. Both needs two states and symbol to determine whether there is connection or not, hence return value is of boolean type.
+
+Last but not least, we have \texttt{CodedTransitionTable} class. First observable difference appears in constructors - this class enables to initialize transition table either via loading and coding automaton from file or accepting coded automaton and decoding it to achieve transition table. Such approach has been forced by Particle Swarm Optimization algorithm. TO be a little bit more precise: paticles are represented by coded deterministic finite automata and need to be updated, which causes automata to change. In such a case we just create new automaton from updated particle's coded DFA table. \texttt{\_getCodedTransitionTable}, as name says, returns coded table, which then can be used as a position of particle within PSO space. All other methods concerns either coding or decoding procedures and are described more in section \ref{section:Algorithms}.
+
+
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/transition_table.jpg}
+    \caption{Class diagram of implemented operations.}
+    \label{fig:trans_table_class}
+\end{figure}
+
+
+\section{Bibliography}
+
+\begin{thebibliography}{1}
+	\bibitem{javafx_description} \url{http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm}	
+\end{thebibliography}
+
 
 
 \end{document}
