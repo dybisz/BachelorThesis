@@ -11,6 +11,8 @@ doc/business_analysis/*.toc
 doc/business_analysis/*.gz
 doc/business_analysis/*.pdf
 
+doc/uml_diagrams/
+
 *.aux
 *.log
 *.toc
