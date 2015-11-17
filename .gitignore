@@ -29,3 +29,5 @@ doc/uml_diagrams/
 .idea
 config_gui/out
 config_gui/.idea
+*.class
+*.jar
