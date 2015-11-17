@@ -27,3 +27,5 @@ doc/business_analysis/*.pdf
 .idea
 config_gui/out
 config_gui/.idea
+*.class
+*.jar
