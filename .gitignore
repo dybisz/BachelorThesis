@@ -4,11 +4,18 @@ bin
 *.o
 *.a
 googletest/make/sample1_unittest
+
 doc/business_analysis/*.aux
 doc/business_analysis/*.log
 doc/business_analysis/*.toc
 doc/business_analysis/*.gz
 doc/business_analysis/*.pdf
+
+*.aux
+*.log
+*.toc
+*.gz
+*.pdf
 
 
 # Eclipse stuff
