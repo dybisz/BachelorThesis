@@ -21,3 +21,9 @@ doc/business_analysis/*.pdf
 # Eclipse stuff
 .cproject
 .project
+
+# IntelliJ Idea stuff
+*.iml
+.idea
+config_gui/out
+config_gui/.idea
