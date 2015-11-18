@@ -795,6 +795,32 @@ Last but not least, we have \texttt{CodedTransitionTable} class. First observabl
     \label{fig:trans_table_class}
 \end{figure}
 
+%
+% GUI CLASS DIAGRAM
+%
+\newpage
+\subsection{Graphical User Interface}
+\begin{wrapfigure}{c}{0.7\textwidth}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{images/mock_gui.jpg}
+  \end{center}
+  \caption{Class diagram of gui classes}
+  \label{fig:gui_look}
+\end{wrapfigure}
+
+Classes necessary to model and develop GUI are presented on figure \ref{fig:gui_classes}. On the other hand, look that we are trying to achieve is roughly sketch on figure \ref{fig:gui_look}.
+
+As one could image, because of simplicity of the interface, there is nothing fancy in class diagram. \texttt{MainWindow} handles loading .fxml file and starting the application. On the oder hand, class \texttt{MainWindowControls} is in charge of events processing. It handles any event occurred regarding user interface objects and performs appropriate actions. Since main functionality of this part of the application is to set up global configurations, when some value within an user interface object will change, so will corresponding entry in configuration file. One can easily load and save configurations files, as well as changing directory of input and output files. Presented figure \ref{fig:gui_look}, depicting design of the application, is definitely not the final one and in future it might contain e.g. text labels with more informations about features or some loading bars. Main look of the program should be defined in .fxml, which will not be presented in this paper due to its irrelevancy and numerous way of implementations. 
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/gui.jpg}
+    \caption{Class diagram of gui classes}
+    \label{fig:gui_classes}
+\end{figure}
+
+
 
 \section{Bibliography}
 

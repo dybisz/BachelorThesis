@@ -11,7 +11,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="484.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainControls">
    <children>
       <GridPane prefHeight="484.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columnConstraints>
@@ -191,7 +191,7 @@
                                     <Insets top="10.0" />
                                  </padding>
                               </Label>
-                              <TextField maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="35.0" HBox.hgrow="ALWAYS">
+                              <TextField fx:id="maxIterations" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" onKeyPressed="#maxIterTextChanged" prefWidth="35.0" HBox.hgrow="ALWAYS">
                                  <HBox.margin>
                                     <Insets bottom="5.0" left="7.0" top="5.0" />
                                  </HBox.margin>
@@ -595,7 +595,7 @@
                                     <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="none" HBox.hgrow="ALWAYS" />
                                  </children>
                               </HBox>
-                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Change Directory">
+                              <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#buttonTest" text="Change Directory">
                                  <font>
                                     <Font size="9.0" />
                                  </font>

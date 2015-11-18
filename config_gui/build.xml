@@ -28,6 +28,7 @@
           <fx:resources refid="appRes"/>
           <fileset dir="${build.classes.dir}"/>
           <fileset dir="${build.resources.dir}"/>
+          <fileset dir="${build.src.dir}"/>
       </fx:jar>
  
 
