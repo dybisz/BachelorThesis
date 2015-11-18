@@ -740,59 +740,97 @@ The computation finishes after $t_{max}$ iterations or after finding a satisfact
 %---- JC ----%
 
 
-%---- BD ----%
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Clustering}
+
+The clustering module contains all necessary functionality for analysis of clusters. Figure~\ref{fig:clustering_class} presents few basic classes. \textit{KMeans} constructor takes the maximum iterations and tolerance of convergence. Calling \textit{compute} will start the computation of kmeans algorithm with $k$ clusters for input data set. The private methods of KMeans are responsible for computing the corresponding sections of kmeans algorithm. It is important to note that \textit{initCentroids()} method could be implemented using many different algorithms, which might change the time complexity of kmeans algorithm and a whole.
+
+Further, in figure~\ref{fig:clustering_class} sub module \textit{Evaluation} is presented. The class \textit{ClusterEvaluator} is a base class for all cluster evaluation algorithms. It consists of \textit{clustering tool} which shall be used to compute the optimal number of clusters for given data set. The \textit{compute} method will start looking for optimal $k$ from the interval $[start_k, end_k]$. At this stage of research, only McClain-Rao algorithm is proposed. In the future, if the need arises, further cluster evaluators should be derived from the base class \textit{ClusterEvaluator}.
 
 %
-% DFA CLASS DIAGRAM
+% CLUSTERING CLASS DIAGRAM
 %
-
-\subsection{Deterministic Fiut Analtomato}
-In some sense this is most important class in the whole project. It represents automaton and its classical functionalities. Although class seems short, it uses objects of more sophisticated classes described in the subsections \ref{subsec:transition_table} and \ref{subsec:words_proc}. 
-
-To start with we will describe fields of the class. \texttt{alphabet} is a vector of integers, which holds all symbols considered by automaton. It can be extracted from transition table using \texttt{\_acquireAlphabetFromTransitionTable()} method. Next and last one is \texttt{\_codedTransitionTable} object. In most general sense, object of this class mimics usage of transition table by allowing user to access and modify entries (see section \ref{sec:autom}), as well as coding and decoding table to form described in section \ref{sec:auto_dec}. 
-
-Next we will look closer at constructors. First one generates random automaton based on provided number of states and alphabet. Alphabet takes values from interval [1,numberOfSymbols], hence it can be represented by single value: \texttt{numberOfSymbols}. Second constructor is suited to work with particle class. It reconstruct itself regarding to provided coded transition table, which in fact represents particle position. 
-
-At the end a little bit about provided methods. \texttt{\_acquireAlphabetFromTransitionTable()} has been already mention - it loads alphabet from provided coded table. Rather auxiliary procedure. On the other hand, \texttt{checkRelationInducedByLanguage} is crucial for correct flow of the Particle Swarm Optimization. It takes two words and checks whether computations for each of them end up in the same state - if they are \texttt{true} value is return. Otherwise \texttt{false}. To perform this task \texttt{compute()} function is used. It takes word and returns number of state in which computations ended.
-
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{images/dfa.jpg}
-    \caption{Class diagram of Deterministic Finite Automaton}
-    \label{fig:dfa_class}
+	\includegraphics[width=0.8\textwidth]{images/clustering_class.jpg}
+    \caption{Class diagrams of clustering module}
+    \label{fig:clustering_class}
 \end{figure}
 
 
-%
-% TRANSITION TABLE CLASS DIAGRAM
-%
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+
 \newpage
-\subsection{Transition Table} \label{subsec:transition_table}
-Classes used to model behaviour of transition table are presented on figure \ref{fig:trans_table_class}. 
+\subsection{Classification}
 
-\textcolor{red}{Remark:} It is worth to notice that in all consecutive classes, entries of transition tables stays as a vector of integers. Each table, beginning with \texttt{StandardTransitionTable}, provides its own way to read values from the vector either via overloading \texttt{operator ()} or by implementing methods.
+The classification module deals with the problems of classifying objects. Figure~\ref{fig:classification_class} shows the appropriate module. The \textit{Classifier} class contains a word generator. Note that the word generator itself, might correspond to real or synthetic data generation. The Classifier will then look for automaton which will classify these words in the best manner possible. The method of finding such automaton is the PSO algorithm. The \textit{PSO} class encapsulates the Particle Swarm Optimization algorithm. As arguments it takes the number of states and number of symbols in the alphabet, which will govern the swarm size and the dimensions of particles. Note that \textit{\_bestParticles} field is a list, since there can exist many best solution. Thus the \textit{getResults} shall return all such results and the Classifier class should be responsible for picking the most appropriate one.
 
-As one can see, starting from most general \texttt{TransitionTable} and going up on chains of inheritance classes broad they abilities. Base class provides only methods for loading automaton from file specified via \texttt{url} string. It is able to either load it symbol by symbol ( \texttt{\_loadOneSymbol()} ) or fill up all entries at once - \texttt{\_loadEntries()}. Entries at this level can not be interpreted using any transition table type - it is just raw data.
+Lastly the \textit{Particle} class simply encapsulates the particle used in PSO.
 
-Next, one can create \texttt{StandardTransitionTable}, which interprets \texttt{\_entries} as a table where columns represents symbols and rows are states. Classes, which will inherit from this one are provided with method \texttt{\_accessTransitionTable()} and for public usage \texttt{operator ()} has been overloaded. Both approaches force to pass symbol and state and as a results guarantee state. 
-
-Thrid  is \texttt{PerSymbolTransitionTable}, which is more suited for computer interpretation of automaton. It assumes that each symbol has its own table. Each table's column and rows represents consecutive states and entries takes values equal to either $0$ or $1$. Such a values describe situation when "two states are not connected" and "there is connection between states", repsectively. Simmiraly to \texttt{StandardTransitionTable}, there are two ways to acces table. Public access is provided by overloaded \texttt{operator ()} and protected access is anabled via \texttt{\_isTransition()} method. Both needs two states and symbol to determine whether there is connection or not, hence return value is of boolean type.
-
-Last but not least, we have \texttt{CodedTransitionTable} class. First observable difference appears in constructors - this class enables to initialize transition table either via loading and coding automaton from file or accepting coded automaton and decoding it to achieve transition table. Such approach has been forced by Particle Swarm Optimization algorithm. TO be a little bit more precise: paticles are represented by coded deterministic finite automata and need to be updated, which causes automata to change. In such a case we just create new automaton from updated particle's coded DFA table. \texttt{\_getCodedTransitionTable}, as name says, returns coded table, which then can be used as a position of particle within PSO space. All other methods concerns either coding or decoding procedures and are described more in section \ref{section:Algorithms}.
-
+%
+% CLASSIFICATION CLASS DIAGRAM
+%
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{images/transition_table.jpg}
-    \caption{Class diagram of classes implementing different transition tables notations.}
-    \label{fig:trans_table_class}
+	\includegraphics[width=0.8\textwidth]{images/classification_class.jpg}
+    \caption{Class diagrams of classification module}
+    \label{fig:classification_class}
 \end{figure}
 
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\newpage
+\subsection{Utility}
+
+The utility module is presented in figure~\ref{fig:utility_class}. \textit{Logger} class is responsible for printing and saving logs of the computations. It contains path to log directory and a path to specific file in which the logs should be saved. The one parameter method \textit{log}, prints the message to default file. The two parameter \textit{log} is used when the message should be saved in a different file.
+
+The \textit{Console} class is responsible for loading flag parameters from the console, and updating the global settings. The global settings, containing all parameters of the computations are stored in \textit{Settings} class.
+
+Finally a simple clock mechanism is proposed in \textit{Clock} class. The \textit{startClock} method starts measuring time until \textit{stopClock} is called which returns the time taken between both methods' calls. The time is encapsulated in \textit{TimeStamp} class.
+
+
+%
+% UTILITY CLASS DIAGRAM
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/utility_class.jpg}
+    \caption{Class diagrams of utility module}
+    \label{fig:utility_class}
+\end{figure}
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\newpage
+\subsection{Math}
+
+The math module shown in figure~\ref{fig:math_class} should contains all necessary classes from mathematical computations. The class \textit{Point} encapsulates a point in d dimensions. Such point can be instantiated with any type.
+
+%
+% MATH CLASS DIAGRAM
+%
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/math_class.jpg}
+    \caption{Class diagrams of math module}
+    \label{fig:math_class}
+\end{figure}
+
+
+
+
+%---- BD ----%
 
 %
 % WORD PROCESSING CLASS DIAGRAM
 %
 \newpage
-\subsection{Words Processing} \label{subsec:words_proc}
+\subsection{Words Processing}
 To perform words generation/processing we will use classes presented on figure \ref{fig:words_processing_class}.
 
 Since it happens to be largest and most important of all four, let us first focus on \texttt{WordsGenerator} class. Its main purpose is to create words using rules described in section \ref{section:Algorithms}. There are in fact two type of conditions to cover:
@@ -815,29 +853,31 @@ Last two classes were created to make code more transparent. \texttt{PairOfWords
 \end{figure}
 
 %
-% GUI CLASS DIAGRAM
+% TRANSITION TABLE CLASS DIAGRAM
 %
 \newpage
-\subsection{Graphical User Interface}
-\begin{wrapfigure}{c}{0.7\textwidth}
-  \begin{center}
-    \includegraphics[width=0.7\textwidth]{images/mock_gui.jpg}
-  \end{center}
-  \caption{Class diagram of gui classes}
-  \label{fig:gui_look}
-\end{wrapfigure}
+\subsection{Transition Table}
+Classes used to model behaviour of transition table are presented on figure \ref{fig:trans_table_class}. 
 
-Classes necessary to model and develop GUI are presented on figure \ref{fig:gui_classes}. On the other hand, look that we are trying to achieve is roughly sketch on figure \ref{fig:gui_look}.
+\textcolor{red}{Remark:} It is worth to notice that in all consecutive classes, entries of transition tables stays as a vector of integers. Each table, beginning with \texttt{StandardTransitionTable}, provides its own way to read values from the vector either via overloading \texttt{operator ()} or by implementing methods.
 
-As one could image, because of simplicity of the interface, there is nothing fancy in class diagram. \texttt{MainWindow} handles loading .fxml file and starting the application. On the oder hand, class \texttt{MainWindowControls} is in charge of events processing. It handles any event occurred regarding user interface objects and performs appropriate actions. Since main functionality of this part of the application is to set up global configurations, when some value within an user interface object will change, so will corresponding entry in configuration file. One can easily load and save configurations files, as well as changing directory of input and output files. Presented figure \ref{fig:gui_look}, depicting design of the application, is definitely not the final one and in future it might contain e.g. text labels with more informations about features or some loading bars. Main look of the program should be defined in .fxml, which will not be presented in this paper due to its irrelevancy and numerous way of implementations. 
+As one can see, starting from most general \texttt{TransitionTable} and going up on chains of inheritance classes broad they abilities. Base class provides only methods for loading automaton from file specified via \texttt{url} string. It is able to either load it symbol by symbol ( \texttt{\_loadOneSymbol()} ) or fill up all entries at once - \texttt{\_loadEntries()}. Entries at this level can not be interpreted using any transition table type - it is just raw data.
+
+Next, one can create \texttt{StandardTransitionTable}, which interprets \texttt{\_entries} as a table where columns represents symbols and rows are states. Classes, which will inherit from this one are provided with method \texttt{\_accessTransitionTable()} and for public usage \texttt{operator ()} has been overloaded. Both approaches force to pass symbol and state and as a results guarantee state. 
+
+Thrid  is \texttt{PerSymbolTransitionTable}, which is more suited for computer interpretation of automaton. It assumes that each symbol has its own table. Each table's column and rows represents consecutive states and entries takes values equal to either $0$ or $1$. Such a values describe situation when "two states are not connected" and "there is connection between states", repsectively. Simmiraly to \texttt{StandardTransitionTable}, there are two ways to acces table. Public access is provided by overloaded \texttt{operator ()} and protected access is anabled via \texttt{\_isTransition()} method. Both needs two states and symbol to determine whether there is connection or not, hence return value is of boolean type.
+
+Last but not least, we have \texttt{CodedTransitionTable} class. First observable difference appears in constructors - this class enables to initialize transition table either via loading and coding automaton from file or accepting coded automaton and decoding it to achieve transition table. Such approach has been forced by Particle Swarm Optimization algorithm. TO be a little bit more precise: paticles are represented by coded deterministic finite automata and need to be updated, which causes automata to change. In such a case we just create new automaton from updated particle's coded DFA table. \texttt{\_getCodedTransitionTable}, as name says, returns coded table, which then can be used as a position of particle within PSO space. All other methods concerns either coding or decoding procedures and are described more in section \ref{section:Algorithms}.
+
+
+
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{images/gui.jpg}
-    \caption{Class diagram of gui classes}
-    \label{fig:gui_classes}
+	\includegraphics[width=0.9\textwidth]{images/transition_table.jpg}
+    \caption{Class diagram of classes implementing different transition tables notations.}
+    \label{fig:trans_table_class}
 \end{figure}
-
 
 
 \section{Bibliography}
