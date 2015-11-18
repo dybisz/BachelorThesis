@@ -126,6 +126,14 @@ Version         & Date         & Who        & Description
 
 
 \\ \hline
+
+0.1         
+& 2015-11-10         
+& Jakub Ciecierski, Bartlomiej Dybisz
+& Monitoring of running processes (GUI) removed.
+
+
+\\ \hline
 \end{tabular}
 \end{table}
 
@@ -373,16 +381,6 @@ As a user I want to:
 	\item 
 		start computation for loaded data.
 	\item
-		stop specific computation.
-	\item
-		stop all computations.
-	\item 
-		monitor number of currently running computations
-	\item
-		monitor estimated time of all computations
-	\item
-		monitor progress of single computation.
-	\item
 		close application at any time
 	\item
 		minimize application at any time.
@@ -559,61 +557,27 @@ In all tables of the following section we assume that priority can take followin
 		2 
 		\\ \hline		
 		
+
 		5 & 
-		Opportunity to choose behaviour after crashing of a particular test - rerun or not & 
-		 &
-		1
-		\\ \hline
-		
-		6 & 
 		Button 'Start Computation', which will begin computing automaton for a loaded data. & 
 		 &
 		1
 		\\ \hline		
-		
-		7 & 
-		'Stop Computation' button, for each currently running computation. It will cause 				particular computation to break whatever it is doing right now. & 
-		 &
-		1
-		\\ \hline	
-		
-		8 & 
-		'Stop All Computations' button. All computations break whatever they are doing right 			now. & 
-		 &
-		1
-		\\ \hline		
-		
-		9 & 
-		System will provide a way of monitoring number of currently running computations. It 			can be in form of a label or some bar. & 
-		 &
-		1
-		\\ \hline	
 
-		9.1 & 
-		System will provide a way of monitoring estimated time of all currently running 				computations. It can be in form of a label or some bar. & 
-		 &
-		1
-		\\ \hline
 
-		9.2 & 
-		System will provide a way of monitoring estimated time of a particular computation. It 			can be in form of a label or some bar. & 
-		 &
-		1
-		\\ \hline
-
-		10 & 
-		By clicking some superior button (like e.g. 'X') user will be able to immediately 				close the application and terminate all computations.  & 
+		16 & 
+		By clicking some superior button (like e.g. 'X') user will be able to immediately 				close the application & 
 		 &
 		1
 		\\ \hline
 	
-		10.1 & 
+		6.1 & 
 		By clicking some superior button user will be able to minimize the program. & 
 		 &
 		2
 		\\ \hline	
 
-		10.2 & 
+		6.2 & 
 		By grabbing edges user will be able to resize application window. & 
 		 &
 		3
@@ -649,8 +613,7 @@ Disparity appears in a way of executing mentioned tasks - GUI will obviously use
 Optionally GUI should start with welcome screen containing name of the application, simple logo and maybe some short info. Next, main window containing of:
 \begin{itemize} 
 \item 1 - Panel for new computation configuration
-\item 2 - Panel for monitoring of currently running computations
-\item 3 - General application 
+\item 2 - General application 
 \end{itemize} 
 should be showed. 
 
@@ -674,11 +637,7 @@ As in \ref{usability}, differences (if some) are very small. It is again because
 %---------------------------------------------------------------
 
 \subsubsection{GUI}
-Any error must be at once reported - either to underneath console or to some part of GUI. In case of any fatal error (like e.g. crash of one of the computations) priority must be given to keep running all the others. As mentioned in section \ref{GUI_func_req} user can choose, which action should be performed after crash - rerunning of the computation or not. 
-
-In addition, because small number of options in Graphical User Interface, we would like to have maximal robustness of all interface elements. Each element should perform its task with non-blocking (considering GUI) routine. In other words, one must be able to e.g. add new computation, while others are being monitored.
-
-What is more, closing GUI during monitoring process must not force computations to stop - all task are continuing their work in background or in visible console windows.
+Because small number of options in Graphical User Interface, we would like to have maximal robustness of all interface elements. Each element should perform its task with non-blocking (considering GUI) routine. In other words, one must be able to e.g. add new computation, while others are being monitored.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
