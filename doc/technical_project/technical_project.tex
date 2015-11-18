@@ -738,42 +738,31 @@ The computation finishes after $t_{max}$ iterations or after finding a satisfact
 
 
 
-
-%---------------------------------------------------------------
-\section{Modules}
-In this section main modules of the application are presented and briefly explained.
-
-
-%---- JC ----%
-\begin{itemize}
-
-
-
-	\item 
-		{\Large {Classification}}
-	\item 
-		{\Large{Clustering}}
-	\item
-		{\Large{Word Processing}}
-	\item 
-		{\Large{Automaton}}
-	\item 
-		{\Large{Math}}
-	\item 
-		{\Large{Utility}}
-		
-\end{itemize}
-
-
-%---- BD ----%
-
 %---------------------------------------------------------------
 \section{Modelling}
 
 \textcolor{red}{Remark:} What should be stress out is that class diagrams presented in this section may not cover all methods needed to implement full functionality. For sure presented methods are neccessary, but not always sufficient. Although we were trying to be as precise as we can, they constitutes only a sketch of solution.
 
+The main modules of the application are now presented and briefly explained.
 
-%---- JC ----%
+\begin{itemize}
+
+	\item 
+		{{Classification}} - All the classes responsible for classifying objects.
+	\item 
+		{{Clustering}} - Method of grouping and cluster evaluation are to be held in this module.
+	\item
+		{{Word Processing}} - Takes care of word creation.
+	\item 
+		{{Automaton}} - Describes the Deterministic Finite Automaton, the transition tables and methods of automaton decoding 
+	\item 
+		{{Math}} - All the mathematical functions related to the application.
+	\item 
+		{{Utility}} - Functionality which helps to run the project. Logging, system settings, time measurement are examples of what can be included that module.
+		
+\end{itemize}
+
+The remainder of this section will describe these modules in details.
 
 
 %---------------------------------------------------------------
