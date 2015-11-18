@@ -643,11 +643,23 @@
                               <Insets left="25.0" />
                            </VBox.margin>
                         </VBox>
-                        <Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="235.0" text="Save Configuration" VBox.vgrow="ALWAYS">
+                        <HBox VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="25.0" top="18.0" />
                            </VBox.margin>
-                        </Button>
+                           <children>
+                              <Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="235.0" text="Load Configuration">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Button>
+                              <Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" prefHeight="35.0" prefWidth="235.0" text="Save Configuration">
+                                 <font>
+                                    <Font size="10.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
                         <Button maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" mnemonicParsing="false" prefHeight="35.0" text="Run Computations" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="25.0" />
