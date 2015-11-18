@@ -560,6 +560,8 @@ We want to be able to generate random synthetic data set of words.
 
 
 
+
+
 %---- JC ----%
 \subsection{Particle Swarm Optimization}
 In the Particle Swarm Optimization (PSO), originated by Eberhart and Kennedy in~\cite{pso_origin}, we look for optimal solution of the problem in the solution space. 
@@ -853,6 +855,26 @@ The math module shown in figure~\ref{fig:math_class} should contains all necessa
 %---- BD ----%
 
 %
+% DFA CLASS DIAGRAM
+%
+\newpage
+\subsection{Deterministic Fiut Analtomato}
+In some sense this is most important class in the whole project. It represents automaton and its classical functionalities. Although class seems short, it uses objects of more sophisticated classes described in the subsections \ref{subsec:transition_table} and \ref{subsec:words_proc}. 
+
+To start with we will describe fields of the class. \texttt{alphabet} is a vector of integers, which holds all symbols considered by automaton. It can be extracted from transition table using \texttt{\_acquireAlphabetFromTransitionTable()} method. Next and last one is \texttt{\_codedTransitionTable} object. In most general sense, object of this class mimics usage of transition table by allowing user to access and modify entries (see section \ref{sec:autom}), as well as coding and decoding table to form described in section \ref{sec:auto_dec}. 
+
+Next we will look closer at constructors. First one generates random automaton based on provided number of states and alphabet. Alphabet takes values from interval [1,numberOfSymbols], hence it can be represented by single value: \texttt{numberOfSymbols}. Second constructor is suited to work with particle class. It reconstruct itself regarding to provided coded transition table, which in fact represents particle position. 
+
+At the end a little bit about provided methods. \texttt{\_acquireAlphabetFromTransitionTable()} has been already mention - it loads alphabet from provided coded table. Rather auxiliary procedure. On the other hand, \texttt{checkRelationInducedByLanguage} is crucial for correct flow of the Particle Swarm Optimization. It takes two words and checks whether computations for each of them end up in the same state - if they are \texttt{true} value is return. Otherwise \texttt{false}. To perform this task \texttt{compute()} function is used. It takes word and returns number of state in which computations ended.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/dfa.jpg}
+    \caption{Class diagram of Deterministic Finite Automaton}
+    \label{fig:dfa_class}
+\end{figure}
+
+%
 % WORD PROCESSING CLASS DIAGRAM
 %
 \newpage
@@ -904,6 +926,33 @@ Last but not least, we have \texttt{CodedTransitionTable} class. First observabl
     \caption{Class diagram of classes implementing different transition tables notations.}
     \label{fig:trans_table_class}
 \end{figure}
+
+
+%
+% GUI CLASS DIAGRAM
+%
+\newpage
+\subsection{Graphical User Interface}
+\begin{wrapfigure}{c}{0.7\textwidth}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{images/mock_gui.jpg}
+  \end{center}
+  \caption{Class diagram of gui classes}
+  \label{fig:gui_look}
+\end{wrapfigure}
+
+Classes necessary to model and develop GUI are presented on figure \ref{fig:gui_classes}. On the other hand, look that we are trying to achieve is roughly sketch on figure \ref{fig:gui_look}.
+
+As one could image, because of simplicity of the interface, there is nothing fancy in class diagram. \texttt{MainWindow} handles loading .fxml file and starting the application. On the oder hand, class \texttt{MainWindowControls} is in charge of events processing. It handles any event occurred regarding user interface objects and performs appropriate actions. Since main functionality of this part of the application is to set up global configurations, when some value within an user interface object will change, so will corresponding entry in configuration file. One can easily load and save configurations files, as well as changing directory of input and output files. Presented figure \ref{fig:gui_look}, depicting design of the application, is definitely not the final one and in future it might contain e.g. text labels with more informations about features or some loading bars. Main look of the program should be defined in .fxml, which will not be presented in this paper due to its irrelevancy and numerous way of implementations. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/gui.jpg}
+    \caption{Class diagram of gui classes}
+    \label{fig:gui_classes}
+\end{figure}
+
+
 
 
 \section{Bibliography}
