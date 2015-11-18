@@ -1,9 +1,9 @@
 \documentclass{article}
 
 
-\usepackage{amsmath}
 
-\DeclareMathOperator*{\argmin}{arg\,min} %argmin
+
+
 
 \usepackage{floatrow}
 % Table float box with bottom caption, box width adjusted to content
@@ -193,10 +193,6 @@ Date         & Note        & Planned Progress          \\ \hline
 
 %---------------------------------------------------------------
 \section{Technology}
-The technology chosen to develop the implementation needed in the research is c++11 running under Linux OS. The c++ language allows to carefully control the computations by easily manipulating with the data. It is also been proven that c++ is one of the most efficient programming languages. The c++11 version of the language provides many modern features like smart pointers, lambda expression and new containers. Finally, the convenience of Makefile usage motivates us to work under Linux OS. The entire project can be built by a single command in the Makefile.
-
-The implementation will be tested using unit test library called Google Test which is based on xUnit architecture. It supports automatic test discovery, a rich set of assertions and above all it is very clean and easy to use.
-
 
 %---- JC ----%
 
@@ -214,8 +210,6 @@ The implementation will be tested using unit test library called Google Test whi
 To create Graphical User Interface, we will use JavaFx technology. It is a set of graphics and media packages that enables developers to design, create, test, debug, and deploy rich client applications that operate consistently across diverse platforms. Written as a Java API, JavaFX application code can reference APIs from any Java library. For example, JavaFX applications can use Java API libraries to access native system capabilities and connect to server-based middleware applications \cite{javafx_description}. Since GUI will be simple and straight forward, this technology will provide cross-platform character of the application and help us develop it in no time. Only basic user interface elements such as buttons, text fields, label etc will be used, hence we do not demand any sophisticated API.
 
 
-%---------------------------------------------------------------
-\section{Introduction}
 
 
 \newpage
@@ -242,23 +236,22 @@ Let $w = John$ and $v = Jhon$. Notice that the symbols at positions two and thre
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\subsection{Cluster Evaluation} \label{sec::cluster}
+\subsection{Clustering} \label{sec::cluster}
 
 Clustering is a method of segregating elements of a given data set into groups. Elements similar to each other should fall into one group while dissimilar elements are supposed to be separated.
 
-The problem arises when no prior information about the structure of the data is given. At that point we can not simply assume number of clusters for the partitioning. The following methods allow to find an optimal number of clusters in the given data set.
+The problem arises when no prior information about the structure of the data is given. 
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{K-Means}
 
-K-means algorithm is a tool for clustering a given data set.
-The goal of that algorithm is to partition a data set $X$ of size $n$ into $k$ clusters, where each $x_{j}\in X$ is assigned a single cluster. In order to do that, we find cluster centroids $\mu_{i}, i=1,\ldots,k$ that minimize the distance from the elements from data set. Formally k-means solves the following optimization problem:
-\begin{equation}
-  \argmin_{C}\sum_{i=1}^{k}\sum_{x\in C_{i}} d(x,\mu_{i})
-\end{equation}
-where $C_{i}$ is the set of elements that correspond to $i$-th cluster and $d(x,\mu_{i})$ is a~chosen distance measure between element $x$ and the cluster center $\mu_{i}$. At the first stage of the algorithm k centroids $\mu_{i}$ are selected. Then each element is assigned to the closest cluster. The centroids are updated with the mean of all points belonging to the corresponding cluster
+The well known k-means algorithm is employed for clustering. Let's assume that a~data set $X$ of size $n$ is going to be partitioned into $k$ number of clusters and each element $x_{j}\in X$ is assigned a~cluster. In order to do that, we find cluster centers $\mu_{i}, i=1,\ldots,k$ that minimize the distance from the elements from data set. Formally k-means solves the following optimization problem:
+%\begin{equation}
+%  $\argmin_{C}\sum_{i=1}^{k}\sum_{x\in C_{i}} d(x,\mu_{i})$
+%\end{equation}
+where $C_{i}$ is the set of elements that correspond to $i$-th cluster and $d(x,\mu_{i})$ is a~chosen distance measure between element $x$ and the cluster center $\mu_{i}$. At the first stage of the algorithm k centers $\mu_{i}$ are selected. Then each element is assigned to the closest cluster. The centers are updated with the mean of all points belonging to the corresponding cluster
 \begin{equation}
   \mu_{i} = \frac{1}{|C_{i}|} \sum_{x\in C_{i}} x
 \end{equation}
@@ -266,69 +259,11 @@ where $C_{i}$ is the set of elements that correspond to $i$-th cluster and $d(x,
 This process is repeated until convergence. It is worth mentioning that k-means might not find the best possible 
 configuration.
 
-The following summarises the k-means algorithm:
-
-\begin{center}
-
-
-\begin{enumerate}
-	\item 
-		Select $k$ initial centroids
-	\item \label{enum:km_grp} 
-		Group points to their closest centroids.
-	\item \label{enum:km_centroids} 
-		Update centroids by computing center of gravity - mean
-	\item 
-		Repeat~\ref{enum:km_grp} and~\ref{enum:km_centroids} until convergence or after maximum iterations.
-\end{enumerate}
-
-\end{center}
-
-The method of choosing initial centroids can have a big impact on the result and the complexity. The naive method of initialization would involve using uniform distribution to randomly select k centroids among the data set. Such approach can easily define two centroids within a single potential cluster and thus k-means can get stuck in local optimum.
-The k-means++ (k-means plus plus), algorithm proposes a better solution for initialization by spreading out the centroids. At the beginning, the first centroid is chosen as usual uniformly from the data set. Then for each data point $x$ we compute $D(x)$ which defines the distance between $x$ and the nearest centroids that have already been chosen. The next centroids is chosen by selecting a point from data set using weighted probability distribution proportional to $D(x)^2$. The process is repeated until all $k$ centroids are found.
-
-The formal flow of the algorithm is now presented:
-
-\begin{enumerate}
-	\item 
-		Choose the first centroid uniformly from data set.
-	\item \label{enum:kmpp_dx}
-		For $x$ in data set:
-		\begin{enumerate}
-			\item
-				Compute $D(x)$, the distance between x and its nearest centroid.
-		\end{enumerate}
-		
-	\item \label{enum:kmpp_weight}
-		Select next centroid from data set with probability:
-		$\frac{D(x)^2}{\sum_{x}D(x)^2}$
-	\item 
-		Repeat steps~\ref{enum:kmpp_dx} and~\ref{enum:kmpp_weight} until $k$ centroids are found.
-\end{enumerate}
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\subsubsection{McClain-Rao}
-The McClain-Rao algorithm tries to select the optimal number of clusters for given data set. Let's define few measures needed to compute McClain-Rao index. Firstly we define the sum within-cluster distances $S_w$. It sums up all the distances of any two points from the same cluster. Formally $S_w$ is defined by the equation: 
-\begin{equation}
-	S_w = \sum_{l=0}^{k} \sum_{i < j \in I_l} d(x_i, x_j)
-\end{equation}
-where $I_l$ is the set of indices of the $l$-th cluster. Let $N_w$ be the total number of distances between pairs of points belonging to the same cluster.
-
-Further, the sum of between-cluster distances $S_b$ is the sum of distances of points belonging to different clusters. The following equations describes it:
-\begin{equation}
-	S_b = \sum_{l < l^{'}}^{k} \sum_{i \in I_{l}, j \in I_{l^{'}}}  d(x_i, x_j)
-\end{equation}
-Similarly, let $N_b$ be the total number of distances between pairs of points which do not belong to the same cluster.
-
-Finally, The McClain-Rao index $C$ is defined by equation: 
-\begin{equation}
-	C =  (\frac{S_w}{N_w}) / (\frac{S_b}{N_b})
-\end{equation}
-
-$C$ is the quotient between the mean within-cluster and between-cluster distances.
-Note that the smaller the value of $C$ the better the clustering.
+\subsubsection{Cluster Evaluation}
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -347,14 +282,14 @@ $q_0$ - the initial state. $q_0 \in Q$ \\
 $F$ - Set of accepting states. $F \subseteq Q$ \\
 %\end{definition}
 
-Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard transition $\delta: Q \times \Sigma \rightarrow Q$.
+Table~\ref{fig:ttable_std} shows transition table for an example of an automaton.
 
 %%%
 %
 % Standard Transition function
 %
 %%%
-\begin{figure}[H]
+\begin{figure}
 \CenterFloatBoxes
 \begin{floatrow}
 
@@ -380,10 +315,10 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
   }
   {\caption{Transition table for A with $\delta: Q \times \Sigma \rightarrow Q$}\label{fig:ttable_std}}
 
-%\ffigbox
-%  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
-%  {\caption{Example of Automaton %A}\label{fig:automaton_ex}}
-%\killfloatstyle
+\ffigbox
+  {\includegraphics[width=0.35\textwidth]{images/automaton_example.jpg}}
+  {\caption{Example of Automaton A}\label{fig:automaton_ex}}
+\killfloatstyle
 
 \end{floatrow}
 \end{figure}
@@ -397,7 +332,7 @@ The binary representation of automaton might perhaps provide more adequate solut
 % Binary transition function.
 %
 %%%
-\begin{figure}[H]
+\begin{figure}
 \begin{center}
 
 	\setlength{\tabcolsep}{4pt}
@@ -475,7 +410,7 @@ We now turn to the binary approach of transition function $\delta^{'}$ described
 % Natural encoding
 %
 %%%
-\begin{figure}[H]
+\begin{figure}
 \begin{center}
 
 	\setlength{\tabcolsep}{1pt}
@@ -534,31 +469,14 @@ Natural decoding of an automaton with $n$ states and $r$ symbols in the alphabet
 
 Formally, each element of the decoding vector is a natural number greater than 0. Summarizing, the elements of each dimension, take values from the discrete set $\{1,2, \ldots, n\}$.
 
-It is worth mentioning, that in such decoding the information about accepting states is lost.
+It is worth mentioning, that in such decoding the information about accepting states is lost. This shall be of no concern, since the problem of this study takes no interest in actually accepted words. This discussion will resume in the following section.
+
+
 
 
 
 %---------------------------------------------------------------
 \section{Algorithms} \label{section:Algorithms}
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsection{Word Generation} \label{section:word_gen}
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsubsection{Real Data} \label{section:word_gen_real}
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsubsection{Synthetic Data} \label{section:word_gen_synth}
-
-
-
-
 
 %---- JC ----%
 \subsection{Particle Swarm Optimization}
@@ -606,9 +524,9 @@ We now concentrate on describing in details each step of the PSO algorithm. The 
 %---------------------------------------------------------------------
 \subsubsection{Representing the solution}
 As an input, the PSO algorithm takes number of states $n$ and number of symbols in the alphabet $r$.
-Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
+Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. Through the nature of our problem we can conclude that distinguishing the set $F$ of accepting states is not necessary. Namely, the tool given to us (DFA) described in section~\ref{sub:definition} only answers whether any arbitrary two words are in the relation induced by the language. That information suffices in the process of recreating that DFA. Thus, we only need to represent the transition function and initial state.
 
-The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
+The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[1, n]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4.
 
 As we may learn further in the article, the method of updating the particle will make a good use of continuous interval. On the other hand, the method of rounding up real numbers, might be vulnerable to error.
 
@@ -620,7 +538,7 @@ As we may learn further in the article, the method of updating the particle will
 \subsubsection{Initialization}
 In order to initialize the PSO algorithm, we must first decide on the size of the swarm (i.e. the number of particles). The swarm will be a static group, meaning that the size will not change through out the computations of a single PSO instance. The size should then be a constant value, in terms of an automaton given at the time. We propose that the size of the swarm should be proportional to the size of the automaton. To be precise, the swarm size is equal to the size of the automaton times a constant $c_P$ called a $population$ factor.
 
-Further, we must initialize particle's position. Let us recall that the dimension of the search space is defined by the size of an automaton, namely $(n*r)$, where $n$ is the number of states and $r$ is the number of symbols in the alphabet. Each dimension is taking a real value in the range $[0.5, (n+0.5)]$. Thus, we proceed to generate random position in the given range.
+Further, we must initialize particle's position. Let us recall that the dimension of the search space is defined by the size of an automaton, namely $(n*r)$, where $n$ is the number of states and $r$ is the number of symbols in the alphabet. Each dimension taking a real value in the range $[1, n]$. Thus, we proceed to generate random position in the given range.
 
 The initial velocities will be generated from the range $[-n,n]$. It is also crucial to define a maximum change in position that one particle can take during a single iteration. For this purpose the constant $v_{max}$ is defined that prevents the particle from travelling in any dimension further than $v_{max}$ units. The maximum change is defined by the equation 
 
@@ -635,7 +553,55 @@ In all cases uniform distribution is used for random number generation.
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{Fitness Function}\label{sec:fitness}
+It describes how well a particle (in our case an automaton) reflects the goal. Since all we know about our target DFA (accepting language $L$) is a tool described in subsection \ref{sub:definition}, we decided to base our fitness function on knowledge about relation $R_{L}$. 
 
+Measure is fairly simple: for a given set of pairs of words, we check how many of them are correctly classified to equivalence class (using $R_{L} relation$) and divide this amount by number of all pairs. We will use example to illustrate the process.
+
+%\begin{example}\label{ex:fitness}
+
+
+Let us assume that we have following set of pairs
+\[
+S_{test} = \{(x_1,y_1), (x_2,y_2), (x_3, y_3), (x_4, y_4), (x_5, y_5)\} \subset \Sigma^{*}\times\Sigma^{*} 
+\]
+and an automaton $A_p$ (encoded back from a particle $p$).
+Let us also recall automaton $T$, whose behaviour has been described in definition \ref{def:T} and define $\# = \{ x : x \in \{1 ,0 \}\}$  Having all of this we can construct simple table to illustrate the idea:
+
+\begin{figure}[H]
+\begin{center}
+\begin{tabular}{ m{4.5em}  m{3em}  m{3em}  m{3em} }
+                 & $T$ & $A_p$ & $\#$ \\  
+ $x_1 R_{L} y_1$ & 1 & 0 & 0 \\   
+ $x_1 R_{L} y_1$ & 0 & 0 & 1 \\   
+ $x_1 R_{L} y_1$ & 0 & 0 & 1 \\   
+ $x_1 R_{L} y_1$ & 1 & 1 & 1 \\   
+ $x_1 R_{L} y_1$ & 0 & 0 & 0 \\   
+\end{tabular}
+\caption{Computing the error of an automaton $A_p$}
+\label{fig:fitness_table}
+\end{center}
+\end{figure}
+
+%\end{example}
+
+Entries of figure \ref{fig:fitness_table} are calculate as follows:
+\begin{enumerate}
+\item Check computation of automaton $T$ for each pair of words from set $S_{test}$
+\item If computations end in the same state for both words, put 1 in column $T$ and row corresponding to that pair.
+\item Otherwise put 0
+\item Repeat steps 1., 2. and 3. for automaton $A_p$ and write results in column $A_p$
+\item If in row for (columns $T$ and $A_p$), we have the same digits (i.e. 1 1 or 0 0 ), put 1 in the last column ($\#$)
+\item Otherwise put 0
+\end{enumerate}
+
+At this point we can define fitness function $F$, in terms of presented notation:
+\[
+	F = \frac{|\{x \in \# : x = 1 \}|}{|\#|}
+\]
+
+
+
+Concerning given example, $F = \frac{3}{5} = 0.6$. One needs to note that this function is never bigger than 1, nor less than 0. Closer $F$ gets to one, better the automaton approximation. 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -721,10 +687,10 @@ This means that the corresponding dimension of velocity vector $v_d \in V_p$ is 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{Neighbourhood}
-The neighbourhood system is defined by grouping the swarm into clusters. Cluster evaluation methods are deployed to estimate the number of clusters $k$ that a data set should be grouped with. Having the knowledge of data distortion, the data is then clustered into $k$ clusters, where each cluster represents a single neighbourhood. K-means algorithm is used to compute the clustering and McClain-Rao index to estimate the optimal clustering. The following formulates the algorithm for neighbourhood update.
+The neighbourhood system is defined by grouping the swarm into clusters. Cluster analysis methods can estimate the number of clusters $k$ that a data set should be grouped with. An algorithm for cluster evaluation used in this work is called mcclain-rao defined in~\cite{mc_rao}. Having the knowledge of data distortion, the data is then clustered into $k$ clusters, where each cluster represents a single neighbourhood. K-means algorithm is used to compute the clustering. The following formulates the algorithm for neighbourhood update.
 
 \begin{enumerate}
-	\item Evaluate number of clusters in the swarm using the McClian-Rao index. Denote that number by $k$.
+	\item Evaluate number of clusters in the swarm using the mcclian-rao index. Denote that number by $k$.
 	\item Group the swarm into $k$ clusters using k-means algorithm.
 	\item Each cluster represents a single neighbourhood.
 \end{enumerate}
@@ -734,129 +700,99 @@ The neighbourhood system is defined by grouping the swarm into clusters. Cluster
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{Ending criteria}
-The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
+The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the automaton exactly as good as $T$ defined in definition~\ref{def:T}.
+
+%---- BD ----%
 
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsubsection{Examples}
+% Examples of algorithms, if any.
+
+%---- JC ----%
+
+
+%---- BD ----%
+
+%---------------------------------------------------------------
+\section{Data structures}
+
+%---- JC ----%
+
+
+%---- BD ----%
+
+%---------------------------------------------------------------
+\section{Modules}
+	
+%---- JC ----%
+
+
+%---- BD ----%
 
 %---------------------------------------------------------------
 \section{Modelling}
 
 \textcolor{red}{Remark:} What should be stress out is that class diagrams presented in this section may not cover all methods needed to implement full functionality. For sure presented methods are neccessary, but not always sufficient. Although we were trying to be as precise as we can, they constitutes only a sketch of solution.
 
-The main modules of the application are now presented and briefly explained.
 
-\begin{itemize}
-
-	\item 
-		{{Classification}} - All the classes responsible for classifying objects.
-	\item 
-		{{Clustering}} - Method of grouping and cluster evaluation are to be held in this module.
-	\item
-		{{Word Processing}} - Takes care of word creation.
-	\item 
-		{{Automaton}} - Describes the Deterministic Finite Automaton, the transition tables and methods of automaton decoding 
-	\item 
-		{{Math}} - All the mathematical functions related to the application.
-	\item 
-		{{Utility}} - Functionality which helps to run the project. Logging, system settings, time measurement are examples of what can be included that module.
-		
-\end{itemize}
-
-The remainder of this section will describe these modules in details.
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\newpage
-\subsection{Clustering}
-
-The clustering module contains all necessary functionality for analysis of clusters. Figure~\ref{fig:clustering_class} presents few basic classes. \textit{KMeans} constructor takes the maximum iterations and tolerance of convergence. Calling \textit{compute} will start the computation of kmeans algorithm with $k$ clusters for input data set. The private methods of KMeans are responsible for computing the corresponding sections of kmeans algorithm. It is important to note that \textit{initCentroids()} method could be implemented using many different algorithms, which might change the time complexity of kmeans algorithm and a whole.
-
-Further, in figure~\ref{fig:clustering_class} sub module \textit{Evaluation} is presented. The class \textit{ClusterEvaluator} is a base class for all cluster evaluation algorithms. It consists of \textit{clustering tool} which shall be used to compute the optimal number of clusters for given data set. The \textit{compute} method will start looking for optimal $k$ from the interval $[start_k, end_k]$. At this stage of research, only McClain-Rao algorithm is proposed. In the future, if the need arises, further cluster evaluators should be derived from the base class \textit{ClusterEvaluator}.
-
-%
-% CLUSTERING CLASS DIAGRAM
-%
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{images/clustering_class.jpg}
-    \caption{Class diagrams of clustering module}
-    \label{fig:clustering_class}
-\end{figure}
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-
-\newpage
-\subsection{Classification}
-
-The classification module deals with the problems of classifying objects. Figure~\ref{fig:classification_class} shows the appropriate module. The \textit{Classifier} class contains a word generator. Note that the word generator itself, might correspond to real or synthetic data generation. The Classifier will then look for automaton which will classify these words in the best manner possible. The method of finding such automaton is the PSO algorithm. The \textit{PSO} class encapsulates the Particle Swarm Optimization algorithm. As arguments it takes the number of states and number of symbols in the alphabet, which will govern the swarm size and the dimensions of particles. Note that \textit{\_bestParticles} field is a list, since there can exist many best solution. Thus the \textit{getResults} shall return all such results and the Classifier class should be responsible for picking the most appropriate one.
-
-Lastly the \textit{Particle} class simply encapsulates the particle used in PSO.
-
-%
-% CLASSIFICATION CLASS DIAGRAM
-%
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{images/classification_class.jpg}
-    \caption{Class diagrams of classification module}
-    \label{fig:classification_class}
-\end{figure}
-
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\newpage
-\subsection{Utility}
-
-The utility module is presented in figure~\ref{fig:utility_class}. \textit{Logger} class is responsible for printing and saving logs of the computations. It contains path to log directory and a path to specific file in which the logs should be saved. The one parameter method \textit{log}, prints the message to default file. The two parameter \textit{log} is used when the message should be saved in a different file.
-
-The \textit{Console} class is responsible for loading flag parameters from the console, and updating the global settings. The global settings, containing all parameters of the computations are stored in \textit{Settings} class.
-
-Finally a simple clock mechanism is proposed in \textit{Clock} class. The \textit{startClock} method starts measuring time until \textit{stopClock} is called which returns the time taken between both methods' calls. The time is encapsulated in \textit{TimeStamp} class.
-
-
-%
-% UTILITY CLASS DIAGRAM
-%
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{images/utility_class.jpg}
-    \caption{Class diagrams of utility module}
-    \label{fig:utility_class}
-\end{figure}
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\newpage
-\subsection{Math}
-
-The math module shown in figure~\ref{fig:math_class} should contains all necessary classes from mathematical computations. The class \textit{Point} encapsulates a point in d dimensions. Such point can be instantiated with any type.
-
-%
-% MATH CLASS DIAGRAM
-%
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{images/math_class.jpg}
-    \caption{Class diagrams of math module}
-    \label{fig:math_class}
-\end{figure}
-
-
+%---- JC ----%
 
 
 %---- BD ----%
 
 %
+% DFA CLASS DIAGRAM
+%
+
+\subsection{Deterministic Fiut Analtomato}
+In some sense this is most important class in the whole project. It represents automaton and its classical functionalities. Although class seems short, it uses objects of more sophisticated classes described in the subsections \ref{subsec:transition_table} and \ref{subsec:words_proc}. 
+
+To start with we will describe fields of the class. \texttt{alphabet} is a vector of integers, which holds all symbols considered by automaton. It can be extracted from transition table using \texttt{\_acquireAlphabetFromTransitionTable()} method. Next and last one is \texttt{\_codedTransitionTable} object. In most general sense, object of this class mimics usage of transition table by allowing user to access and modify entries (see section \ref{sec:autom}), as well as coding and decoding table to form described in section \ref{sec:auto_dec}. 
+
+Next we will look closer at constructors. First one generates random automaton based on provided number of states and alphabet. Alphabet takes values from interval [1,numberOfSymbols], hence it can be represented by single value: \texttt{numberOfSymbols}. Second constructor is suited to work with particle class. It reconstruct itself regarding to provided coded transition table, which in fact represents particle position. 
+
+At the end a little bit about provided methods. \texttt{\_acquireAlphabetFromTransitionTable()} has been already mention - it loads alphabet from provided coded table. Rather auxiliary procedure. On the other hand, \texttt{checkRelationInducedByLanguage} is crucial for correct flow of the Particle Swarm Optimization. It takes two words and checks whether computations for each of them end up in the same state - if they are \texttt{true} value is return. Otherwise \texttt{false}. To perform this task \texttt{compute()} function is used. It takes word and returns number of state in which computations ended.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/dfa.jpg}
+    \caption{Class diagram of Deterministic Finite Automaton}
+    \label{fig:dfa_class}
+\end{figure}
+
+
+%
+% TRANSITION TABLE CLASS DIAGRAM
+%
+\newpage
+\subsection{Transition Table} \label{subsec:transition_table}
+Classes used to model behaviour of transition table are presented on figure \ref{fig:trans_table_class}. 
+
+\textcolor{red}{Remark:} It is worth to notice that in all consecutive classes, entries of transition tables stays as a vector of integers. Each table, beginning with \texttt{StandardTransitionTable}, provides its own way to read values from the vector either via overloading \texttt{operator ()} or by implementing methods.
+
+As one can see, starting from most general \texttt{TransitionTable} and going up on chains of inheritance classes broad they abilities. Base class provides only methods for loading automaton from file specified via \texttt{url} string. It is able to either load it symbol by symbol ( \texttt{\_loadOneSymbol()} ) or fill up all entries at once - \texttt{\_loadEntries()}. Entries at this level can not be interpreted using any transition table type - it is just raw data.
+
+Next, one can create \texttt{StandardTransitionTable}, which interprets \texttt{\_entries} as a table where columns represents symbols and rows are states. Classes, which will inherit from this one are provided with method \texttt{\_accessTransitionTable()} and for public usage \texttt{operator ()} has been overloaded. Both approaches force to pass symbol and state and as a results guarantee state. 
+
+Thrid  is \texttt{PerSymbolTransitionTable}, which is more suited for computer interpretation of automaton. It assumes that each symbol has its own table. Each table's column and rows represents consecutive states and entries takes values equal to either $0$ or $1$. Such a values describe situation when "two states are not connected" and "there is connection between states", repsectively. Simmiraly to \texttt{StandardTransitionTable}, there are two ways to acces table. Public access is provided by overloaded \texttt{operator ()} and protected access is anabled via \texttt{\_isTransition()} method. Both needs two states and symbol to determine whether there is connection or not, hence return value is of boolean type.
+
+Last but not least, we have \texttt{CodedTransitionTable} class. First observable difference appears in constructors - this class enables to initialize transition table either via loading and coding automaton from file or accepting coded automaton and decoding it to achieve transition table. Such approach has been forced by Particle Swarm Optimization algorithm. TO be a little bit more precise: paticles are represented by coded deterministic finite automata and need to be updated, which causes automata to change. In such a case we just create new automaton from updated particle's coded DFA table. \texttt{\_getCodedTransitionTable}, as name says, returns coded table, which then can be used as a position of particle within PSO space. All other methods concerns either coding or decoding procedures and are described more in section \ref{section:Algorithms}.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\textwidth]{images/transition_table.jpg}
+    \caption{Class diagram of classes implementing different transition tables notations.}
+    \label{fig:trans_table_class}
+\end{figure}
+
+
+%
 % WORD PROCESSING CLASS DIAGRAM
 %
 \newpage
-\subsection{Words Processing}
+\subsection{Words Processing} \label{subsec:words_proc}
 To perform words generation/processing we will use classes presented on figure \ref{fig:words_processing_class}.
 
 Since it happens to be largest and most important of all four, let us first focus on \texttt{WordsGenerator} class. Its main purpose is to create words using rules described in section \ref{section:Algorithms}. There are in fact two type of conditions to cover:
@@ -879,62 +815,37 @@ Last two classes were created to make code more transparent. \texttt{PairOfWords
 \end{figure}
 
 %
-% TRANSITION TABLE CLASS DIAGRAM
+% GUI CLASS DIAGRAM
 %
 \newpage
-\subsection{Transition Table}
-Classes used to model behaviour of transition table are presented on figure \ref{fig:trans_table_class}. 
+\subsection{Graphical User Interface}
+\begin{wrapfigure}{c}{0.7\textwidth}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{images/mock_gui.jpg}
+  \end{center}
+  \caption{Class diagram of gui classes}
+  \label{fig:gui_look}
+\end{wrapfigure}
 
-\textcolor{red}{Remark:} It is worth to notice that in all consecutive classes, entries of transition tables stays as a vector of integers. Each table, beginning with \texttt{StandardTransitionTable}, provides its own way to read values from the vector either via overloading \texttt{operator ()} or by implementing methods.
+Classes necessary to model and develop GUI are presented on figure \ref{fig:gui_classes}. On the other hand, look that we are trying to achieve is roughly sketch on figure \ref{fig:gui_look}.
 
-As one can see, starting from most general \texttt{TransitionTable} and going up on chains of inheritance classes broad they abilities. Base class provides only methods for loading automaton from file specified via \texttt{url} string. It is able to either load it symbol by symbol ( \texttt{\_loadOneSymbol()} ) or fill up all entries at once - \texttt{\_loadEntries()}. Entries at this level can not be interpreted using any transition table type - it is just raw data.
-
-Next, one can create \texttt{StandardTransitionTable}, which interprets \texttt{\_entries} as a table where columns represents symbols and rows are states. Classes, which will inherit from this one are provided with method \texttt{\_accessTransitionTable()} and for public usage \texttt{operator ()} has been overloaded. Both approaches force to pass symbol and state and as a results guarantee state. 
-
-Thrid  is \texttt{PerSymbolTransitionTable}, which is more suited for computer interpretation of automaton. It assumes that each symbol has its own table. Each table's column and rows represents consecutive states and entries takes values equal to either $0$ or $1$. Such a values describe situation when "two states are not connected" and "there is connection between states", repsectively. Simmiraly to \texttt{StandardTransitionTable}, there are two ways to acces table. Public access is provided by overloaded \texttt{operator ()} and protected access is anabled via \texttt{\_isTransition()} method. Both needs two states and symbol to determine whether there is connection or not, hence return value is of boolean type.
-
-Last but not least, we have \texttt{CodedTransitionTable} class. First observable difference appears in constructors - this class enables to initialize transition table either via loading and coding automaton from file or accepting coded automaton and decoding it to achieve transition table. Such approach has been forced by Particle Swarm Optimization algorithm. TO be a little bit more precise: paticles are represented by coded deterministic finite automata and need to be updated, which causes automata to change. In such a case we just create new automaton from updated particle's coded DFA table. \texttt{\_getCodedTransitionTable}, as name says, returns coded table, which then can be used as a position of particle within PSO space. All other methods concerns either coding or decoding procedures and are described more in section \ref{section:Algorithms}.
-
-
-
+As one could image, because of simplicity of the interface, there is nothing fancy in class diagram. \texttt{MainWindow} handles loading .fxml file and starting the application. On the oder hand, class \texttt{MainWindowControls} is in charge of events processing. It handles any event occurred regarding user interface objects and performs appropriate actions. Since main functionality of this part of the application is to set up global configurations, when some value within an user interface object will change, so will corresponding entry in configuration file. One can easily load and save configurations files, as well as changing directory of input and output files. Presented figure \ref{fig:gui_look}, depicting design of the application, is definitely not the final one and in future it might contain e.g. text labels with more informations about features or some loading bars. Main look of the program should be defined in .fxml, which will not be presented in this paper due to its irrelevancy and numerous way of implementations. 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{images/transition_table.jpg}
-    \caption{Class diagram of classes implementing different transition tables notations.}
-    \label{fig:trans_table_class}
+	\includegraphics[width=0.9\textwidth]{images/gui.jpg}
+    \caption{Class diagram of gui classes}
+    \label{fig:gui_classes}
 \end{figure}
+
 
 
 \section{Bibliography}
 
 \begin{thebibliography}{1}
-
-\bibitem{javafx_description} \url{http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm}	
-
-
-\bibitem{pso_origin} 
-Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.
-
-%\bibitem{pso_anal}
-%Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
-
-
-
-\bibitem{pso_bias} 
-William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.
-
-
-
-
-\bibitem{pso_11}
-M. Clerc. (2011). Standard Particle Swarm Optimisation Available: http://hal.archives-ouvertes.fr/hal-00764996 
-
-	
+	\bibitem{javafx_description} \url{http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm}	
 \end{thebibliography}
 
 
 
 \end{document}
-
-
