@@ -28,7 +28,7 @@
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{wrapfig}
-\usepackage{amsfonts}
+
 \usepackage{amsthm}
 
 \usepackage[margin=0.65in]{geometry}
@@ -538,88 +538,6 @@ It is worth mentioning, that in such decoding the information about accepting st
 
 
 
-%---------------------------------------------------------------
-\section{Algorithms} \label{section:Algorithms}
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsection{Word Generation} \label{section:word_gen}
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsubsection{Real Data} \label{section:word_gen_real}
-One of the first challenges that appears during tackling the problem is features vector coding. By coding we understand changing vectors of real numbers into words over some alphabet. In case when the application has been supplied by real data, program needs to load tables and interpret them somehow. Following subsection describes process in general using mathematical description.
-
-First of all let us assume that file has been already loaded and we are provided with set of features vectors: 
-
-\[ F = \{ f_1 , f_2, \cdots , f_n \} \]
-
-, where each $f_i \in \mathbb{R}^{1 \times m}$, for $i \in \langle 1,n \rangle$.
-Next we assume that set of $m$ features 
-
-\[ C = \{ c_1 , c_2, \cdots , c_m \}\] 
-
-has been supplied as well. With this knowledge we represent each vector from set $F$ as: 
-
-\begin{align*}
-f_1 = [ c_{11} \; c_{12} \; \cdots \; c_{1m}] \\
-f_2 = [ c_{21} \; c_{22} \; \cdots \; c_{2m}] \\
-\cdots \\
-f_n = [ c_{n1} \; c_{n2} \; \cdots \; c_{nm}] 
-\end{align*}
-
-, where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$ 
-
-Since each feature from $C$ can take values from different intervals we decided to normalize all of them. There are two functions which will be useful in this process:
-\begin{align*}
-max : \{c_1, c_2, \cdots, c_m\} \rightarrow \mathbb{R} \\
-min : \{c_1, c_2, \cdots, c_m\} \rightarrow \mathbb{R}
-\end{align*}
-Given feature $c_j$ for $j \in \langle 1, m \rangle$, they specify upper and lower boundary of the interval within which $c_j$ is captured. For example if $c_3$ takes values from interval $\langle -1 , 5 \rangle$, $max(c_3) = 5$ and $min(c_3 = -1)$.
-
-Recall that $\Sigma$ represents an alphabet. Let us assume that $\Sigma = \{a_1 , a_2, \cdots, a_{|\Sigma|}\}$. Our goal is to hold all values of features vectors in $\langle 0 , |\Sigma| \rangle$ interval. To perform such conversion we will use following operation:
-\begin{equation}
-IntCnv(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} =  \frac{c_{ij} - min(c_{ij})}{max(c_{ij}) - min(c_{ij})} * |\Sigma|)
-\end{equation}
-
-, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. Applied to each member of $F$, operation will force all feature vectors entries to be in $\langle 0 , |\Sigma| \rangle$ interval. Since we can easily split this interval to $|\Sigma|$ subintervals:
-
-\[
-\langle 0 , |\Sigma| \rangle = \overbrace{\langle 0 , 1) \cup \langle 1 , 2 ) \cup \langle 2 , 3 ) \cup \ldots \cup \langle |\Sigma| -2 , |\Sigma| -1 ) \cup \langle |\Sigma| -1, |\Sigma|  \rangle}^{|\Sigma|}
-\] 
-
-following coding function can be defined:
-
-\begin{equation}
-Code(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} = 
-\begin{cases}
-a_1 , \;\;\; c_{ij} \in  \langle 0 , 1)  \\
-a_2 , \;\;\; c_{ij} \in  \langle 1 , 2 ) \\
-a_3 , \;\;\; c_{ij} \in  \langle 2 , 3 )\\
-\cdots \\
-a_{|\Sigma|} , \; c_{ij} \in \langle |\Sigma| -1, |\Sigma|  \rangle\; 
-\end{cases})
-\end{equation}
-
-, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. 
-
-Now by performing:
-\begin{equation}
-(\forall{f_i \in F})(Code(IntCnv(f_i))
-\end{equation}
-one will convert all features vector to words over $\Sigma$.
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsubsection{Synthetic Data} \label{section:word_gen_synth}
-We want to be able to generate random synthetic data set of words.
-
-
-
-
 
 
 %---- JC ----%
@@ -801,6 +719,104 @@ The computation finishes after $t_{max}$ iterations or after finding a satisfact
 
 
 %---------------------------------------------------------------
+\section{Algorithms} \label{section:Algorithms}
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Word Generation} \label{section:word_gen}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsubsection{Real Data} \label{section:word_gen_real}
+One of the first challenges that appears during tackling the problem is features vector coding. By coding we understand changing vectors of real numbers into words over some alphabet. In case when the application has been supplied by real data, program needs to load tables and interpret them somehow. Following subsection describes process in general using mathematical description.
+
+First of all let us assume that file has been already loaded and we are provided with set of features vectors:
+
+\[ F = \{ f_1 , f_2, \cdots , f_n \} \]
+
+, where each $f_i \in \mathbb{R}^{1 \times m}$, for $i \in \langle 1,n \rangle$.
+Next we assume that set of $m$ features
+
+\[ C = \{ c_1 , c_2, \cdots , c_m \}\]
+
+has been supplied as well. With this knowledge we represent each vector from set $F$ as:
+
+\begin{align*}
+f_1 = [ c_{11} \; c_{12} \; \cdots \; c_{1m}] \\
+f_2 = [ c_{21} \; c_{22} \; \cdots \; c_{2m}] \\
+\cdots \\
+f_n = [ c_{n1} \; c_{n2} \; \cdots \; c_{nm}]
+\end{align*}
+
+, where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$
+
+Since each feature from $C$ can take values from different intervals we decided to normalize all of them. There are two functions which will be useful in this process:
+\begin{align*}
+max : \{c_1, c_2, \cdots, c_m\} \rightarrow \mathbb{R} \\
+min : \{c_1, c_2, \cdots, c_m\} \rightarrow \mathbb{R}
+\end{align*}
+Given feature $c_j$ for $j \in \langle 1, m \rangle$, they specify upper and lower boundary of the interval within which $c_j$ is captured. For example if $c_3$ takes values from interval $\langle -1 , 5 \rangle$, $max(c_3) = 5$ and $min(c_3 = -1)$.
+
+Recall that $\Sigma$ represents an alphabet. Let us assume that $\Sigma = \{a_1 , a_2, \cdots, a_{|\Sigma|}\}$. Our goal is to hold all values of features vectors in $\langle 0 , |\Sigma| \rangle$ interval. To perform such conversion we will use following operation:
+\begin{equation}
+IntCnv(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} =  \frac{c_{ij} - min(c_{ij})}{max(c_{ij}) - min(c_{ij})} * |\Sigma|)
+\end{equation}
+
+, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. Applied to each member of $F$, operation will force all feature vectors entries to be in $\langle 0 , |\Sigma| \rangle$ interval. Since we can easily split this interval to $|\Sigma|$ subintervals:
+
+\[
+\langle 0 , |\Sigma| \rangle = \overbrace{\langle 0 , 1) \cup \langle 1 , 2 ) \cup \langle 2 , 3 ) \cup \ldots \cup \langle |\Sigma| -2 , |\Sigma| -1 ) \cup \langle |\Sigma| -1, |\Sigma|  \rangle}^{|\Sigma|}
+\]
+
+following coding function can be defined:
+
+\begin{equation}
+Code(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} =
+\begin{cases}
+a_1 , \;\;\; c_{ij} \in  \langle 0 , 1)  \\
+a_2 , \;\;\; c_{ij} \in  \langle 1 , 2 ) \\
+a_3 , \;\;\; c_{ij} \in  \langle 2 , 3 )\\
+\cdots \\
+a_{|\Sigma|} , \; c_{ij} \in \langle |\Sigma| -1, |\Sigma|  \rangle\;
+\end{cases})
+\end{equation}
+
+, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$.
+
+Now by performing:
+\begin{equation}
+(\forall{f_i \in F})(Code(IntCnv(f_i))
+\end{equation}
+one will convert all features vector to words over $\Sigma$.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsubsection{Synthetic Data} \label{section:word_gen_synth}
+We want to be able to generate random synthetic data set of words.
+Let's assume we want to randomly generate words of length $k$ corresponding to some objects. Having fixed number of classes, denoted by $n$ proceed to generate exactly $n$ words representing centres of each class. Then for each such class, start generating uniformly words that are similar to their corresponding centres. Two words can be thought to be \textit{similar} if the ratio of the length and their Hamming distance is reasonably small. Formally the similarity function of two words is defined by the equation:
+
+\begin{equation}
+	Sr(w,v) = 1 - \frac{H_d(w,v)}{k}
+\end{equation}
+
+where $H_d$ is the Hamming distance and $k$ is the length of both words. It is also important to define a similarity threshold~$T_s$ after which we can conclude if two words are similar.
+
+For example, for two words~$w~=~10101$~and~$v~=~00101$ the similarity $Sr(w, v)$ is equal to $0.8$. Assuming a threshold $T_s = 0.7$, we can conclude that these two words are similar. Notice that two equal words are perfectly similar, $S(w,w) = 1$.
+
+The problem still exists in actually defining the threshold for values of $Sr$ for which we can say that two words are similar. For small thresholds, the generated clouds of words might be heavily spread. As a result a chance for any two clouds to be overlapping each other is big. In contrast, when the threshold is big, the clouds will become more clamped and the chance of overlapping is small. On the other hand, the classes constructed by these words, will be defined on a smaller intervals compared to the entire class space. In a result giving us less room to work with.
+
+The intuition can suggest that any two words are similar if their similarity is greater than $0.7$. Although the exact threshold should be experimented with and chosen empirically.
+
+% How about the upper bound of similarity, what if all words generated are the same -> Uniform distribution should cover that
+
+
+
+
+
+%---------------------------------------------------------------
 \section{Modelling}
 
 \textcolor{red}{Remark:} What should be stress out is that class diagrams presented in this section may not cover all methods needed to implement full functionality. For sure presented methods are neccessary, but not always sufficient. Although we were trying to be as precise as we can, they constitutes only a sketch of solution.
@@ -821,7 +837,9 @@ The main modules of the application are now presented and briefly explained.
 		{{Math}} - All the mathematical functions related to the application.
 	\item 
 		{{Utility}} - Functionality which helps to run the project. Logging, system settings, time measurement are examples of what can be included that module.
-		
+	\item
+		{{GUI}} - The Graphical User Interface, defines all the classes that construct the interface.
+
 \end{itemize}
 
 The remainder of this section will describe these modules in details.
@@ -918,7 +936,7 @@ The math module shown in figure~\ref{fig:math_class} should contains all necessa
 % DFA CLASS DIAGRAM
 %
 \newpage
-\subsection{Deterministic Fiut Analtomato}
+\subsection{Deterministic Final Automaton}
 In some sense this is most important class in the whole project. It represents automaton and its classical functionalities. Although class seems short, it uses objects of more sophisticated classes described in the subsections \ref{subsec:transition_table} and \ref{subsec:words_proc}. 
 
 To start with we will describe fields of the class. \texttt{alphabet} is a vector of integers, which holds all symbols considered by automaton. It can be extracted from transition table using \texttt{\_acquireAlphabetFromTransitionTable()} method. Next and last one is \texttt{\_codedTransitionTable} object. In most general sense, object of this class mimics usage of transition table by allowing user to access and modify entries (see section \ref{sec:autom}), as well as coding and decoding table to form described in section \ref{sec:auto_dec}. 
@@ -997,7 +1015,7 @@ Last but not least, we have \texttt{CodedTransitionTable} class. First observabl
   \begin{center}
     \includegraphics[width=0.7\textwidth]{images/mock_gui.jpg}
   \end{center}
-  \caption{Class diagram of gui classes}
+  \caption{GUI Mockup}
   \label{fig:gui_look}
 \end{wrapfigure}
 
