@@ -161,7 +161,7 @@ Date         & Note        & Planned Progress          \\ \hline
 14-16.11.2015   &     & Requirements analysis, design of algorithms and further UML development \\ \hline
 17.11.2015   &  Lab2   & Presentation of Technical Analysis   \\ \hline
 20-22.11.2015   &     & Implementation of mudules needed for testing and basic GUI   \\ \hline
-31.11.2015   & Lab3    & Presentation of results of tests on synthetic and semi-synthetic data  \\ \hline
+30.11.2015   & Lab3    & Presentation of results of tests on synthetic and semi-synthetic data  \\ \hline
 4-6.12.2015   &     & GUI and console application development  \\ \hline
 15.12.2015   & Lab4    & Final GUI  \\ \hline
 -------  & -------    & Work depends on acquired results  \\ \hline
@@ -193,6 +193,11 @@ Date         & Note        & Planned Progress          \\ \hline
 
 %---------------------------------------------------------------
 \section{Technology}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Algorithm Implementation}
+
 The technology chosen to develop the implementation needed in the research is c++11 running under Linux OS. The c++ language allows to carefully control the computations by easily manipulating with the data. It is also been proven that c++ is one of the most efficient programming languages. The c++11 version of the language provides many modern features like smart pointers, lambda expression and new containers. Finally, the convenience of Makefile usage motivates us to work under Linux OS. The entire project can be built by a single command in the Makefile.
 
 The implementation will be tested using unit test library called Google Test which is based on xUnit architecture. It supports automatic test discovery, a rich set of assertions and above all it is very clean and easy to use.
@@ -216,7 +221,7 @@ To create Graphical User Interface, we will use JavaFx technology. It is a set o
 
 %---------------------------------------------------------------
 \section{Introduction}
-
+In classical Pattern Recognition 
 
 \newpage
 
@@ -246,7 +251,7 @@ Let $w = John$ and $v = Jhon$. Notice that the symbols at positions two and thre
 
 Clustering is a method of segregating elements of a given data set into groups. Elements similar to each other should fall into one group while dissimilar elements are supposed to be separated.
 
-The problem arises when no prior information about the structure of the data is given. At that point we can not simply assume number of clusters for the partitioning. The following methods allow to find an optimal number of clusters in the given data set.
+The problem arises when no prior information about the structure of the data is given. At that point we can not simply assume number of clusters for the partitioning. The methods that estimate the optimal number of clusters in the given data set are now presented.
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -285,7 +290,7 @@ The following summarises the k-means algorithm:
 \end{center}
 
 The method of choosing initial centroids can have a big impact on the result and the complexity. The naive method of initialization would involve using uniform distribution to randomly select k centroids among the data set. Such approach can easily define two centroids within a single potential cluster and thus k-means can get stuck in local optimum.
-The k-means++ (k-means plus plus), algorithm proposes a better solution for initialization by spreading out the centroids. At the beginning, the first centroid is chosen as usual uniformly from the data set. Then for each data point $x$ we compute $D(x)$ which defines the distance between $x$ and the nearest centroids that have already been chosen. The next centroids is chosen by selecting a point from data set using weighted probability distribution proportional to $D(x)^2$. The process is repeated until all $k$ centroids are found.
+The k-means++ (k-means plus plus), algorithm proposes a better solution for initialization by spreading out the centroids. At the beginning, the first centroid is chosen as usual uniformly from the data set. Then for each data point $x$ we compute $D(x)$ which defines the distance between $x$ and the nearest centroid that have already been chosen. The next centroids is chosen by selecting a point from data set using weighted probability distribution proportional to $D(x)^2$. The process is repeated until all $k$ centroids are found.
 
 The formal flow of the algorithm is now presented:
 
@@ -777,6 +782,8 @@ The main modules of the application are now presented and briefly explained.
 		{{Math}} - All the mathematical functions related to the application.
 	\item 
 		{{Utility}} - Functionality which helps to run the project. Logging, system settings, time measurement are examples of what can be included that module.
+	\item 
+		{{GUI}} - The Graphical User Interface, defines all the classes that construct the interface.
 		
 \end{itemize}
 
@@ -785,7 +792,6 @@ The remainder of this section will describe these modules in details.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\newpage
 \subsection{Clustering}
 
 The clustering module contains all necessary functionality for analysis of clusters. Figure~\ref{fig:clustering_class} presents few basic classes. \textit{KMeans} constructor takes the maximum iterations and tolerance of convergence. Calling \textit{compute} will start the computation of kmeans algorithm with $k$ clusters for input data set. The private methods of KMeans are responsible for computing the corresponding sections of kmeans algorithm. It is important to note that \textit{initCentroids()} method could be implemented using many different algorithms, which might change the time complexity of kmeans algorithm and a whole.
@@ -953,7 +959,7 @@ Last but not least, we have \texttt{CodedTransitionTable} class. First observabl
   \begin{center}
     \includegraphics[width=0.7\textwidth]{images/mock_gui.jpg}
   \end{center}
-  \caption{Class diagram of gui classes}
+  \caption{GUI Mockup}
   \label{fig:gui_look}
 \end{wrapfigure}
 

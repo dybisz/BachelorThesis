@@ -89,7 +89,7 @@ Author:        & \multicolumn{5}{l|}{Jakub Ciecierski, Bartlomiej Dybisz}       
 File:          & \multicolumn{5}{l|}{requirement\_specification.pdf}                                                                                                                                      \\ \hline
 Version no:    & 0.1                                                                      & \cellcolor[HTML]{C0C0C0}Status:  & Under development & \cellcolor[HTML]{C0C0C0}Opening date: & 2015-10-27 \\ \hline
 Summary:       & \multicolumn{5}{l|}{Business analysis of research on pattern recognition by finite automata}                                                                                                           \\ \hline
-Authorized by: & \begin{tabular}[c]{@{}l@{}}Wladyslaw Homenda\end{tabular} & \multicolumn{3}{l|}{\cellcolor[HTML]{C0C0C0}Last modification date:}                         & 2015-10-27 \\ \hline
+Authorized by: & \begin{tabular}[c]{@{}l@{}}Wladyslaw Homenda\end{tabular} & \multicolumn{3}{l|}{\cellcolor[HTML]{C0C0C0}Last modification date:}                         & 2015-11-10 \\ \hline
 \end{tabular}
 \end{table}
 
@@ -108,12 +108,24 @@ Authorized by: & \begin{tabular}[c]{@{}l@{}}Wladyslaw Homenda\end{tabular} & \mu
 \begin{tabular}{|l|l|l|l|}
 \hline
 \multicolumn{4}{|l|}{\cellcolor[HTML]{C0C0C0}History of Changes} \\ \hline
-Version         & Date         & Who        & Description        \\ \hline
+Version         & Date         & Who        & Description        
+
+\\ \hline
 
 0.1         
 & 2015-10-27         
 & Jakub Ciecierski, Bartlomiej Dybisz
-& Definition of the main purpose of the document       \\ \hline
+& Definition of the main purpose of the document      
+
+\\ \hline
+
+0.1         
+& 2015-11-10         
+& Jakub Ciecierski, Bartlomiej Dybisz
+& Shorter Glossary
+
+
+\\ \hline
 \end{tabular}
 \end{table}
 
@@ -141,7 +153,7 @@ Date         & Note        & Planned Progress          \\ \hline
 14-16.11.2015   &     & Requirements analysis, design of algorithms and further UML development \\ \hline
 17.11.2015   &  Lab2   & Presentation of Technical Analysis   \\ \hline
 20-22.11.2015   &     & Implementation of mudules needed for testing and basic GUI   \\ \hline
-31.11.2015   & Lab3    & Presentation of results of tests on synthetic and semi-synthetic data  \\ \hline
+30.11.2015   & Lab3    & Presentation of results of tests on synthetic and semi-synthetic data  \\ \hline
 4-6.12.2015   &     & GUI and console application development  \\ \hline
 15.12.2015   & Lab4    & Final GUI  \\ \hline
 -------  & -------    & Work depends on acquired results  \\ \hline
@@ -175,112 +187,114 @@ Collection of $d$ features is called a $d$-dimensional feature vector.
 
 In classification a pattern can be represented by a pair $(x,w)$ where $x$ is the feature vector and $w$ is label. A label tells the computer to which class a given element belongs to. Elements from the same class should have similar features, while elements belonging to different classes should have relatively different features.
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-
-\item {\bf Alphabet}
-Is a finite, non empty set of symbols, commonly denoted by $\Sigma$.
-Examples of common alphabets:
-\begin{enumerate}
-	\item $\Sigma$ = $\{0 ,1 \}$ - binary alphabet.
-	\item $\Sigma$ = $\{a, b, ..., z\}$ - small letters of latin alphabet.
-\end{enumerate}
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-
-\item {\bf Word over Alphabet}
-Also called a \textit{string}, is a sequence of symbols over some alphabet $\Sigma$.
-Examples of words:
-\begin{enumerate}
-	\item A sequence $'01010'$ is a word over binary alphabet $\Sigma=\{0,1\}$.
-	\item A word $'lorem'$ is a word over the latin alphabet $\Sigma=\{a, b, ..., z\}$.
-\end{enumerate}
-
-An empty word is a word with no symbols. Commonly denoted by $\varepsilon$. Such word can be taken from any alphabet.
-
-A set of all words over alphabet $\Sigma$ is denoted by $\Sigma^*$,
-where 
-\begin{equation}
-\Sigma^* = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \Sigma^3 \cup ...
-\end{equation}
-
-If $\Sigma = \{0,1\}$
-then $\Sigma^0 = \{\varepsilon \}$, $\Sigma^1 = \{0,1\}$ , $\Sigma^2 = \{00, 01 ,10 ,11\}$,
-$\Sigma^3 = \{000, 001, 010, 011, 100, 101, 110, 111\}$ and so on
-
-It is important to note that, $\Sigma^*$ is infinite countable set.
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-
-\item {\bf Language}
-Language over alphabet $\Sigma$ will be denoted by L.
-Language L is a subset of all words $\Sigma^*$, $L \subseteq \Sigma^*$.
-
-Examples of languages:
-\begin{enumerate}
-
-	\item 
-	$L = \{\varepsilon, 01, 10, 0011, 0101, 0110, ...\}$ -
-	a set of all binary words that have the same number of occurrences of $0's$ 	and $1's$
-	
-	\item 	$L = \O$ - language is an empty set, contains no words
-	
-	\item 	$L = \{\varepsilon \}$ - language containing only empty word.
-
-\end{enumerate}
-
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-
-\item {\bf Deterministic Finite Automaton (DFA)}
-Automaton is a very simply computability model.
-It can be thought of as a physical machine containing a \textit{tape} with input word, a \textit{head} reading a single symbol from the tape and finally a steering mechanism which can change its state during the computations based on current state and a symbol that is being read.
-DFA computes a word in order to check if a given word belongs to a language accepted by this machine.
-
-Formally DFA is a system of five fields:
-
-\begin{equation}
-	A = (Q, \Sigma, \delta, q_0, F)
-\end{equation}
-
-where \\
-$Q$ - finite set of states. \\
-$\Sigma$ - Finite input alphabet. \\
-$\delta$ - transition function. $\delta: Q \times \Sigma \rightarrow Q$ \\
-$q_0$ - the initial state. $q_0 \in Q$ \\
-$F$ - Set of accepting states. $F \subseteq Q$ \\
-
-
-The computations of DFA is a sequence of transitions based on transition function.
-Depending on a state $q$ and symbol $x$ read by the head the machine:
-\begin{enumerate}
-	\item changes its state to $p \in Q$
-	\item moves the head one cell to the right.
-\end{enumerate}
-
-Automaton finished computations when all symbols were read. It accepts input if computations end in accepting state, otherwise the input is rejected.
-
-
 
 \end{itemize}
 
-
-\begin{center}
-	\begin{figure}[H]
-		\begin{center}
-		\includegraphics[scale=0.35]{images/automaton.png}
-		\end{center}
-		\caption{Example of DFA that accepts only binary numbers that are multiples of 3. $S_0$ is the initial and the only accepting state.}
-	\end{figure}
-\end{center}
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%
+%\item {\bf Alphabet}
+%Is a finite, non empty set of symbols, commonly denoted by $\Sigma$.
+%Examples of common alphabets:
+%\begin{enumerate}
+%	\item $\Sigma$ = $\{0 ,1 \}$ - binary alphabet.
+%	\item $\Sigma$ = $\{a, b, ..., z\}$ - small letters of latin alphabet.
+%\end{enumerate}
+%
+%%---------------------------------------------------------------
+%%---------------------------------------------------------------
+%
+%\item {\bf Word over Alphabet}
+%Also called a \textit{string}, is a sequence of symbols over some alphabet $\Sigma$.
+%Examples of words:
+%\begin{enumerate}
+%	\item A sequence $'01010'$ is a word over binary alphabet $\Sigma=\{0,1\}$.
+%	\item A word $'lorem'$ is a word over the latin alphabet $\Sigma=\{a, b, ..., z\}$.
+%\end{enumerate}
+%
+%An empty word is a word with no symbols. Commonly denoted by $\varepsilon$. Such word can be taken from any alphabet.
+%
+%A set of all words over alphabet $\Sigma$ is denoted by $\Sigma^*$,
+%where 
+%\begin{equation}
+%\Sigma^* = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \Sigma^3 \cup ...
+%\end{equation}
+%
+%If $\Sigma = \{0,1\}$
+%then $\Sigma^0 = \{\varepsilon \}$, $\Sigma^1 = \{0,1\}$ , $\Sigma^2 = \{00, 01 ,10 ,11\}$,
+%$\Sigma^3 = \{000, 001, 010, 011, 100, 101, 110, 111\}$ and so on
+%
+%It is important to note that, $\Sigma^*$ is infinite countable set.
+%
+%%---------------------------------------------------------------
+%%---------------------------------------------------------------
+%
+%\item {\bf Language}
+%Language over alphabet $\Sigma$ will be denoted by L.
+%Language L is a subset of all words $\Sigma^*$, $L \subseteq \Sigma^*$.
+%
+%Examples of languages:
+%\begin{enumerate}
+%
+%	\item 
+%	$L = \{\varepsilon, 01, 10, 0011, 0101, 0110, ...\}$ -
+%	a set of all binary words that have the same number of occurrences of $0's$ 	and $1's$
+%	
+%	\item 	$L = \O$ - language is an empty set, contains no words
+%	
+%	\item 	$L = \{\varepsilon \}$ - language containing only empty word.
+%
+%\end{enumerate}
+%
+%
+%%---------------------------------------------------------------
+%%---------------------------------------------------------------
+%
+%\item {\bf Deterministic Finite Automaton (DFA)}
+%Automaton is a very simply computability model.
+%It can be thought of as a physical machine containing a \textit{tape} with input word, a \textit{head} reading a single symbol from the tape and finally a steering mechanism which can change its state during the computations based on current state and a symbol that is being read.
+%DFA computes a word in order to check if a given word belongs to a language accepted by this machine.
+%
+%Formally DFA is a system of five fields:
+%
+%\begin{equation}
+%	A = (Q, \Sigma, \delta, q_0, F)
+%\end{equation}
+%
+%where \\
+%$Q$ - finite set of states. \\
+%$\Sigma$ - Finite input alphabet. \\
+%$\delta$ - transition function. $\delta: Q \times \Sigma \rightarrow Q$ \\
+%$q_0$ - the initial state. $q_0 \in Q$ \\
+%$F$ - Set of accepting states. $F \subseteq Q$ \\
+%
+%
+%The computations of DFA is a sequence of transitions based on transition function.
+%Depending on a state $q$ and symbol $x$ read by the head the machine:
+%\begin{enumerate}
+%	\item changes its state to $p \in Q$
+%	\item moves the head one cell to the right.
+%\end{enumerate}
+%
+%Automaton finished computations when all symbols were read. It accepts input if computations end in accepting state, otherwise the input is rejected.
+%
+%
+%
+%\end{itemize}
+%
+%
+%\begin{center}
+%	\begin{figure}[H]
+%		\begin{center}
+%		\includegraphics[scale=0.35]{images/automaton.png}
+%		\end{center}
+%		\caption{Example of DFA that accepts only binary numbers that are multiples of 3. $S_0$ is the initial and the only accepting state.}
+%	\end{figure}
+%\end{center}
 
 
 %---------------------------------------------------------------
 
-\newpage
 \section{Goal}
 The main goal of this project is to deploy application, which will create an automaton for given input data. Produced automaton will be a an accurate classifier of objects represented
 by the input data. The program is dedicated to research laboratory, hence it is lumbered with the following assumptions.
@@ -696,6 +710,8 @@ There is no known internal or external threat.
 %---------------------------------------------------------------
 
 \subsection{Risk Analysis}
+
+
 From our point of view, main risk of this project are poor results from the computations. As we have mentioned, it is a purely research task with usage of methods that have never been used before. 
 
 \end{document}
