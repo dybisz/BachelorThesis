@@ -28,7 +28,7 @@
 \usepackage{subcaption}
 \usepackage{float}
 \usepackage{wrapfig}
-
+\usepackage{amsfonts}
 \usepackage{amsthm}
 
 \usepackage[margin=0.65in]{geometry}
@@ -550,6 +550,66 @@ It is worth mentioning, that in such decoding the information about accepting st
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsubsection{Real Data} \label{section:word_gen_real}
+One of the first challenges that appears during tackling the problem is features vector coding. By coding we understand changing vectors of real numbers into words over some alphabet. In case when the application has been supplied by real data, program needs to load tables and interpret them somehow. Following subsection describes process in general using mathematical description.
+
+First of all let us assume that file has been already loaded and we are provided with set of features vectors: 
+
+\[ F = \{ f_1 , f_2, \cdots , f_n \} \]
+
+, where each $f_i \in \mathbb{R}^{1 \times m}$, for $i \in \langle 1,n \rangle$.
+Next we assume that set of $m$ features 
+
+\[ C = \{ c_1 , c_2, \cdots , c_m \}\] 
+
+has been supplied as well. With this knowledge we represent each vector from set $F$ as: 
+
+\begin{align*}
+f_1 = [ c_{11} \; c_{12} \; \cdots \; c_{1m}] \\
+f_2 = [ c_{21} \; c_{22} \; \cdots \; c_{2m}] \\
+\cdots \\
+f_n = [ c_{n1} \; c_{n2} \; \cdots \; c_{nm}] 
+\end{align*}
+
+, where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$ 
+
+Since each feature from $C$ can take values from different intervals we decided to normalize all of them. There are two functions which will be useful in this process:
+\begin{align*}
+max : \{c_1, c_2, \cdots, c_m\} \rightarrow \mathbb{R} \\
+min : \{c_1, c_2, \cdots, c_m\} \rightarrow \mathbb{R}
+\end{align*}
+Given feature $c_j$ for $j \in \langle 1, m \rangle$, they specify upper and lower boundary of the interval within which $c_j$ is captured. For example if $c_3$ takes values from interval $\langle -1 , 5 \rangle$, $max(c_3) = 5$ and $min(c_3 = -1)$.
+
+Recall that $\Sigma$ represents an alphabet. Let us assume that $\Sigma = \{a_1 , a_2, \cdots, a_{|\Sigma|}\}$. Our goal is to hold all values of features vectors in $\langle 0 , |\Sigma| \rangle$ interval. To perform such conversion we will use following operation:
+\begin{equation}
+IntCnv(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} =  \frac{c_{ij} - min(c_{ij})}{max(c_{ij}) - min(c_{ij})} * |\Sigma|)
+\end{equation}
+
+, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. Applied to each member of $F$, operation will force all feature vectors entries to be in $\langle 0 , |\Sigma| \rangle$ interval. Since we can easily split this interval to $|\Sigma|$ subintervals:
+
+\[
+\langle 0 , |\Sigma| \rangle = \overbrace{\langle 0 , 1) \cup \langle 1 , 2 ) \cup \langle 2 , 3 ) \cup \ldots \cup \langle |\Sigma| -2 , |\Sigma| -1 ) \cup \langle |\Sigma| -1, |\Sigma|  \rangle}^{|\Sigma|}
+\] 
+
+following coding function can be defined:
+
+\begin{equation}
+Code(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} = 
+\begin{cases}
+a_1 , \;\;\; c_{ij} \in  \langle 0 , 1)  \\
+a_2 , \;\;\; c_{ij} \in  \langle 1 , 2 ) \\
+a_3 , \;\;\; c_{ij} \in  \langle 2 , 3 )\\
+\cdots \\
+a_{|\Sigma|} , \; c_{ij} \in \langle |\Sigma| -1, |\Sigma|  \rangle\; 
+\end{cases})
+\end{equation}
+
+, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. 
+
+Now by performing:
+\begin{equation}
+(\forall{f_i \in F})(Code(IntCnv(f_i))
+\end{equation}
+one will convert all features vector to words over $\Sigma$.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
