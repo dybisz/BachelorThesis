@@ -1,9 +1,9 @@
 \documentclass{article}
 
 
+\usepackage{amsmath}
 
-
-
+\DeclareMathOperator*{\argmin}{arg\,min} %argmin
 
 \usepackage{floatrow}
 % Table float box with bottom caption, box width adjusted to content
@@ -236,22 +236,23 @@ Let $w = John$ and $v = Jhon$. Notice that the symbols at positions two and thre
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\subsection{Clustering} \label{sec::cluster}
+\subsection{Cluster Evaluation} \label{sec::cluster}
 
 Clustering is a method of segregating elements of a given data set into groups. Elements similar to each other should fall into one group while dissimilar elements are supposed to be separated.
 
-The problem arises when no prior information about the structure of the data is given. 
+The problem arises when no prior information about the structure of the data is given. At that point we can not simply assume number of clusters for the partitioning. The following methods allow to find an optimal number of clusters in the given data set.
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{K-Means}
 
-The well known k-means algorithm is employed for clustering. Let's assume that a~data set $X$ of size $n$ is going to be partitioned into $k$ number of clusters and each element $x_{j}\in X$ is assigned a~cluster. In order to do that, we find cluster centers $\mu_{i}, i=1,\ldots,k$ that minimize the distance from the elements from data set. Formally k-means solves the following optimization problem:
-%\begin{equation}
-%  $\argmin_{C}\sum_{i=1}^{k}\sum_{x\in C_{i}} d(x,\mu_{i})$
-%\end{equation}
-where $C_{i}$ is the set of elements that correspond to $i$-th cluster and $d(x,\mu_{i})$ is a~chosen distance measure between element $x$ and the cluster center $\mu_{i}$. At the first stage of the algorithm k centers $\mu_{i}$ are selected. Then each element is assigned to the closest cluster. The centers are updated with the mean of all points belonging to the corresponding cluster
+K-means algorithm is a tool for clustering a given data set.
+The goal of that algorithm is to partition a data set $X$ of size $n$ into $k$ clusters, where each $x_{j}\in X$ is assigned a single cluster. In order to do that, we find cluster centroids $\mu_{i}, i=1,\ldots,k$ that minimize the distance from the elements from data set. Formally k-means solves the following optimization problem:
+\begin{equation}
+  \argmin_{C}\sum_{i=1}^{k}\sum_{x\in C_{i}} d(x,\mu_{i})
+\end{equation}
+where $C_{i}$ is the set of elements that correspond to $i$-th cluster and $d(x,\mu_{i})$ is a~chosen distance measure between element $x$ and the cluster center $\mu_{i}$. At the first stage of the algorithm k centroids $\mu_{i}$ are selected. Then each element is assigned to the closest cluster. The centroids are updated with the mean of all points belonging to the corresponding cluster
 \begin{equation}
   \mu_{i} = \frac{1}{|C_{i}|} \sum_{x\in C_{i}} x
 \end{equation}
@@ -259,11 +260,69 @@ where $C_{i}$ is the set of elements that correspond to $i$-th cluster and $d(x,
 This process is repeated until convergence. It is worth mentioning that k-means might not find the best possible 
 configuration.
 
+The following summarises the k-means algorithm:
+
+\begin{center}
+
+
+\begin{enumerate}
+	\item 
+		Select $k$ initial centroids
+	\item \label{enum:km_grp} 
+		Group points to their closest centroids.
+	\item \label{enum:km_centroids} 
+		Update centroids by computing center of gravity - mean
+	\item 
+		Repeat~\ref{enum:km_grp} and~\ref{enum:km_centroids} until convergence or after maximum iterations.
+\end{enumerate}
+
+\end{center}
+
+The method of choosing initial centroids can have a big impact on the result and the complexity. The naive method of initialization would involve using uniform distribution to randomly select k centroids among the data set. Such approach can easily define two centroids within a single potential cluster and thus k-means can get stuck in local optimum.
+The k-means++ (k-means plus plus), algorithm proposes a better solution for initialization by spreading out the centroids. At the beginning, the first centroid is chosen as usual uniformly from the data set. Then for each data point $x$ we compute $D(x)$ which defines the distance between $x$ and the nearest centroids that have already been chosen. The next centroids is chosen by selecting a point from data set using weighted probability distribution proportional to $D(x)^2$. The process is repeated until all $k$ centroids are found.
+
+The formal flow of the algorithm is now presented:
+
+\begin{enumerate}
+	\item 
+		Choose the first centroid uniformly from data set.
+	\item \label{enum:kmpp_dx}
+		For $x$ in data set:
+		\begin{enumerate}
+			\item
+				Compute $D(x)$, the distance between x and its nearest centroid.
+		\end{enumerate}
+		
+	\item \label{enum:kmpp_weight}
+		Select next centroid from data set with probability:
+		$\frac{D(x)^2}{\sum_{x}D(x)^2}$
+	\item 
+		Repeat steps~\ref{enum:kmpp_dx} and~\ref{enum:kmpp_weight} until $k$ centroids are found.
+\end{enumerate}
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\subsubsection{Cluster Evaluation}
+\subsubsection{McClain-Rao}
+The McClain-Rao algorithm tries to select the optimal number of clusters for given data set. Let's define few measures needed to compute McClain-Rao index. Firstly we define the sum within-cluster distances $S_w$. It sums up all the distances of any two points from the same cluster. Formally $S_w$ is defined by the equation: 
+\begin{equation}
+	S_w = \sum_{l=0}^{k} \sum_{i < j \in I_l} d(x_i, x_j)
+\end{equation}
+where $I_l$ is the set of indices of the $l$-th cluster. Let $N_w$ be the total number of distances between pairs of points belonging to the same cluster.
+
+Further, the sum of between-cluster distances $S_b$ is the sum of distances of points belonging to different clusters. The following equations describes it:
+\begin{equation}
+	S_b = \sum_{l < l^{'}}^{k} \sum_{i \in I_{l}, j \in I_{l^{'}}}  d(x_i, x_j)
+\end{equation}
+Similarly, let $N_b$ be the total number of distances between pairs of points which do not belong to the same cluster.
+
+Finally, The McClain-Rao index $C$ is defined by equation: 
+\begin{equation}
+	C =  (\frac{S_w}{N_w}) / (\frac{S_b}{N_b})
+\end{equation}
+
+$C$ is the quotient between the mean within-cluster and between-cluster distances.
+Note that the smaller the value of $C$ the better the clustering.
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -282,14 +341,14 @@ $q_0$ - the initial state. $q_0 \in Q$ \\
 $F$ - Set of accepting states. $F \subseteq Q$ \\
 %\end{definition}
 
-Table~\ref{fig:ttable_std} shows transition table for an example of an automaton.
+Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard transition $\delta: Q \times \Sigma \rightarrow Q$.
 
 %%%
 %
 % Standard Transition function
 %
 %%%
-\begin{figure}
+\begin{figure}[H]
 \CenterFloatBoxes
 \begin{floatrow}
 
@@ -315,10 +374,10 @@ Table~\ref{fig:ttable_std} shows transition table for an example of an automaton
   }
   {\caption{Transition table for A with $\delta: Q \times \Sigma \rightarrow Q$}\label{fig:ttable_std}}
 
-\ffigbox
-  {\includegraphics[width=0.35\textwidth]{images/automaton_example.jpg}}
-  {\caption{Example of Automaton A}\label{fig:automaton_ex}}
-\killfloatstyle
+%\ffigbox
+%  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
+%  {\caption{Example of Automaton %A}\label{fig:automaton_ex}}
+%\killfloatstyle
 
 \end{floatrow}
 \end{figure}
@@ -332,7 +391,7 @@ The binary representation of automaton might perhaps provide more adequate solut
 % Binary transition function.
 %
 %%%
-\begin{figure}
+\begin{figure}[H]
 \begin{center}
 
 	\setlength{\tabcolsep}{4pt}
@@ -410,7 +469,7 @@ We now turn to the binary approach of transition function $\delta^{'}$ described
 % Natural encoding
 %
 %%%
-\begin{figure}
+\begin{figure}[H]
 \begin{center}
 
 	\setlength{\tabcolsep}{1pt}
@@ -469,9 +528,7 @@ Natural decoding of an automaton with $n$ states and $r$ symbols in the alphabet
 
 Formally, each element of the decoding vector is a natural number greater than 0. Summarizing, the elements of each dimension, take values from the discrete set $\{1,2, \ldots, n\}$.
 
-It is worth mentioning, that in such decoding the information about accepting states is lost. This shall be of no concern, since the problem of this study takes no interest in actually accepted words. This discussion will resume in the following section.
-
-
+It is worth mentioning, that in such decoding the information about accepting states is lost.
 
 
 
@@ -524,9 +581,9 @@ We now concentrate on describing in details each step of the PSO algorithm. The 
 %---------------------------------------------------------------------
 \subsubsection{Representing the solution}
 As an input, the PSO algorithm takes number of states $n$ and number of symbols in the alphabet $r$.
-Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. Through the nature of our problem we can conclude that distinguishing the set $F$ of accepting states is not necessary. Namely, the tool given to us (DFA) described in section~\ref{sub:definition} only answers whether any arbitrary two words are in the relation induced by the language. That information suffices in the process of recreating that DFA. Thus, we only need to represent the transition function and initial state.
+Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
 
-The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[1, n]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4.
+The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
 
 As we may learn further in the article, the method of updating the particle will make a good use of continuous interval. On the other hand, the method of rounding up real numbers, might be vulnerable to error.
 
@@ -538,7 +595,7 @@ As we may learn further in the article, the method of updating the particle will
 \subsubsection{Initialization}
 In order to initialize the PSO algorithm, we must first decide on the size of the swarm (i.e. the number of particles). The swarm will be a static group, meaning that the size will not change through out the computations of a single PSO instance. The size should then be a constant value, in terms of an automaton given at the time. We propose that the size of the swarm should be proportional to the size of the automaton. To be precise, the swarm size is equal to the size of the automaton times a constant $c_P$ called a $population$ factor.
 
-Further, we must initialize particle's position. Let us recall that the dimension of the search space is defined by the size of an automaton, namely $(n*r)$, where $n$ is the number of states and $r$ is the number of symbols in the alphabet. Each dimension taking a real value in the range $[1, n]$. Thus, we proceed to generate random position in the given range.
+Further, we must initialize particle's position. Let us recall that the dimension of the search space is defined by the size of an automaton, namely $(n*r)$, where $n$ is the number of states and $r$ is the number of symbols in the alphabet. Each dimension is taking a real value in the range $[0.5, (n+0.5)]$. Thus, we proceed to generate random position in the given range.
 
 The initial velocities will be generated from the range $[-n,n]$. It is also crucial to define a maximum change in position that one particle can take during a single iteration. For this purpose the constant $v_{max}$ is defined that prevents the particle from travelling in any dimension further than $v_{max}$ units. The maximum change is defined by the equation 
 
@@ -553,55 +610,7 @@ In all cases uniform distribution is used for random number generation.
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{Fitness Function}\label{sec:fitness}
-It describes how well a particle (in our case an automaton) reflects the goal. Since all we know about our target DFA (accepting language $L$) is a tool described in subsection \ref{sub:definition}, we decided to base our fitness function on knowledge about relation $R_{L}$. 
 
-Measure is fairly simple: for a given set of pairs of words, we check how many of them are correctly classified to equivalence class (using $R_{L} relation$) and divide this amount by number of all pairs. We will use example to illustrate the process.
-
-%\begin{example}\label{ex:fitness}
-
-
-Let us assume that we have following set of pairs
-\[
-S_{test} = \{(x_1,y_1), (x_2,y_2), (x_3, y_3), (x_4, y_4), (x_5, y_5)\} \subset \Sigma^{*}\times\Sigma^{*} 
-\]
-and an automaton $A_p$ (encoded back from a particle $p$).
-Let us also recall automaton $T$, whose behaviour has been described in definition \ref{def:T} and define $\# = \{ x : x \in \{1 ,0 \}\}$  Having all of this we can construct simple table to illustrate the idea:
-
-\begin{figure}[H]
-\begin{center}
-\begin{tabular}{ m{4.5em}  m{3em}  m{3em}  m{3em} }
-                 & $T$ & $A_p$ & $\#$ \\  
- $x_1 R_{L} y_1$ & 1 & 0 & 0 \\   
- $x_1 R_{L} y_1$ & 0 & 0 & 1 \\   
- $x_1 R_{L} y_1$ & 0 & 0 & 1 \\   
- $x_1 R_{L} y_1$ & 1 & 1 & 1 \\   
- $x_1 R_{L} y_1$ & 0 & 0 & 0 \\   
-\end{tabular}
-\caption{Computing the error of an automaton $A_p$}
-\label{fig:fitness_table}
-\end{center}
-\end{figure}
-
-%\end{example}
-
-Entries of figure \ref{fig:fitness_table} are calculate as follows:
-\begin{enumerate}
-\item Check computation of automaton $T$ for each pair of words from set $S_{test}$
-\item If computations end in the same state for both words, put 1 in column $T$ and row corresponding to that pair.
-\item Otherwise put 0
-\item Repeat steps 1., 2. and 3. for automaton $A_p$ and write results in column $A_p$
-\item If in row for (columns $T$ and $A_p$), we have the same digits (i.e. 1 1 or 0 0 ), put 1 in the last column ($\#$)
-\item Otherwise put 0
-\end{enumerate}
-
-At this point we can define fitness function $F$, in terms of presented notation:
-\[
-	F = \frac{|\{x \in \# : x = 1 \}|}{|\#|}
-\]
-
-
-
-Concerning given example, $F = \frac{3}{5} = 0.6$. One needs to note that this function is never bigger than 1, nor less than 0. Closer $F$ gets to one, better the automaton approximation. 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -687,10 +696,10 @@ This means that the corresponding dimension of velocity vector $v_d \in V_p$ is 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{Neighbourhood}
-The neighbourhood system is defined by grouping the swarm into clusters. Cluster analysis methods can estimate the number of clusters $k$ that a data set should be grouped with. An algorithm for cluster evaluation used in this work is called mcclain-rao defined in~\cite{mc_rao}. Having the knowledge of data distortion, the data is then clustered into $k$ clusters, where each cluster represents a single neighbourhood. K-means algorithm is used to compute the clustering. The following formulates the algorithm for neighbourhood update.
+The neighbourhood system is defined by grouping the swarm into clusters. Cluster evaluation methods are deployed to estimate the number of clusters $k$ that a data set should be grouped with. Having the knowledge of data distortion, the data is then clustered into $k$ clusters, where each cluster represents a single neighbourhood. K-means algorithm is used to compute the clustering and McClain-Rao index to estimate the optimal clustering. The following formulates the algorithm for neighbourhood update.
 
 \begin{enumerate}
-	\item Evaluate number of clusters in the swarm using the mcclian-rao index. Denote that number by $k$.
+	\item Evaluate number of clusters in the swarm using the McClian-Rao index. Denote that number by $k$.
 	\item Group the swarm into $k$ clusters using k-means algorithm.
 	\item Each cluster represents a single neighbourhood.
 \end{enumerate}
@@ -700,7 +709,7 @@ The neighbourhood system is defined by grouping the swarm into clusters. Cluster
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \subsubsection{Ending criteria}
-The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the automaton exactly as good as $T$ defined in definition~\ref{def:T}.
+The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
 
 %---- BD ----%
 
@@ -742,6 +751,7 @@ The computation finishes after $t_{max}$ iterations or after finding a satisfact
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
+\newpage
 \subsection{Clustering}
 
 The clustering module contains all necessary functionality for analysis of clusters. Figure~\ref{fig:clustering_class} presents few basic classes. \textit{KMeans} constructor takes the maximum iterations and tolerance of convergence. Calling \textit{compute} will start the computation of kmeans algorithm with $k$ clusters for input data set. The private methods of KMeans are responsible for computing the corresponding sections of kmeans algorithm. It is important to note that \textit{initCentroids()} method could be implemented using many different algorithms, which might change the time complexity of kmeans algorithm and a whole.
@@ -883,7 +893,28 @@ Last but not least, we have \texttt{CodedTransitionTable} class. First observabl
 \section{Bibliography}
 
 \begin{thebibliography}{1}
-	\bibitem{javafx_description} \url{http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm}	
+
+\bibitem{javafx_description} \url{http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm}	
+
+
+\bibitem{pso_origin} 
+Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.
+
+%\bibitem{pso_anal}
+%Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
+
+
+
+\bibitem{pso_bias} 
+William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.
+
+
+
+
+\bibitem{pso_11}
+M. Clerc. (2011). Standard Particle Swarm Optimisation Available: http://hal.archives-ouvertes.fr/hal-00764996 
+
+	
 \end{thebibliography}
 
 
