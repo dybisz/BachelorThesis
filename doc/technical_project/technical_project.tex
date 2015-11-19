@@ -215,11 +215,11 @@ To create Graphical User Interface, we will use JavaFx technology. It is a set o
 \section{Introduction}
 Pattern Recognition focuses on building machines that can recognize pattern in various fields such as speech, fingerprint or optical characters. A pattern can be defined as feature vector and a label. Label informs us to which class a given element belongs to.
 
-%Assume that
+The objective of this research is to construct a classifier which will be able to assign a label to given input object. The main idea on building such classifier is to construct a Deterministic Finite Automaton which could answer the question to which class an input element falls to. The first step of constructing such classifier, is to transform feature vectors into words that could be applied to our automaton as a learning process.
 
-To start with, in section~\ref{sec:prelim} preliminaries mathematical knowledge is presented. In section~\ref{sec:algorithms} the first sketch of algorithms defining the classifier is presented.
+To start with, in section~\ref{sec:prelim} preliminaries mathematical knowledge is presented. In section~\ref{sec:algorithms} we explain the first step of classifier construction which is the the process of word generation.
 
-Finally, the architecture side of the project is introduced in section~\ref{sec:model}.
+Finally the architecture side of the project is introduced in section~\ref{sec:model}.
 
 
 %---------------------------------------------------------------------
@@ -855,7 +855,7 @@ Further, in figure~\ref{fig:clustering_class} sub module \textit{Evaluation} is 
 %
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{images/clustering_class.jpg}
+	\includegraphics[width=1.0\textwidth]{images/clustering_class.jpg}
     \caption{Class diagrams of clustering module}
     \label{fig:clustering_class}
 \end{figure}
@@ -876,7 +876,7 @@ Lastly the \textit{Particle} class simply encapsulates the particle used in PSO.
 %
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{images/classification_class.jpg}
+	\includegraphics[width=1.0\textwidth]{images/classification_class.jpg}
     \caption{Class diagrams of classification module}
     \label{fig:classification_class}
 \end{figure}
@@ -900,7 +900,7 @@ Finally a simple clock mechanism is proposed in \textit{Clock} class. The \texti
 %
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{images/utility_class.jpg}
+	\includegraphics[width=1.0\textwidth]{images/utility_class.jpg}
     \caption{Class diagrams of utility module}
     \label{fig:utility_class}
 \end{figure}
@@ -925,7 +925,7 @@ At the end a little bit about provided methods. \texttt{\_acquireAlphabetFromTra
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{images/dfa.jpg}
+	\includegraphics[width=0.8\textwidth]{images/dfa.jpg}
     \caption{Class diagram of Deterministic Finite Automaton}
     \label{fig:dfa_class}
 \end{figure}
@@ -944,7 +944,7 @@ The math module shown in figure~\ref{fig:math_class} should contains all necessa
 %
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{images/math_class.jpg}
+	\includegraphics[width=0.65\textwidth]{images/math_class.jpg}
     \caption{Class diagrams of math module}
     \label{fig:math_class}
 \end{figure}
