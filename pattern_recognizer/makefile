@@ -78,7 +78,15 @@
 # Changes log:
 # 01.07.2015 - Created
 # 26.10.2015 - Added Unit Test rule
-#
+# 08.11.2015 - OpenGL and CUDA libraries commented out
+# 12.11.2015 - Added each module in include separately.
+#	For example.
+#	File:
+#		./include/math/clustering/kmeans.h
+#	can be included as:
+#		#include "kmeans.h"
+#	or:
+#		#include "math/clustering/kmeans.h"
 #
 #---------------------------------------------------------------------
 
@@ -96,7 +104,7 @@
 
 #--------------- APPLICATION NAME -------------#
 
-APP_NAME = patt_rec
+APP_NAME = automaton
 
 #--------------- FILE EXTENSIONS --------------#
 
@@ -132,15 +140,16 @@ MAKE_EXTERNAL =
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -L /opt/cuda/lib64 \
-		-L /usr/local/cuda/lib64 \
-		-lGL -lglut -lGLEW -lcudart -lcuda
+LIBS += -lpthread
+# -L /opt/cuda/lib64 \
+#		-L /usr/local/cuda/lib64 \
+#		-lGL -lglut -lGLEW -lcudart -lcuda
 
 #----------------- INCLUDES -------------------#
 
 # Paths to all Includes
 INCLUDES += -I /usr/local/cuda/include \
-    		-I /opt/cuda/include
+			-I /opt/cuda/include
 
 #------------------- FLAGS --------------------#
 
@@ -154,16 +163,19 @@ NVCC_FLAGS += -arch=sm_20
 #----------------- PRINT OUTS -----------------#
 
 # The separator will be printed between compiling objects
-INFO_SEPARATOR = "-----------------------------------------------------"
-INFO_FILLER = "\t\t\t\t"
+INFO_SEPARATOR = "|-------------------------------------------------------------------|"
+INFO_FILLER = "  <<  "
 
 
 ######################################################################
 #------------------ STATIC SUBSECTION - DO NOT MODIFY ---------------#
 ######################################################################
 
+# Adds each modules in include separately.
+INC_MODULES =  $(addprefix -I , $(shell find ${INC} -type d 2>/dev/null))
+
 LIBS += -L ${LIB}
-INCLUDES += -I ${INC}
+INCLUDES += ${INC_MODULES}
 
 CC = g++
 NVCC = nvcc
@@ -257,6 +269,7 @@ init:
 
 clean:
 	@$(RM) *.o *~ ${OBJ}/*.o ${OBJ}/*.d ${OBJ}/*~ ${BIN}/*
+	@$(MAKE) -C $(TST) clean
 
 
 .PHONY: $(SUBDIRS) clean
@@ -296,5 +309,5 @@ info_suffix:
 #--------------- DEPENDENCY GRAPH -------------#
 
 # Automatic dependency graph generation
-# Must be inserted at the end of the makefile (TODO verify)
+# Must be inserted at the end of the makefile
 -include $(OBJECTS:.o=.d)
