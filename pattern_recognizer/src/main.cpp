@@ -1,15 +1,25 @@
 #ifndef AC_MAIN_H
 #define AC_MAIN_H
 
-
 #define LOG_TYPE DEBUG_LOG
 
+#include "error.h"
 #include <iostream>
 #include <optimizer.h>
+#include <dfa_loader.h>
+#include <words_gen_experiment.h>
+#include "drawer.h"
 #include "flag_reader.h"
 #include "log.h"
+#include "thread_util.h"
+#include "dfa_gen_experiment.h"
+#include "optimizer_experiment.h"
 
 using namespace std;
+
+//-----------------------------------------------------------//
+//  DECLARATIONS
+//-----------------------------------------------------------//
 
 /*
  * Initialises the application resources
@@ -21,84 +31,64 @@ void initApp(int argc, char *argv[]);
  */
 void closeApp();
 
-void printSummary(Optimizer& opt);
-
 //------------------------------------------------------------------------------
 
 int main(int argc, char *argv[]) {
     initApp(argc, argv);
 
-    logger::log("Main Computations Begin");
-
-    // Start Optimizer
-    Optimizer opt(global_settings::TOOL_URL);
-    opt.start();
-
-    // Print summary
-    printSummary(opt);
+    // Choose experiment
+    switch (global_settings::EXPERIMENT_ID){
+        case 0:
+        experiments::runOptimizerExperiment();
+            break;
+        case 1:
+        experiments::runDFAGenerationExperiment();
+            break;
+        case 2:
+        experiments::runWordsGenerationExperiment();
+        break;
+        default:
+        std::string what = "Experiment ID: " +
+                            std::to_string(global_settings::EXPERIMENT_ID) +
+                            " is not a proper Experiment ID";
+        console::usage(argv[0], what.c_str());
+    }
 
     closeApp();
-
-    logger::log("Main Computations End");
 
     return EXIT_SUCCESS;
 }
 
-//------------------------------------------------------------------------------
+//-----------------------------------------------------------//
+//  DEFINITIONS
+//-----------------------------------------------------------//
 
 void initApp(int argc, char *argv[]) {
+    // Start the seed
+    utils::seed();
+
     // Read flags must be first!!!!
     console::readFlags(argc, argv);
 
+    // Set the number of threads to be activated
+    threading::setTrueNumberOfThreads();
+
+    // Initiates the logging functionality
     logger::initLog();
 
+    // Prints all settings to the console
     global_settings::printSettings();
 
 }
+
 void closeApp(){
     logger::closeLog();
 }
 
-void printSummary(Optimizer& opt){
+//------------------------------------------------------------------------------
 
-    Particle* result = opt.getResult();
 
-    // Result pack containing DFA of the particle
-    ResultPack resultPack = result->getResultPack();
-    CodedTransitionTable transitionTableResult =
-            resultPack.dfa->getCodedTransitionTable();
-    std::vector<int> transVecResult =
-            transitionTableResult.getCodedTransitionTable();
-    // Build string for result
-    stringstream ss;
-    ss << "Result Summary" << std::endl;
-    ss << "States: ................. "
-    << result->_numberOfStates << std::endl;
-    ss << "Symbols: ................ "
-    << result->_numberOfSymbols << std::endl;
-    ss << "Natural Coding: ......... "
-    << "[" << utils::vectorToString(transVecResult) << "]" << std::endl;
-    ss << "Fitness: ................ "
-    << result->bestFitness;
 
-    stringstream ssTool;
-    DFA* tool = opt.getTool();
-    CodedTransitionTable transitionTable = tool->getCodedTransitionTable();
-    std::vector<int> transVec =
-            transitionTable.getCodedTransitionTable();
-    int symbols = tool->alphabet.size();
-    int states = transVec.size() / symbols;
-    ssTool << "Tool Summary" << std::endl;
-    ssTool << "States: ................. "
-        << states  << std::endl;
-    ssTool << "Symbols: ................ "
-        << symbols << std::endl;
-    ssTool << "Natural Coding: ......... "
-        << "[" << utils::vectorToString(transVec) << "]";
-
-    logger::log(File("result.txt"), ss.str());
-    logger::log(File("result.txt"), ssTool.str());
-}
 //------------------------------------------------------------------------------
 
 #endif //AC_STANDARD_TRANSITION_T_H

@@ -12,57 +12,84 @@
 #include "word.h"
 #include "utils.h"
 #include "pair_of_words.h"
+#include <algorithm>
+#include <math.h>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace global_settings;
 
 class WordsGenerator {
 public:
+    vector<Word> _trainingSet;
+    vector<Word> _firstSubset;
+    vector<Word> _secondSubset;
+    vector<Word> _testingSet;
+
+    vector<Word*> _trainingAllSet;
+    vector<Word*> _trainingShortSet;
+    vector<Word*> _trainingLongSet;
+    vector<Word*> _testSet;
+
     WordsGenerator(vector<int> alphabet);
+    WordsGenerator(vector<int> alphabet,
+               int c, int trainSetCount,
+               int trainSetMaxLength,
+               int testSetCount,
+               int testSetMaxLength);
+    // URL to file; training and testing sets are loaded
+    WordsGenerator(string url);
+    ~WordsGenerator();
 
     int hammingDistance(Word w1, Word w2) const;
-
-    void _fillBagWithWords(BagOfWords &bag, int numberOfWords);
-
+    void _saveWordsToFIle();
+    void _loadWordsFromFile(string url);
     vector<PairOfWords>* getPairs();
+    vector<PairOfWords>* getTestPairs();
 
-    void print();
+    const vector<Word*>* getTrainingAllSet() const;
+    const vector<Word*>* getTrainingShortSet() const;
+    const vector<Word*>* getTrainingLongSet() const;
+    const vector<Word*>* getTestSet() const;
+
+		void print();
 
 private:
     vector<int> _alphabet;
-    BagOfWords _omegaS;
-    BagOfWords _omegaM;
-    BagOfWords _omegaL;
-    vector<PairOfWords> _pairs;
 
-    Word _generateWordStartingWith(int symbol, int length);
+		vector<int>	_pairsTraining;
+		vector<int>	_pairsTesting;
 
+		void _calculateNumberOfWords();
+		vector<Word> _createAllWordsUpToLength(int N);
+		vector<Word> _createRandomWordsOfLengthInInterval(int minLength, int maxLength, int count);
+		void _createAlphabet(int n);
+		vector<Word> _initBaseWords();
+		vector<Word> _getWordsOfSizeN(vector<Word> inputSet, int n);
+
+		int _C;
+		int _wordsInTrainingSet;
+		int _wordsInFirstSubset;
+		int _wordsInSecondSubset;
+		int _wordsInTestingSet;
+		int _maxWordLengthTraining;
+		int _maxWordLengthTesting;
+		char _commentSign = '#';
+		char _testHeaderSign = '[';
+
+		// GENERATING WORDS
     Word _generateRandomWordOverAlphabet(int length);
-
-    bool _hammingConditionMet(Word word);
-
-    bool _checkHammingCondition(Word word, vector<Word> wordsToCompare);
-
-    // To generalize method of calculating minimal hamming distance
-    // between consecutively generated words.
-    int _calculateAcceptableHammingDistance(int length);
-
     void _checkGlobalConditions();
-
+		void _loadHeader(ifstream & infile);
     int _generateRandomSymbolFromAlphabet();
-
-    void _fillBags();
-
-    Word _generateWordWithHammingConditionMet(BagOfWords &minWordLength);
-
-    void _generatePairs();
-
-    vector<Word> _collectAllWordsFromBags();
+		void _printInfo();
+		vector<Word*> _parseWords(ifstream & infile);
 
     vector<PairOfWords> _combineIntoPairs(vector<Word> words);
+    void _generateWords();
 
-    int _calculatePlotkinForBinaryAlphabet(int n, int d);
 
-    Word _generateWordStartingWith(BagOfWords &bag, int startingSymbol, int wordLength);
 };
 
 #endif //AC_WORDS_GENERATOR_H

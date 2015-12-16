@@ -6,7 +6,7 @@
 #define AC_OPTIMIZER_H
 
 #include "pso.h"
-
+#include "log.h"
 
 /*
  * The Stochastic Algorithm for Deterministic Finite Automaton Optimization.
@@ -56,7 +56,7 @@ private:
     PSO* pso;
 
     // The DFA tool used to compute R-L.
-    DFA tool;
+    DFA* tool;
 
     // Generates the sample set of words Omega
     WordsGenerator* _wordsGenerator;
@@ -64,19 +64,20 @@ private:
     //
     vector<int> _toolRelationResults;
 
-    Particle* bestResult;
+    Particle* bestParticle;
+    double bestTestingSetResult;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
     //-----------------------------------------------------------//
 
     /*
-     * 1) Select a sample set of words Omega
+     * Select a sample set of words Omega
      */
     void generateWords();
 
     /*
-     * 2) Compute the relation R-L of the given set of words Omega for the
+     * Compute the relation R-L of the given set of words Omega for the
      * DFA tool T.
      *
      * The result is saved in _toolRelationResults.
@@ -84,33 +85,52 @@ private:
     void computeRelation();
 
     /*
-     * 3) Runs PSO instances.
-     * Returns true if found solution.
+     * Computes error of given particle and word set
+     */
+    double computeError(Particle* particle, const std::vector<Word*>* set);
+
+    /*
+     * Runs PSO instances.
      *
      * @s - number of states
      * @r - number of symbols in alphabet.
      */
-    bool runPSO(int s, int r);
+    void runPSOLogic(int s, int r);
 
     /*
      * Selects the best result.
      * The best DFA is the one that uses the least amount of states
      * to compute all words
      */
-    Particle* selectParticleUsingMinimumStates(std::vector<Particle *> results);
+    Particle* selectParticleUsingMinimumStates(
+            const std::vector<Particle *>& results);
 
     /*
      * Compares the result with current bestResult
      * The better one is saved.
      */
-    void compareResultWithBestResult(Particle* result);
+    void compareResultWithBestResult(Particle* result,
+                                     double testSetResult);
+
+    double computeTestSetResults(Particle* particle);
+
+    void summarize(Particle* particle, int psoStateCount,
+                              double testSetResult,
+                              double trainingShortResult,
+                              double trainingLongResult,
+                              double trainingAllResult,
+                              std::string headerInfo);
+
+    void summarizeBestPSOResult();
+
+    void summarizeTool(DFA* tool);
 
 public:
     //-----------------------------------------------------------//
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    Optimizer(string toolUrl);
+    Optimizer(DFA * tool);
 
     ~Optimizer();
 
@@ -123,10 +143,9 @@ public:
      */
     void start();
 
-    Particle* getResult();
+    const Particle* getBestParticle() const;
 
-    DFA* getTool();
-
+    const DFA* getTool() const;
 };
 
 

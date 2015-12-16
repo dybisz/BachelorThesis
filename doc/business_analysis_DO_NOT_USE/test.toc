@@ -1,8 +1,0 @@
-\select@language {british}
-\contentsline {chapter}{Document metric}{5}{section*.1}
-\contentsline {chapter}{History of changes}{7}{section*.2}
-\contentsline {chapter}{\numberline {1}Glossary}{9}{chapter.1}
-\contentsline {chapter}{\numberline {2}Goal}{11}{chapter.2}
-\contentsline {chapter}{\numberline {3}User Stories}{13}{chapter.3}
-\contentsline {chapter}{\numberline {4}Functional Requirements}{15}{chapter.4}
-\contentsline {chapter}{\numberline {5}Non Functional Requirements}{17}{chapter.5}

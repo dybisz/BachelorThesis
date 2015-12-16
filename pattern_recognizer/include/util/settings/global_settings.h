@@ -15,6 +15,25 @@
 // |--o   alphabet is represented by integers from interval [_alphabet[0], _alphabet.size()]
 
 namespace global_settings {
+    /* ------ EXPERIMENT SETTINGS----- */
+    // ID of experiment to run
+    // 0: Main optimizer
+    // 1: DFA Generation
+    extern int EXPERIMENT_ID;
+
+    /* ------ Words GENERATION SETTINGS ----- */
+    extern int GEN_WORDS_SYMBOL_COUNT;
+    extern int GEN_WORD_C;
+    extern int GEN_WORD_TRAIN_COUNT;
+    extern int GEN_WORD_TRAIN_MAX_LENGTH;
+    extern int GEN_WORD_TEST_COUNT;
+    extern int GEN_WORD_TEST_MAX_LENGTH;
+
+    /* ------ DFA GENERATION SETTINGS ----- */
+    extern std::string GEN_DFA_PATH;
+    extern int GEN_DFA_STATES;
+    extern int GEN_DFA_SYMBOLS;
+
     /* ------ OPTIMIZER SETTINGS ----- */
     // Minimum states to check
     extern int MIN_STATES;
@@ -24,6 +43,7 @@ namespace global_settings {
     /* ------ PSO SETTINGS ----- */
     // URL to file with tool automaton
     extern std::string TOOL_URL;
+    extern std::string WORDS_PATH;
     // Maximum iterations of PSO algorithm
     extern int MAX_ITER;
     // TODO comment
@@ -52,38 +72,29 @@ namespace global_settings {
     // during a single PSO iteration.
     extern double SPEED_FACTOR;
 
+    // The maximum change that particle can make in single iteration
+    extern double MAX_VELOCITY;
+
     // The swarm size is scaled by this factor
     extern double POPULATION_FACTOR;
 
     // Look for fitness value no bigger than FITNESS_TOLERANCE
     // Possible values: [0, 1], where 1 is the most optimal DFA.
     extern double FITNESS_TOLERANCE;
+    extern int SWARM_SIZE;
+
+    /* ------ THREAD SETTINGS ----- */
 
     // If the optimal number of threads can not be determined by the system
     // this value will be used
     extern int DEFAULT_THREAD_COUNT;
 
-    /* ------ WORDS GENERATION ----- */
-    // Maximum number of testing words
-    extern int R_MAX;
-    // Number of words in omega_{S}
-    extern int SIZE_S;
-    // Number of words in omega_{M}
-    extern int SIZE_M;
-    // Number of words in omega_{L}
-    extern int SIZE_L;
-    // Minimum word length in omega_{S}
-    extern int MIN_LENG_S;
-    // Maximum word length in omega_{S}
-    extern int MAX_LENG_S;
-    // Minimum word length in omega_{M}
-    extern int MIN_LENG_M;
-    // Maximum word length in omega_{M}
-    extern int MAX_LENG_M;
-    // Minimum word length in omega_{L}
-    extern int MIN_LENG_L;
-    // Maximum word length in omega_{L}
-    extern int MAX_LENG_L;
+    // The actual number of threads to be used in computation.
+    // If the value is below 1, then it will be up to the system to choose
+    // the optimal number of threads.
+    // If the optimal number of threads can not be determined, then
+    // DEFAULT_THREAD_COUNT will be used.
+    extern int TRUE_THREAD_COUNT;
 
     /* ------ CLUSTERING ----- */
     // The convergence tolerance in kmeans

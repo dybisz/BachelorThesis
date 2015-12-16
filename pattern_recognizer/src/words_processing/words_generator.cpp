@@ -4,99 +4,274 @@
 
 #include <logger/log.h>
 #include "words_generator.h"
-
-WordsGenerator::WordsGenerator(vector<int> alphabet) : _alphabet(alphabet),
-                                                       _omegaS(MIN_LENG_S, MAX_LENG_S),
-                                                       _omegaM(MIN_LENG_M, MAX_LENG_M),
-                                                       _omegaL(MIN_LENG_L, MAX_LENG_L) {
+WordsGenerator::WordsGenerator(vector<int> alphabet) {}
+WordsGenerator::WordsGenerator(string url) {
+  _loadWordsFromFile(url);
+}
+WordsGenerator::WordsGenerator(vector<int> alphabet,
+                               int c, int trainSetCount,
+                               int trainSetMaxLength,
+                               int testSetCount,
+                               int testSetMaxLength) :
+        _alphabet(alphabet),
+        _C(c),
+        _wordsInTrainingSet(trainSetCount),
+        _maxWordLengthTraining(c + trainSetMaxLength),
+        _wordsInTestingSet(testSetCount),
+        _maxWordLengthTesting(c + testSetMaxLength) {
     try {
         utils::seed();
+        _calculateNumberOfWords();
         _checkGlobalConditions();
-        _fillBags();
-        _generatePairs();
+        _generateWords();
+        _saveWordsToFIle();
+        _printInfo();
     }
-    catch (std::exception &e) {
+        catch (std::exception &e) {
         LOG_ERROR(e.what())
     }
 }
 
+WordsGenerator::~WordsGenerator(){
+    for(unsigned int i = 0; i < _trainingAllSet.size(); i++){
+        delete _trainingAllSet[i];
+    }
+    for(unsigned int i = 0; i < _testSet.size(); i++){
+        delete _testSet[i];
+    }
+}
+
+const vector<Word*>* WordsGenerator::getTrainingAllSet() const{
+    return &_trainingAllSet;
+}
+const vector<Word*>* WordsGenerator::getTrainingShortSet() const{
+    return &_trainingShortSet;
+}
+
+const vector<Word*>* WordsGenerator::getTrainingLongSet() const{
+    return &_trainingLongSet;
+}
+
+const vector<Word*>* WordsGenerator::getTestSet() const{
+    return &_testSet;
+}
+
+void WordsGenerator::_loadWordsFromFile(string url) {
+    cout << "Opening file: " << url << endl;
+    std::ifstream infile(url);
+    string line;
+
+    // HEADER PART
+    _loadHeader(infile);
+
+    //ALPHABET
+    std::getline(infile, line);
+    istringstream iss(line);
+    int alphabet;
+    iss >> alphabet;
+    _createAlphabet(alphabet);
+
+    // SKIP shit
+    _loadHeader(infile);
+
+    // FIRST subset
+    _trainingShortSet = _parseWords(infile);
+
+    // SECOND subset
+    _trainingLongSet = _parseWords(infile);
+
+    // TESTING set
+    _testSet = _parseWords(infile);
+
+    // Append Training All with both subsets
+    for(unsigned int i = 0; i < _trainingShortSet.size();i++){
+        _trainingAllSet.push_back(_trainingShortSet[i]);
+    }
+    for(unsigned int i = 0; i < _trainingLongSet.size();i++){
+        _trainingAllSet.push_back(_trainingLongSet[i]);
+    }
+
+}
+void WordsGenerator::_loadHeader(ifstream & infile) {
+  string line;
+  while (std::getline(infile, line))
+  {
+    istringstream iss(line);
+    char  firstSymbol;
+    if (!(iss >> firstSymbol)) { break; } // error
+    if(firstSymbol == '[') break;
+  }
+  std::getline(infile, line);
+}
+void WordsGenerator::_createAlphabet(int n) {
+    for(int i = 0; i < n ; i++) {
+      _alphabet.push_back(i);
+    }
+    cout << "Alphabet loaded: " << utils::vectorToString(_alphabet) << endl;
+}
+
+vector<Word*> WordsGenerator::_parseWords(ifstream & infile) {
+  string line;
+  vector<Word*> words;
+
+
+  while (infile)
+  {
+    string s;
+    if (!getline( infile, s )) break;
+    if(s[0] == '[') break;
+
+    istringstream ss( s );
+    vector <string> record;
+    Word* _word = new Word();
+    while (ss)
+    {
+      string s;
+      if (!getline( ss, s, ',' )) break;
+      _word->appendSymbol(stoi(s));
+    }
+
+    if(_word->length() !=0) words.push_back(_word);
+  }
+
+  // for(int i = 0 ; i < words.size(); i++) {
+  //   if(words[i].length() == 0) cout << "{}" << endl;
+  //   else
+  //   cout << words[i].toString() << endl;
+  // }
+  cout << "SET SIZE:" << words.size() << endl;
+
+  return words;
+}
+
+void WordsGenerator::_saveWordsToFIle() {
+  fstream file;
+    std::stringstream ss;
+    ss << "./res/words_C" << this->_C
+        << "_Train" << this->_wordsInTrainingSet
+        << "_Test" << this->_wordsInTestingSet
+        << ".txt";
+
+  file.open(ss.str() ,fstream::out);
+
+  //INFO
+  file << "#TRAINING SET CONST: " << _firstSubset.size() << endl;
+  file << "#TRAINING SET RAND: " << _secondSubset.size() <<endl;
+  file << "#TESTING SET: " << _testingSet.size() << endl << endl;
+
+  // Alphabet
+  file << "[ALPHABET]" << endl;
+  file << _alphabet.size() << endl << endl;
+
+  // First subset
+  file << "[TRAINING SET CONST]" << endl;
+  for(auto iter = _firstSubset.begin() ; iter != _firstSubset.end() ; ++iter) {
+    file << iter->toString() << endl;
+  }
+  file << endl;
+
+  // Second subset
+  file << "[TRAINING SET RAND]" << endl;
+  for(auto iter = _secondSubset.begin() ; iter != _secondSubset.end() ; ++iter) {
+    file << iter->toString() << endl;
+  }
+  file << endl;
+
+  // Testing subset
+  file << "[TESTING SET]" << endl;
+  for(auto iter = _testingSet.begin() ; iter != _testingSet.end() ; ++iter) {
+    file << iter->toString() << endl;
+  }
+
+  file.close();
+}
+
+void WordsGenerator::_calculateNumberOfWords() {
+  _wordsInFirstSubset = 0;
+    for(int i = 1; i <= _C; i++) {
+        _wordsInFirstSubset += pow(_alphabet.size(), i);
+        cout << _wordsInFirstSubset << endl;
+    }
+    _wordsInSecondSubset = _wordsInTrainingSet - _wordsInFirstSubset;
+}
+
 // Conditions specified in methodology
 void WordsGenerator::_checkGlobalConditions() {
+  if (_wordsInSecondSubset < _wordsInFirstSubset) {
+      throw invalid_argument("Too few words in training set.");
+  }
 
-    if (SIZE_S + SIZE_M + SIZE_L > R_MAX) {
-        throw invalid_argument("omega_s + omega_m + omega_l > r_max; check your flags.");
-    }
-
-    if (MAX_LENG_S >= MIN_LENG_M) {
-        throw invalid_argument("MAX_LENG_S > MIN_LENG_M; words from omega_S might be longer than those in omega_M");
-    }
-
-    if (MAX_LENG_M >= MIN_LENG_L) {
-        throw invalid_argument("MAX_LENG_M > MIN_LENG_L; words from omega_M might be longer than those in omega_L");
-    }
-
-    int possibleNumberOfWords = _omegaS.numberOfPossibleWords(_alphabet.size());
-    if (SIZE_S > possibleNumberOfWords) {
-        throw invalid_argument("SIZE_S to big - class can not generate as many words. "
-                               "If You want to keep current settings, just change SIZE_S to be < "
-                               + to_string(possibleNumberOfWords));
-    }
-
-    possibleNumberOfWords =_omegaM.numberOfPossibleWords(_alphabet.size());
-    if (SIZE_M > possibleNumberOfWords) {
-        throw invalid_argument("SIZE_S to big - class can not generate as many words. "
-                                       "If You want to keep current settings, just change SIZE_S to be < "
-                               + to_string(possibleNumberOfWords));
-    }
-
-    possibleNumberOfWords = _omegaL.numberOfPossibleWords(_alphabet.size());
-    if (SIZE_L > possibleNumberOfWords) {
-        throw invalid_argument("SIZE_S to big - class can not generate as many words. "
-                                       "If You want to keep current settings, just change SIZE_S to be < "
-                               + to_string(possibleNumberOfWords));
-    }
+  if(_wordsInTestingSet < _wordsInTrainingSet) {
+      throw invalid_argument("Less words in testing set than in training one");
+  }
 }
 
-void WordsGenerator::_fillBags() {
-    _fillBagWithWords(_omegaS, SIZE_S);
-    _fillBagWithWords(_omegaM, SIZE_M);
-    _fillBagWithWords(_omegaL, SIZE_L);
-
-    std::stringstream ss;
-    ss << "Words Generated:" << std::endl;
-    ss << "Size Small:   " << SIZE_S  << std::endl;
-    ss << "Size Medium:  " << SIZE_M  << std::endl;
-    ss << "Size Large:   " << SIZE_L;
-    logger::log(File("words.txt"), ss.str());
+void WordsGenerator::_generateWords() {
+  _firstSubset = _createAllWordsUpToLength(_C);
+  cout << "firstSubset created\n";
+  _secondSubset = _createRandomWordsOfLengthInInterval(_C+1, _maxWordLengthTraining, _wordsInSecondSubset);
+  cout << "secondSubset created\n";
+  _trainingSet = utils::concatenateVector(_firstSubset, _secondSubset);
+  cout << "trainingSet created\n";
+  _testingSet = _createRandomWordsOfLengthInInterval(_maxWordLengthTraining+1, _maxWordLengthTesting, _wordsInTestingSet);
+  cout << "testingSet created\n";
 }
 
-void WordsGenerator::_fillBagWithWords(BagOfWords &bag, int numberOfWords) {
-    int alphabetSize = _alphabet.size();
-    bool moreWordsNeededThanSymbolsInAlphabet = numberOfWords > alphabetSize;
-    if (moreWordsNeededThanSymbolsInAlphabet) {
+// Creates all possible words of length from interval <0,N>.
+vector<Word> WordsGenerator::_createAllWordsUpToLength(int N) {
+  int alphabet_size = _alphabet.size();
+  vector<Word> _wordsList;
 
-        // Create alphabet based words
-        for (unsigned int symbol = 1; symbol <= _alphabet.size(); symbol++) {
-            int length = utils::generateRandomNumber(bag.getMinWordLength(), bag.getMaxWordLength());
-            Word word = _generateWordStartingWith(bag, symbol, length);
-            bag.addWord(word);
-        }
+	if(N == 0) return _wordsList;
 
-        // Fill up rest of the space
-        int restOfTheSpaceSize = numberOfWords - _alphabet.size();
-        for (int i = 0; i < restOfTheSpaceSize; i++) {
-            Word word = _generateWordWithHammingConditionMet(bag);
-            bag.addWord(word);
-        }
+  _wordsList = _initBaseWords();
 
-    } else {
-        // Produce as many alphabet words as words needed
-        for (int symbol = 1; symbol <= numberOfWords; symbol++) {
-            int length = utils::generateRandomNumber(bag.getMinWordLength(), bag.getMaxWordLength());
-            Word word = _generateWordStartingWith(bag, symbol, length);
-            bag.addWord(word);
+	for(int n = 1; n < N; n++) {
+		vector<Word> _wordsOfSizeN = _getWordsOfSizeN(_wordsList, n);
+		for(unsigned int i = 0; i < _wordsOfSizeN.size(); i++) {
+				for(int a = 0; a < alphabet_size; a++) {
+						Word w = _wordsOfSizeN[i];
+						w.appendSymbol(a);
+						_wordsList.push_back(w);
+				}
+			}
+	}
+
+	return _wordsList;
+}
+
+vector<Word> WordsGenerator::_initBaseWords() {
+  vector<Word> output;
+  int alphabet_size = _alphabet.size();
+	for(int symbol = 0; symbol < alphabet_size; ++symbol) {
+		Word _base;
+		_base.appendSymbol(symbol);
+		output.push_back(_base);
+	}
+  return output;
+}
+
+vector<Word> WordsGenerator::_getWordsOfSizeN(vector<Word> _wordsList, int n) {
+    vector<Word> wordsOfSizeN;
+    for(unsigned int word = 0; word < _wordsList.size(); word++) {
+        Word w = _wordsList[word];
+        if(w.length() == n) {
+            wordsOfSizeN.push_back(w);
         }
     }
+    return wordsOfSizeN;
+}
+
+vector<Word> WordsGenerator::_createRandomWordsOfLengthInInterval(int min, int max, int count) {
+    vector<Word> randomWords;
+    for(int w = 0; w < count; w++) {
+      int length = utils::generateRandomNumber(min, max+1);
+      Word word = _generateRandomWordOverAlphabet(length);
+      randomWords.push_back(word);
+    }
+
+    return randomWords;
+
 }
 
 int WordsGenerator::hammingDistance(Word w1, Word w2) const {
@@ -115,27 +290,6 @@ int WordsGenerator::hammingDistance(Word w1, Word w2) const {
     return distance;
 }
 
-Word WordsGenerator::_generateWordStartingWith(BagOfWords &bag, int startingSymbol, int wordLength) {
-    Word word;
-    do {
-        int length = bag.getRandomAvailableLength(_alphabet.size());
-        word = _generateRandomWordOverAlphabet(length);
-        word[0] = startingSymbol;
-    } while (!_hammingConditionMet(word));
-
-    return word;
-}
-
-Word WordsGenerator::_generateWordWithHammingConditionMet(BagOfWords &bag) {
-    Word word;
-    do {
-        int length = bag.getRandomAvailableLength(_alphabet.size());
-        word = _generateRandomWordOverAlphabet(length);
-    } while (!_hammingConditionMet(word));
-
-    return word;
-}
-
 Word WordsGenerator::_generateRandomWordOverAlphabet(int length) {
     Word word;
 
@@ -149,91 +303,51 @@ Word WordsGenerator::_generateRandomWordOverAlphabet(int length) {
 
 int WordsGenerator::_generateRandomSymbolFromAlphabet() {
     int firstSymbol = _alphabet[0];
-    int lastSymbol = _alphabet.size() + 1;
+    int lastSymbol = _alphabet.size();
+
     return utils::generateRandomNumber(firstSymbol, lastSymbol);
-}
-
-// Check if word meets conditions regarding those already created
-bool WordsGenerator::_hammingConditionMet(Word word) {
-    vector<Word> wordsInSpecificOmega;
-    int wordLength = word.length();
-
-    if (_omegaS.canWordBelongToTheBag(wordLength)) {
-        wordsInSpecificOmega = _omegaS.getWordsOfLength(word.length());
-    } else if (_omegaM.canWordBelongToTheBag(wordLength)) {
-        wordsInSpecificOmega = _omegaS.getWordsOfLength(word.length());
-    } else if (_omegaL.canWordBelongToTheBag(wordLength)) {
-        wordsInSpecificOmega = _omegaS.getWordsOfLength(word.length());
-    } else {
-        throw invalid_argument("word: " + word.toString()
-                               + " can not belong to any bag, because its length is to big.");
-    }
-
-    return _checkHammingCondition(word, wordsInSpecificOmega);
-}
-
-bool WordsGenerator::_checkHammingCondition(Word word, vector<Word> wordsToCompare) {
-
-    int acceptableHammingDistance = _calculateAcceptableHammingDistance(word.length());
-
-    if (acceptableHammingDistance < 1) acceptableHammingDistance = 1;
-
-    for (auto i = wordsToCompare.begin(); i != wordsToCompare.end(); ++i) {
-        int distance = hammingDistance(word, *i);
-
-        if (distance < acceptableHammingDistance) {
-            LOG_DEBUG("word: " + word.toString() + " and " + (*i).toString()
-                      + " have wrong hamming distance: " + to_string(distance) +
-                      " starting over ...");
-            return false;
-        }
-    }
-
-    return true;
-}
-
-
-int WordsGenerator::_calculateAcceptableHammingDistance(int length) {
-    return length / 2;
-}
-
-void WordsGenerator::_generatePairs() {
-    vector<Word> allWords = _collectAllWordsFromBags();
-    _pairs = _combineIntoPairs(allWords);
-}
-
-vector<Word> WordsGenerator::_collectAllWordsFromBags() {
-    vector<Word> wordsOmegaS = _omegaS.getAllWords();
-    vector<Word> wordsOmegaM = _omegaM.getAllWords();
-    vector<Word> wordsOmegaL = _omegaL.getAllWords();
-    vector<Word> allWords = utils::mergeVectors(wordsOmegaS, wordsOmegaM, wordsOmegaL);
-
-    return allWords;
 }
 
 vector<PairOfWords> WordsGenerator::_combineIntoPairs(vector<Word> words) {
     vector<PairOfWords> pairs;
-    for (unsigned int i = 0; i < words.size()-1; i++) {
-        for (unsigned int j = i; j < words.size(); j++) {
-            PairOfWords pairOfWords(words[i], words[j]);
-            pairs.push_back(pairOfWords);
-        }
-    }
+    // for (unsigned int i = 0; i < words.size() - 1; i++) {
+    //     for (unsigned int j = i; j < words.size(); j++) {
+    //         PairOfWords pairOfWords(words[i], words[j]);
+    //         pairs.push_back(pairOfWords);
+    //     }
+    // }
     return pairs;
 }
 
 vector<PairOfWords>* WordsGenerator::getPairs() {
-    return &_pairs;
+    return NULL;
+}
+
+vector<PairOfWords>* WordsGenerator::getTestPairs() {
+    return NULL;
 }
 
 void WordsGenerator::print() {
-    cout << "OMEG_S:\n";
-    _omegaS.print();
-    cout << "OMEG_M:\n";
-    _omegaM.print();
-    cout << "OMEG_L:\n";
-    _omegaL.print();
+  cout << "[TRAINING SET]" << endl;
+
+  for(auto iter = _trainingSet.begin(); iter != _trainingSet.end(); ++iter) {
+    cout << (*iter).toString() << endl;
+  }
+
+
+  cout << "[TESTING SET]" << endl;
+
+  for(auto iter = _testingSet.begin(); iter != _testingSet.end(); ++iter) {
+    cout << (*iter).toString() << endl;
+  }
 }
 
 
-
+void WordsGenerator::_printInfo() {
+  std::stringstream ss;
+  // ss << "Words Generated:" << std::endl;
+  // ss << "All up to length:   " << R_MAX << std::endl;
+  // ss << "Number of words:    " << _psoWords.size() << endl;
+  // ss << "Size Test:    	   " << SIZE_S;
+  logger::log(File("words.txt"), ss.str());
+}
