@@ -38,8 +38,59 @@
 
 % COMMANDS
 %------------------------------------------------------------------------------%
-\newcommand{\umlDiagram}[1]{
+\newcommand{\umlPath}[1]{
     ../uml/#1
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureTransformationSymbol
+% ARGS:
+% #1 = The alphabet
+% OUTPUT:
+% Syntax of the feature transformation of a single symbol
+%%%%%%%%%%%
+\newcommand{\featureTransformationSymbol}[1]{
+    \rightarrow^{#1}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureTransformationWord
+% ARGS:
+% #1 = The alphabet
+% OUTPUT:
+% Syntax of the feature transformation of a word
+%%%%%%%%%%%
+\newcommand{\featureTransformationWord}[1]{
+    \rightarrow^{#1^{*}}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureTransformationLanguage
+% ARGS:
+% #1 = The alphabet
+% OUTPUT:
+% Syntax of the feature transformation of a language
+%%%%%%%%%%%
+\newcommand{\featureTransformationLanguage}[1]{
+    \rightarrow^{#1^{**}}
+}
+
+%%%%%%%%%%
+% FUNCTION:
+% featureNorm.
+% ARGS:
+% #1 = The feature vector
+% OUTPUT:
+% Syntax of feature vector normalization
+% NOTE:
+% Must be surranded by dollars: $\featureNorm{f}$
+% Unless of course it is used in an equation
+%%%%%%%%%%%
+\newcommand{\featureNorm}[1]{
+    ||#1||
 }
 
 % TITLE
@@ -391,16 +442,60 @@ It is worth mentioning, that in such decoding the information about accepting st
 
 %---------------------------------------------------------------
 \chapter{Language Theory} \label{chap:lan_theory}
+The content discussed thus far, presented pattern recognition as a general problem. This chapter is considered to be a bridge between the pattern recognition world and the language and automata theory. We propose a set of procedures which help in reducing the classical problem of classification into a language theory problem. By doing so, we will be able to benefit from the prosperous theory of languages and automata.
 
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Word Generation} \label{section:word_gen}
+The chapter begins with element and object transformations into words and languages, respectively.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
+\section{Transformation}\label{sec:lan_theory_transf}
+
+
+
 %---------------------------------------------------------------
-\subsection{Real Data} \label{section:word_gen_real}
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Word Transformation}\label{sec:lan_theory_transf_word}
+This section is devoted to explaining the process of feature vector to word transformation.
+
+Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$. Notice that $|\Sigma|=r$.
+The first step of transformation process will include transforming each feature into a symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. Let $\featureNorm{f}$, denote a normalized feature vector. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
+
+Having the interval conveniently normalized, we can now easily define the transformation of a single feature to a symbol by partitioning the intervals into $r$ sub-intervals: $x_1, x_2,\ldots,x_r$. We can now easily translate feature $c_i \in x_{j}$ by assigning the corresponding symbol $a_{j}$.
+
+Formally the transformation of a single feature is defined by the follow equation:
+
+\begin{equation*}
+c_i \featureTransformationSymbol{\Sigma}
+\begin{cases}
+a_1 & \text{for } c_{i} \in  \langle 0 , 1) \\
+a_2 & \text{for } c_{i} \in  \langle 1 , 2) \\
+a_3 & \text{for } c_{i} \in  \langle 2 , 3) \\
+\cdots \\
+a_{r} & \text{for } c_{i} \in \langle r -1, |\Sigma|  \rangle
+\end{cases})
+\end{equation*}
+
+Having completed the transformation of all features of a given feature vector, the next step includes concatenating all consecutive symbols to create a word defining the feature vector. Formally, we define the word transformation as: $f \featureTransformationWord{\Sigma} w$, where $w \in \Sigma^*$ 
+
+        
+\begin{example} {\bf Word Transformation}\\
+    Let $\Sigma =\{a,b\}$ be the alphabet and $\featureNorm{f} = [c_{1},c_{2},c_{3}]$ be a feature vector with normalized features to interval $\langle 0,2 \rangle$.
+    Let $c_{1}=0.6$, $c_{2} = 1.5$, $c_{3} = 1.9$.
+    By applying the feature transformation for all features we get:
+    \begin{center}
+        $c_{1} \featureTransformationSymbol{\Sigma} a$,
+        $c_{2} \featureTransformationSymbol{\Sigma} b$,
+        $c_{3} \featureTransformationSymbol{\Sigma} b$.
+    \end{center}
+    Finally the concatenation of consecutive symbols yields a word defining the feature vector $\featureNorm{f} \featureTransformationWord{\Sigma} w = abb$.
+\end{example}
+
+The following section focuses on the normalization process and mathematical details of transformation.
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsubsection{Normalization} \label{sec:lan_theory_word_transf_norm}
 One of the first challenges that appears during tackling the problem is features vector coding. By coding we understand changing vectors of real numbers into words over some alphabet. In case when the application has been supplied by real data, program needs to load tables and interpret them somehow. Following subsection describes process in general using mathematical description.
 
 First of all let us assume that file has been already loaded and we are provided with set of features vectors: 
@@ -462,11 +557,60 @@ Now by performing:
 \end{equation}
 one will convert all features vector to words over $\Sigma$.
 
+\begin{example} {\bf Normalization}\\
+    Let us consider a feature vector where all features belong to original interval $\langle 0, 10 \rangle$, $f_1=[2, 6, 7]$. We will now apply transformation into a word over an alphabet $\Sigma=\{a,b\}$. Firstly the normalization process yields a normalized vector $\featureNorm{f_1}=[0.4, 1.2, 1.4]$. Finally $\featureNorm{f_1} \featureTransformationWord{\Sigma}w=abb$
+\end{example}
+
+Notice that the length of constructed word is equal to the size of feature vector. However, more importantly, the size of alphabet contributes in the accuracy of how well the word actually defines its corresponding feature vector. Let us consider two feature vectors where all features belong to original interval $\langle 0, 10 \rangle$, $f_1=[9, 5, 7]$ and $f_2=[5,9,7]$. We will now apply word transformation for both vectors for two different alphabets: $\Sigma=\{a,b\}$ and $\Gamma=\{a,b,c,d,e,f\}$. Applying the transformation for the first alphabet we get two words: 
+
+\begin{center}
+    $\featureNorm{f_1} \featureTransformationWord{\Sigma} w_1 = bbb$, \\ $\featureNorm{f_2} \featureTransformationWord{\Sigma} v_1 = bbb$.
+\end{center}
+
+ Transformations for second alphabet yield: 
+ 
+\begin{center}
+    $\featureNorm{f_1} \featureTransformationWord{\Gamma} w_2 = fde$, \\ $\featureNorm{f_2} \featureTransformationWord{\Gamma} v_2 = dfe$
+\end{center}
+
+The above transformation for the alphabet $\Sigma$ shows that for two seemingly distinct feature vectors we obtained two equal words. However, by applying transformation for bigger alphabet we managed to construct two distinguishable words.
+it clearly visible that alphabet with higher amount of symbols will transform feature vectors into more precise word representations. Although, by increasing the size of the alphabet one has to expect higher time complexity of constructing the classifier.
+
+
+
+
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\subsection{Synthetic Data} \label{section:word_gen_synth}
-We want to be able to generate random synthetic data set of words. 
+\subsection{Language Transformation}\label{sec:lan_theory_transf_lan}
+Recall that object includes a set of elements each representing  a specific instance of that object. In turn, an element is defined by a feature vector. Analogously to feature transformation, we will transform an object into a language over alphabet $\Sigma$.
+
+Having an object $O$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $O \featureTransformationLanguage{\Sigma} L$. The created language $L = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Summary}\label{sec:lan_theory_transf_summary}
+The method of normalization and transformation of feature vectors into words has been introduced. Moreover, examples of transformations for alphabets of different sizes led to defining the problem of transformation precision. Finally the figure~\ref{fig:transf_state} summarizes the process of transformation.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{../uml/states/word_transformation.jpg}
+    \caption{State chart of Transformation}
+    \label{fig:transf_state}
+\end{figure}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Equivalence Classes}\label{sec:lan_theory_eq_classes}
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Synthetic Word Generation} \label{sec:lan_theory_synth_word_gen}
+
+
+We want to be able to generate random synthetic set of words. 
 Let's assume we want to randomly generate words of length $k$ corresponding to some objects. Having fixed number of classes, denoted by $n$ proceed to generate exactly $n$ words representing centres of each class. Then for each such class, start generating uniformly words that are similar to their corresponding centres. Two words can be thought to be \textit{similar} if the ratio of the length and their Hamming distance is reasonably small. Formally the similarity function of two words is defined by the equation:
 
 \begin{equation}
@@ -483,9 +627,6 @@ The intuition can suggest that any two words are similar if their similarity is 
 
 % How about the upper bound of similarity, what if all words generated are the same -> Uniform distribution should cover that
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Equivalence Classes}
 
 
 %---------------------------------------------------------------
