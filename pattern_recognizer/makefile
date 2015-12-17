@@ -144,10 +144,11 @@ MAKE_EXTERNAL =
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -lpthread ./lib/libxls/lib64/libxl.so
+LIBS += -lpthread -L ./lib/libxls/lib64/ -lxl -Wl,-rpath,./lib/libxls/lib64/ \
 # -L /opt/cuda/lib64 \
 #		-L /usr/local/cuda/lib64 \
-#		-lGL -lglut -lGLEW -lcudart -lcuda
+#		-lGL -lglut -lGLEW -lcudart -lcuda \
+
 
 #----------------- INCLUDES -------------------#
 
