@@ -22,13 +22,15 @@ public:
     // or leave empty and supply it later. If supplied, data will be
     // automatically loaded, if not one needs to call appropriate method.
     XlsLoader();
-    XlsLoader(char* url);
+    XlsLoader(string url);
 
-    void setUrl(char* url);
+    void setUrl(string url);
     void loadDataFromFile();
 
 private:
-    char* _url;
+    // Relative path to a data file.
+    // Type: const char*, because of libxls demands.
+    const char* _url;
 
     void _processSheet(ISheetT<char> *pSheet);
 };

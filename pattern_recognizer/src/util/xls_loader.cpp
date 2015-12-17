@@ -6,12 +6,13 @@
 
 XlsLoader::XlsLoader() { }
 
-XlsLoader::XlsLoader(char* url) : _url(url) {
+XlsLoader::XlsLoader(string url) {
+    setUrl(url);
     loadDataFromFile();
 }
 
-void XlsLoader::setUrl(char* url){
-    this->_url = url;
+void XlsLoader::setUrl(string url){
+    this->_url = url.c_str();
 }
 
 void XlsLoader::loadDataFromFile() {
@@ -19,7 +20,6 @@ void XlsLoader::loadDataFromFile() {
     if(book) {
         if (book->load(_url)) {
             _processSheet(book->getSheet(0));
-
         }
         book->release();
     }
