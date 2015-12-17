@@ -18,7 +18,7 @@ doc/uml_diagrams/
 *.toc
 *.gz
 *.pdf
-
+*.out
 
 CMakeLists.txt
 
