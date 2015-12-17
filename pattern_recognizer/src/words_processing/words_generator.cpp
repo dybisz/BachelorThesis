@@ -25,7 +25,7 @@ WordsGenerator::WordsGenerator(vector<int> alphabet,
         _checkGlobalConditions();
         _generateWords();
         _saveWordsToFIle();
-        _printInfo();
+//        _printInfo();
     }
         catch (std::exception &e) {
         LOG_ERROR(e.what())
@@ -107,7 +107,7 @@ void WordsGenerator::_createAlphabet(int n) {
     for(int i = 0; i < n ; i++) {
       _alphabet.push_back(i);
     }
-    cout << "Alphabet loaded: " << utils::vectorToString(_alphabet) << endl;
+//    cout << "Alphabet loaded: " << utils::vectorToString(_alphabet) << endl;
 }
 
 vector<Word*> WordsGenerator::_parseWords(ifstream & infile) {
@@ -190,7 +190,7 @@ void WordsGenerator::_calculateNumberOfWords() {
   _wordsInFirstSubset = 0;
     for(int i = 1; i <= _C; i++) {
         _wordsInFirstSubset += pow(_alphabet.size(), i);
-        cout << _wordsInFirstSubset << endl;
+//        cout << _wordsInFirstSubset << endl;
     }
     _wordsInSecondSubset = _wordsInTrainingSet - _wordsInFirstSubset;
 }
@@ -208,13 +208,9 @@ void WordsGenerator::_checkGlobalConditions() {
 
 void WordsGenerator::_generateWords() {
   _firstSubset = _createAllWordsUpToLength(_C);
-  cout << "firstSubset created\n";
   _secondSubset = _createRandomWordsOfLengthInInterval(_C+1, _maxWordLengthTraining, _wordsInSecondSubset);
-  cout << "secondSubset created\n";
   _trainingSet = utils::concatenateVector(_firstSubset, _secondSubset);
-  cout << "trainingSet created\n";
   _testingSet = _createRandomWordsOfLengthInInterval(_maxWordLengthTraining+1, _maxWordLengthTesting, _wordsInTestingSet);
-  cout << "testingSet created\n";
 }
 
 // Creates all possible words of length from interval <0,N>.
