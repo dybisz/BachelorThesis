@@ -68,11 +68,11 @@ Pattern Recognition focuses on building machines that can recognize pattern in v
 
 The objective of this research is to construct a classifier which will be able to assign a label to given input object. The main idea on building such classifier is to construct a Deterministic Finite Automaton which could answer the question to which class an input element falls to. The first step of constructing such classifier, is to transform feature vectors into words that could be applied to our automaton as a learning process.
 
-To start with, in section~\ref{sec:prelim} preliminaries mathematical knowledge is presented. In section~\ref{sec:lan_theory} we explain the first step of classifier construction which is the the process of word generation.
+To start with, in chapter~\ref{ch:prelim} preliminaries mathematical knowledge is presented. In chapter~\ref{ch:lan_theory} we explain the first step of classifier construction which is the the process of word generation.
 
-Finally the architecture side of the project is introduced in section~\ref{sec:model}.
+Finally the architecture side of the project is introduced in chapter~\ref{ch:domain}.
 
-\chapter{Preliminaries}\label{sec:prelim}
+\chapter{Preliminaries}\label{chap:prelim}
 %---------------------------------------------------------------------
 
 
@@ -386,11 +386,11 @@ It is worth mentioning, that in such decoding the information about accepting st
 
 
 %---------------------------------------------------------------
-\chapter{Pattern Recognition} \label{sec:pt}
+\chapter{Pattern Recognition} \label{chap:patt_rec}
 
 
 %---------------------------------------------------------------
-\chapter{Language Theory} \label{sec:lan_theory}
+\chapter{Language Theory} \label{chap:lan_theory}
 
 
 %---------------------------------------------------------------
@@ -488,10 +488,10 @@ The intuition can suggest that any two words are similar if their similarity is 
 \section{Equivalence Classes}
 
 %---------------------------------------------------------------
-\chapter{Classification}
+\chapter{Classification}\label{chap:classification}
 
 %---------------------------------------------------------------
-\chapter{Particle Swarm Optimization}
+\chapter{Particle Swarm Optimization}\label{chap:pso}
 In the Particle Swarm Optimization (PSO), originated by Eberhart and Kennedy in~\cite{pso_origin}, we look for optimal solution of the problem in the solution space. 
 
 Each solution is called a particle and it consists of the following fields. First of all, the particle stores $fitness$ value which is evaluated by the fitness function, representing the quality of the solution and the best fitness value computed so far. It also stores the position $X_p$ and velocity vector $V_p$ which lets the particle travel through the solution space. Lastly two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
@@ -670,9 +670,14 @@ The neighbourhood system is defined by grouping the swarm into clusters. Cluster
 The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
 
 
+%---------------------------------------------------------------
+\chapter{Experiments}\label{chap:experiments}
 
 %---------------------------------------------------------------
-\chapter{Domain} \label{sec:model}
+\chapter{Results}\label{chap:results}
+
+%---------------------------------------------------------------
+\chapter{Domain} \label{chap:domain}
 In this chapter the domain of the application is discussed. 
 
 \textbf{Remark:} What should be stress out is that class diagrams presented in this section may not cover all methods needed to implement full functionality. For sure presented methods are necessary, but not always sufficient. Although we were trying to be as precise as we can, they constitutes only a sketch of solution.

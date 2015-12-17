@@ -19,6 +19,7 @@ doc/uml_diagrams/
 *.gz
 *.pdf
 
+
 CMakeLists.txt
 
 # Eclipse stuff
