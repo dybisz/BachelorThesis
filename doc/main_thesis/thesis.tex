@@ -36,8 +36,21 @@
 \usepackage{wrapfig}
 \usepackage{amsfonts}
 
+
 % COMMANDS
 %------------------------------------------------------------------------------%
+
+%%%%%%%%%%
+% FUNCTION:
+% transformationPrecision
+% ARGS:
+% #1 - The alphabet
+% #2 - The arguments of the transformation precision function
+%%%%%%%%%%%
+\newcommand{\transformationPrecision}[2]{
+    P_{T_{#1}}(#2)
+}
+
 \newcommand{\umlPath}[1]{
     ../uml/#1
 }
@@ -449,14 +462,13 @@ The chapter begins with element and object transformations into words and langua
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Transformation}\label{sec:lan_theory_transf}
-
-
+This section is devoted to explaining the process of transformation of abstract objects into languages. All feature vectors are assumed to be of the same dimensions.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Word Transformation}\label{sec:lan_theory_transf_word}
-This section is devoted to explaining the process of feature vector to word transformation.
+
 
 Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$. Notice that $|\Sigma|=r$.
 The first step of transformation process will include transforming each feature into a symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. Let $\featureNorm{f}$, denote a normalized feature vector. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
@@ -471,7 +483,7 @@ c_i \featureTransformationSymbol{\Sigma}
 a_1 & \text{for } c_{i} \in  \langle 0 , 1) \\
 a_2 & \text{for } c_{i} \in  \langle 1 , 2) \\
 a_3 & \text{for } c_{i} \in  \langle 2 , 3) \\
-\cdots \\
+&\makebox[\widthof{${}\rightarrow{}$}][c]{\vdots} \\
 a_{r} & \text{for } c_{i} \in \langle r -1, |\Sigma|  \rangle
 \end{cases})
 \end{equation*}
@@ -492,6 +504,8 @@ Having completed the transformation of all features of a given feature vector, t
 \end{example}
 
 The following section focuses on the normalization process and mathematical details of transformation.
+
+%---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -561,23 +575,6 @@ one will convert all features vector to words over $\Sigma$.
     Let us consider a feature vector where all features belong to original interval $\langle 0, 10 \rangle$, $f_1=[2, 6, 7]$. We will now apply transformation into a word over an alphabet $\Sigma=\{a,b\}$. Firstly the normalization process yields a normalized vector $\featureNorm{f_1}=[0.4, 1.2, 1.4]$. Finally $\featureNorm{f_1} \featureTransformationWord{\Sigma}w=abb$
 \end{example}
 
-Notice that the length of constructed word is equal to the size of feature vector. However, more importantly, the size of alphabet contributes in the accuracy of how well the word actually defines its corresponding feature vector. Let us consider two feature vectors where all features belong to original interval $\langle 0, 10 \rangle$, $f_1=[9, 5, 7]$ and $f_2=[5,9,7]$. We will now apply word transformation for both vectors for two different alphabets: $\Sigma=\{a,b\}$ and $\Gamma=\{a,b,c,d,e,f\}$. Applying the transformation for the first alphabet we get two words: 
-
-\begin{center}
-    $\featureNorm{f_1} \featureTransformationWord{\Sigma} w_1 = bbb$, \\ $\featureNorm{f_2} \featureTransformationWord{\Sigma} v_1 = bbb$.
-\end{center}
-
- Transformations for second alphabet yield: 
- 
-\begin{center}
-    $\featureNorm{f_1} \featureTransformationWord{\Gamma} w_2 = fde$, \\ $\featureNorm{f_2} \featureTransformationWord{\Gamma} v_2 = dfe$
-\end{center}
-
-The above transformation for the alphabet $\Sigma$ shows that for two seemingly distinct feature vectors we obtained two equal words. However, by applying transformation for bigger alphabet we managed to construct two distinguishable words.
-it clearly visible that alphabet with higher amount of symbols will transform feature vectors into more precise word representations. Although, by increasing the size of the alphabet one has to expect higher time complexity of constructing the classifier.
-
-
-
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -585,18 +582,93 @@ it clearly visible that alphabet with higher amount of symbols will transform fe
 \subsection{Language Transformation}\label{sec:lan_theory_transf_lan}
 Recall that object includes a set of elements each representing  a specific instance of that object. In turn, an element is defined by a feature vector. Analogously to feature transformation, we will transform an object into a language over alphabet $\Sigma$.
 
-Having an object $O$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $O \featureTransformationLanguage{\Sigma} L$. The created language $L = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$
+Having an object $O$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $O \featureTransformationLanguage{\Sigma} L$. The created language $L = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$. Thus language $L$ will look as follows:
+\begin{center}
+    $L = \{w \in \Sigma^{*} : \forall_{i} (f_{i} \in O, f_{i} \featureTransformationWord{\Sigma} w_{i}) \}$
+\end{center}
+
+Having an input set of objects: $O_{1},O_{2},\ldots,O_{m}$, where $O_{j}$ contains the feature vectors: $f_{j,1},f_{j,2},\ldots,f_{j,n}$, one can transform them into a set of languages. We assume that all feature vectors are of the same dimensions. Moreover, for simplicity of notation all objects are assumed to have the same number of elements, but it can be easily generalized for objects of different sizes. Applying the language transformation of a given alphabet $\Sigma$ we get the following set of languages:
+
+
+\begin{align*}
+&O_{1} \featureTransformationLanguage{\Sigma} L_{1} = \{w \in \Sigma^{*} : \forall_{i} (f_{1,i} \in O_{1}, f_{1,i} \featureTransformationWord{\Sigma} w_{1,i}) \} \\
+&O_{2} \featureTransformationLanguage{\Sigma} L_{2} = \{w \in \Sigma^{*} : \forall_{i} (f_{2,i} \in O_{2}, f_{2,i} \featureTransformationWord{\Sigma} w_{2,i}) \} \\
+&O_{3} \featureTransformationLanguage{\Sigma} L_{3} = \{w \in \Sigma^{*} : \forall_{i} (f_{3,i} \in O_{3}, f_{3,i} \featureTransformationWord{\Sigma} w_{3,i}) \} \\
+&\makebox[\widthof{${}O_{1}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{}$}][c]{\vdots} \\
+&O_{m} \featureTransformationLanguage{\Sigma} L_{m} = \{w \in \Sigma^{*} : \forall_{i} (f_{m,i} \in O_{m}, f_{m,i} \featureTransformationWord{\Sigma} w_{m,i}) \}
+\end{align*}
+
+The above transformation allows us to establish classification of a given element to an object in terms of words and language. Namely, if for the element $f$ the following transformation holds place:
+\begin{center}
+   $f \featureTransformationWord{\Sigma} w \in L_{3}$
+\end{center}
+then we can conclude that $f \in O_{3}$.
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Transformation Precision}\label{sec:lan_theory_transf_prec}
+
+Notice that the length of constructed word is equal to the size of feature vector. However, more importantly, the size of alphabet contributes in the accuracy of how well the word actually defines its corresponding feature vector. Consider the worst case scenario in which the alphabet contains only one symbol, $\Sigma=\{a\}$. Thus, transforming any feature vector $f$ of length $n$ will create the same word: $f \featureTransformationWord{\Sigma} w = a^{n}$
+
+
+\begin{example} \label{ex:transf_prec}
+    Let us consider two feature vectors where all features belong to original interval $\langle 0, 10 \rangle$, $f_1=[9, 5, 7]$ and $f_2=[5,9,7]$. We will now apply word transformation for both vectors for two different alphabets: $\Sigma=\{a,b\}$ and $\Gamma=\{a,b,c,d,e,f\}$. Applying the transformation for the first alphabet we get two words: 
+    
+    \begin{center}
+        \begin{align*}
+        &\featureNorm{f_1} \featureTransformationWord{\Sigma} w_1 = bbb, \\ &\featureNorm{f_2} \featureTransformationWord{\Sigma} v_1 = bbb.
+        \end{align*}
+    \end{center}
+    
+    Transformations for second alphabet yield: 
+    
+    \begin{center}
+        \begin{align*}
+        &\featureNorm{f_1} \featureTransformationWord{\Gamma} w_2 = fde, \\ &\featureNorm{f_2} \featureTransformationWord{\Gamma} v_2 = dfe
+        \end{align*}
+    \end{center}
+\end{example}
+
+The above transformation for the alphabet $\Sigma$ shows that for two seemingly distinct feature vectors we obtained two equal words. However, by applying transformation for bigger alphabet we managed to construct two distinguishable words.
+it clearly visible that alphabet with higher amount of symbols will transform feature vectors into more precise word representations. Although, by increasing the size of the alphabet one has to expect higher time complexity of constructing the classifier.
+
+
+In the example~\ref{ex:transf_prec} two different feature vectors have been transformed into the same word. This means that a word can belong simultaneously to more than one language. Thus in such a case:
+\begin{center}
+    $L_{1} \cap L_{2} \cap L_{3} \cap \ldots \cap L_{m} \neq \emptyset$
+\end{center}
+
+
+\begin{definition} {\bf Transformation Precision}\\
+    Let the languages $L_{1},L_{2},\ldots,L_{m}$ be obtained by transformation over alphabet $\Sigma$ of the non empty objects $O_{1},O_{2},\ldots,O_{m}$ respectively.
+    The Transformation Precision of the set of objects is defined by the equation:
+       \begin{equation}
+       \transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}
+           =
+            1 - \frac   {| L_{1} \cap L_{2} \cap L_{3} \cap \ldots \cap L_{m} |}
+                    {| L_{1} \cup L_{2} \cup L_{3} \cup \ldots \cup L_{m} |}
+               =
+            1 - \frac   {\Big| \bigcap\limits_{i=0}^{m} L_i \Big|}
+                    {\Big| \bigcup\limits_{i=0}^{m} L_i \Big|}
+       \end{equation}
+\end{definition}
+
+Recall that the transformation over alphabet with one symbol yield the same word for all possible feature vectors of the same length. Thus, having the alphabet $|\Sigma|=1$ for any set of objects the transformation precision is equal to: $\transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}} = 0$
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Summary}\label{sec:lan_theory_transf_summary}
-The method of normalization and transformation of feature vectors into words has been introduced. Moreover, examples of transformations for alphabets of different sizes led to defining the problem of transformation precision. Finally the figure~\ref{fig:transf_state} summarizes the process of transformation.
+The method of object to language transformation has been introduced. Each feature vector is normalized and then transformed to a word. However, the transformation process is based on the chosen alphabet, which size defines the precision. Low precision of transformation can lead to improper classification.
+
+Finally the figure~\ref{fig:transf_state} summarizes the process of transformation.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1.0\textwidth]{../uml/states/word_transformation.jpg}
-    \caption{State chart of Transformation}
+    \caption{State chart of Language Transformation}
     \label{fig:transf_state}
 \end{figure}
 
