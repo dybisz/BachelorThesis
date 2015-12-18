@@ -20,8 +20,11 @@ using namespace std;
 class FeatureVector{
 public:
 
-    // Feature vector can be created either from provided vectors of integers,
-    // Symbol class objects, pointers to Symbol class objects or empty.
+    // Feature vector can be created:
+    // 1) Empty.
+    // 2) From provided vectors of integers.
+    // 3) From vector of Symbol class objects
+    // 4) From vector of pointers to Symbol class objects
     FeatureVector();
     FeatureVector(const vector<int> &entries);
     FeatureVector(const vector<Symbol> &entries);
@@ -39,7 +42,7 @@ public:
     void appendSymbol(int symbol);
     void appendSymbol(Symbol* symbol);
 
-    // Auxiliary methids, which definition is selfexplanatory regarding
+    // Auxiliary methods, which definition is selfexplanatory regarding
     // their names.
     int size() const;
     string toString() const;

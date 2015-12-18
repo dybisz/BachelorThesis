@@ -31,3 +31,7 @@ bool Symbol::operator==(const Symbol &b) const
 {
     return (this->getVal() == b.getVal() );
 }
+
+bool Symbol::operator == (const int &b) const {
+    return (this->getVal() == b);
+}
