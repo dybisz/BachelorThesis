@@ -139,18 +139,39 @@ Finally the architecture side of the project is introduced in chapter~\ref{ch:do
 \chapter{Preliminaries}\label{chap:prelim}
 %---------------------------------------------------------------------
 
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+\section{Myhill-Nerode}
+\begin{definition}
+    Relation induced by language $L$ is a binary relation $R_{L}$ in the set of words over alphabet of $L$ such that:
+    \[
+    (\forall{u,v \in \Sigma^{*}})(u R_{L} v \equiv ((\forall z \in \Sigma^{*}) uz \in L \Leftrightarrow vz \in L))
+    \]
+\end{definition}
+What is more, we know that $R_{L}$ is an equivalence relation, hence it divides $\Sigma^{*}$ into equivalence classes.
+
+In the theory of formal languages, the $Myhill-Nerode$ theorem provides a necessary and sufficient condition for a language to be regular. The theorem is named for John Myhill and Anil Nerode, who proved it at the University of Chicago in 1958 (Nerode 1958) \cite{Myhill_Nerode}.
+
+\begin{theorem}[Myhill-Nerode Theorem]\label{Theorem:Myhill_Nerode}
+    The following conditions are equivalent:
+    \begin{enumerate}
+        \item a language $L$ is accepted by a deterministic finite automaton $M = (Q,\Sigma,\delta,q_0,F)$,
+        \item a language $L$ is a union of some classes of a right invariant equivalence relation with finite index,
+        \item the relation $R_{L}$ induced by a language $L$ has finite index.
+    \end{enumerate}
+\end{theorem}
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Hamming Distance} \label{sec:hamming}
 
-%\begin{definition}
+\begin{definition}
 Hamming distance $H_d$ between two string of the same length is the number of positions at which the corresponding symbols differ.
-%\end{definition}
+\end{definition}
 
-%\begin{example} 
+\begin{example} 
 Let $w = John$ and $v = Jhon$. Notice that the symbols at positions two and three differ. Thus the Hamming distance between these two strings is $H_d(w,v) = 2$.
-%\end{example}
+\end{example}
 
 %---------------------------------------------------------------------
 %--------------------------------------------------------------------
@@ -655,13 +676,16 @@ In the example~\ref{ex:transf_prec} two different feature vectors have been tran
        \end{equation}
 \end{definition}
 
-Recall that the transformation over alphabet with one symbol yield the same word for all possible feature vectors of the same length. Thus, having the alphabet $|\Sigma|=1$ for any set of objects the transformation precision is equal to: $\transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}} = 0$
+Recall that the transformation over alphabet with one symbol yield the same word for all possible feature vectors of the same length. Thus, having the alphabet $|\Sigma|=1$ for any set of objects the transformation precision is equal to: $\transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}~=~0$. Clearly the ideal situation occurs when all the transformed languages are disjoint i.e. $\transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}~=~1$
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Summary}\label{sec:lan_theory_transf_summary}
-The method of object to language transformation has been introduced. Each feature vector is normalized and then transformed to a word. However, the transformation process is based on the chosen alphabet, which size defines the precision. Low precision of transformation can lead to improper classification.
+The method of object to language transformation has been introduced. The features have been transformed into symbols, elements into words and finally objects into languages. Moreover, the transformation process is based on the chosen alphabet, which size defines the transformation precision. Low precision of transformation can lead to improper classification while higher increased the computational time of constructing the classifier.
+
+From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a language $L$.
+
 
 Finally the figure~\ref{fig:transf_state} summarizes the process of transformation.
 
@@ -674,7 +698,15 @@ Finally the figure~\ref{fig:transf_state} summarizes the process of transformati
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\section{Equivalence Classes}\label{sec:lan_theory_eq_classes}
+%\section{Equivalence Classes}\label{sec:lan_theory_eq_classes}
+\section{Classifier Language}\label{sec:lan_theory_eq_classes}
+Thus far, the method of classifying an element in terms of languages has been defined. This section focuses on the details of the classification process.
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Equivalence Classes} \label{sec:lan_theory_classifier_eq_classes}
 
 
 %---------------------------------------------------------------
@@ -881,7 +913,7 @@ The neighbourhood system is defined by grouping the swarm into clusters. Cluster
 The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
 
 %---------------------------------------------------------------
-\chapter{Classification}\label{chap:classification}
+\chapter{Classifier}\label{chap:classification}
 
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
@@ -1030,9 +1062,6 @@ As one could image, because of simplicity of the interface, there is nothing fan
 
 %---------------------------------------------------------------
 \begin{thebibliography}{1}
-    
-    \bibitem{javafx_description} \url{http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm}	
-    
     
     \bibitem{pso_origin} 
     Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.
