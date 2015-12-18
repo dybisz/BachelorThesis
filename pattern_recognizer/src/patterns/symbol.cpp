@@ -4,7 +4,30 @@
 
 #include <symbol.h>
 
+/* ------------------------------------ */
+/* ----- CONSTRUCTORS/DESTRUCTORS ----- */
+/* ------------------------------------ */
+
 Symbol::Symbol(int val) : _val(val) {}
-int Symbol::getVal(){
+Symbol::Symbol(const Symbol& s): _val(s.getVal()) {}
+
+/* ------------------------- */
+/* ----- PUBLIC/VITAL ------ */
+/* ------------------------- */
+
+int Symbol::getVal() const{
     return _val;
+}
+
+/* --------------------- */
+/* ----- AUXILIARY ----- */
+/* --------------------- */
+
+/* --------------------- */
+/* ----- OPERATORS ----- */
+/* --------------------- */
+
+bool Symbol::operator==(const Symbol &b) const
+{
+    return (this->getVal() == b.getVal() );
 }

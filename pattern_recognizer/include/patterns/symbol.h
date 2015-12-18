@@ -8,8 +8,11 @@
 class Symbol {
 public:
     Symbol(int val);
+    Symbol(const Symbol& s);
 
-    int getVal();
+    int getVal() const;
+
+    bool operator == (const Symbol &b) const;
 private:
     int _val;
 
