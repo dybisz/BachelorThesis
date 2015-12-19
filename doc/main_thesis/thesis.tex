@@ -42,6 +42,14 @@
 
 %%%%%%%%%%
 % FUNCTION:
+% classificationLanguage
+%%%%%%%%%%%
+\newcommand{\classificationLanguage}{
+    L_{C}
+}
+
+%%%%%%%%%%
+% FUNCTION:
 % transformationPrecision
 % ARGS:
 % #1 - The alphabet
@@ -142,7 +150,7 @@ Finally the architecture side of the project is introduced in chapter~\ref{ch:do
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Myhill-Nerode}
-\begin{definition}
+\begin{definition} \label{def:myhill}
     Relation induced by language $L$ is a binary relation $R_{L}$ in the set of words over alphabet of $L$ such that:
     \[
     (\forall{u,v \in \Sigma^{*}})(u R_{L} v \equiv ((\forall z \in \Sigma^{*}) uz \in L \Leftrightarrow vz \in L))
@@ -698,9 +706,53 @@ Finally the figure~\ref{fig:transf_state} summarizes the process of transformati
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-%\section{Equivalence Classes}\label{sec:lan_theory_eq_classes}
-\section{Classifier Language}\label{sec:lan_theory_eq_classes}
+\section{Classification Language}\label{sec:lan_theory_class_lan}
 Thus far, the method of classifying an element in terms of languages has been defined. This section focuses on the details of the classification process.
+
+In the previous section it was mentioned that to properly classify a word to its language, it should be included in that language and should not appear in any other. In other words, the goal in proper classification should be the optimum partitioning of set of all words over alphabet $\Sigma$. The following explains the meaning of optimum partitioning.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Optimum Partitioning}\label{sec:lan_theory_class_lan_opt_part}
+
+Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivalence classes.
+
+Let the languages $L_{1}, L_{2} \text{ and } L_{3}$ be obtained from the language transformation. The idea of optimum partitioning is to split all three languages so that they are included in three different equivalence classes. 
+
+The initial, poor, partitioning is illustrated in figure~\ref{fig:eq_classes_small_precision}. The figure presents example of three equivalence classes from possible many. The language $L_{3}$ is fully and uniquely included in the class $A_{3}$. Language $L_{1}$ partially belongs to all three classes and $L_{2}$ belongs to both $A_{2}$ and $A_{3}$. Moreover, the first issue that should be solved is the imperfect transformation precision. Namely, the intersection of languages $L_{1}$ and $L_{2}$ is not empty.
+
+First of all, the transformation lacks precision. The intersection of languages $L_{2}$ and $L_{3}$ is not empty. By
+
+Let us assume that we have three equivalence classes: $A_{1}, A_{2}, A_{3}$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_small_pt.jpg}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \label{fig:eq_classes_small_precision}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_high_pt.jpg}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \label{fig:eq_classes_high_precision}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes.jpg}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \label{fig:eq_classes}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_ideal.jpg}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages equal to their respective equivalence classes}
+    \label{fig:eq_classes_ideal}
+\end{figure}
 
 
 %---------------------------------------------------------------
