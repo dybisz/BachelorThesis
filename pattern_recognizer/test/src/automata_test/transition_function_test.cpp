@@ -16,21 +16,21 @@
 //-----------------------------------------------------------//
 
 void transitionFunctionTime();
-unsigned int compute(const Word& w, TransitionFunction* dft);
+unsigned int compute(Word& w, TransitionFunction* dft);
 
 //-----------------------------------------------------------//
 //  DEFINITIONS
 //-----------------------------------------------------------//
 
-unsigned int compute(const Word& w,
+unsigned int compute(Word& w,
                      TransitionFunction* dft){
-    int len = w.length();
+    int len = w.size();
 
     unsigned int currentState = 0;
 
     // for each symbol
     for(int i = 0; i < len; i++){
-        currentState = dft->getState(currentState, w[i]);
+        currentState = dft->getState(currentState, w(i));
     }
 
     return currentState;

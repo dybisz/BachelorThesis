@@ -78,7 +78,7 @@ namespace pso
         }
 
         double fitnessValue(Particle *p, WordsGenerator *wg,
-                            vector<int> *toolRelationResults)
+                            vector<int> *toolRelationResults) //
         {
             double count = 0;
             int pairCount = 0;

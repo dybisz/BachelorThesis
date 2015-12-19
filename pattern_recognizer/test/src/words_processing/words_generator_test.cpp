@@ -1,9 +1,5 @@
 #include <gtest/gtest.h>
 #include "words_generator.h"
-#include "word.h"
-#include "pair_of_words.h"
-#include <vector>
-#include <iostream>
 
 TEST(WordGenerator, Hamming_Distance){
     vector<int> _alphabet = {0, 1};
@@ -17,28 +13,28 @@ TEST(WordGenerator, Hamming_Distance){
 
 }
 
-TEST(WordGenerator, Constructor_Training_Set_Count){
-    vector<int> _alphabet = {0, 1};
-    int _c = 3;
-    int _trainSetCount = 30;
-    int _trainSetMexLength = 100;
-    int _testSetCount = 40;
-    int _testSetMaxLength = 200;
-    WordsGenerator _wg(_alphabet, _c, _trainSetCount, _trainSetMexLength,
-                       _testSetCount, _testSetMaxLength);
-    unsigned int _size = 30;
-    EXPECT_EQ(_size, _wg._trainingSet.size());
-}
+//TEST(WordGenerator, Constructor_Training_Set_Count){
+//    vector<int> _alphabet = {0, 1};
+//    int _c = 3;
+//    int _trainSetCount = 30;
+//    int _trainSetMexLength = 100;
+//    int _testSetCount = 40;
+//    int _testSetMaxLength = 200;
+//    WordsGenerator _wg(_alphabet, _c, _trainSetCount, _trainSetMexLength,
+//                       _testSetCount, _testSetMaxLength);
+//    unsigned int _size = 30;
+//    EXPECT_EQ(_size, _wg._trainingSet.size());
+//}
 
-TEST(WordGenerator, Constructor_Testing_Set_Count){
-    vector<int> _alphabet = {0, 1};
-    int _c = 3;
-    int _trainSetCount = 30;
-    int _trainSetMexLength = 100;
-    int _testSetCount = 40;
-    int _testSetMaxLength = 200;
-    WordsGenerator _wg(_alphabet, _c, _trainSetCount, _trainSetMexLength,
-                       _testSetCount, _testSetMaxLength);
-    unsigned int _size = 40;
-    EXPECT_EQ(_size, _wg._testingSet.size());
-}
+//TEST(WordGenerator, Constructor_Testing_Set_Count){
+//    vector<int> _alphabet = {0, 1};
+//    int _c = 3;
+//    int _trainSetCount = 30;
+//    int _trainSetMexLength = 100;
+//    int _testSetCount = 40;
+//    int _testSetMaxLength = 200;
+//    WordsGenerator _wg(_alphabet, _c, _trainSetCount, _trainSetMexLength,
+//                       _testSetCount, _testSetMaxLength);
+//    unsigned int _size = 40;
+//    EXPECT_EQ(_size, _wg._testingSet.size());
+//}

@@ -1,53 +1,73 @@
 //
-// Created by dybisz on 11/13/15.
+// Created by dybisz on 17.12.15.
 //
 
-#ifndef AC_WORD_H
-#define AC_WORD_H
+#ifndef BACHELOR_THESIS_FEATURE_VECTOR_H
+#define BACHELOR_THESIS_FEATURE_VECTOR_H
 
 #include <vector>
-#include <iostream>
 #include <string>
-#include "utils.h"
+#include <iostream>
+#include <stdexcept>
+#include "symbol.h"
 
 using namespace std;
 
-/*
- * Due to the fact, that project focuses on words, something more flexible
- * and transparent was needed Instead of vector of integers. Class provides
- * overloaded operators, along with different ways of creating words.
- * One can also get length, clear words or convert it into string.
+/**
+ * There is only one reason for this class: manipulating features stored in
+ * the vector.
  */
 class Word {
-private:
-    // Contains actual word. Nothing more than a sequenc of integers.
-    // No need to allow user to use it publicaly - apppropriate
-    // operators have been provided to access its content.
-    vector<int> _entries;
-
 public:
-    // User can either make empty word and append letter by letter to it
-    // or create one based on provided data structure. Available ones
-    // (for now) are vector and array of integers.
+
+    // Feature vector can be created:
+    // 1) Empty.
+    // 2) From provided vectors of integers.
+    // 3) From vector of Symbol class objects
+    // 4) From vector of pointers to Symbol class objects
     Word();
-    Word(vector<int> word);
-    Word(int word[]);
+    Word(const vector<int> &entries);
+    Word(const vector<Symbol> &entries);
+    Word(const vector<Symbol*> &entries);
 
-    // Appends one symbol at the end of the word.
+    // Entries of the vector are pointers to Symbol class, hence all must
+    // be handled when vector is being destroyed.
+    ~Word();
+
+    // Instead of using operators, one can explicitly call one of the
+    // following methods to append symbols. First one will create object
+    // of Symbol class, which is very convenient when it comes to pointers.
+    // Second one will work on created pointer to Symbol class and destroy
+    // it after work isi finished, hence no outside deletion is needed.
     void appendSymbol(int symbol);
+    void appendSymbol(Symbol* symbol);
 
-    // Auxiliary methods for user convenient:
-    // getting up to date length, clearing all symbols in the words
-    // and converting it to the string (usefull in debugging process).
-    int length() const;
-    void clear();
-    string toString();
+    // Auxiliary methods, which definition is selfexplanatory regarding
+    // their names.
+    int size() const;
+    string toString() const;
+    Symbol* getSymbol(int i) const;
 
-    // Two type of access operators have been overloaded:
-    // first make a copy of some particular entry of index i,
-    // second one returns reference to the entry.
-    int operator[](int i) const;
-    int &operator[](int i);
+    // Overloaded operators and their purpose:
+    // 1) []    accessing i'th symbol in the vector. Returns pointer to
+    //          Symbol class, to avoid inefficient copying.
+    // 2) ()    accessing value of i'th symbol in the vector. It might be
+    //          useful e.g. when simple checking is needed instead of
+    //          operations on Symbol object.
+    // 3) +     appends symbol at the end of the vector. It is more compact
+    //          than explicitly calling appendSymbol(). Two versions:
+    //          with int and Symbol*, provides flexibility.
+    // 4) ==    Compares entries of two feature vectors and if the are the
+    //          same returns true, otherwise false is returned.
+    Symbol* operator[](int i);
+    int operator()(int i);
+    void operator+(const int& a);
+    void operator+(Symbol* a);
+    bool operator == (const Word &b) const;
+
+private:
+    vector<Symbol*> _entries;
 };
 
-#endif //ACPROJECT_WORD_H
+
+#endif //BACHELOR_THESIS_FEATURE_VECTOR_H

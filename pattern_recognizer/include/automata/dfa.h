@@ -95,7 +95,7 @@ public:
      * Computes the given word.
      * Returns a state that automaton finished in
      */
-    int compute(const Word& w) const;
+    int compute(Word& w) const;
 
     //-----------------------------------------------------------//
     //  OPERATORS

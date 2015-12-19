@@ -6,7 +6,7 @@
 
 namespace automata
 {
-    bool isInRelationInduced(const DFA &dfa, const Word &w1, const Word &w2){
+    bool isInRelationInduced(const DFA &dfa,  Word &w1, Word &w2){
         int state1 = dfa.compute(w1);
         int state2 = dfa.compute(w2);
 

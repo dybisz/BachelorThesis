@@ -99,14 +99,14 @@ const unsigned int&DFA::getInitialState() const{
     return this->initialState;
 }
 
-int DFA::compute(const Word& w) const{
-    int len = w.length();
+int DFA::compute(Word& w) const{
+    int len = w.size();
 
     int currentState = initialState;
 
     // for each symbol
     for(int i = 0; i < len; i++){
-        currentState = transitionFunction->getState(currentState, w[i]);
+        currentState = transitionFunction->getState(currentState, w(i));
     }
 
     return currentState;

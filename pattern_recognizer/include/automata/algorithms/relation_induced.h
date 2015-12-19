@@ -10,7 +10,7 @@
 
 namespace automata
 {
-    bool isInRelationInduced(const DFA &dfa, const Word &w1, const Word &w2);
+    bool isInRelationInduced(const DFA &dfa, Word &w1,  Word &w2);
 }
 
 #endif //AC_RELATION_INDUCED_H

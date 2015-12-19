@@ -131,7 +131,7 @@ vector<Word*> WordsGenerator::_parseWords(ifstream & infile) {
       _word->appendSymbol(stoi(s));
     }
 
-    if(_word->length() !=0) words.push_back(_word);
+    if(_word->size() !=0) words.push_back(_word);
   }
 
   // for(int i = 0 ; i < words.size(); i++) {
@@ -251,7 +251,7 @@ vector<Word> WordsGenerator::_getWordsOfSizeN(vector<Word> _wordsList, int n) {
     vector<Word> wordsOfSizeN;
     for(unsigned int word = 0; word < _wordsList.size(); word++) {
         Word w = _wordsList[word];
-        if(w.length() == n) {
+        if(w.size() == n) {
             wordsOfSizeN.push_back(w);
         }
     }
@@ -273,12 +273,12 @@ vector<Word> WordsGenerator::_createRandomWordsOfLengthInInterval(int min, int m
 int WordsGenerator::hammingDistance(Word w1, Word w2) const {
     int distance = 0;
 
-    if (w1.length() != w2.length()) {
+    if (w1.size() != w2.size()) {
         throw invalid_argument("words have different lengths!");
     }
 
-    for (int i = 0; i < w1.length(); i++) {
-        if (w1[i] != w2[i]) {
+    for (int i = 0; i < w1.size(); i++) {
+        if (w1(i) != w2(i)) {
             distance++;
         }
     }

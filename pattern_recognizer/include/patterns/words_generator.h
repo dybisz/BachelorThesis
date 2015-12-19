@@ -8,7 +8,6 @@
 #include <stdexcept>
 #include "logger.h"
 #include "global_settings.h"
-#include "bag_of_words.h"
 #include "word.h"
 #include "utils.h"
 #include "pair_of_words.h"
