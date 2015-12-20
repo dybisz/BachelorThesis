@@ -1,17 +1,17 @@
 #include <gtest/gtest.h>
 #include "words_generator.h"
 
-TEST(WordGenerator, Hamming_Distance){
-    vector<int> _alphabet = {0, 1};
-    vector<int> _w1Vec = {0, 1, 0, 1 ,1 , 1};
-    vector<int> _w2Vec = {0, 0, 0, 1 ,0 , 1};
-    Word _w1(_w1Vec);
-    Word _w2(_w2Vec);
-
-    WordsGenerator _wg(_alphabet);
-    EXPECT_EQ(2, _wg.hammingDistance(_w1, _w2));
-
-}
+//TEST(WordGenerator, Hamming_Distance){
+//    vector<int> _alphabet = {0, 1};
+//    vector<int> _w1Vec = {0, 1, 0, 1 ,1 , 1};
+//    vector<int> _w2Vec = {0, 0, 0, 1 ,0 , 1};
+//    Word _w1(_w1Vec);
+//    Word _w2(_w2Vec);
+//
+//    WordsGenerator _wg(_alphabet);
+//    EXPECT_EQ(2, _wg.hammingDistance(_w1, _w2));
+//
+//}
 
 //TEST(WordGenerator, Constructor_Training_Set_Count){
 //    vector<int> _alphabet = {0, 1};

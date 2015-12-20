@@ -13,16 +13,16 @@
 
 using namespace std;
 
-/**
- * There is only one reason for this class: manipulating features stored in
- * the vector.
+/*
+ * Created mainly for abstraction level maintaining. It allows user to
+ * access and manipulate word representation in a convenient way.
  */
 class Word {
 public:
 
     // Feature vector can be created:
     // 1) Empty.
-    // 2) From provided vectors of integers.
+    // 2) From provided vectors of integers - WARNING: copy will be created
     // 3) From vector of Symbol class objects
     // 4) From vector of pointers to Symbol class objects
     Word();
@@ -57,7 +57,7 @@ public:
     // 3) +     appends symbol at the end of the vector. It is more compact
     //          than explicitly calling appendSymbol(). Two versions:
     //          with int and Symbol*, provides flexibility.
-    // 4) ==    Compares entries of two feature vectors and if the are the
+    // 4) ==    Compares entries of two words vectors and if the are the
     //          same returns true, otherwise false is returned.
     Symbol* operator[](int i);
     int operator()(int i);

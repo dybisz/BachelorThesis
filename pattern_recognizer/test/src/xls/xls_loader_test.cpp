@@ -3,18 +3,19 @@
 //
 
 #include <gtest/gtest.h>
+#include <iostream>
 #include <string>
 #include "xls_loader.h"
-
+//#include <debug_new.h>
 
 using namespace std;
 
-string DATA_PATH = "./src/xls/example.xls";
+string DATA_PATH = "./src/xls/Natives.xls";
 
+// not much to testing for now
 TEST(XlsLoaderTest, Read_Data){
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH);
 
-
-    xlsLoader = NULL;
     delete xlsLoader;
 }
+

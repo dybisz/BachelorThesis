@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <features_vector.h>
-
+//#include <debug_new.h>
 using namespace std;
 
 TEST(FeatureVectorTest, Constructor_From_Doubles_Vector) {

@@ -50,14 +50,14 @@ MAKE_EXTERNAL = $(GTEST_ROOT)/make/
 
 # Paths and names of libraries to link with
 LIBS += $(GTEST_ROOT)/make/gtest_main.a -lpthread \
-        -L ../lib/libxls/lib64/ -lxl -Wl,-rpath,../lib/libxls/lib64/
-	
+        -L ../lib/excel_format/ExcelFormat.so
+
 
 #----------------- INCLUDES -------------------#
 
 # Paths to all Includes
 INCLUDES += -I $(GTEST_ROOT)/include \
-			-I ../lib/libxls/include_cpp/
+			-I ../lib/excel_format/ \
 
 #------------------- FLAGS --------------------#
 

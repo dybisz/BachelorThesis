@@ -1,40 +1,41 @@
 //
-// Created by dybisz on 17.12.15.
+// Created by dybisz on 19.12.15.
 //
 
-#include <symbol.h>
+#include <state.h>
 
 /* ------------------------------------ */
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
 /* ------------------------------------ */
 
-Symbol::Symbol(int val) : _val(val) {}
-Symbol::Symbol(const Symbol& s): _val(s.getVal()) {}
+State::State(int val) : _val(val) {}
+State::State(const State& s): _val(s.getVal()) {}
 
 /* ------------------------- */
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-int Symbol::getVal() const{
+int State::getVal() const{
     return _val;
+}
+
+string State::toString() const{
+    return to_string(_val);
 }
 
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */
 
-string Symbol::toString() {
-    return to_string(this->getVal());
-}
 /* --------------------- */
 /* ----- OPERATORS ----- */
 /* --------------------- */
 
-bool Symbol::operator==(const Symbol &b) const
+bool State::operator==(const State &b) const
 {
     return (this->getVal() == b.getVal() );
 }
 
-bool Symbol::operator == (const int &b) const {
+bool State::operator == (const int &b) const {
     return (this->getVal() == b);
 }

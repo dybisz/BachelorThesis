@@ -5,6 +5,10 @@
 #ifndef BACHELOR_THESIS_SYMBOL_H
 #define BACHELOR_THESIS_SYMBOL_H
 
+#include <string>
+
+using namespace std;
+
 /*
  * Class created to preserve level of abstraction i.e. to prevent
  * using raw integers as symbols. In addition, it provides various
@@ -21,12 +25,13 @@ public:
     // Auxiliary methods, which definition is selfexplanatory regarding
     // their names.
     int getVal() const;
+    string toString();
 
     // Overloaded operators and their purpose:
     // 1) ==    Compares values of two symbol and if the are the
     //          same returns true, otherwise false is returned.
     //          For user convenience, beside Symbol-to-Symbol
-    //          comparision, there is possibility to Symbol-to-Integer check.
+    //          comparison, there is possibility to Symbol-to-Integer check.
     bool operator == (const Symbol &b) const;
     bool operator == (const int &b) const;
 private:

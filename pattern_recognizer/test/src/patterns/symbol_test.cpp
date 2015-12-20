@@ -3,7 +3,7 @@
 //
 #include <gtest/gtest.h>
 #include <symbol.h>
-
+//#include <debug_new.h>
 TEST(SymbolTest, Constructor_From_Integer) {
     Symbol* s1 = new Symbol(1);
     EXPECT_EQ(1, (*s1).getVal());

@@ -5,6 +5,7 @@
 #include <gtest/gtest.h>
 #include <algorithms/automata_algs.h>
 #include <map>
+//#include <debug_new.h>
 
 //-----------------------------------------------------------//
 //  DECLARATIONS

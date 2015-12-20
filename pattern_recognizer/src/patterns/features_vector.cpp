@@ -25,6 +25,10 @@ void FeaturesVector::appendSymbol(double symbol){
     _entries.push_back(symbol);
 }
 
+void FeaturesVector::setEntry(int i, double val) {
+    _entries[i] = val;
+}
+
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */
@@ -74,3 +78,4 @@ bool FeaturesVector::operator == (const FeaturesVector &b) const {
 
     return areTheSame;
 }
+

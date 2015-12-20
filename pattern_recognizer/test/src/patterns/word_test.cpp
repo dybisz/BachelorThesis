@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include "word.h"
 #include <symbol.h>
-
+//#include <debug_new.h>
 using namespace std;
 
 TEST(WordTest, Constructor_From_Symbols_Pointers) {

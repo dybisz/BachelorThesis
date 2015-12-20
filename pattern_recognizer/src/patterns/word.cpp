@@ -64,6 +64,7 @@ string Word::toString() const{
     for (auto it = _entries.begin() ; it != _entries.end(); ++it)
     {
         out += to_string(((*it)->getVal()));
+        out += " ";
     }
     return out;
 }

@@ -144,7 +144,7 @@ MAKE_EXTERNAL =
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -lpthread -L ./lib/libxls/lib64/ -lxl -Wl,-rpath,./lib/libxls/lib64/ \
+LIBS += -lpthread -L ./lib/excel_format/ExcelFormat.so \
 # -L /opt/cuda/lib64 \
 #		-L /usr/local/cuda/lib64 \
 #		-lGL -lglut -lGLEW -lcudart -lcuda \
@@ -156,7 +156,7 @@ LIBS += -lpthread -L ./lib/libxls/lib64/ -lxl -Wl,-rpath,./lib/libxls/lib64/ \
 INCLUDES += -I /usr/local/cuda/include \
 			-I /opt/cuda/include \
 			-I ${GRAPHVIZ_ROOT}/include \
-			-I ./lib/libxls/include_cpp/
+			-I ./lib/excel_format/ \
 
 #------------------- FLAGS --------------------#
 

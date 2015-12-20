@@ -11,11 +11,11 @@
 //
 
 #include <gtest/gtest.h>
-#include "libxl.h"
-
+//#include <debug_new.h>
+#include "ExcelFormat.h"
 
 using namespace std;
-using namespace libxl;
+using namespace ExcelFormat;
 
 const char* FILE_PATH = "./src/xls/example.xls";
 
@@ -25,26 +25,6 @@ const char* FILE_PATH = "./src/xls/example.xls";
  * and reading variables works correctly.
  */
 TEST(LibXlsTest, Open_XLS_File){
-    Book* book = xlCreateBook();
-    int hasBeenOpened = -1;
 
-    if(book) {
-        if (book->load(FILE_PATH)) {
-            Sheet *sheet = book->getSheet(0);
-            if (sheet) {
-                double d = sheet->readNum(0, 0);
-                EXPECT_EQ(4, d);
-                d = sheet->readNum(0, 1);
-                EXPECT_EQ(5, d);
-                d = sheet->readNum(2, 2);
-                EXPECT_EQ(3, d);
-                d = sheet->readNum(1, 0);
-                EXPECT_EQ(1, d);
-                hasBeenOpened++;
-            }
-        }
-        book->release();
-    }
-    EXPECT_EQ(0, hasBeenOpened);
 }
 
