@@ -40,7 +40,7 @@ BIN = bin
 #------------- EXTERNAL MAKEFILES -------------#
 
 # Paths to the Makefiles to be ran before this Makefile.
-# Default target will be executed. (TODO verify this)
+# Default target will be executed.
 # Can be used to compile your static libraries before linking.
 # Surrounded the path with '...' and separate different paths
 # with a space.
