@@ -3,6 +3,7 @@
 //
 
 #include <pattern.h>
+#include <stdexcept>
 
 /* ------------------------------------ */
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */

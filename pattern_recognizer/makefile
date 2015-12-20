@@ -144,7 +144,7 @@ MAKE_EXTERNAL =
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -lpthread -L ./lib/excel_format/ExcelFormat.so \
+LIBS += -lpthread ./lib/excel_format/ExcelFormat.so \
 # -L /opt/cuda/lib64 \
 #		-L /usr/local/cuda/lib64 \
 #		-lGL -lglut -lGLEW -lcudart -lcuda \
