@@ -716,15 +716,11 @@ In the previous section it was mentioned that to properly classify a word to its
 %---------------------------------------------------------------
 \subsection{Optimum Partitioning}\label{sec:lan_theory_class_lan_opt_part}
 
-Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivalence classes.
+Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivalence classes. In other words, equivalence classes are disjoint sets of words. Thus having an equivalence class which classifies a word to its respective language, could make for a very convenient classification tool.
 
 Let the languages $L_{1}, L_{2} \text{ and } L_{3}$ be obtained from the language transformation. The idea of optimum partitioning is to split all three languages so that they are included in three different equivalence classes. 
 
-The initial, poor, partitioning is illustrated in figure~\ref{fig:eq_classes_small_precision}. The figure presents example of three equivalence classes from possibly many. The language $L_{3}$ is fully and uniquely included in the class $A_{3}$. Language $L_{1}$ partially belongs to all three classes and $L_{2}$ belongs to both $A_{2}$ and $A_{3}$. Moreover, the first issue that should be solved is the imperfect transformation precision. Namely, the intersection of languages $L_{1}$ and $L_{2}$ is not empty. Figure~\ref{fig:eq_classes_high_precision} shows the same partitioning for higher transformation precision. At this point, all three languages are disjoint but they also share a common class $A_{3}$. If we were to classify a word based on which equivalence class it belongs to  
-
-one was to classify a word based on which equivalence class it belongs to
-
-Let us assume that we have three equivalence classes: $A_{1}, A_{2}, A_{3}$.
+The initial, poor, partitioning is illustrated in figure~\ref{fig:eq_classes_small_precision}. The figure presents example of three equivalence classes from possibly many. The language $L_{3}$ is fully and uniquely included in the class $A_{3}$. Language $L_{1}$ partially belongs to all three classes and $L_{2}$ belongs to both $A_{2}$ and $A_{3}$. Moreover, the first issue that should be addressed is the imperfect transformation precision. Namely, the intersection of languages $L_{1}$ and $L_{2}$ is not empty.
 
 \begin{figure}[H]
     \centering
@@ -733,12 +729,16 @@ Let us assume that we have three equivalence classes: $A_{1}, A_{2}, A_{3}$.
     \label{fig:eq_classes_small_precision}
 \end{figure}
 
+Figure~\ref{fig:eq_classes_high_precision} shows the same partitioning for higher transformation precision. At this point, all three languages are disjoint but they also share a common class $A_{3}$. Assume that words that fall into $A_{1}$ are considered to be classified to $L_{1}$, similarly with $A_{2}$ for $L_{2}$ and $A_{3}$ for $L_{3}$. Thus having the languages included only partially in their respective classes make for a possible error in classification.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_high_pt.jpg}
     \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
     \label{fig:eq_classes_high_precision}
 \end{figure}
+
+The next improvement of partitioning is presented in figure~\ref{fig:eq_classes}. All languages are included in only their own respective classes. Words included in class $A_{1}$ will be classified to $L_{1}$. Thus in such a partitioning if words from $L_{1}$ were to be classified to $A_{1}$ then they would be necessarily classified correctly. The same applies to the other two languages. Although, a problem arises when words being classified belong to no particular language and thus are foreign. To maintain good quality of classification process, these words are not supposed to be classified to any of the three equivalence classes. Unfortunately, the classes might be very big, in fact, much bigger than the languages. Thus there are possibly many words that do not describe any particular object, which might be incorrectly classified as one. 
 
 \begin{figure}[H]
     \centering
@@ -747,12 +747,16 @@ Let us assume that we have three equivalence classes: $A_{1}, A_{2}, A_{3}$.
     \label{fig:eq_classes}
 \end{figure}
 
+Finally, the figure~\ref{fig:eq_classes_ideal} presents the example of ideal partitioning for three languages. The space of classes and languages are equal, thus all words will be correctly classified.
+
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_ideal.jpg}
     \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages equal to their respective equivalence classes}
     \label{fig:eq_classes_ideal}
 \end{figure}
+
 
 
 %---------------------------------------------------------------
