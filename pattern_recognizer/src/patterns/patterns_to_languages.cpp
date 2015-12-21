@@ -42,8 +42,8 @@ vector<Interval *> patterns_to_languages::_calculateFeaturesIntervals(
         for (auto iter = pPatterns->begin(); iter != pPatterns->end(); ++iter) {
 
             // Gather min.max values from particular pattern
-            int localMin = (*iter)->getFeatureMin(feature);
-            int localMax = (*iter)->getFeatureMax(feature);
+            double localMin = (*iter)->getFeatureMin(feature);
+            double localMax = (*iter)->getFeatureMax(feature);
 
             // Check conditions
             if (localMin < min) min = localMin;
