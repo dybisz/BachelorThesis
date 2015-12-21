@@ -502,21 +502,102 @@ Those pixels can be though of as a vector of length 400, where entries are value
 
 One of the most effective solutions would be to provide our algorithm with large amount of such digits images to tune parameters of adaptive model. Such a set of images is called training set and the stage is known as a training phase. In it also a common practice to preprocess images to reduce dimensionality. For example if we would assume that our algorithm must run in real-time, processing large amount of pixels would be computationally inefficient. One of the mostly used technique assumes that one should consider only some of the images features. Features should be quick to compute and represent information that varies between images, hence can be used to discriminate between them. It is worth stressing out that preprocessing stage is crucial for overall system accuracy.
 
+
 \subsection{Types of Learning}
 One can distinguish between 3 main approaches to the learning procedure: supervised, unsupervised and semi-supervised. Following paragraphs will discuss them briefly - just to grab the idea.
 
-\begin{wrapfigure}{r}{0.4\textwidth}
+\begin{wrapfigure}{l}{0.4\textwidth}
   \begin{center}
-    \includegraphics[width=0.55\textwidth]{images/patt_rec_diagram.png}
+    \includegraphics[width=0.55\textwidth]{images/supervised_graph.png}
   \end{center}
-  \caption{Classification flow.}
+  \caption{Labeled data}
   \label{fig:handwritten_ex}
 \end{wrapfigure}
 
-Supervised learning basically corresponds to processing data with a priori knowledge about its types. As in example from previous section, one is in possession of knowledge about types of digits. As said before algorithm must label input data as one of the following digits: 0, 1, 2, 3, 4, 5, 6, 7, 8 or 9. No other types are considered and all are known, hence the example is of supervised type. Process of assigning input data to discrete categories is called classification. In case of continuous variables we are calling it a regression.
 
+\textbf{Supervised Learning} basically corresponds to processing data with a priori knowledge about its types. As in example from previous section, one is in possession of knowledge about types of digits. As said before algorithm must label input data as one of the following digits: 0, 1, 2, 3, 4, 5, 6, 7, 8 or 9. No other types are considered and all are known, hence the example is of supervised type. One can distinguish two approaches, based on type of input data:
+\begin{itemize}
+  \item Classification - assign discrete input data to discrete categories
+  \item Regression - assign continuous input data to discrete categories.
+\end{itemize}
 
+\begin{wrapfigure}{l}{0.4\textwidth}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{images/unsupervised_graph.png}
+  \end{center}
+  \caption{Unlabeled data.}
+  \label{fig:handwritten_ex}
+\end{wrapfigure}
 
+\textbf{Unsupervised Learning} copes with problems where there is lack of data labeling. We would for example consider our leading example as unsupervised if algorithm would be supplied only with pixel vectors with no associations to numbers they representing. The goal of unsupervised algorithm may vary from case to case, but can generally it considers following problems:
+
+\begin{itemize}
+  \item Clustering - discovering group of similar objects within data.
+  \item Density Estimation - determine distribution over input space.
+  \item Visualization - project from high-dimensions data to three dimensions, for the purpose of visualization
+\end{itemize}
+
+\begin{wrapfigure}{l}{0.4\textwidth}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{images/semi_supervised_graph.png}
+  \end{center}
+  \caption{Labeled and unlabeled data.}
+  \label{fig:handwritten_ex}
+\end{wrapfigure}
+
+\textbf{Semi-Supervised Learning} The goal of semi-supervised learning is to understand how combining labeled and unlabeled data may change the learning behavior, and design algorithms that take advantage of such a combination \cite{semi_supervised}. Often label instances are difficult, expensive, or time consuming to obtain, as they require the efforts of experienced human annotators. Because semi-it requires less human effort and gives higher accuracy, it is of great interest both in theory and in practice \cite{semi_supervised2}.
+
+\pagebreak
+%-------------------------------------------------------------------
+\subsection{Quality Evaluation}\label{evaluation}
+For better understanding of how quality of classification should be measured we adopt parameters and quality measures used in signal detection theory. Since these parameters are widely utilized, we do not refer to original sources here. The following parameters were used in defining several measures outlining classification's quality. These parameters create so called confusion matrix, which is given in Table~\ref{tab:conf_matrix}. The parameters given in the matrix are numbers of elements of a~testing set which have the following meaning:
+\begin{itemize}
+  \item $TP$ - the number of elements of the considered class correctly classified to this class,
+  \item $FN$ - the number of elements of the considered class incorrectly classified to other classes,  
+  \item $FP$ - the number of elements of other classes incorrectly classified to the considered class,  
+  \item $TN$ - the number of elements of other classes correctly classified to other classes (no matter, if correctly, or not).  
+\end{itemize}  
+
+\begin{table}[H]
+\vspace{-9pt}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+  & & \vspace{-6pt}\\
+  & \hspace{12pt}Classification to the class\hspace{12pt} & \hspace{3pt}Classification to other classes\hspace{3pt} \\
+  & & \vspace{-6pt}\\
+\hline 
+  & & \vspace{-6pt}\\
+  The class & True Positivse (TP) & False Negatives (FN) \\
+  & & \vspace{-6pt}\\
+\hline
+  & & \vspace{-6pt}\\
+  \hspace{3pt}Other classes\hspace{3pt} & False Positives (FP) &  True Negatives (TN)\vspace{3pt}\\
+\hline
+\end{tabular}
+\vspace{9pt}
+\caption{Confiusion matrix for rejecting in pattern recognition problem}
+\label{tab:conf_matrix}
+\end{table}
+
+The following measures were used assess the quality of the classifier:
+%\begin{flalign}
+\begin{eqnarray}
+  \textnormal{Accuracy}    & = &   \displaystyle\frac{\textnormal{TP+TN}}{\textnormal{TP+FN+FP+TN}}\nonumber\\
+  \textnormal{Sensitivity} &\;=\;& \displaystyle\frac{\textnormal{TP}}{\textnormal{TP+FN}}\nonumber\\
+  \textnormal{Precision}   & = &   \displaystyle\frac{\textnormal{TP}}{\textnormal{TP+FP}}\nonumber\\
+  \textnormal{F--measure}  &\;=\;& 2\cdot\frac{\mbox{Precision}\cdot\mbox{Sensitivity}}{\mbox{Precision}+\mbox{Sensitivity}}
+\end{eqnarray}
+
+The following comments help to understand remaining of characteristics:
+
+\begin{itemize}
+  \item Accuracy is the measure of the rejecting performance. This measure describes the ability to distinguish between native and foreign elements. Of course, the higher the value of this measure, the better the identification.
+  \item Precision is the ratio of the number of not rejected native elements to the number of all elements (native and foreign) not rejected. Precision evaluates the rejection ability to separate foreign elements from native ones. The higher the value of this measure, the better ability to distinguish foreign elements from native ones.
+  \item Sensitivity is the ratio of the number of not rejected native elements to the number of all native ones. This measure evaluates the rejection ability to identify native elements. The higher the value of Sensitivity, the more effective identification of native elements. Unlike the Precision, this measure does not evaluate the effectiveness of separation between native and foreign elements. The higher the value of this measure, the better ability to identify native elements.
+  \item Precision and Sensitivity are complementary: increasing sensitivity can cause a drop in precision since, along with increasing the number of not rejected native elements, there might be more not rejected foreign ones. It is there to express the balance between precision and sensitivity since, in practice, these two affect each other. There exists yet another characteristic that combines them: the \mbox{F--measure}. The higher the value of this measure, the better balance between identification of native elements along with separation native elements from foreign ones.
+\end{itemize}
+It is worth to say that other measures characterizing rejection quality can be invented, cf.~\cite{Homenda_2014}, but they are derivations from defined above.  
 
 %---------------------------------------------------------------
 \chapter{Language Theory} \label{chap:lan_theory}
@@ -1181,6 +1262,10 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     \bibitem{bishop_book} Christopher M. Bishop; Pattern Recognition and Machine Learning (Information Science and Statistics)
     
+	\bibitem{Homenda_2014} Homenda W., Luckner M., Pedrycz W., Classification with rejection based on various SVM techniques, Proceedings of the WCCI 2014 IEEE World Congress on Computational Intelligence, pp. 3480-3487, Beijing, China, 2014     
+    
+	\bibitem{semi_supervised} Xiaojin Zhu and Andrew B.Goldberg, Synthesis Lectures on Artificial Intelligence and Machine Learning, 2009, Vol. 3, No. 1 , Pages 1-130    
+    \bibitem{semi_supervised2} Xiaojin Zhu, Semi-Supervised Learning Literature Survey, 2006
 \end{thebibliography}
 
 
