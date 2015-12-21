@@ -1110,6 +1110,18 @@ The computation finishes after $t_{max}$ iterations or after finding a satisfact
 %---------------------------------------------------------------
 \chapter{Classifier}\label{chap:classification}
 
+In this chapter, each step of building the classifier is summarized and explicitly described.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Building the Classifier}\label{sec:classification_transf_step}
+Given the input set of objects, the first step is to transform each object into a language. Transformation step also included choosing a proper number of symbols in the alphabet. The transformation precision is to be selected empirically.
+
+The next step includes selecting the correspondence between states and transformed languages. Together with input labeled data, the classifier will ask to select number of states that will correspond to a specific label. Notice that each label might take different number of states. Similarly, number of states for foreign elements will also be selected. The correspondence is also selected empirically.
+
+Thus far, the alphabet and set of states have been chosen. Set of languages have been transformed and the correspondence between them and states have been established. The process now turns to the stochastic algorithm of PSO. It will look for the most optimal automaton which minimizes the error of incorrectly classified words.
+
+
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
 
