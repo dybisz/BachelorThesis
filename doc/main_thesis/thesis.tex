@@ -490,7 +490,7 @@ The field of pattern recognition is concerned with the automatic discovery of re
 
 Best example to start with, are hand written digits. Let us consider figure \ref{fig:handwritten_ex}. It presents set of digits created by user manually. Images are binary i.e. pixel saturation is either none (black color) or maximal (white ones) - no other values are present. Each digit is bounded in $20 \times 20$ box, hence it occupies 400 pixels. 
 
-Those pixels can be though of as a vector of length 400, where entries are values of consecutive pixels. The goal is to create algorithm, which takes such a vector and produce output telling, what number has been provided. In our example, such a program would accept vector of 400 pixels and output one of the following values: 0, 1, 2, 3, 4, 5, 6, 7, 8 or 10. Since there are vast amount of writing styles and more or less each one of us uses pen in a different way, approach to the problem is not straight forward.
+Those pixels can be though of as a vector of length 400, where entries are values of consecutive pixels. The goal is to create algorithm, which takes such a vector and produce output telling, what number has been provided. In our example, such a program would accept vector of 400 pixels and output one of the following values: 0, 1, 2, 3, 4, 5, 6, 7, 8 or 9. Since there are vast amount of writing styles and more or less each one of us uses pen in a different way, approach to the problem is not straight forward. 
 
 \begin{wrapfigure}{r}{0.5\textwidth}
   \begin{center}
@@ -500,7 +500,22 @@ Those pixels can be though of as a vector of length 400, where entries are value
   \label{fig:handwritten_ex}
 \end{wrapfigure}
 
-One of the most effective solutions would be to provide our algorithm with large amount of such digits images to tune parameters of adaptive model. Such a set of images is called training set and the stage is known as a training phase. In it also a common practice to preprocess images to reduce dimensionality. For example if we would assume that our algorithm must run in real-time, processing large amount of pixels would be computationally inefficient. One of the mostly used technique assumes that one should consider only some of the images features. Features should be quick to compute and represent information that varies between images, hence can be used to discriminate between them.
+One of the most effective solutions would be to provide our algorithm with large amount of such digits images to tune parameters of adaptive model. Such a set of images is called training set and the stage is known as a training phase. In it also a common practice to preprocess images to reduce dimensionality. For example if we would assume that our algorithm must run in real-time, processing large amount of pixels would be computationally inefficient. One of the mostly used technique assumes that one should consider only some of the images features. Features should be quick to compute and represent information that varies between images, hence can be used to discriminate between them. It is worth stressing out that preprocessing stage is crucial for overall system accuracy.
+
+\subsection{Types of Learning}
+One can distinguish between 3 main approaches to the learning procedure: supervised, unsupervised and semi-supervised. Following paragraphs will discuss them briefly - just to grab the idea.
+
+Supervised learning basically corresponds to processing data with a priori knowledge about its types. As in example from previous section, one is in possession of knowledge about types of digits. 
+\begin{wrapfigure}{r}{0.4\textwidth}
+  \begin{center}
+    \includegraphics[width=0.55\textwidth]{images/patt_rec_diagram.png}
+  \end{center}
+  \caption{Classification flow.}
+  \label{fig:handwritten_ex}
+\end{wrapfigure}
+As said before algorithm must label input data as one of the following digits: 0, 1, 2, 3, 4, 5, 6, 7, 8 or 9. No other types are considered and all are known, hence the example is of supervised type. Process of assigning input data to discrete categories is called classification. In case of continuous variables we are calling it a regression.
+
+
 
 %---------------------------------------------------------------
 \chapter{Language Theory} \label{chap:lan_theory}
