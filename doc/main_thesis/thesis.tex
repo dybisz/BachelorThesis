@@ -481,10 +481,33 @@ It is worth mentioning, that in such decoding the information about accepting st
 %---------------------------------------------------------------
 \chapter{Pattern Recognition} \label{chap:patt_rec}
 
+Chapter provides brief introduction to pattern recognition discipline . Via various examples, it tries to supply reader with general intuition about subject. 
+
+
+\subsection{Basics}
+
+The field of pattern recognition is concerned with the automatic discovery of regularities in data through the use of computer algorithms and with the use of these regularities to take actions such as classifying the data into different categories \cite{bishop_book}.
+
+Best example to start with, are hand written digits. Let us consider figure \ref{fig:handwritten_ex}. It presents set of digits created by user manually. Images are binary i.e. pixel saturation is either none (black color) or maximal (white ones) - no other values are present. Each digit is bounded in $20 \times 20$ box, hence it occupies 400 pixels. 
+
+Those pixels can be though of as a vector of length 400, where entries are values of consecutive pixels. The goal is to create algorithm, which takes such a vector and produce output telling, what number has been provided. In our example, such a program would accept vector of 400 pixels and output one of the following values: 0, 1, 2, 3, 4, 5, 6, 7, 8 or 10. Since there are vast amount of writing styles and more or less each one of us uses pen in a different way, approach to the problem is not straight forward.
+
+\begin{wrapfigure}{r}{0.5\textwidth}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{images/handwritten_digits_example.png}
+  \end{center}
+  \caption{Example of $20 \times 20$ handwritten digits.}
+  \label{fig:handwritten_ex}
+\end{wrapfigure}
+
+One of the most effective solutions would be to provide our algorithm with large amount of such digits images to tune parameters of adaptive model. Such a set of images is called training set and the stage is known as a training phase. In it also a common practice to preprocess images to reduce dimensionality. For example if we would assume that our algorithm must run in real-time, processing large amount of pixels would be computationally inefficient. One of the mostly used technique assumes that one should consider only some of the images features. Features should be quick to compute and represent information that varies between images, hence can be used to discriminate between them.
 
 %---------------------------------------------------------------
 \chapter{Language Theory} \label{chap:lan_theory}
+
 The content discussed thus far, presented pattern recognition as a general problem. This chapter is considered to be a bridge between the pattern recognition world and the language and automata theory. We propose a set of procedures which help in reducing the classical problem of classification into a language theory problem. By doing so, we will be able to benefit from the prosperous theory of languages and automata.
+
+
 
 The chapter begins with element and object transformations into words and languages, respectively.
 
@@ -1136,6 +1159,7 @@ As one could image, because of simplicity of the interface, there is nothing fan
     \bibitem{pso_11}
     M. Clerc. (2011). Standard Particle Swarm Optimisation Available: http://hal.archives-ouvertes.fr/hal-00764996 
     
+    \bibitem{bishop_book} Christopher M. Bishop; Pattern Recognition and Machine Learning (Information Science and Statistics)
     
 \end{thebibliography}
 
