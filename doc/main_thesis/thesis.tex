@@ -656,8 +656,7 @@ The above transformation allows us to establish classification of a given elemen
 \end{center}
 then we can conclude that $f \in O_{3}$.
 
-It is important to consider words that do not fall into any of the transformed languages. Such words will be rejected and thus considered to be foreign. The language containing all such words will be called a Foreign Language $L_{F}$.
-
+It is important to consider words that do not fall into any of the transformed languages. Such words will be rejected and thus considered to be foreign. The language containing all such words will be called a Foreign Language $L_{F}$. The language $L_{F}$ can be thought of as a special transformed language which includes all the remaining words that have not been created from transforming native objects.
 
 
 %---------------------------------------------------------------
@@ -697,16 +696,16 @@ In the example~\ref{ex:transf_prec} two different feature vectors have been tran
 
 
 \begin{definition} {\bf Transformation Precision}\\
-    Let the languages $L_{1},L_{2},\ldots,L_{m}$ be obtained by transformation over alphabet $\Sigma$ of the non empty objects $O_{1},O_{2},\ldots,O_{m}$ respectively.
+    Let the languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ be obtained by transformation over alphabet $\Sigma$ of the non empty objects $O_{1},O_{2},\ldots,O_{m}$ respectively.
     The Transformation Precision of the set of objects is defined by the equation:
        \begin{equation}
        \transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}
            =
-            1 - \frac   {| L_{1} \cap L_{2} \cap L_{3} \cap \ldots \cap L_{m} |}
-                    {| L_{1} \cup L_{2} \cup L_{3} \cup \ldots \cup L_{m} |}
+            1 - \frac   {| L_{O_1} \cap L_{O_2} \cap L_{O_3} \cap \ldots \cap L_{O_m} |}
+                    {| L_{O_1} \cup L_{O_2} \cup L_{O_3} \cup \ldots \cup L_{O_m} |}
                =
-            1 - \frac   {\Big| \bigcap\limits_{i=0}^{m} L_i \Big|}
-                    {\Big| \bigcup\limits_{i=0}^{m} L_i \Big|}
+            1 - \frac   {\Big| \bigcap\limits_{i=0}^{m} L_{O_i} \Big|}
+                    {\Big| \bigcup\limits_{i=0}^{m} L_{O_i} \Big|}
        \end{equation}
 \end{definition}
 
@@ -783,21 +782,22 @@ Finally, the figure~\ref{fig:eq_classes_ideal} presents the example of ideal par
     \label{fig:eq_classes_ideal}
 \end{figure}
 
-In theory, the problem of optimum partitioning is a problem of constructing a regular language called Classification Language, $L_{C}$ for which equivalence classes of relation induced by $L_{C}$ contain the transformed languages. 
-It is also important to mention about rejecting
+In theory, the problem of optimum partitioning is a problem of constructing a regular language called Classification Language, $L_{C}$ for which equivalence classes of relation induced by $L_{C}$ contain the transformed languages. Ideally, each equivalence class which include and be equal to a single transformed language. The remaining classes will them correspond to the Foreign Language $L_{F}$. 
+
+In practice equivalence classes might be very big and finding ones that perfectly describe a single transformed language can turn out to be a difficult task. Instead, a transformed language could correspond to few equivalence classes, although each class would still correspond to a single language. The intuition behind such procedure is to spread out the transformed languages across the space of all equivalence classes.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\subsection{Equivalence Classes} \label{sec:lan_theory_classifier_eq_classes}
+\section{Classification Automaton}\label{sec:lan_theory_class_lan_dfa}
+
+The Classification Language is a regular language and thus there exists a Deterministic Finite Automaton (DFA) which accepts it. Moreover, the states of such DFA correspond to the equivalence classes of relation $R_{L_{C}}$. DFA computes a word by returning a final state in which it stopped after the last symbol. Thus, now it is possible to built a classifier using merely a single DFA.
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Synthetic Word Generation} \label{sec:lan_theory_synth_word_gen}
-
-
-We want to be able to generate random synthetic set of words. 
+ 
 Let's assume we want to randomly generate words of length $k$ corresponding to some objects. Having fixed number of classes, denoted by $n$ proceed to generate exactly $n$ words representing centres of each class. Then for each such class, start generating uniformly words that are similar to their corresponding centres. Two words can be thought to be \textit{similar} if the ratio of the length and their Hamming distance is reasonably small. Formally the similarity function of two words is defined by the equation:
 
 \begin{equation}
