@@ -611,27 +611,30 @@ one will convert all features vector to words over $\Sigma$.
 \subsection{Language Transformation}\label{sec:lan_theory_transf_lan}
 Recall that object includes a set of elements each representing  a specific instance of that object. In turn, an element is defined by a feature vector. Analogously to feature transformation, we will transform an object into a language over alphabet $\Sigma$.
 
-Having an object $O$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $O \featureTransformationLanguage{\Sigma} L$. The created language $L = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$. Thus language $L$ will look as follows:
+Having an object $O$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $O \featureTransformationLanguage{\Sigma} L_{O}$. The created language $L_{O} = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$. Thus language $L_{O}$ will look as follows:
 \begin{center}
-    $L = \{w \in \Sigma^{*} : \forall_{i} (f_{i} \in O, f_{i} \featureTransformationWord{\Sigma} w_{i}) \}$
+    $L_{O} = \{w \in \Sigma^{*} : \forall_{i} (f_{i} \in O, f_{i} \featureTransformationWord{\Sigma} w_{i}) \}$
 \end{center}
 
 Having an input set of objects: $O_{1},O_{2},\ldots,O_{m}$, where $O_{j}$ contains the feature vectors: $f_{j,1},f_{j,2},\ldots,f_{j,n}$, one can transform them into a set of languages. We assume that all feature vectors are of the same dimensions. Moreover, for simplicity of notation all objects are assumed to have the same number of elements, but it can be easily generalized for objects of different sizes. Applying the language transformation of a given alphabet $\Sigma$ we get the following set of languages:
 
 
 \begin{align*}
-&O_{1} \featureTransformationLanguage{\Sigma} L_{1} = \{w \in \Sigma^{*} : \forall_{i} (f_{1,i} \in O_{1}, f_{1,i} \featureTransformationWord{\Sigma} w_{1,i}) \} \\
-&O_{2} \featureTransformationLanguage{\Sigma} L_{2} = \{w \in \Sigma^{*} : \forall_{i} (f_{2,i} \in O_{2}, f_{2,i} \featureTransformationWord{\Sigma} w_{2,i}) \} \\
-&O_{3} \featureTransformationLanguage{\Sigma} L_{3} = \{w \in \Sigma^{*} : \forall_{i} (f_{3,i} \in O_{3}, f_{3,i} \featureTransformationWord{\Sigma} w_{3,i}) \} \\
+&O_{1} \featureTransformationLanguage{\Sigma} L_{O_1} = \{w \in \Sigma^{*} : \forall_{i} (f_{1,i} \in O_{1}, f_{1,i} \featureTransformationWord{\Sigma} w_{1,i}) \} \\
+&O_{2} \featureTransformationLanguage{\Sigma} L_{O_2} = \{w \in \Sigma^{*} : \forall_{i} (f_{2,i} \in O_{2}, f_{2,i} \featureTransformationWord{\Sigma} w_{2,i}) \} \\
+&O_{3} \featureTransformationLanguage{\Sigma} L_{O_3} = \{w \in \Sigma^{*} : \forall_{i} (f_{3,i} \in O_{3}, f_{3,i} \featureTransformationWord{\Sigma} w_{3,i}) \} \\
 &\makebox[\widthof{${}O_{1}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{}$}][c]{\vdots} \\
-&O_{m} \featureTransformationLanguage{\Sigma} L_{m} = \{w \in \Sigma^{*} : \forall_{i} (f_{m,i} \in O_{m}, f_{m,i} \featureTransformationWord{\Sigma} w_{m,i}) \}
+&O_{m} \featureTransformationLanguage{\Sigma} L_{O_m} = \{w \in \Sigma^{*} : \forall_{i} (f_{m,i} \in O_{m}, f_{m,i} \featureTransformationWord{\Sigma} w_{m,i}) \}
 \end{align*}
 
 The above transformation allows us to establish classification of a given element to an object in terms of words and language. Namely, if for the element $f$ the following transformation holds place:
 \begin{center}
-   $f \featureTransformationWord{\Sigma} w \in L_{3}$
+   $f \featureTransformationWord{\Sigma} w \in L_{O_3}$
 \end{center}
 then we can conclude that $f \in O_{3}$.
+
+It is important to consider words that do not fall into any of the transformed languages. Such words will be rejected and thus considered to be foreign. The language containing all such words will be called a Foreign Language $L_{F}$.
+
 
 
 %---------------------------------------------------------------
@@ -694,6 +697,7 @@ The method of object to language transformation has been introduced. The feature
 
 From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a language $L$.
 
+Additionally this section defined a way of describing objects in terms of languages. Languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ will commonly denote transformed languages representing their respective objects. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
 
 Finally the figure~\ref{fig:transf_state} summarizes the process of transformation.
 
@@ -716,7 +720,7 @@ In the previous section it was mentioned that to properly classify a word to its
 %---------------------------------------------------------------
 \subsection{Optimum Partitioning}\label{sec:lan_theory_class_lan_opt_part}
 
-Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivalence classes. In other words, equivalence classes are disjoint sets of words. Thus having an equivalence class which classifies a word to its respective language, could make for a very convenient classification tool.
+Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivvalence classes. In other words, equivalence classes are disjoint sets of words. Thus having an equivalence class which classifies a word to its respective language, could make for a very convenient classification tool.
 
 Let the languages $L_{1}, L_{2} \text{ and } L_{3}$ be obtained from the language transformation. The idea of optimum partitioning is to split all three languages so that they are included in three different equivalence classes. 
 
@@ -749,7 +753,6 @@ The next improvement of partitioning is presented in figure~\ref{fig:eq_classes}
 
 Finally, the figure~\ref{fig:eq_classes_ideal} presents the example of ideal partitioning for three languages. The space of classes and languages are equal, thus all words will be correctly classified.
 
-
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_ideal.jpg}
@@ -757,7 +760,8 @@ Finally, the figure~\ref{fig:eq_classes_ideal} presents the example of ideal par
     \label{fig:eq_classes_ideal}
 \end{figure}
 
-
+In theory, the problem of optimum partitioning is a problem of constructing a regular language called Classification Language, $L_{C}$ for which equivalence classes of relation induced by $L_{C}$ contain the transformed languages. 
+It is also important to mention about rejecting
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
