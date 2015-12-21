@@ -51,8 +51,12 @@ void Language::_produceWordsFromPattern(Pattern *pPattern) {
 
         for (int i = 0; i < numberOfFeatures; i++) {
             double entry = (*(*iter))[i];
+
             // Stretch normalized entry to the alphabet size
-            entry *= _alphabet.size();
+            entry *= (double) _alphabet.size();
+
+            if(entry > _alphabet.size()) cout << "before: " << (*(*iter))[i] << "entry: " << entry << " alphabet.sz(): " << _alphabet.size() << endl;
+
             Symbol symbol = _alphabet.convertToSymbol(entry);
             symbols.push_back(symbol);
 

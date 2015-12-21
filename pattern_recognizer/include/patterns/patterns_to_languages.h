@@ -10,6 +10,7 @@
 #include <string>
 #include <language.h>
 #include <pattern.h>
+#include <stdexcept>
 
 using namespace std;
 

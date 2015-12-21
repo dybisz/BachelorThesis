@@ -3,6 +3,7 @@
 //
 
 #include <alphabet.h>
+#include <logger.h>
 #include "patterns_to_languages.h"
 
 
@@ -10,11 +11,18 @@ vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
                                                    int numberOfStates,
                                                    int precision) {
     // TODO check for dumb values
-    vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
-    vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
-    Alphabet *alphabet = new Alphabet(precision);
-    vector<Language *> *languages = _createLanguages(normalized, alphabet,
-                                                     numberOfStates);
+    vector<Language *> *languages = NULL;
+    try {
+        vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
+        vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
+        Alphabet *alphabet = new Alphabet(precision);
+        // jezyk przyjmuje slowa, nie patterny
+        languages = _createLanguages(normalized, alphabet, numberOfStates);
+    }
+    catch (std::exception &e) {
+        LOG_ERROR(e.what())
+    }
+
     return languages;
 }
 
@@ -76,6 +84,11 @@ vector<Pattern *> *patterns_to_languages::_normalizePatterns(
 
                 // Swap values
                 (*iter1)->setEntry(i, result);
+
+                if (result > 1) {
+                    throw invalid_argument(
+                            "Entry > 1 in normalization process");
+                }
             }
 
         }
@@ -88,22 +101,22 @@ vector<Language *> *patterns_to_languages::_createLanguages(
         vector<Pattern *> *pPattern,
         Alphabet *pAlphabet, int numberOfStates) {
 
-    vector<Language *>* languages = new vector<Language*>();
+    vector<Language *> *languages = new vector<Language *>();
     int stateCounter = 0;
 
-    for(auto iter = pPattern->begin(); iter != pPattern->end() ; ++iter) {
+    for (auto iter = pPattern->begin(); iter != pPattern->end(); ++iter) {
 
         vector<State *> states;
         int aux = numberOfStates;
 
         // Fill up states with unique markings
-        while(aux--) {
-            State* state = new State(stateCounter);
+        while (aux--) {
+            State *state = new State(stateCounter);
             states.push_back(state);
             stateCounter++;
         }
 
-        Language* language = new Language((*iter), (*pAlphabet), states);
+        Language *language = new Language((*iter), (*pAlphabet), states);
         languages->push_back(language);
     }
 
