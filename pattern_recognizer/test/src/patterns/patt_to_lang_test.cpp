@@ -15,9 +15,16 @@ string DATA_PATH2 = "./src/xls/fv_example.xls";
 TEST(PatternsToLanguages, Pattern_Init) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);
     vector<Language *> * languages = convert(xlsLoader->getPatterns(),2, 5);
-    for(auto iter = languages->begin() ; iter != languages->end() ; ++iter) {
-        cout << (*iter)->toString() << endl;
-    }
     delete xlsLoader;
     delete languages;
 }
+
+TEST(PatternsToLanguages, Pattern_Wrong_Input) {
+    XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);
+    vector<Language *> * languages = NULL;
+    ASSERT_ANY_THROW(languages = convert(xlsLoader->getPatterns(),-1, -1));
+    if(languages != NULL) delete languages;
+    delete xlsLoader;
+}
+
+

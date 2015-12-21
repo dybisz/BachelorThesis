@@ -19,17 +19,7 @@ Alphabet::Alphabet(int numberOfSymbols) : _numberOfSymbols(numberOfSymbols){
     _produceIntervals();
 }
 
-Alphabet::~Alphabet(){
-//    // Release intervals pointers
-//    for(auto iter = _intervals.begin(); iter != _intervals.end(); ++iter ) {
-//        delete (*iter);
-//    }
-//
-//    // Release symbols pointers
-//    for(auto iter = _symbols.begin(); iter != _symbols.end(); ++iter ) {
-//        delete (*iter);
-//    }
-}
+Alphabet::~Alphabet(){}
 
 /* ------------------------- */
 /* ----- PUBLIC/VITAL ------ */

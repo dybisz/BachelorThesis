@@ -10,7 +10,8 @@
 vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
                                                    int numberOfStates,
                                                    int precision) {
-    // TODO check for dumb values
+    _checkConditions(numberOfStates, precision, patterns);
+
     vector<Language *> *languages = NULL;
     try {
         vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
@@ -138,19 +139,20 @@ string patterns_to_languages::_vectorOfIntervalsToString(
 }
 
 vector<Word *> *patterns_to_languages::_convertPatternsToWords(
-        vector<Pattern *> *pPatterns, Alphabet* alphabet) {
+        vector<Pattern *> *pPatterns, Alphabet *alphabet) {
 
-    vector<Word*>* words = new vector<Word*>();
+    vector<Word *> *words = new vector<Word *>();
 
     // Consider each pattern
-    for(auto pattIt = pPatterns->begin() ; pattIt != pPatterns->end(); ++pattIt) {
+    for (auto pattIt = pPatterns->begin();
+         pattIt != pPatterns->end(); ++pattIt) {
 
         // Acquire pattern's features vectors
         vector<FeaturesVector *> *features = (*pattIt)->getFeatures();
 
         // For each features vector
         for (auto fvIt = features->begin(); fvIt != features->end(); ++fvIt) {
-            Word* word = new Word();
+            Word *word = new Word();
             word = _convertFeatureToWord((*fvIt), alphabet);
             // Save word
             words->push_back(word);
@@ -160,15 +162,34 @@ vector<Word *> *patterns_to_languages::_convertPatternsToWords(
     return words;
 }
 
-Word *patterns_to_languages::_convertFeatureToWord(FeaturesVector *pFeatureVector,
-                            Alphabet *pAlphabet) {
-    Word* word = new Word();
+Word *patterns_to_languages::_convertFeatureToWord(
+        FeaturesVector *pFeatureVector,
+        Alphabet *pAlphabet) {
+    Word *word = new Word();
 
-    for(int i = 0; i < pFeatureVector->size() ; ++i) {
+    for (int i = 0; i < pFeatureVector->size(); ++i) {
         double entry = (*pFeatureVector)[i];
-        Symbol* symbol = new Symbol(pAlphabet->convertToSymbol(entry));
+        Symbol *symbol = new Symbol(pAlphabet->convertToSymbol(entry));
         (*word) + symbol;
     }
 
     return word;
+}
+
+void patterns_to_languages::_checkConditions(int states, int precision,
+                                             vector<Pattern *> *patterns) {
+    if (patterns == NULL) {
+        throw invalid_argument(
+                "pointer to patters is NULL");
+    }
+
+    if (states < 1) {
+        throw invalid_argument(
+                "numberOfStates < 1");
+    }
+
+    if (precision < 1) {
+        throw invalid_argument(
+                "precision < 1");
+    }
 }

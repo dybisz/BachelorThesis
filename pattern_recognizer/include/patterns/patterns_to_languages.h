@@ -48,10 +48,11 @@ namespace patterns_to_languages {
     // Intermediate conversion has been provide to elevate flexibility of this
     // namespace. Now, one can create distinct set of words (based on patterns)
     // and do whatever he/she wants with it.
+    // Output data is just a vector of words created from all features vectors
+    // hidden in provided patterns.
     vector<Word *> *_convertPatternsToWords(vector<Pattern *> *pPatterns,
                                             Alphabet *alphabet);
 
-    // TODO
     vector<Language *> *_createLanguages(vector<Pattern *> *pPattern,
                                          Alphabet *pAlphabet,
                                          int numberOfStates);
@@ -68,6 +69,12 @@ namespace patterns_to_languages {
     // specified alphabet.
     Word *_convertFeatureToWord(FeaturesVector *pFeatureVector,
                                 Alphabet *pAlphabet);
+
+    // Method throws exception when states or precision is < 1,
+    // or pointer to patterns is NULL
+    void _checkConditions(int states, int precision, vector<Pattern *> *patterns);
+
+
 }
 
 #endif //BACHELOR_THESIS_PATTERNS_TO_LANGUAGES_H
