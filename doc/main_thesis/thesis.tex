@@ -116,14 +116,13 @@
 
 % TITLE
 %------------------------------------------------------------------------------%
-\title{Tytuł pracy dyplomowej}
-\title{englishtitle}
-\titleaux{polishtitle}
-\author{Jan Kowalski}
-\supervisor{prof. dr hab. Michał Nowak}
-\type{magisters}
-\discipline{matematyka}
-\monthyear{październik 2011}
+\title{Finite automata for pattern recognition}
+\titleaux{Automaty skończone w problemie rozpoznawania wzorców}
+\author{Jakub Ciecierski, Bartlomiej Dybisz}
+\supervisor{prof. nzw. dr hab. inż. Wladyslaw Homenda}
+\type{bachelor}
+\discipline{Computer Science}
+\monthyear{december 2015}
 \date{\today}
 \album{123456}
 
@@ -809,6 +808,16 @@ In practice equivalence classes might be very big and finding ones that perfectl
 
 The Classification Language is a regular language and thus there exists a Deterministic Finite Automaton (DFA) which accepts it. Moreover, the states of such DFA correspond to the equivalence classes of relation $R_{L_{C}}$. DFA computes a word by returning a final state in which it stopped after the last symbol. Thus, now it is possible to built a classifier using merely a single DFA.
 
+The figure~\ref{fig:class_dfa} shows an example automaton which is used to classify words. It is a deterministic finite automaton with four states and two symbols in the alphabet. States correspond to specific transformed languages. State $4$ corresponds to Foreign Language. Let us assume that some feature vector has been transformed into a word: $f \featureTransformationWord{\Sigma} w = bbb$. Computations for word $w$ will end in state $4$ and will be classified as foreign. However if $w = baba$ then the computations will end in state $2$ and the word will be classified to represent an object described in language $L_2$. Notice, that language $L_1$ is included in two states, in other words there are two equivalence classes that include $L_1$.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../uml/states/dfa.jpg}
+    \caption{Example of DFA with four states and two symbols. State 1 is the initial state. States $1$ and $2$ correspond to language $L_{1}$, state $3$ to $L_2$ and state $4$ to foreign language $L_F$.}
+    \label{fig:class_dfa}
+\end{figure}
+
+Finally, building a proper classifier will be equivalent to creating an Classification Automaton $M_{C}$ that minimizes the error of classifying objects in the learning phase. The problem of choosing an optimal number of states corresponding to a transformed languages is to be parametrized and tested empirically.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -911,7 +920,9 @@ In all cases uniform distribution is used for random number generation.
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Fitness Function}\label{sec:fitness}
+Recall that each state in the DFA will correspond to some transformed language and thus will classify a word accordingly. A language can correspond to many states. 
 
+The state correspondence is to be determined prior to starting PSO. The fitness function as an input will take a set of words. Each word belongs to some transformed language which representing an object. Such word will be computed by each encoded particle (i.e. DFA) and thus classified to some language. Fitness function for each particle will then determine the error rate between correctly and incorrectly classified words.
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
