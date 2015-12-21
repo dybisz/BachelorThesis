@@ -16,7 +16,6 @@ vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
         vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
         vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
         Alphabet *alphabet = new Alphabet(precision);
-        // jezyk przyjmuje slowa, nie patterny
         languages = _createLanguages(normalized, alphabet, numberOfStates);
     }
     catch (std::exception &e) {
@@ -136,4 +135,40 @@ string patterns_to_languages::_vectorOfIntervalsToString(
     }
     out += "\n";
     return out;
+}
+
+vector<Word *> *patterns_to_languages::_convertPatternsToWords(
+        vector<Pattern *> *pPatterns, Alphabet* alphabet) {
+
+    vector<Word*>* words = new vector<Word*>();
+
+    // Consider each pattern
+    for(auto pattIt = pPatterns->begin() ; pattIt != pPatterns->end(); ++pattIt) {
+
+        // Acquire pattern's features vectors
+        vector<FeaturesVector *> *features = (*pattIt)->getFeatures();
+
+        // For each features vector
+        for (auto fvIt = features->begin(); fvIt != features->end(); ++fvIt) {
+            Word* word = new Word();
+            word = _convertFeatureToWord((*fvIt), alphabet);
+            // Save word
+            words->push_back(word);
+        }
+    }
+
+    return words;
+}
+
+Word *patterns_to_languages::_convertFeatureToWord(FeaturesVector *pFeatureVector,
+                            Alphabet *pAlphabet) {
+    Word* word = new Word();
+
+    for(int i = 0; i < pFeatureVector->size() ; ++i) {
+        double entry = (*pFeatureVector)[i];
+        Symbol* symbol = new Symbol(pAlphabet->convertToSymbol(entry));
+        (*word) + symbol;
+    }
+
+    return word;
 }

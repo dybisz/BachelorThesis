@@ -10,7 +10,6 @@
 #include <string>
 #include <language.h>
 #include <pattern.h>
-#include <stdexcept>
 
 using namespace std;
 
@@ -22,6 +21,10 @@ using namespace std;
  * accepting states attached to them // TODO we can change this retarded descr.
  */
 namespace patterns_to_languages {
+
+    /* ----------------------- */
+    /* -----MAIN METHODS ----- */
+    /* ----------------------- */
 
     // Converts patterns to languages. Second argument represents number of
     // accepting states per language. For now, we assume that this number is
@@ -38,16 +41,33 @@ namespace patterns_to_languages {
 
     // Having min/max interval for each feature, method will normalize every
     // entry to be from interval <0;1>
-    vector<Pattern *> * _normalizePatterns(vector<Pattern *> *pPatterns,
-                                           vector<Interval *> pInterval);
+    vector<Pattern *> *_normalizePatterns(vector<Pattern *> *pPatterns,
+                                          vector<Interval *> pInterval);
+
+    // WARNING: input data must be normalized
+    // Intermediate conversion has been provide to elevate flexibility of this
+    // namespace. Now, one can create distinct set of words (based on patterns)
+    // and do whatever he/she wants with it.
+    vector<Word *> *_convertPatternsToWords(vector<Pattern *> *pPatterns,
+                                            Alphabet *alphabet);
 
     // TODO
     vector<Language *> *_createLanguages(vector<Pattern *> *pPattern,
-                                         Alphabet *pAlphabet, int numberOfStates);
+                                         Alphabet *pAlphabet,
+                                         int numberOfStates);
 
-    // During debuging process it is really nice to have method printing
+    /* --------------------- */
+    /* ----- AUXILIARY ----- */
+    /* --------------------- */
+
+    // During debugging process it is really nice to have method printing
     // out collective intervals values. Useful especially in unit tests.
     string _vectorOfIntervalsToString(vector<Interval *> &interval);
+
+    // Additional method for changing single feature vector to a word over
+    // specified alphabet.
+    Word *_convertFeatureToWord(FeaturesVector *pFeatureVector,
+                                Alphabet *pAlphabet);
 }
 
 #endif //BACHELOR_THESIS_PATTERNS_TO_LANGUAGES_H

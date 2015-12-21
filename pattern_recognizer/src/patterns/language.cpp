@@ -20,6 +20,12 @@ Language::Language(Pattern *pPattern, Alphabet pAlphabet,
     }
 }
 
+Language::Language(vector<Word *> &words, Alphabet pAlphabet,
+                   vector<State *> pStates) : _words(words),
+                                              _alphabet(pAlphabet),
+                                              _states(pStates) {
+}
+
 Language::~Language() {
     // Release words
     for (auto iter = _words.begin(); iter != _words.end(); ++iter) {
@@ -103,6 +109,10 @@ string Language::alphabetToString() {
     out += _alphabet.toString();
     out += "\n";
     return out;
+}
+
+Word* Language::getWord(int i) {
+    return _words[i];
 }
 
 /* --------------------- */

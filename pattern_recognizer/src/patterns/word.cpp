@@ -10,6 +10,13 @@
 
 Word::Word() {}
 
+Word::Word(const int entries[], int n) {
+    for(int i = 0; i < n ; i++) {
+        Symbol* symbol = new Symbol(entries[i]);
+        _entries.push_back(symbol);
+    }
+}
+
 Word::Word(const vector<int> &entries) {
     for(auto it = entries.begin(); it != entries.end(); ++it) {
         Symbol* symbol = new Symbol(*it);

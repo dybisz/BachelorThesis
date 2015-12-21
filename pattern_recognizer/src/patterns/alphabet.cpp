@@ -51,10 +51,6 @@ Symbol Alphabet::convertToSymbol(double val) {
     }
 
     // Return copy to prevent modifying alphabet
-//    cout << "[" << i<< "] returning symbol" << _symbols[i].toString()
-//    << " _numberOfSymbols: " << _numberOfSymbols<<
-//            " iterval.size() " << _intervals.size() <<
-//            " value: "<< val << endl;
     return _symbols[i];
 }
 
