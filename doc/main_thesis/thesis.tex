@@ -134,10 +134,12 @@
 
 \chapter*{Introduction}
 %---------------------------------------------------------------
+Recognizing faces, discriminating between apple and oranges or understand spoken words are tasks, which are remarkably easy to processes for most of us, but happens to be astoundingly complex processes for machines. Although lately, we develop vast amount of techniques and algorithms to cope with pattern searching problem, it was implicitly used over centuries. For instance, the extensive astronomical observations of Tycho Brahe in the 16th century allowed Johannes Kepler to discover the empirical laws of
+planetary motion, which in turn provided a springboard for the development of classical mechanics \cite{bishop_book}.
 
-Pattern Recognition focuses on building machines that can recognize pattern in various fields such as speech, fingerprint or optical characters. A pattern can be defined as feature vector and a label. Label informs us to which class a given element belongs to.
+Automatic pattern recognition is usually considered as an engineering area which focusses on the development and evaluation of systems that imitate or assist humans in their ability of recognizing patterns \cite{duch_uuu}. Normally system, which recognizes patterns, consists of many intermediate elements, among which one can find a classifier. Following paper introduce a novel approach for building classifier based on  Deterministic Finite Automaton (further referred as DFA). Such an automaton will be able to distinguish between input objects and classify them correctly. The paper copes only with problem of classifier construction, hence it may be useful for various input data types like e.g. hand written letters or gesture patterns. 
 
-The objective of this research is to construct a classifier which will be able to assign a label to given input object. The main idea on building such classifier is to construct a Deterministic Finite Automaton which could answer the question to which class an input element falls to. The first step of constructing such classifier, is to transform feature vectors into words that could be applied to our automaton as a learning process.
+Authors provide step-by-step explanation of each part along with mathematical background needed to understand theory behind the project.
 
 To start with, in chapter~\ref{ch:prelim} preliminary mathematical knowledge is presented. In chapter~\ref{ch:lan_theory} we explain the first step of classifier construction which is the the process of word generation.
 
@@ -546,8 +548,10 @@ One can distinguish between 3 main approaches to the learning procedure: supervi
 
 \textbf{Semi-Supervised Learning} The goal of semi-supervised learning is to understand how combining labeled and unlabeled data may change the learning behavior, and design algorithms that take advantage of such a combination \cite{semi_supervised}. Often label instances are difficult, expensive, or time consuming to obtain, as they require the efforts of experienced human annotators. Because semi-it requires less human effort and gives higher accuracy, it is of great interest both in theory and in practice \cite{semi_supervised2}.
 
-\pagebreak
+
 %-------------------------------------------------------------------
+\pagebreak
+\paragraph{}
 \subsection{Quality Evaluation}\label{evaluation}
 For better understanding of how quality of classification should be measured we adopt parameters and quality measures used in signal detection theory. Since these parameters are widely utilized, we do not refer to original sources here. The following parameters were used in defining several measures outlining classification's quality. These parameters create so called confusion matrix, which is given in Table~\ref{tab:conf_matrix}. The parameters given in the matrix are numbers of elements of a~testing set which have the following meaning:
 \begin{itemize}
@@ -1276,9 +1280,13 @@ As one could image, because of simplicity of the interface, there is nothing fan
 	\bibitem{Homenda_2014} Homenda W., Luckner M., Pedrycz W., Classification with rejection based on various SVM techniques, Proceedings of the WCCI 2014 IEEE World Congress on Computational Intelligence, pp. 3480-3487, Beijing, China, 2014     
     
 	\bibitem{semi_supervised} Xiaojin Zhu and Andrew B.Goldberg, Synthesis Lectures on Artificial Intelligence and Machine Learning, 2009, Vol. 3, No. 1 , Pages 1-130    
+	
     \bibitem{semi_supervised2} Xiaojin Zhu, Semi-Supervised Learning Literature Survey, 2006
+
+	
+	\bibitem{images_learning_types} Anuj R. Shah1, Christopher S. Oehmen, Bobbie-Jo Webb-Robertson, SVM-Hustle - An iterative semi-supervised machine learning approach for pairwise protein remote homology detection 
+	\bibitem{duch_uuu} Robert P.W. Duin, Elzbieta Pekalska, The Science of Pattern Recognition. Achievements and Perspectives, Studies in Computational Intelligence, chapter Challenges for Computational Intelligence, page 63 , 2007
+	
 \end{thebibliography}
-
-
 \makestatement
 \end{document}
