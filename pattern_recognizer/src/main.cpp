@@ -8,6 +8,7 @@
 #include <optimizer.h>
 #include <dfa_loader.h>
 #include <words_gen_experiment.h>
+#include <classification_exp.h>
 #include "drawer.h"
 #include "flag_reader.h"
 #include "log.h"
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]) {
     // Choose experiment
     switch (global_settings::EXPERIMENT_ID){
         case 0:
-        experiments::runOptimizerExperiment();
+        experiments::runClassificationExperiment();
             break;
         case 1:
         experiments::runDFAGenerationExperiment();

@@ -12,6 +12,11 @@ namespace global_settings {
     /* ------ EXPERIMENT SETTINGS ----- */
     int EXPERIMENT_ID           = 0;
 
+    /* ------ CLASSIFICATION SETTINGS ----- */
+    std::string NATIVE_XLS_PATH     = "";
+
+    std::string FOREIGN_XLS_PATH    = "";
+
     /* ------ Words GENERATION SETTINGS ----- */
     int GEN_WORDS_SYMBOL_COUNT      = 5;
     int GEN_WORD_C                  = 5;
@@ -76,6 +81,24 @@ namespace global_settings {
             ss << PATH_TO_VALUE;
         ss << " ";
         ss << EXPERIMENT_ID << std::endl;
+
+
+        ss << std::endl<< "CLASSIFICATION SETTINGS" <<std::endl <<std::endl;
+
+        s = "NATIVE_XLS_PATH ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << NATIVE_XLS_PATH << std::endl;
+
+        s = "FOREIGN_XLS_PATH ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << FOREIGN_XLS_PATH << std::endl;
+
 
         ss << std::endl<< "DFA GENERATION SETTINGS" <<std::endl <<std::endl;
         s = "GEN_DFA_PATH ";

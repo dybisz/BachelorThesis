@@ -92,6 +92,15 @@ namespace console {
                                      "2: Word Generation",
                              INT, &global_settings::EXPERIMENT_ID));
 
+        /* ------ CLASSIFICATION SETTINGS ----- */
+        flags.push_back(Flag("N", "cl-native-path",
+                             "Path to xls file with Native objects",
+                             STRING, &global_settings::NATIVE_XLS_PATH));
+
+        flags.push_back(Flag("F", "cl-foreign-path",
+                             "Path to xls file with Foreign objects",
+                             STRING, &global_settings::FOREIGN_XLS_PATH));
+
         /* ------ DFA GENERATION SETTINGS ----- */
 
         flags.push_back(Flag("R", "gen-w-sym-count",

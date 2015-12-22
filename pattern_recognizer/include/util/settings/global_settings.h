@@ -15,11 +15,17 @@
 // |--o   alphabet is represented by integers from interval [_alphabet[0], _alphabet.size()]
 
 namespace global_settings {
-    /* ------ EXPERIMENT SETTINGS----- */
+    /* ------ EXPERIMENT SETTINGS ----- */
     // ID of experiment to run
     // 0: Main optimizer
     // 1: DFA Generation
     extern int EXPERIMENT_ID;
+
+    /* ------ CLASSIFICATION SETTINGS ----- */
+    // Path to xls file with native objects
+    extern std::string NATIVE_XLS_PATH;
+    // Path to xls file with foreign objects
+    extern std::string FOREIGN_XLS_PATH;
 
     /* ------ Words GENERATION SETTINGS ----- */
     extern int GEN_WORDS_SYMBOL_COUNT;
