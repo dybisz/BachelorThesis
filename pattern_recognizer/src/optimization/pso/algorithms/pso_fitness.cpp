@@ -56,8 +56,9 @@ namespace pso
 
                 Particle* p = (*particles)[i];
 
-                p->setFitness(fitnessValue(p, t_args->wordsGenerator,
-                                          t_args->toolRelationResults));
+                p->setFitness(fitnessValue(p,
+                                           t_args->nativeLanguages,
+                                           t_args->foreignLanguages));
 
                 // Check if particle is in new pbest
                 if (p->getBestFitness() < p->getFitness()) {
@@ -77,37 +78,69 @@ namespace pso
             }
         }
 
-        double fitnessValue(Particle *p, WordsGenerator *wg,
-                            vector<int> *toolRelationResults) //
+        double fitnessValue(Particle *p,
+                            std::vector<Language*>* nativeLanguages,
+                            std::vector<Language*>* foreignLanguages)
         {
-            double count = 0;
-            int pairCount = 0;
+            int nativeSize = nativeLanguages->size();
+            int foreignSize = foreignLanguages->size();
+
+            double correctCount = 0;
+            double countAll = 0;
 
             const DFA* dfa = p->getCurrentDFA();
 
-            const vector<Word*>* trainingSet = wg->getTrainingAllSet();
-            unsigned int wordCount = trainingSet->size();
 
-            vector<int> stateVector(wordCount);
-            // Pre compute all words. Save results in stateVector
-            for(unsigned int i = 0; i < wordCount; i++){
-                Word* word = (*trainingSet)[i];
-                stateVector[i] = dfa->compute(*word);
-            }
+            for(int i = 0; i < nativeSize; i++){
+                Language* language = (*nativeLanguages)[i];
+                for(int w = 0; w < language->size(); w++){
+                    Word* word = language->getWord(w);
+                    std::vector<int> entries;
+                    for(int j = 0; j < word->size(); j++){
+                        int value = word->getSymbol(j)->getVal();
+                        value--;
+                        entries.push_back(value);
+                    }
+                    Word hackedWord(entries);
 
-            // For all distinct pairs
-            for(unsigned int i = 0; i < wordCount-1; i++){
-                for(unsigned int j = i+1; j < wordCount; j++){
-                    bool inRelation = stateVector[i] == stateVector[j];
-                    int result = inRelation ? 1:0;
-                    count += (result ==
-                                    (*toolRelationResults)[pairCount]) ? 1 : 0;
+                    unsigned int stateInt = dfa->compute(hackedWord);
+                    State* s = new State(stateInt);
+                    if(language->isCorrespondingState(s)){
+                        correctCount++;
+                    }
+                    countAll++;
 
-                    pairCount++;
+                    delete s;
                 }
             }
 
-            return count / (double) pairCount;
+            for(int i = 0; i < foreignSize; i++){
+                Language* language = (*foreignLanguages)[i];
+                for(int w = 0; w < language->size(); w++){
+                    Word* word = language->getWord(w);
+                    std::vector<int> entries;
+                    for(int j = 0; j < word->size(); j++){
+                        int value = word->getSymbol(j)->getVal();
+                        value--;
+                        entries.push_back(value);
+                    }
+                    Word hackedWord(entries);
+
+                    unsigned int stateInt = dfa->compute(hackedWord);
+                    State* s = new State(stateInt);
+                    if(language->isCorrespondingState(s)){
+                        correctCount++;
+                    }
+                    countAll++;
+
+                    delete s;
+                }
+            }
+            double val = correctCount / countAll;
+            //std::cout << "correctCount: " << correctCount << std::endl;
+            //std::cout << "countAll: " << countAll << std::endl;
+            //std::cout << "Val: " << val << std::endl;
+            return val;
         }
 
         void calculateGBestFitness(Particle* particle,

@@ -33,6 +33,24 @@ PSO::PSO(unsigned int numberOfStates, unsigned int numberOfSymbols,
     _generateParticles();
 }
 
+PSO::PSO(unsigned int numberOfStates, unsigned int numberOfSymbols,
+            std::vector<Language*>* nativeLanguages,
+            std::vector<Language*>* foreignLanguages){
+
+    this->_numberOfStates = numberOfStates;
+    this->_numberOfSymbols = numberOfSymbols;
+
+    _nativeLanguages = nativeLanguages;
+    _foreignLanguages = foreignLanguages;
+
+    _particleDecoder = new ParticleDecoder(numberOfStates, numberOfSymbols,
+                                           global_settings::ENCODING_DELTA);
+
+    _globalBestFitness = 0;
+
+    _loadSwarmSize();
+    _generateParticles();
+}
 
 PSO::~PSO() {
     for (auto particle = _particles.begin();
@@ -156,8 +174,8 @@ void PSO::_initFitnessFunctionParallel(){
         targs[i].bestParticles = &(this->_bestParticles);
         targs[i].globalBestFitness = &this->_globalBestFitness;
 
-        targs[i].wordsGenerator = this->_wordsGenerator;
-        targs[i].toolRelationResults = this->_toolRelationResults;
+        targs[i].nativeLanguages = this->_nativeLanguages;
+        targs[i].foreignLanguages = this->_foreignLanguages;
 
         targs[i].mutex = &threadPool.mutex;
 

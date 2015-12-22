@@ -7,6 +7,7 @@
 #include <settings/global_settings.h>
 #include <logger/log.h>
 #include <patterns_to_languages.h>
+#include <classifier.h>
 
 namespace experiments
 {
@@ -36,7 +37,7 @@ namespace experiments
 
         std::vector<Language*>* foreignLanguages =
                 patterns_to_languages::convert(
-                        nativePatterns,
+                        foreignPatterns,
                         global_settings::STATES_PER_FOREIGN,
                         global_settings::ALPHABET_SIZE);
 
@@ -46,12 +47,15 @@ namespace experiments
                                                       "Foreign");
 
 
-        for(int i = 0 ; i < nativeLanguages->size(); i++)
-            delete (*nativeLanguages)[i];
-        for(int i = 0 ; i < foreignLanguages->size(); i++)
-            delete (*foreignLanguages)[i];
-        delete nativeLanguages;
-        delete foreignLanguages;
+        Classifier* classifier = new Classifier(
+                nativeLanguages,
+                foreignLanguages,
+                global_settings::STATES_PER_NATIVE,
+                global_settings::STATES_PER_FOREIGN,
+                global_settings::ALPHABET_SIZE);
+
+        classifier->runClassification();
+        delete classifier;
     }
 
     namespace classification

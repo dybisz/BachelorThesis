@@ -5,6 +5,7 @@
 #ifndef AC_PSO_COMMON_H
 #define AC_PSO_COMMON_H
 
+#include <language.h>
 #include "words_generator.h"
 #include "particle.h"
 
@@ -28,8 +29,8 @@ namespace pso
         std::vector<Particle *> *bestParticles;
         double *globalBestFitness;
 
-        WordsGenerator *wordsGenerator;
-        vector<int> *toolRelationResults;
+        std::vector<Language*>* nativeLanguages;
+        std::vector<Language*>* foreignLanguages;
 
         pthread_mutex_t *mutex;
     };

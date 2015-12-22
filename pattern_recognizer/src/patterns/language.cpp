@@ -41,8 +41,24 @@ Language::~Language() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
+std::vector<State*>* Language::getStates(){
+    return &_states;
+}
+
+void Language::setStates(std::vector<State*> states){
+    this->_states=states;
+}
+
 int Language::size() const{
     return _words.size();
+}
+
+bool Language::isCorrespondingState(State* state){
+    for(unsigned int i = 0; i < _states.size(); i++){
+        if((*_states[i]) == *state)
+            return true;
+    }
+    return false;
 }
 
 /* --------------------- */
