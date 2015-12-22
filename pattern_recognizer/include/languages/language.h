@@ -27,6 +27,8 @@ public:
 
     Word* getWord(int i);
 
+    int size() const;
+
 private:
     Alphabet _alphabet;
     vector<Word*> _words;

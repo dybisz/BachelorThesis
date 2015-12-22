@@ -41,6 +41,10 @@ Language::~Language() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
+int Language::size() const{
+    return _words.size();
+}
+
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */

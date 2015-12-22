@@ -13,6 +13,8 @@ doc/business_analysis/*.pdf
 
 doc/uml_diagrams/
 
+logs
+
 *.aux
 *.log
 *.toc
