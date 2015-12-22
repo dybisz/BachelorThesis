@@ -85,11 +85,19 @@ Symbol*Word::getSymbol(int i) const {
 /* --------------------- */
 
 Symbol*Word::operator[](int i) {
+    if (size() < 1) {
+        throw invalid_argument("size of word is < 1");
+    }
+
     return _entries[i];
 }
 
 int Word::operator()(int i)
 {
+    if (size() < 1) {
+        throw invalid_argument("size of word is < 1");
+    }
+
     return _entries[i]->getVal();
 }
 
