@@ -101,31 +101,20 @@ namespace console {
                              "Path to xls file with Foreign objects",
                              STRING, &global_settings::FOREIGN_XLS_PATH));
 
-        /* ------ DFA GENERATION SETTINGS ----- */
+        flags.push_back(Flag("C", "cl-states-native",
+                             "Number of states corresponding to native "
+                                     "languages",
+                             INT, &global_settings::STATES_PER_NATIVE));
 
-        flags.push_back(Flag("R", "gen-w-sym-count",
-                             "Words Generation: Alphabet Size",
-                             INT, &global_settings::GEN_WORDS_SYMBOL_COUNT));
+        flags.push_back(Flag("c", "cl-states-foreign",
+                             "Number of states corresponding to foreign "
+                                     "languages",
+                             INT, &global_settings::STATES_PER_FOREIGN));
 
-        flags.push_back(Flag("C", "gen-w-c",
-                             "Words Generation: The constant C",
-                             INT, &global_settings::GEN_WORD_C));
+        flags.push_back(Flag("A", "cl-alph-size",
+                             "Size of the alphabet - defines precision",
+                             INT, &global_settings::ALPHABET_SIZE));
 
-        flags.push_back(Flag("T", "gen-w-train-size",
-                             "Words Generation: Total train set count",
-                             INT, &global_settings::GEN_WORD_TRAIN_COUNT));
-
-        flags.push_back(Flag("Y", "gen-w-train-max-length",
-                             "Words Generation: Train Set max word length",
-                             INT, &global_settings::GEN_WORD_TRAIN_MAX_LENGTH));
-
-        flags.push_back(Flag("t", "gen-w-test-size",
-                             "Words Generation: Total test set count",
-                             INT, &global_settings::GEN_WORD_TEST_COUNT));
-
-        flags.push_back(Flag("y", "gen-w-test-max-length",
-                             "Words Generation: Test Set max word length",
-                             INT, &global_settings::GEN_WORD_TEST_MAX_LENGTH));
 
         /* ------ DFA GENERATION SETTINGS ----- */
 
@@ -142,14 +131,6 @@ namespace console {
                              INT, &global_settings::GEN_DFA_SYMBOLS));
 
         /* ------ OPTIMIZER SETTINGS ----- */
-
-        flags.push_back(Flag("A", "tool-url",
-                             "Path to file with DFA Tool",
-                             STRING, &global_settings::TOOL_URL));
-
-        flags.push_back(Flag("W", "word-url",
-                             "Path to file with Words",
-                             STRING, &global_settings::WORDS_PATH));
 
         flags.push_back(Flag("q", "state-min",
                              "Starting number of states in Optimizer",

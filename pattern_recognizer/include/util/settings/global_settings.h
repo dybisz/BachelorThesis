@@ -26,6 +26,12 @@ namespace global_settings {
     extern std::string NATIVE_XLS_PATH;
     // Path to xls file with foreign objects
     extern std::string FOREIGN_XLS_PATH;
+    // How many states corresponds to native languages
+    extern int STATES_PER_NATIVE;
+    // How many states corresponds to foreign languages
+    extern int STATES_PER_FOREIGN;
+    // The alphabet size defines the precision of transformation
+    extern int ALPHABET_SIZE;
 
     /* ------ Words GENERATION SETTINGS ----- */
     extern int GEN_WORDS_SYMBOL_COUNT;

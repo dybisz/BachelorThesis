@@ -7,6 +7,7 @@
 
 #include "pattern.h"
 #include <vector>
+#include <language.h>
 
 namespace experiments
 {
@@ -20,6 +21,9 @@ namespace experiments
     {
         void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
                                      std::string headerInfo);
+
+        void printTransformedLanguagesInfo(std::vector<Language*>* languages,
+                                           std::string headerInfo);
     }
 }
 #endif //BACHELOR_THESIS_CLASSIFICATION_EXP_H

@@ -10,6 +10,10 @@ DIR_LOG="DIGITS"
 MAX_ITER=100
 SWARM_SIZE=50
 
+STATES_PER_NATIVE=2
+STATES_PER_FOREIGN=2
+ALPHABET_SIZE=4
+
 NATIVE_XLS_PATH="./res/digits/Natives.xls"
 FOREIGN_XLS_PATH="./res/digits/Foreigns_90cl.xls"
 
@@ -38,7 +42,10 @@ run_optimizer(){
         -I ${MAX_ITER} \
         -S ${SWARM_SIZE} \
         -N ${NATIVE_XLS_PATH} \
-        -F ${FOREIGN_XLS_PATH}
+        -F ${FOREIGN_XLS_PATH} \
+        --cl-states-native ${STATES_PER_NATIVE} \
+        --cl-states-foreign ${STATES_PER_FOREIGN} \
+        --cl-alph-size ${ALPHABET_SIZE}
 }
 
 run_optimizer
