@@ -39,8 +39,8 @@ namespace pso
          * Computes fitness function
          */
         double fitnessValue(Particle *p,
-                            WordsGenerator *wg,
-                            vector<int> *toolRelationResults);
+                            std::vector<Language*>* nativeLanguages,
+                            std::vector<Language*>* foreignLanguages);
 
         /*
          * Calculates the global best fitness among the particles

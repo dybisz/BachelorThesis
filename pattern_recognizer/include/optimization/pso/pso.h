@@ -9,6 +9,7 @@
 #include <string>
 #include <stdexcept>
 #include <climits>
+#include <language.h>
 #include "pso_common.h"
 #include "particle.h"
 #include "words_generator.h"
@@ -48,6 +49,10 @@ public:
     PSO(unsigned int numberOfStates, unsigned int numberOfSymbols,
         vector<int>* toolRelationResults, WordsGenerator* wordsGenerator);
 
+    PSO(unsigned int numberOfStates, unsigned int numberOfSymbols,
+        std::vector<Language*>* nativeLanguages,
+        std::vector<Language*>* foreignLanguages);
+
     ~PSO();
 
     /*
@@ -65,6 +70,9 @@ private:
     unsigned int _numberOfStates;
     unsigned int _numberOfSymbols;
     unsigned int _swarmSize;
+
+    std::vector<Language*>* _nativeLanguages;
+    std::vector<Language*>* _foreignLanguages;
 
     // Used in Fitness Function in order to retrieve pairs of words
     WordsGenerator *_wordsGenerator;
