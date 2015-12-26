@@ -43,13 +43,13 @@ namespace quality {
     /* -----MAIN METHODS ----- */
     /* ----------------------- */
 
-    // Computes True Positives among provided native and foreign languages,
-    // Computations are based on specified DFA.Normally, the dfa should be
+    // Computes TP/FN/FP/TN among provided native and foreign languages,
+    // Computations are based on specified DFA. Normally, the dfa should be
     // the best result from previously run PSO.
 
     // WARNING: returned pointers to words should not be freed. They are
     //          released by corresponding languages classes.
-    // REMARK:  As for naming, please refer to header comment.
+    // REMARK:  As for naming, please refer to the header comment.
     vector<Word *> *gatherTPDistinct(vector<Language *> *nativeLanguages,
                                      vector<Language *> *foreignLanguages,
                                      DFA *dfa);
@@ -58,10 +58,18 @@ namespace quality {
                                     vector<Language *> *foreignLanguages,
                                     DFA *dfa);
 
+    vector<Word *> *gatherFNDistinct(vector<Language *> *nativeLanguages,
+                                     vector<Language *> *foreignLanguages,
+                                     DFA *dfa);
+
+    vector<Word *> *gatherFNOverall(vector<Language *> *nativeLanguages,
+                                    vector<Language *> *foreignLanguages,
+                                    DFA *dfa);
+
     // Because one may not be interested in actual words pointers, rather
-    // in TP percentage - we provide methods to compute ratio between
-    // all considered words and TP ones. As previous, 2 version of TP counting
-    // has been supplied.
+    // in TP/FN/FP/TN percentage - we provide methods to compute ratio between
+    // all considered words and TP/FN/FP/TN ones. As previous, 2 version of each
+    // counting method has been supplied.
     // REMARK:  As for naming, please refer to header comment.
     double computeTPDistinct(vector<Language *> *nativeLanguages,
                              vector<Language *> *foreignLanguages,
@@ -71,6 +79,13 @@ namespace quality {
                             vector<Language *> *foreignLanguages,
                             DFA *dfa);
 
+    double computeFNDistinct(vector<Language *> *nativeLanguages,
+                             vector<Language *> *foreignLanguages,
+                             DFA *dfa);
+
+    double computeFNOverall(vector<Language *> *nativeLanguages,
+                            vector<Language *> *foreignLanguages,
+                            DFA *dfa);
     /* --------------------- */
     /* ----- AUXILIARY ----- */
     /* --------------------- */
@@ -92,21 +107,40 @@ namespace quality {
     // with counter.
     int _countNumberOfWords(vector<Language *> *languages);
 
-    // Returns number of words classified as True Positives. As usual it comes
+    // Gather all states corresponding to provided languages. Method created
+    // mainly for [Overall]-type calculations.
+    vector<State *> _collectStates(vector<Language *> *pLanguages);
+
+    // Returns number of words classified as TP/FN/FP/TN. As usual it comes
     // in two versions. We treat  them as an auxiliary methods to keep main ones
     // as transparent as possible.
     int _numberOfTPDistinct(vector<Language *> *nativeLanguages,
+                            vector<Language *> *foreignLanguages,
+                            DFA *dfa);
+
+    int _numberOfTPOverall(vector<Language *> *nativeLanguages,
                            vector<Language *> *foreignLanguages,
                            DFA *dfa);
 
-    int _numberOfTPOverall(vector<Language *> *nativeLanguages,
-                          vector<Language *> *foreignLanguages,
-                          DFA *dfa);
+    int _numberOfFNDistinct(vector<Language *> *nativeLanguages,
+                            vector<Language *> *foreignLanguages,
+                            DFA *dfa);
+
+    int _numberOfFNOverall(vector<Language *> *nativeLanguages,
+                           vector<Language *> *foreignLanguages,
+                           DFA *dfa);
 
     // Method checks for which words from pLanguage, their computation ends in
-    // states from pCorrectStates and save pointers to those words in pStorage.
+    // states from pCorrectStates and saves pointers to those words in pStorage.
     // pDFA constitutes a method of computation.
     void _getTPFrom(Language *pLanguage, DFA *pDFA,
+                    vector<State *> *pCorrectStates,
+                    vector<Word *> *pStorage);
+
+    // method checks for which words from pLanguage, their computation ends in
+    // different states than those provided in pCorrectStates and saves pointers
+    // to such a words in pStorage. pDFA is used to perform computations.
+    void _getFNFrom(Language *pLanguage, DFA *pDFA,
                     vector<State *> *pCorrectStates,
                     vector<Word *> *pStorage);
 
