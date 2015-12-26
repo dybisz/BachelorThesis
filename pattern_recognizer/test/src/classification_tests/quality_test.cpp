@@ -37,10 +37,12 @@ vector<Language *> *foreignLanguages;
 
 
 /* ----- EXPECTED RESULTS ----- */
-double TP_DISTINCT_COUNT = 200;
-double TP_OVERALL_COUNT = 297;
-double FN_DISTINCT_COUNT = 202;
-double FN_OVERALL_COUNT = 105;
+double NATIVE_WORDS = 201;
+double FOREIGN_WORDS = 201;
+double TP_DISTINCT_COUNT = 101;
+double TP_OVERALL_COUNT = 105;
+double FN_DISTINCT_COUNT = 100;
+double FN_OVERALL_COUNT = 96;
 
 /* ----- INIT/DELETE GLOBAL DATA ----- */
 void initGlobals();
@@ -51,79 +53,76 @@ void releaseGlobals();
 /* ----- TESTS ----- */
 /* ----------------- */
 
-TEST(QualityTest, Words_Loaded) {
+TEST(QualityTest, Native_Words_Count) {
     /* ----- INIT DATA ----- */
     initGlobals();
 
-    EXPECT_EQ(ALL_WORDS, quality::_countNumberOfWords(nativeLanguages) +
-                         quality::_countNumberOfWords(foreignLanguages));
+    EXPECT_EQ(NATIVE_WORDS, quality::_countNumberOfWords(nativeLanguages));
+}
+
+TEST(QualityTest, Foreign_Words_Count) {
+
+    EXPECT_EQ(FOREIGN_WORDS, quality::_countNumberOfWords(foreignLanguages));
 }
 
 TEST(QualityTest, Count_TP_Distinct) {
 
-    EXPECT_EQ(ALL_WORDS - FN_DISTINCT_COUNT,
-              quality::_numberOfTPDistinct(nativeLanguages,
-                                           foreignLanguages,
-                                           dfa));
+    EXPECT_EQ(NATIVE_WORDS - FN_DISTINCT_COUNT,
+              quality::numberOfTPDistinct(nativeLanguages,
+                                          dfa));
 }
 
 TEST(QualityTest, Count_TP_Overall) {
 
-    EXPECT_EQ(ALL_WORDS - FN_OVERALL_COUNT,
-              quality::_numberOfTPOverall(nativeLanguages,
-                                          foreignLanguages,
-                                          dfa));
+    EXPECT_EQ(NATIVE_WORDS - FN_OVERALL_COUNT,
+              quality::numberOfTPOverall(nativeLanguages,
+                                         dfa));
 }
 
 TEST(QualityTest, Percentage_TP_Distinct) {
 
-    EXPECT_EQ(TP_DISTINCT_COUNT / ALL_WORDS,
-              quality::computeTPDistinct(nativeLanguages,
-                                         foreignLanguages,
-                                         dfa));
+    EXPECT_EQ(TP_DISTINCT_COUNT / NATIVE_WORDS,
+              quality::percentageTPDistinct(nativeLanguages,
+                                            dfa));
 }
 
 TEST(QualityTest, Percentage_TP_Overall) {
 
-    EXPECT_EQ(TP_OVERALL_COUNT / ALL_WORDS,
-              quality::computeTPOverall(nativeLanguages,
-                                        foreignLanguages,
-                                        dfa));
+    EXPECT_EQ(TP_OVERALL_COUNT / NATIVE_WORDS,
+              quality::percentageTPOverall(nativeLanguages,
+                                           dfa));
 }
 
 TEST(QualityTest, Count_FN_Distinct) {
 
-    EXPECT_EQ(ALL_WORDS - TP_DISTINCT_COUNT,
-              quality::_numberOfFNDistinct(nativeLanguages,
-                                           foreignLanguages,
-                                           dfa));
+    EXPECT_EQ(NATIVE_WORDS - TP_DISTINCT_COUNT,
+              quality::numberOfFNDistinct(nativeLanguages,
+                                          dfa));
 }
 
 TEST(QualityTest, Count_FN_Overall) {
 
-    EXPECT_EQ(ALL_WORDS - TP_OVERALL_COUNT,
-              quality::_numberOfFNOverall(nativeLanguages,
-                                          foreignLanguages,
-                                          dfa));
+    EXPECT_EQ(NATIVE_WORDS - TP_OVERALL_COUNT,
+              quality::numberOfFNOverall(nativeLanguages,
+                                         dfa));
 }
 
 TEST(QualityTest, Percentage_FN_Distinct) {
 
-    EXPECT_EQ(FN_DISTINCT_COUNT / ALL_WORDS,
-              quality::computeFNDistinct(nativeLanguages,
-                                         foreignLanguages,
-                                         dfa));
+    EXPECT_EQ(FN_DISTINCT_COUNT / NATIVE_WORDS,
+              quality::percentageFNDistinct(nativeLanguages,
+                                            dfa));
 }
 
 TEST(QualityTest, Percentage_FN_Overall) {
 
-    EXPECT_EQ(FN_OVERALL_COUNT / ALL_WORDS,
-              quality::computeFNOverall(nativeLanguages,
-                                        foreignLanguages,
-                                        dfa));
+    EXPECT_EQ(FN_OVERALL_COUNT / NATIVE_WORDS,
+              quality::percentageFNOverall(nativeLanguages,
+                                           dfa));
     /* ----- FREE DATA ----- */
     releaseGlobals();
 }
+
 /* --------------------------------- */
 /* ----- AUXILIARY DEFINITIONS ----- */
 /* --------------------------------- */
