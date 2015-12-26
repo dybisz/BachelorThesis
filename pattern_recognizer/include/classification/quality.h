@@ -73,10 +73,14 @@ namespace quality {
     // Accuracy/Sensitivity/Precision/F-Measure results for provided native
     // and foreign sets of languages. If one cares only for putting results
     // to some kind of log file or print them out this method is perfectly
-    // suited.
-    string summaryToString(vector<Language *> *nativeLanguages,
-                           vector<Language *> *foreignLanguages,
-                           DFA *dfa);
+    // suited. Output strings are conveniently formatted.
+    string distinctResultsToString(vector<Language *> *nativeLanguages,
+                                   vector<Language *> *foreignLanguages,
+                                   DFA *dfa);
+
+    string overallResultsToString(vector<Language *> *nativeLanguages,
+                                  vector<Language *> *foreignLanguages,
+                                  DFA *dfa);
 
     // Methods compute Accuracy/Sensitivity/Precision/F-Measure values.
     // Distinct and Overall methods has been provided for further, more precise
@@ -207,13 +211,12 @@ namespace quality {
                           vector<State *> *pCorrectStates,
                           vector<Word *> *pStorage);
 
-    // method checks for which words from pLanguage, their computation ends in
+    // Method checks for which words from pLanguage, their computation ends in
     // different states than those provided in pCorrectStates and saves pointers
     // to such a words in pStorage. pDFA is used to perform computations.
     void _getFalseOnesFrom(Language *pLanguage, DFA *pDFA,
                            vector<State *> *pCorrectStates,
                            vector<Word *> *pStorage);
-
 }
 
 #endif //BACHELOR_THESIS_QUALITY_H

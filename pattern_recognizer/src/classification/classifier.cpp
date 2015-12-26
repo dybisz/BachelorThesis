@@ -56,12 +56,6 @@ void Classifier::runClassification(){
 
     pso->compute();
 
-    std::vector<Particle *> psoResults = pso->getBestParticles();
-    Particle* firstBest = psoResults[0];
-
-    // Quality results
-    // ...
-    // gooood quality mr Wladyslaw
 };
 
 //-----------------------------------------------------------//

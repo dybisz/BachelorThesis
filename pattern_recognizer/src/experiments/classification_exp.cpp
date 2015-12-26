@@ -23,8 +23,8 @@ namespace experiments
         std::vector<Pattern*>* nativePatterns = nativeXLSLoader.getPatterns();
         std::vector<Pattern*>* foreignPatterns = foreignXLSLoader.getPatterns();
 
-        classification::printLoadedPatternsInfo(nativePatterns, "Native");
-        classification::printLoadedPatternsInfo(foreignPatterns, "Foreign");
+        classification::printLoadedPatternsInfo(nativePatterns, "NATIVE");
+        classification::printLoadedPatternsInfo(foreignPatterns, "FOREIGN");
 
         /* Transformation */
         logger::log("Language Transformation");
@@ -42,9 +42,9 @@ namespace experiments
                         global_settings::ALPHABET_SIZE);
 
         classification::printTransformedLanguagesInfo(nativeLanguages,
-                                                      "Native");
+                                                      "NATIVE");
         classification::printTransformedLanguagesInfo(foreignLanguages,
-                                                      "Foreign");
+                                                      "FOREIGN");
 
 
         Classifier* classifier = new Classifier(
@@ -63,19 +63,18 @@ namespace experiments
         void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
                                      std::string headerInfo){
             std::stringstream ss;
-            ss << "Patterns. " << headerInfo << std::endl;
-            ss << "Different Patterns count. "
-                << patterns->size() << std::endl;
+            ss << "[PATTERNS_" << headerInfo << "]\n";
 
             int sum = 0;
             for(int i = 0; i < patterns->size(); i++){
                 sum += (*patterns)[i]->size();
                 ss << "Pattern["
                     << i
-                    << "] count: "
+                    << "] .................. : "
                     << (*patterns)[i]->size() << std::endl;
             }
-            ss << "All Patterns count: " << sum;
+//            string temp = "\u222A";
+            ss << "----------------------------  + " << sum;
 
             logger::log(ss.str());
         }
@@ -83,19 +82,17 @@ namespace experiments
         void printTransformedLanguagesInfo(std::vector<Language*>* languages,
                                             std::string headerInfo){
             std::stringstream ss;
-            ss << "Languages. " << headerInfo << std::endl;
-            ss << "Languages count " << languages->size() << std::endl;
+            ss << "[LANGUAGES_" << headerInfo << "]\n";
 
             int sum = 0;
             for(int i = 0; i < languages->size(); i++){
                 sum += (*languages)[i]->size();
                 ss << "Language["
                 << i
-                << "] word count: "
+                << "] ................. : "
                 << (*languages)[i]->size() << std::endl;
             }
-            ss << "All Words count: " << sum;
-
+            ss << "----------------------------- + " << sum;
             logger::log(ss.str());
         }
     }

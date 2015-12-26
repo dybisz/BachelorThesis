@@ -12,6 +12,7 @@
 #include <algorithms/pso_neighbourhood.h>
 #include <particle_factory.h>
 #include <geometry.h>
+#include <quality.h>
 #include "pso_update_common.h"
 #include "thread_pool.h"
 #include "pso_common.h"
@@ -98,8 +99,22 @@ void PSO::compute() {
     }
     logger::log(Verbose(PSO_V), "Particle Swarm Optimization ends");
 
+    /* ----- Quality Results ----- */
+    // TODO integers -> states
+    quality::_convertWords(_nativeLanguages);
+    quality::_convertWords(_foreignLanguages);
 
+    std::vector<Particle *> psoResults = getBestParticles();
+    Particle* firstBest = psoResults[0];
+    const DFA* bestDFA = firstBest->getBestDFA();
 
+    logger::log(quality::distinctResultsToString(_nativeLanguages,
+                                                 _foreignLanguages,
+                                                 (DFA *) bestDFA));
+
+    logger::log(quality::overallResultsToString(_nativeLanguages,
+                                                 _foreignLanguages,
+                                                 (DFA *) bestDFA));
     delete consolePlot;
 }
 

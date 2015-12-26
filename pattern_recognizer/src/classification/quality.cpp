@@ -8,10 +8,65 @@
 /* -----MAIN METHODS ----- */
 /* ----------------------- */
 
-string quality::summaryToString(vector<Language *> *nativeLanguages,
-                                vector<Language *> *foreignLanguages,
-                                DFA *dfa) {
-    string out = "[QUALITY]:\n";
+string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
+                                        vector<Language *> *foreignLanguages,
+                                        DFA *dfa) {
+    /* ----- Collected Results ----- */
+    double TP = percentageTrueDistinct(nativeLanguages, dfa);
+    double TN = percentageTrueDistinct(foreignLanguages, dfa);
+    double FP = percentageFalseDistinct(foreignLanguages, dfa);
+    double FN = percentageFalseDistinct(nativeLanguages, dfa);
+
+    double accuracy = calculateAccuracyDistinct(nativeLanguages,
+                                                foreignLanguages, dfa);
+    double sensitivity = calculateSensitivityDistinct(nativeLanguages,
+                                                      foreignLanguages, dfa);
+    double precision = calculatePrecisionDistinct(nativeLanguages,
+                                                  foreignLanguages, dfa);
+    double FMeasure = calculateFMeasureDistinct(nativeLanguages,
+                                                foreignLanguages, dfa);
+
+    /* ----- Create Output String ----- */
+    string out = "[QUALITY_DISTINCT]\n";
+    out += "[TP]....................... :" + to_string(TP) + "\n";
+    out += "[TN]........................:" + to_string(TN) + "\n";
+    out += "[FP]........................:" + to_string(FP) + "\n";
+    out += "[FN]........................:" + to_string(FN) + "\n";
+    out += "[ACCURACY]..................:" + to_string(accuracy) + "\n";
+    out += "[SENSITIVITY]...............:" + to_string(sensitivity) + "\n";
+    out += "[PRECISION].................:" + to_string(precision) + "\n";
+    out += "[F-MEASURE].................:" + to_string(FMeasure);
+    return out;
+}
+
+string quality::overallResultsToString(vector<Language *> *nativeLanguages,
+                                       vector<Language *> *foreignLanguages,
+                                       DFA *dfa) {
+    /* ----- Collected Results ----- */
+    double TP = percentageTrueOverall(nativeLanguages, dfa);
+    double TN = percentageTrueOverall(foreignLanguages, dfa);
+    double FP = percentageFalseOverall(foreignLanguages, dfa);
+    double FN = percentageFalseOverall(nativeLanguages, dfa);
+
+    double accuracy = calculateAccuracyOverall(nativeLanguages,
+                                               foreignLanguages, dfa);
+    double sensitivity = calculateSensitivityOverall(nativeLanguages,
+                                                     foreignLanguages, dfa);
+    double precision = calculatePrecisionOverall(nativeLanguages,
+                                                 foreignLanguages, dfa);
+    double FMeasure = calculateFMeasureOverall(nativeLanguages,
+                                               foreignLanguages, dfa);
+
+    /* ----- Create Output String ----- */
+    string out = "[QUALITY_OVERALL]\n";
+    out += "[TP]....................... :" + to_string(TP) + "\n";
+    out += "[TN]........................:" + to_string(TN) + "\n";
+    out += "[FP]........................:" + to_string(FP) + "\n";
+    out += "[FN]........................:" + to_string(FN) + "\n";
+    out += "[ACCURACY]..................:" + to_string(accuracy) + "\n";
+    out += "[SENSITIVITY]...............:" + to_string(sensitivity) + "\n";
+    out += "[PRECISION].................:" + to_string(precision) + "\n";
+    out += "[F-MEASURE].................:" + to_string(FMeasure);
     return out;
 }
 
