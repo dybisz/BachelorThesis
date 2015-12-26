@@ -8,9 +8,9 @@
 /* -----MAIN METHODS ----- */
 /* ----------------------- */
 
-vector<Word *> *quality::computeTPDistinct(vector<Language *> *nativeLanguages,
-                                           vector<Language *> *foreignLanguages,
-                                           DFA *dfa) {
+vector<Word *> *quality::gatherTPDistinct(vector<Language *> *nativeLanguages,
+                                          vector<Language *> *foreignLanguages,
+                                          DFA *dfa) {
     vector<Word *> *TP = new vector<Word *>();
 
     // gather TP from native languages
@@ -29,9 +29,9 @@ vector<Word *> *quality::computeTPDistinct(vector<Language *> *nativeLanguages,
 }
 
 
-vector<Word *> *quality::computeTPOverall(vector<Language *> *nativeLanguages,
-                                          vector<Language *> *foreignLanguages,
-                                          DFA *dfa) {
+vector<Word *> *quality::gatherTPOverall(vector<Language *> *nativeLanguages,
+                                         vector<Language *> *foreignLanguages,
+                                         DFA *dfa) {
     vector<Word *> *TP = new vector<Word *>();
 
     // gather TP from native languages
@@ -40,29 +40,49 @@ vector<Word *> *quality::computeTPOverall(vector<Language *> *nativeLanguages,
         _getTPFrom((*lang), dfa, (*lang)->getStates(), TP);
     }
 
-    // Gather all states corresponding to foreign languages
+    // Gather all states corresponding to foreign languages to prevent
+    // treating them as a distinct ones.
     vector<State *> foreignStates;
     for (auto lang = foreignLanguages->begin();
          lang != foreignLanguages->end(); ++lang) {
         vector<State *> localStates = *((*lang)->getStates());
-        for(int i = 0 ; i < localStates.size() ;i++) {
+        for (int i = 0; i < localStates.size(); i++) {
             foreignStates.push_back(localStates[i]);
         }
     }
-    cout << "foreign states: ";
-    for(int i = 0; i < foreignStates.size(); ++i) {
-        cout << foreignStates[i]->getVal() << ", ";
-    }
-    cout << endl;
 
-    // gather TP from foreign languages based on all their states
-    // (explained in method's description in .h)
     for (auto lang = foreignLanguages->begin();
          lang != foreignLanguages->end(); ++lang) {
         _getTPFrom((*lang), dfa, &foreignStates, TP);
     }
 
     return TP;
+}
+
+double quality::computeTPDistinct(vector<Language *> *nativeLanguages,
+                                  vector<Language *> *foreignLanguages,
+                                  DFA *dfa) {
+    vector<Word *> *TP = quality::gatherTPDistinct(nativeLanguages,
+                                                   foreignLanguages,
+                                                   dfa);
+    int numberOfWords = _countNumberOfWords(nativeLanguages) +
+                        _countNumberOfWords(foreignLanguages);
+    double tpPercentage = ((double) TP->size()) / numberOfWords;
+    delete TP;
+    return tpPercentage;
+}
+
+double quality::computeTPOverall(vector<Language *> *nativeLanguages,
+                                 vector<Language *> *foreignLanguages,
+                                 DFA *dfa) {
+    vector<Word *> *TP = quality::gatherTPOverall(nativeLanguages,
+                                                   foreignLanguages,
+                                                   dfa);
+    int numberOfWords = _countNumberOfWords(nativeLanguages) +
+                        _countNumberOfWords(foreignLanguages);
+    double tpPercentage = ((double) TP->size()) / numberOfWords;
+    delete TP;
+    return tpPercentage;
 }
 
 /* --------------------- */
@@ -117,7 +137,7 @@ void quality::_getTPFrom(Language *pLanguage, DFA *pDFA,
         int endState = pDFA->compute(*(*word));
 
         // Check correctness of computations
-        if (_stateOnList(endState, pLanguage->getStates()))
+        if (_stateOnList(endState, pCorrectStates))
             pStorage->push_back((*word));
     }
 }

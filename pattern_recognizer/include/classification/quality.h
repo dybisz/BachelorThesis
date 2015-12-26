@@ -26,6 +26,16 @@ using namespace std;
  * |-o [PRECISION]              - [TP] / ([TP] + [FP])
  * |-o [F-MEASURE]              - 2 * ([PRECISION] * [SENSITIVITY])
  *                                              / ([PRECISION] + [SENSITIVITY])
+ *
+ * Additional naming description:
+ * |-o [Distinct]               - treats foreign languages as distinct ones. It
+ * |                              means that a foreign word will we treated as
+ * |                              TP iff its computation ends in a state specified
+ * |                              by its language.
+ * |-o [Overall]                - sees foreign languages as a one i.e it only
+ *                                checks if each foreign words does not end its
+ *                                computation in any of states assigned to
+ *                                native languages.
  */
 namespace quality {
 
@@ -39,19 +49,27 @@ namespace quality {
 
     // WARNING: returned pointers to words should not be freed. They are
     //          released by corresponding languages classes.
-    // REMARK:  First one treats foreign languages as distinct ones. It means
-    //          that a foreign word will we treated as TP iff its computation
-    //          ends in a state specified by its language.
-    //          On the other hand, latter one sees foreign languages as a one,
-    //          it only checks if each foreign words does not end computation
-    //          in any of states assigned to native languages.
-    vector<Word *> *computeTPDistinct(vector<Language *> *nativeLanguages,
-                                      vector<Language *> *foreignLanguages,
-                                      DFA *dfa);
-
-    vector<Word *> *computeTPOverall(vector<Language *> *nativeLanguages,
+    // REMARK:  As for naming, please refer to header comment.
+    vector<Word *> *gatherTPDistinct(vector<Language *> *nativeLanguages,
                                      vector<Language *> *foreignLanguages,
                                      DFA *dfa);
+
+    vector<Word *> *gatherTPOverall(vector<Language *> *nativeLanguages,
+                                    vector<Language *> *foreignLanguages,
+                                    DFA *dfa);
+
+    // Because one may not be interested in actual words pointers, rather
+    // in TP percentage - we provide methods to compute ratio between
+    // all considered words and TP ones. As previous, 2 version of TP counting
+    // has been supplied.
+    // REMARK:  As for naming, please refer to header comment.
+    double computeTPDistinct(vector<Language *> *nativeLanguages,
+                             vector<Language *> *foreignLanguages,
+                             DFA *dfa);
+
+    double computeTPOverall(vector<Language *> *nativeLanguages,
+                            vector<Language *> *foreignLanguages,
+                            DFA *dfa);
 
     /* --------------------- */
     /* ----- AUXILIARY ----- */

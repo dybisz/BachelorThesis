@@ -52,7 +52,7 @@ TEST(QualityTest, Foo) {
                     foreignPatterns,
                     STATES_PER_FOREIGN,
                     ALPHABET_SIZE,
-                    STATES_PER_NATIVE); 
+                    STATES_PER_NATIVE);
 
     // CONVERT WORDS - WILL BE CHANGED
     quality::_convertWords(nativeLanguages);
@@ -60,25 +60,15 @@ TEST(QualityTest, Foo) {
 
 
     // COMPUTE TP
-    vector<Word *> *TP = quality::computeTPDistinct(nativeLanguages,
-                                                    foreignLanguages,
-                                                    dfa);
-
-    cout << "TP_DISTINCT count: " << TP->size() << endl;
-    cout << "Out of  : " << quality::_countNumberOfWords(nativeLanguages) +
-                            quality::_countNumberOfWords(foreignLanguages) <<
-    endl;
-
-    vector<Word *> *TP2 = quality::computeTPOverall(nativeLanguages,
-                                                    foreignLanguages,
-                                                    dfa);
-
-    cout << "TP_DISTINCT count: " << TP2->size() << endl;
-    cout << "Out of  : " << quality::_countNumberOfWords(nativeLanguages) +
-                            quality::_countNumberOfWords(foreignLanguages) <<
-    endl;
+    cout << "TP_DISTINCT count: " << quality::computeTPDistinct(nativeLanguages,
+                                                               foreignLanguages,
+                                                               dfa) << endl;
+    cout << "TP_OVERALL  count: " << quality::computeTPOverall(nativeLanguages,
+                                                                foreignLanguages,
+                                                                dfa) << endl;
 
     /* ----- FREE DATA ----- */
+    // classifier correctly frees languages.
     Classifier *classifier = new Classifier(
             nativeLanguages,
             foreignLanguages,
@@ -87,7 +77,5 @@ TEST(QualityTest, Foo) {
             ALPHABET_SIZE);
     delete classifier;
     delete dfa;
-    delete TP;
-    delete TP2;
 }
 
