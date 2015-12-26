@@ -13,6 +13,7 @@ using namespace std;
 
 /*
  * Namespace is in charge of measuring (in fact 8) different values:
+ * |
  * |-o [TP] - (True Positive)   - the number of elements of the considered class,
  * |                              correctly classified to this class.
  * |
@@ -35,10 +36,14 @@ using namespace std;
  *                                              / ([PRECISION] + [SENSITIVITY])
  *
  * Additional naming description:
+ * |
  * |-o [Distinct]               - treats provided set of languages as distinct
  * |                              one. It means that a word will be treated as
  * |                              e.g TP iff its computation ends in a state
  * |                              specified by its corresponding language.
+ * |                              in other words it checks if symbol was
+ * |                              classified as a correct one, rather than
+ * |                              as a symbol at all.
  * |
  * |-o [Overall]                - sees provided set of languages as a one i.e
  *                                it only checks if each word does end its
@@ -46,6 +51,16 @@ using namespace std;
  *                                the provided set. E.g. for native languages
  *                                it will tell how many native symbols were
  *                                classified as a symbol.
+ *
+ * Methods of acquiring TP/FN/FP/TN:
+ * |
+ * |-o True Positive            - methods with [True] + native languages set
+ * |
+ * |-o False Negative           - methods with [False] + native languages set
+ * |
+ * |-o False Positive           - methods with [False] + foreign languages set
+ * |
+ * |-o True Negative            - methods with [True] + foreign languages set
  */
 namespace quality {
 
@@ -53,40 +68,44 @@ namespace quality {
     /* -----MAIN METHODS ----- */
     /* ----------------------- */
 
-    // Computes TP/FN/FP/TN among provided native and foreign languages,
+    // Computes number of TP/FN/FP/TN among provided languages,
     // Computations are based on specified DFA. Normally, the dfa should be
     // the best result from previously run PSO.
     //
-    // REMARK:  As for naming, please refer to the header comment.
-    int numberOfTPDistinct(vector<Language *> *nativeLanguages,
-                           DFA *dfa);
+    // REMARK: For combination with native/foreign sets and naming convention,
+    //         please refer to the [Methods of acquiring TP/FN/FP/TN] section
+    //         of the header comment.
+    int numberOfTrueDistinct(vector<Language *> *pLanguages,
+                             DFA *dfa);
 
-    int numberOfTPOverall(vector<Language *> *nativeLanguages,
-                          DFA *dfa);
+    int numberOfTrueOverall(vector<Language *> *pLanguages,
+                            DFA *dfa);
 
-    int numberOfFNDistinct(vector<Language *> *nativeLanguages,
-                           DFA *dfa);
+    int numberOfFalseDistinct(vector<Language *> *pLanguages,
+                              DFA *dfa);
 
-    int numberOfFNOverall(vector<Language *> *nativeLanguages,
-                          DFA *dfa);
+    int numberOfFalseOverall(vector<Language *> *pLanguages,
+                             DFA *dfa);
 
     // Because one may not be interested in actual TP/FN/FP/TN percentage -
     // we provide methods to compute ratio between all considered words and
     // TP/FN/FP/TN ones. As previous, 2 version of each counting method has
     // been supplied.
     //
-    // REMARK:  As for naming, please refer to header comment.
-    double percentageTPDistinct(vector<Language *> *nativeLanguages,
-                                DFA *dfa);
+    // REMARK: For combination with native/foreign sets and naming convention,
+    //         please refer to the [Methods of acquiring TP/FN/FP/TN] section
+    //         of the header comment.
+    double percentageTrueDistinct(vector<Language *> *pLanguages,
+                                  DFA *dfa);
 
-    double percentageTPOverall(vector<Language *> *nativeLanguages,
-                               DFA *dfa);
+    double percentageTrueOverall(vector<Language *> *pLanguages,
+                                 DFA *dfa);
 
-    double percentageFNDistinct(vector<Language *> *nativeLanguages,
-                                DFA *dfa);
+    double percentageFalseDistinct(vector<Language *> *pLanguages,
+                                   DFA *dfa);
 
-    double percentageFNOverall(vector<Language *> *nativeLanguages,
-                               DFA *dfa);
+    double percentageFalseOverall(vector<Language *> *pLanguages,
+                                  DFA *dfa);
 
     /* --------------------- */
     /* ----- AUXILIARY ----- */
@@ -119,17 +138,20 @@ namespace quality {
 
     // WARNING: returned pointers should not be freed. They are
     //          released by corresponding languages classes.
-    vector<Word *> *_gatherTPDistinct(vector<Language *> *nativeLanguages,
-                                      DFA *dfa);
+    // REMARK:  For combination with native/foreign sets and naming convention,
+    //          please refer to the [Methods of acquiring TP/FN/FP/TN] section
+    //          of the header comment.
+    vector<Word *> *_gatherTrueDistinct(vector<Language *> *pLanguages,
+                                        DFA *dfa);
 
-    vector<Word *> *_gatherTPOverall(vector<Language *> *nativeLanguages,
-                                     DFA *dfa);
+    vector<Word *> *_gatherTrueOverall(vector<Language *> *pLanguages,
+                                       DFA *dfa);
 
-    vector<Word *> *_gatherFNDistinct(vector<Language *> *nativeLanguages,
-                                      DFA *dfa);
+    vector<Word *> *_gatherFalseDistinct(vector<Language *> *pLanguages,
+                                         DFA *dfa);
 
-    vector<Word *> *_gatherFNOverall(vector<Language *> *nativeLanguages,
-                                     DFA *dfa);
+    vector<Word *> *_gatherFalseOverall(vector<Language *> *pLanguages,
+                                        DFA *dfa);
 
     // Method checks for which words from pLanguage, their computation ends in
     // states from pCorrectStates and saves pointers to those words in pStorage.

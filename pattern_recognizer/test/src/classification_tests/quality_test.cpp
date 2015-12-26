@@ -43,6 +43,10 @@ double TP_DISTINCT_COUNT = 101;
 double TP_OVERALL_COUNT = 105;
 double FN_DISTINCT_COUNT = 100;
 double FN_OVERALL_COUNT = 96;
+double FP_DISTINCT_COUNT = 102;
+double FP_OVERALL_COUNT = 5;
+double TN_DISTINCT_COUNT = 99;
+double TN_OVERALL_COUNT = 196;
 
 /* ----- INIT/DELETE GLOBAL DATA ----- */
 void initGlobals();
@@ -65,60 +69,126 @@ TEST(QualityTest, Foreign_Words_Count) {
     EXPECT_EQ(FOREIGN_WORDS, quality::_countNumberOfWords(foreignLanguages));
 }
 
+/* ----- TRUE POSITIVES ----- */
+
 TEST(QualityTest, Count_TP_Distinct) {
 
     EXPECT_EQ(NATIVE_WORDS - FN_DISTINCT_COUNT,
-              quality::numberOfTPDistinct(nativeLanguages,
-                                          dfa));
+              quality::numberOfTrueDistinct(nativeLanguages,
+                                            dfa));
 }
 
 TEST(QualityTest, Count_TP_Overall) {
 
     EXPECT_EQ(NATIVE_WORDS - FN_OVERALL_COUNT,
-              quality::numberOfTPOverall(nativeLanguages,
-                                         dfa));
+              quality::numberOfTrueOverall(nativeLanguages,
+                                           dfa));
 }
 
 TEST(QualityTest, Percentage_TP_Distinct) {
 
     EXPECT_EQ(TP_DISTINCT_COUNT / NATIVE_WORDS,
-              quality::percentageTPDistinct(nativeLanguages,
-                                            dfa));
+              quality::percentageTrueDistinct(nativeLanguages,
+                                              dfa));
 }
 
 TEST(QualityTest, Percentage_TP_Overall) {
 
     EXPECT_EQ(TP_OVERALL_COUNT / NATIVE_WORDS,
-              quality::percentageTPOverall(nativeLanguages,
-                                           dfa));
+              quality::percentageTrueOverall(nativeLanguages,
+                                             dfa));
 }
+
+/* ----- FALSE NEGATIVES ----- */
 
 TEST(QualityTest, Count_FN_Distinct) {
 
     EXPECT_EQ(NATIVE_WORDS - TP_DISTINCT_COUNT,
-              quality::numberOfFNDistinct(nativeLanguages,
-                                          dfa));
+              quality::numberOfFalseDistinct(nativeLanguages,
+                                             dfa));
 }
 
 TEST(QualityTest, Count_FN_Overall) {
 
     EXPECT_EQ(NATIVE_WORDS - TP_OVERALL_COUNT,
-              quality::numberOfFNOverall(nativeLanguages,
-                                         dfa));
+              quality::numberOfFalseOverall(nativeLanguages,
+                                            dfa));
 }
 
 TEST(QualityTest, Percentage_FN_Distinct) {
 
     EXPECT_EQ(FN_DISTINCT_COUNT / NATIVE_WORDS,
-              quality::percentageFNDistinct(nativeLanguages,
-                                            dfa));
+              quality::percentageFalseDistinct(nativeLanguages,
+                                               dfa));
 }
 
 TEST(QualityTest, Percentage_FN_Overall) {
 
     EXPECT_EQ(FN_OVERALL_COUNT / NATIVE_WORDS,
-              quality::percentageFNOverall(nativeLanguages,
-                                           dfa));
+              quality::percentageFalseOverall(nativeLanguages,
+                                              dfa));
+}
+
+/* ----- FALSE POSITIVES ----- */
+
+TEST(QualityTest, Count_FP_Distinct) {
+
+    EXPECT_EQ(FOREIGN_WORDS - TN_DISTINCT_COUNT,
+              quality::numberOfFalseDistinct(foreignLanguages,
+                                             dfa));
+}
+
+TEST(QualityTest, Count_FP_Overall) {
+
+    EXPECT_EQ(FOREIGN_WORDS - TN_OVERALL_COUNT,
+              quality::numberOfFalseOverall(foreignLanguages,
+                                            dfa));
+}
+
+TEST(QualityTest, Percentage_FP_Distinct) {
+
+    EXPECT_EQ(FP_DISTINCT_COUNT / FOREIGN_WORDS,
+              quality::percentageFalseDistinct(foreignLanguages,
+                                              dfa));
+
+}
+
+TEST(QualityTest, Percentage_FP_Overall) {
+
+    EXPECT_EQ(FP_OVERALL_COUNT / FOREIGN_WORDS,
+              quality::percentageFalseOverall(foreignLanguages,
+                                               dfa));
+}
+
+/* ----- TRUE NEGATIVES ----- */ // TRUE + FOREIGN
+
+TEST(QualityTest, Count_TN_Distinct) {
+
+    EXPECT_EQ(FOREIGN_WORDS - FP_DISTINCT_COUNT,
+              quality::numberOfTrueDistinct(foreignLanguages,
+                                            dfa));
+}
+
+TEST(QualityTest, Count_TN_Overall) {
+
+    EXPECT_EQ(FOREIGN_WORDS - FP_OVERALL_COUNT,
+              quality::numberOfTrueOverall(foreignLanguages,
+                                            dfa));
+}
+
+TEST(QualityTest, Percentage_TN_Distinct) {
+
+    EXPECT_EQ(TN_DISTINCT_COUNT / FOREIGN_WORDS,
+              quality::percentageTrueDistinct(foreignLanguages,
+                                              dfa));
+}
+
+TEST(QualityTest, Percentage_TN_Overall) {
+
+    EXPECT_EQ(TN_OVERALL_COUNT / FOREIGN_WORDS,
+              quality::percentageTrueOverall(foreignLanguages,
+                                              dfa));
+
     /* ----- FREE DATA ----- */
     releaseGlobals();
 }

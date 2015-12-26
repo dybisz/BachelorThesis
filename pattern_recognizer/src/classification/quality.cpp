@@ -8,75 +8,75 @@
 /* -----MAIN METHODS ----- */
 /* ----------------------- */
 
-int quality::numberOfTPDistinct(vector<Language *> *nativeLanguages,
-                                DFA *dfa) {
-    vector<Word *> *TP = quality::_gatherTPDistinct(nativeLanguages,
-                                                    dfa);
+int quality::numberOfTrueDistinct(vector<Language *> *pLanguages,
+                                  DFA *dfa) {
+    vector<Word *> *TP = quality::_gatherTrueDistinct(pLanguages,
+                                                      dfa);
     int TPwords = TP->size();
     delete TP;
     return TPwords;
 }
 
-int quality::numberOfTPOverall(vector<Language *> *nativeLanguages,
-                               DFA *dfa) {
-    vector<Word *> *TP = quality::_gatherTPOverall(nativeLanguages,
-                                                   dfa);
+int quality::numberOfTrueOverall(vector<Language *> *pLanguages,
+                                 DFA *dfa) {
+    vector<Word *> *TP = quality::_gatherTrueOverall(pLanguages,
+                                                     dfa);
     int TPwords = TP->size();
     delete TP;
     return TPwords;
 }
 
-int quality::numberOfFNDistinct(vector<Language *> *nativeLanguages,
-                                DFA *dfa) {
-    vector<Word *> *FN = quality::_gatherFNDistinct(nativeLanguages,
-                                                    dfa);
+int quality::numberOfFalseDistinct(vector<Language *> *pLanguages,
+                                   DFA *dfa) {
+    vector<Word *> *FN = quality::_gatherFalseDistinct(pLanguages,
+                                                       dfa);
     int FNwords = FN->size();
     delete FN;
     return FNwords;
 }
 
-int quality::numberOfFNOverall(vector<Language *> *nativeLanguages,
-                               DFA *dfa) {
-    vector<Word *> *FN = quality::_gatherFNOverall(nativeLanguages,
-                                                   dfa);
+int quality::numberOfFalseOverall(vector<Language *> *pLanguages,
+                                  DFA *dfa) {
+    vector<Word *> *FN = quality::_gatherFalseOverall(pLanguages,
+                                                      dfa);
     int FNwords = FN->size();
     delete FN;
     return FNwords;
 }
 
 
-double quality::percentageTPDistinct(vector<Language *> *nativeLanguages,
-                                     DFA *dfa) {
-    double TPWords = numberOfTPDistinct(nativeLanguages,
-                                        dfa);
-    int numberOfWords = _countNumberOfWords(nativeLanguages);
+double quality::percentageTrueDistinct(vector<Language *> *pLanguages,
+                                       DFA *dfa) {
+    double TPWords = numberOfTrueDistinct(pLanguages,
+                                          dfa);
+    int numberOfWords = _countNumberOfWords(pLanguages);
     double tpPercentage = (TPWords) / numberOfWords;
     return tpPercentage;
 }
 
-double quality::percentageTPOverall(vector<Language *> *nativeLanguages,
-                                    DFA *dfa) {
-    double TPWords = numberOfTPOverall(nativeLanguages,
-                                       dfa);
-    int numberOfWords = _countNumberOfWords(nativeLanguages);
+double quality::percentageTrueOverall(vector<Language *> *pLanguages,
+                                      DFA *dfa) {
+    double TPWords = numberOfTrueOverall(pLanguages,
+                                         dfa);
+    int numberOfWords = _countNumberOfWords(pLanguages);
     double tpPercentage = (TPWords) / numberOfWords;
     return tpPercentage;
 }
 
-double quality::percentageFNDistinct(vector<Language *> *nativeLanguages,
-                                     DFA *dfa) {
-    double FNWords = numberOfFNDistinct(nativeLanguages,
-                                        dfa);
-    int numberOfWords = _countNumberOfWords(nativeLanguages);
+double quality::percentageFalseDistinct(vector<Language *> *pLanguages,
+                                        DFA *dfa) {
+    double FNWords = numberOfFalseDistinct(pLanguages,
+                                           dfa);
+    int numberOfWords = _countNumberOfWords(pLanguages);
     double fnPercentage = (FNWords) / numberOfWords;
     return fnPercentage;
 }
 
-double quality::percentageFNOverall(vector<Language *> *nativeLanguages,
-                                    DFA *dfa) {
-    double FNWords = numberOfFNOverall(nativeLanguages,
-                                       dfa);
-    int numberOfWords = _countNumberOfWords(nativeLanguages);
+double quality::percentageFalseOverall(vector<Language *> *pLanguages,
+                                       DFA *dfa) {
+    double FNWords = numberOfFalseOverall(pLanguages,
+                                          dfa);
+    int numberOfWords = _countNumberOfWords(pLanguages);
     double fnPercentage = (FNWords) / numberOfWords;
     return fnPercentage;
 }
@@ -142,88 +142,63 @@ vector<State *> quality::_collectStates(vector<Language *> *pLanguages) {
     return states;
 }
 
-vector<Word *> *quality::_gatherTPDistinct(vector<Language *> *nativeLanguages,
-                                           DFA *dfa) {
+vector<Word *> *quality::_gatherTrueDistinct(
+        vector<Language *> *pLanguages,
+        DFA *dfa) {
     vector<Word *> *TP = new vector<Word *>();
 
     // Gather TP from native languages
-    for (auto lang = nativeLanguages->begin();
-         lang != nativeLanguages->end(); ++lang) {
+    for (auto lang = pLanguages->begin();
+         lang != pLanguages->end(); ++lang) {
         _getTrueOnesFrom((*lang), dfa, (*lang)->getStates(), TP);
     }
 
-//    // Gather TP from foreign languages
-//    for (auto lang = foreignLanguages->begin();
-//         lang != foreignLanguages->end(); ++lang) {
-//        _getTrueOnesFrom((*lang), dfa, (*lang)->getStates(), TP);
-//    }
-
     return TP;
 }
 
 
-vector<Word *> *quality::_gatherTPOverall(vector<Language *> *nativeLanguages,
-                                          DFA *dfa) {
+vector<Word *> *quality::_gatherTrueOverall(vector<Language *> *pLanguages,
+                                            DFA *dfa) {
     vector<Word *> *TP = new vector<Word *>();
 
-    // Gather all states corresponding to foreign languages to prevent
+    // Gather all states corresponding to native languages to prevent
     // treating them as a distinct ones.
-    vector<State *> nativeStates = _collectStates(nativeLanguages);
+    vector<State *> nativeStates = _collectStates(pLanguages);
 
     // Gather TP from native languages
-    for (auto lang = nativeLanguages->begin();
-         lang != nativeLanguages->end(); ++lang) {
+    for (auto lang = pLanguages->begin();
+         lang != pLanguages->end(); ++lang) {
         _getTrueOnesFrom((*lang), dfa, &nativeStates, TP);
     }
 
-    // Gather all states corresponding to foreign languages to prevent
-    // treating them as a distinct ones.
-//    vector<State *> foreignStates = _collectStates(foreignLanguages);
-//
-//    // Gather TP from foreign languages
-//    for (auto lang = foreignLanguages->begin();
-//         lang != foreignLanguages->end(); ++lang) {
-//        _getTrueOnesFrom((*lang), dfa, &foreignStates, TP);
-//    }
-
     return TP;
 }
 
-vector<Word *> *quality::_gatherFNDistinct(vector<Language *> *nativeLanguages,
-                                           DFA *dfa) {
+vector<Word *> *quality::_gatherFalseDistinct(
+        vector<Language *> *pLanguages,
+        DFA *dfa) {
     vector<Word *> *FN = new vector<Word *>();
 
-    // Gather FN from native languages
-//    for (auto lang = nativeLanguages->begin();
-//         lang != nativeLanguages->end(); ++lang) {
-//        _getFalseOnesFrom((*lang), dfa, (*lang)->getStates(), FN);
-//    }
-
     // Gather FN from foreign languages
-    for (auto lang = nativeLanguages->begin();
-         lang != nativeLanguages->end(); ++lang) {
+    for (auto lang = pLanguages->begin();
+         lang != pLanguages->end(); ++lang) {
         _getFalseOnesFrom((*lang), dfa, (*lang)->getStates(), FN);
     }
     return FN;
 }
 
-vector<Word *> *quality::_gatherFNOverall(vector<Language *> *nativeLanguages,
-                                          DFA *dfa) {
+vector<Word *> *quality::_gatherFalseOverall(
+        vector<Language *> *pLanguages,
+        DFA *dfa) {
     vector<Word *> *FN = new vector<Word *>();
 
-    // Gather FN from native languages
-//    for (auto lang = nativeLanguages->begin();
-//         lang != nativeLanguages->end(); ++lang) {
-//        _getFalseOnesFrom((*lang), dfa, (*lang)->getStates(), FN);
-//    }
-
-    // Gather all states corresponding to foreign languages to prevent
+    // Gather all states corresponding to native languages to prevent
     // treating them as a distinct ones.
-    vector<State *> nativeStates = _collectStates(nativeLanguages);
+    vector<State *> nativeStates = _collectStates(pLanguages);
 
     // Gather FN from foreign langauges
-    for (auto lang = nativeLanguages->begin();
-         lang != nativeLanguages->end(); ++lang) {
+    for (auto lang = pLanguages->begin();
+         lang != pLanguages->end(); ++lang) {
         _getFalseOnesFrom((*lang), dfa, &nativeStates, FN);
     }
 
