@@ -89,8 +89,19 @@ namespace quality {
     bool _stateOnList(int state, vector<State *> *pStates);
 
     // Returns number of words in provided languages. Just a hidden loop
-    // with counter.
+    // with counter. We treat it as an auxiliary method to keep main methods
+    // as transparent as possible.
     int _countNumberOfWords(vector<Language *> *languages);
+
+    // Returns number of words classified as True Positives. As usual it comes
+    // in two versions.
+    int _numberOfTPDistinct(vector<Language *> *nativeLanguages,
+                           vector<Language *> *foreignLanguages,
+                           DFA *dfa);
+
+    int _numberOfTPOverall(vector<Language *> *nativeLanguages,
+                          vector<Language *> *foreignLanguages,
+                          DFA *dfa);
 
     // Method checks for which words from pLanguage, their computation ends in
     // states from pCorrectStates and save pointers to those words in pStorage.

@@ -62,26 +62,22 @@ vector<Word *> *quality::gatherTPOverall(vector<Language *> *nativeLanguages,
 double quality::computeTPDistinct(vector<Language *> *nativeLanguages,
                                   vector<Language *> *foreignLanguages,
                                   DFA *dfa) {
-    vector<Word *> *TP = quality::gatherTPDistinct(nativeLanguages,
-                                                   foreignLanguages,
-                                                   dfa);
+    double TPWords = _numberOfTPDistinct(nativeLanguages, foreignLanguages,
+                                         dfa);
     int numberOfWords = _countNumberOfWords(nativeLanguages) +
                         _countNumberOfWords(foreignLanguages);
-    double tpPercentage = ((double) TP->size()) / numberOfWords;
-    delete TP;
+    double tpPercentage = (TPWords) / numberOfWords;
     return tpPercentage;
 }
 
 double quality::computeTPOverall(vector<Language *> *nativeLanguages,
                                  vector<Language *> *foreignLanguages,
                                  DFA *dfa) {
-    vector<Word *> *TP = quality::gatherTPOverall(nativeLanguages,
-                                                   foreignLanguages,
-                                                   dfa);
+    double TPWords = _numberOfTPOverall(nativeLanguages, foreignLanguages,
+                                         dfa);
     int numberOfWords = _countNumberOfWords(nativeLanguages) +
                         _countNumberOfWords(foreignLanguages);
-    double tpPercentage = ((double) TP->size()) / numberOfWords;
-    delete TP;
+    double tpPercentage = (TPWords) / numberOfWords;
     return tpPercentage;
 }
 
@@ -124,6 +120,35 @@ bool quality::_stateOnList(int state, vector<State *> *pStates) {
     return false;
 }
 
+int quality::_countNumberOfWords(vector<Language *> *languages) {
+    int size = 0;
+    for (auto lang = languages->begin(); lang != languages->end(); ++lang) {
+        size += (*lang)->size();
+    }
+    return size;
+}
+
+int quality::_numberOfTPDistinct(vector<Language *> *nativeLanguages,
+                                 vector<Language *> *foreignLanguages,
+                                 DFA *dfa) {
+    vector<Word *> *TP = quality::gatherTPDistinct(nativeLanguages,
+                                                   foreignLanguages,
+                                                   dfa);
+    int TPwords = TP->size();
+    delete TP;
+    return TPwords;
+}
+
+int quality::_numberOfTPOverall(vector<Language *> *nativeLanguages,
+                                vector<Language *> *foreignLanguages,
+                                DFA *dfa) {
+    vector<Word *> *TP = quality::gatherTPOverall(nativeLanguages,
+                                                  foreignLanguages,
+                                                  dfa);
+    int TPwords = TP->size();
+    delete TP;
+    return TPwords;
+}
 
 void quality::_getTPFrom(Language *pLanguage, DFA *pDFA,
                          vector<State *> *pCorrectStates,
@@ -142,11 +167,5 @@ void quality::_getTPFrom(Language *pLanguage, DFA *pDFA,
     }
 }
 
-int quality::_countNumberOfWords(vector<Language *> *languages) {
-    int size = 0;
-    for (auto lang = languages->begin(); lang != languages->end(); ++lang) {
-        size += (*lang)->size();
-    }
-    return size;
-}
+
 
