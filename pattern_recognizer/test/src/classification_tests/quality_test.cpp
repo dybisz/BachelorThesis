@@ -21,53 +21,82 @@ int ALPHABET_SIZE = 4;
 int STATES_PER_NATIVE = 2;
 int STATES_PER_FOREIGN = 2;
 
-void free_patterns(vector<Pattern *> *pPatters);
 
-// WARNING: test has hardcoded entries for DFA. Entries are based on PSO with
-// 6 states, 4 symbols and ~0.7 accuracy.
-TEST(QualityTest, Foo) {
-    vector<int> entries = {
-            3, 0, 0, 1, 3, 0,
-            1, 0, 0, 0, 1, 5,
-            5, 5, 2, 5, 4, 5,
-            4, 3, 5, 5, 5, 5,
-    };
-    TransitionFunction *tf = new TransitionFunction(6, 4, entries);
-    DFA *dfa = new DFA(tf);
+/* ----- GLOBAL DFA ----- */
+vector<int> entries = {
+        3, 0, 0, 1, 3, 0,
+        1, 0, 0, 0, 1, 5,
+        5, 5, 2, 5, 4, 5,
+        4, 3, 5, 5, 5, 5,
+};
+TransitionFunction *tf;
+DFA *dfa;
+vector<Language *> *nativeLanguages;
+vector<Language *> *foreignLanguages;
 
+
+/* ----- EXPECTED RESULTS ----- */
+int TP_DISTINCT_COUNT = 200;
+int TP_OVERALL_COUNT = 297;
+
+
+/* ----- INIT/DELETE GLOBAL DATA ----- */
+void initGlobals();
+void releaseGlobals();
+
+/* ----------------- */
+/* ----- TESTS ----- */
+/* ----------------- */
+
+TEST(QualityTest, TP_Distinct) {
+    /* ----- INIT DATA ----- */
+    initGlobals();
+    EXPECT_EQ(TP_DISTINCT_COUNT, quality::_numberOfTPDistinct(nativeLanguages,
+                                                              foreignLanguages,
+                                                              dfa));
+}
+
+TEST(QualityTest, TP_Overall) {
+    initGlobals();
+    EXPECT_EQ(TP_OVERALL_COUNT, quality::_numberOfTPOverall(nativeLanguages,
+                                                            foreignLanguages,
+                                                            dfa));
+    /* ----- FREE DATA ----- */
+    releaseGlobals();
+}
+
+/* --------------------------------- */
+/* ----- AUXILIARY DEFINITIONS ----- */
+/* --------------------------------- */
+
+void initGlobals() {
+    tf = new TransitionFunction(6, 4, entries);
+    dfa = new DFA(tf);
     XlsLoader nativeXLSLoader(SHORT_NATIVE);
     XlsLoader foreignXLSLoader(SHORT_FOREIGN);
 
     vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
     vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
 
-    vector<Language *> *nativeLanguages =
+    nativeLanguages =
             patterns_to_languages::convert(
                     nativePatterns,
                     STATES_PER_NATIVE,
                     ALPHABET_SIZE);
 
-    vector<Language *> *foreignLanguages =
+    foreignLanguages =
             patterns_to_languages::convert(
                     foreignPatterns,
                     STATES_PER_FOREIGN,
                     ALPHABET_SIZE,
                     STATES_PER_NATIVE);
 
-    // CONVERT WORDS - WILL BE CHANGED
+    // CONVERT WORDS - WILL BE CHANGED // TODO TODO !!!
     quality::_convertWords(nativeLanguages);
     quality::_convertWords(foreignLanguages);
+}
 
-
-    // COMPUTE TP
-    cout << "TP_DISTINCT count: " << quality::computeTPDistinct(nativeLanguages,
-                                                               foreignLanguages,
-                                                               dfa) << endl;
-    cout << "TP_OVERALL  count: " << quality::computeTPOverall(nativeLanguages,
-                                                                foreignLanguages,
-                                                                dfa) << endl;
-
-    /* ----- FREE DATA ----- */
+void releaseGlobals() {
     // classifier correctly frees languages.
     Classifier *classifier = new Classifier(
             nativeLanguages,
@@ -78,4 +107,3 @@ TEST(QualityTest, Foo) {
     delete classifier;
     delete dfa;
 }
-
