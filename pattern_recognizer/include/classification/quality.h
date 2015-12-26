@@ -6,6 +6,7 @@
 #define BACHELOR_THESIS_QUALITY_H
 
 #include <vector>
+#include <string>
 #include <language.h>
 #include <dfa.h>
 
@@ -26,7 +27,7 @@ using namespace std;
  * |-o [TN] - (True Negative)   - the number of elements of other classes,
  * |                              correctly classified to other classes.
  * |
- * |-o [ACCURACY]               - ([TP] + [TN]) / ([TP] + [TN] + [FP] + [FM])
+ * |-o [ACCURACY]               - ([TP] + [TN]) / ([TP] + [TN] + [FP] + [FN])
  * |
  * |-o [SENSITIVITY]            - [TP] / ([TP] + [FN])
  * |
@@ -67,6 +68,52 @@ namespace quality {
     /* ----------------------- */
     /* -----MAIN METHODS ----- */
     /* ----------------------- */
+
+    // Methods used to generate summary of TP/FN/FP/TN and
+    // Accuracy/Sensitivity/Precision/F-Measure results for provided native
+    // and foreign sets of languages. If one cares only for putting results
+    // to some kind of log file or print them out this method is perfectly
+    // suited.
+    string summaryToString(vector<Language *> *nativeLanguages,
+                           vector<Language *> *foreignLanguages,
+                           DFA *dfa);
+
+    // Methods compute Accuracy/Sensitivity/Precision/F-Measure values.
+    // Distinct and Overall methods has been provided for further, more precise
+    // analysis of the results.
+    //
+    // REMARK: For naming explanation, please refer to the header comment.
+    double calculateAccuracyDistinct(vector<Language *> *nativeLanguages,
+                                     vector<Language *> *foreignLanguages,
+                                     DFA *dfa);
+
+    double calculateAccuracyOverall(vector<Language *> *nativeLanguages,
+                                    vector<Language *> *foreignLanguages,
+                                    DFA *dfa);
+
+    double calculateSensitivityDistinct(vector<Language *> *nativeLanguages,
+                                        vector<Language *> *foreignLanguages,
+                                        DFA *dfa);
+
+    double calculateSensitivityOverall(vector<Language *> *nativeLanguages,
+                                       vector<Language *> *foreignLanguages,
+                                       DFA *dfa);
+
+    double calculatePrecisionDistinct(vector<Language *> *nativeLanguages,
+                                      vector<Language *> *foreignLanguages,
+                                      DFA *dfa);
+
+    double calculatePrecisionOverall(vector<Language *> *nativeLanguages,
+                                     vector<Language *> *foreignLanguages,
+                                     DFA *dfa);
+
+    double calculateFMeasureDistinct(vector<Language *> *nativeLanguages,
+                                     vector<Language *> *foreignLanguages,
+                                     DFA *dfa);
+
+    double calculateFMeasureOverall(vector<Language *> *nativeLanguages,
+                                    vector<Language *> *foreignLanguages,
+                                    DFA *dfa);
 
     // Computes number of TP/FN/FP/TN among provided languages,
     // Computations are based on specified DFA. Normally, the dfa should be

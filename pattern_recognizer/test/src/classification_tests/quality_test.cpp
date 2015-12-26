@@ -149,7 +149,7 @@ TEST(QualityTest, Percentage_FP_Distinct) {
 
     EXPECT_EQ(FP_DISTINCT_COUNT / FOREIGN_WORDS,
               quality::percentageFalseDistinct(foreignLanguages,
-                                              dfa));
+                                               dfa));
 
 }
 
@@ -157,10 +157,10 @@ TEST(QualityTest, Percentage_FP_Overall) {
 
     EXPECT_EQ(FP_OVERALL_COUNT / FOREIGN_WORDS,
               quality::percentageFalseOverall(foreignLanguages,
-                                               dfa));
+                                              dfa));
 }
 
-/* ----- TRUE NEGATIVES ----- */ // TRUE + FOREIGN
+/* ----- TRUE NEGATIVES ----- */
 
 TEST(QualityTest, Count_TN_Distinct) {
 
@@ -173,7 +173,7 @@ TEST(QualityTest, Count_TN_Overall) {
 
     EXPECT_EQ(FOREIGN_WORDS - FP_OVERALL_COUNT,
               quality::numberOfTrueOverall(foreignLanguages,
-                                            dfa));
+                                           dfa));
 }
 
 TEST(QualityTest, Percentage_TN_Distinct) {
@@ -187,12 +187,110 @@ TEST(QualityTest, Percentage_TN_Overall) {
 
     EXPECT_EQ(TN_OVERALL_COUNT / FOREIGN_WORDS,
               quality::percentageTrueOverall(foreignLanguages,
-                                              dfa));
+                                             dfa));
+}
 
+/* ----- ACCURACY ----- */
+
+TEST(QualityTest, Accuracy_Distinct) {
+
+    double accuracy = (TP_DISTINCT_COUNT + TN_DISTINCT_COUNT) /
+                      (TP_DISTINCT_COUNT + TN_DISTINCT_COUNT +
+                       FP_DISTINCT_COUNT + FN_DISTINCT_COUNT);
+
+    EXPECT_EQ(accuracy, quality::calculateAccuracyDistinct(nativeLanguages,
+                                                           foreignLanguages,
+                                                           dfa));
+}
+
+TEST(QualityTest, Accuracy_Overall) {
+
+    double accuracy = (TP_OVERALL_COUNT + TN_OVERALL_COUNT) /
+                      (TP_OVERALL_COUNT + TN_OVERALL_COUNT +
+                       FP_OVERALL_COUNT + FN_OVERALL_COUNT);
+
+    EXPECT_EQ(accuracy, quality::calculateAccuracyOverall(nativeLanguages,
+                                                          foreignLanguages,
+                                                          dfa));
+}
+
+/* ----- SENSITIVITY ----- */
+
+TEST(QualityTest, Sensitivity_Distinct) {
+
+    double sensitivity = TP_DISTINCT_COUNT /
+                         (TP_DISTINCT_COUNT + FN_DISTINCT_COUNT);
+
+    EXPECT_EQ(sensitivity,
+              quality::calculateSensitivityDistinct(nativeLanguages,
+                                                    foreignLanguages,
+                                                    dfa));
+}
+
+TEST(QualityTest, Sensitivity_Overall) {
+
+    double sensitivity = TP_OVERALL_COUNT /
+                         (TP_OVERALL_COUNT + FN_OVERALL_COUNT);
+
+    EXPECT_EQ(sensitivity, quality::calculateSensitivityOverall(nativeLanguages,
+                                                                foreignLanguages,
+                                                                dfa));
+}
+
+/* ----- PRECISION----- */
+
+TEST(QualityTest, Precision_Distinct) {
+
+    double precision = TP_DISTINCT_COUNT /
+                       (TP_DISTINCT_COUNT + FP_DISTINCT_COUNT);
+
+    EXPECT_EQ(precision, quality::calculatePrecisionDistinct(nativeLanguages,
+                                                             foreignLanguages,
+                                                             dfa));
+}
+
+TEST(QualityTest, Precision_Overall) {
+
+    double precision = TP_OVERALL_COUNT /
+                       (TP_OVERALL_COUNT + FP_OVERALL_COUNT);
+
+    EXPECT_EQ(precision, quality::calculatePrecisionOverall(nativeLanguages,
+                                                            foreignLanguages,
+                                                            dfa));
+}
+
+/* ----- F-MEASURE----- */
+
+TEST(QualityTest, FMeasure_Distinct) {
+
+    double sensitivity = TP_DISTINCT_COUNT /
+                         (TP_DISTINCT_COUNT + FN_DISTINCT_COUNT);
+    double precision = TP_DISTINCT_COUNT /
+                       (TP_DISTINCT_COUNT + FP_DISTINCT_COUNT);
+    double FMeasure = 2.0 * (precision * sensitivity) / (precision + sensitivity);
+
+    EXPECT_EQ(FMeasure, quality::calculateFMeasureDistinct(nativeLanguages,
+                                                            foreignLanguages,
+                                                            dfa));
+}
+
+TEST(QualityTest, FMeasure_Overall) {
+
+    double sensitivity = TP_OVERALL_COUNT /
+                         (TP_OVERALL_COUNT + FN_OVERALL_COUNT);
+    double precision = TP_OVERALL_COUNT /
+                       (TP_OVERALL_COUNT + FP_OVERALL_COUNT);
+    double FMeasure = 2.0 * (precision * sensitivity) / (precision + sensitivity);
+
+    EXPECT_EQ(FMeasure, quality::calculateFMeasureOverall(nativeLanguages,
+                                                           foreignLanguages,
+                                                           dfa));
+}
+
+TEST(QualityTest, Summary_Print) {
     /* ----- FREE DATA ----- */
     releaseGlobals();
 }
-
 /* --------------------------------- */
 /* ----- AUXILIARY DEFINITIONS ----- */
 /* --------------------------------- */

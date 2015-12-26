@@ -8,6 +8,103 @@
 /* -----MAIN METHODS ----- */
 /* ----------------------- */
 
+string quality::summaryToString(vector<Language *> *nativeLanguages,
+                                vector<Language *> *foreignLanguages,
+                                DFA *dfa) {
+    string out = "[QUALITY]:\n";
+    return out;
+}
+
+double quality::calculateAccuracyDistinct(vector<Language *> *nativeLanguages,
+                                          vector<Language *> *foreignLanguages,
+                                          DFA *dfa) {
+
+    double TP = numberOfTrueDistinct(nativeLanguages, dfa);
+    double TN = numberOfTrueDistinct(foreignLanguages, dfa);
+    double FP = numberOfFalseDistinct(foreignLanguages, dfa);
+    double FN = numberOfFalseDistinct(nativeLanguages, dfa);
+
+    return (TP + TN) / (TP + TN + FP + FN);
+}
+
+double quality::calculateAccuracyOverall(vector<Language *> *nativeLanguages,
+                                         vector<Language *> *foreignLanguages,
+                                         DFA *dfa) {
+
+    double TP = numberOfTrueOverall(nativeLanguages, dfa);
+    double TN = numberOfTrueOverall(foreignLanguages, dfa);
+    double FP = numberOfFalseOverall(foreignLanguages, dfa);
+    double FN = numberOfFalseOverall(nativeLanguages, dfa);
+
+    return (TP + TN) / (TP + TN + FP + FN);
+}
+
+double quality::calculateSensitivityDistinct(
+        vector<Language *> *nativeLanguages,
+        vector<Language *> *foreignLanguages,
+        DFA *dfa) {
+
+    double TP = numberOfTrueDistinct(nativeLanguages, dfa);
+    double FN = numberOfFalseDistinct(nativeLanguages, dfa);
+
+    return TP / (TP + FN);
+}
+
+double quality::calculateSensitivityOverall(vector<Language *> *nativeLanguages,
+                                            vector<Language *> *foreignLanguages,
+                                            DFA *dfa) {
+
+    double TP = numberOfTrueOverall(nativeLanguages, dfa);
+    double FN = numberOfFalseOverall(nativeLanguages, dfa);
+
+    return TP / (TP + FN);
+}
+
+double quality::calculatePrecisionDistinct(vector<Language *> *nativeLanguages,
+                                           vector<Language *> *foreignLanguages,
+                                           DFA *dfa) {
+
+    double TP = numberOfTrueDistinct(nativeLanguages, dfa);
+    double FP = numberOfFalseDistinct(foreignLanguages, dfa);
+
+    return TP / (TP + FP);
+}
+
+double quality::calculatePrecisionOverall(vector<Language *> *nativeLanguages,
+                                          vector<Language *> *foreignLanguages,
+                                          DFA *dfa) {
+
+    double TP = numberOfTrueOverall(nativeLanguages, dfa);
+    double FP = numberOfFalseOverall(foreignLanguages, dfa);
+
+    return TP / (TP + FP);
+}
+
+double quality::calculateFMeasureDistinct(vector<Language *> *nativeLanguages,
+                                          vector<Language *> *foreignLanguages,
+                                          DFA *dfa) {
+
+    double sensitivity = calculateSensitivityDistinct(nativeLanguages,
+                                                      foreignLanguages, dfa);
+    double precision = calculatePrecisionDistinct(nativeLanguages,
+                                                  foreignLanguages, dfa);
+
+    return 2.0 * (precision * sensitivity) / (precision + sensitivity);
+
+}
+
+double quality::calculateFMeasureOverall(vector<Language *> *nativeLanguages,
+                                         vector<Language *> *foreignLanguages,
+                                         DFA *dfa) {
+
+    double sensitivity = calculateSensitivityOverall(nativeLanguages,
+                                                     foreignLanguages, dfa);
+    double precision = calculatePrecisionOverall(nativeLanguages,
+                                                 foreignLanguages, dfa);
+
+    return 2.0 * (precision * sensitivity) / (precision + sensitivity);
+}
+
 int quality::numberOfTrueDistinct(vector<Language *> *pLanguages,
                                   DFA *dfa) {
     vector<Word *> *TP = quality::_gatherTrueDistinct(pLanguages,
@@ -161,11 +258,8 @@ vector<Word *> *quality::_gatherTrueOverall(vector<Language *> *pLanguages,
                                             DFA *dfa) {
     vector<Word *> *TP = new vector<Word *>();
 
-    // Gather all states corresponding to native languages to prevent
-    // treating them as a distinct ones.
     vector<State *> nativeStates = _collectStates(pLanguages);
 
-    // Gather TP from native languages
     for (auto lang = pLanguages->begin();
          lang != pLanguages->end(); ++lang) {
         _getTrueOnesFrom((*lang), dfa, &nativeStates, TP);
@@ -179,7 +273,6 @@ vector<Word *> *quality::_gatherFalseDistinct(
         DFA *dfa) {
     vector<Word *> *FN = new vector<Word *>();
 
-    // Gather FN from foreign languages
     for (auto lang = pLanguages->begin();
          lang != pLanguages->end(); ++lang) {
         _getFalseOnesFrom((*lang), dfa, (*lang)->getStates(), FN);
@@ -192,11 +285,8 @@ vector<Word *> *quality::_gatherFalseOverall(
         DFA *dfa) {
     vector<Word *> *FN = new vector<Word *>();
 
-    // Gather all states corresponding to native languages to prevent
-    // treating them as a distinct ones.
     vector<State *> nativeStates = _collectStates(pLanguages);
 
-    // Gather FN from foreign langauges
     for (auto lang = pLanguages->begin();
          lang != pLanguages->end(); ++lang) {
         _getFalseOnesFrom((*lang), dfa, &nativeStates, FN);
