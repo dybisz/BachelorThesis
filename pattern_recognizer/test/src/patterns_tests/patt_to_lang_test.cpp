@@ -10,7 +10,7 @@
 using namespace std;
 using namespace patterns_to_languages;
 
-string DATA_PATH2 = "./src/xls/fv_example.xls";
+string DATA_PATH2 = "./res/fv_example.xls";
 
 TEST(PatternsToLanguages, Pattern_Init) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);

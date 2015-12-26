@@ -41,9 +41,14 @@ Language::~Language() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-std::vector<State*>* Language::getStates(){
+vector<State*>* Language::getStates(){
     return &_states;
 }
+
+vector<Word*>* Language::getWords() {
+    return &_words;
+}
+
 
 void Language::setStates(std::vector<State*> states){
     this->_states=states;

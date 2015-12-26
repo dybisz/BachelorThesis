@@ -148,13 +148,10 @@ void Optimizer::runPSOLogic(int s, int r) {
 
     double testSetResult =
             computeError(bestPSOResult, _wordsGenerator->getTestSet());
-
     double trainingShortResult =
             computeError(bestPSOResult, _wordsGenerator->getTrainingShortSet());
-
     double trainingLongResult =
             computeError(bestPSOResult, _wordsGenerator->getTrainingLongSet());
-
     double trainingAllResult =
             computeError(bestPSOResult, _wordsGenerator->getTrainingAllSet());
 

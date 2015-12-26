@@ -97,6 +97,9 @@ void PSO::compute() {
         _printInfoAndPlot(t, consolePlot, numberOfLinesToReset);
     }
     logger::log(Verbose(PSO_V), "Particle Swarm Optimization ends");
+
+
+
     delete consolePlot;
 }
 

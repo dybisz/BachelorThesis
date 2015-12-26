@@ -28,10 +28,17 @@ namespace patterns_to_languages {
 
     // Converts patterns to languages. Second argument represents number of
     // accepting states per language. For now, we assume that this number is
-    // equal for all alnguages. Third argument, decides how many letters
+    // equal for all languages. Third argument, decides how many letters
     // are in alphabet, which corresponds 1-1 with precision of coding.
+    // Last but not list, one encounters additional parameter with defualt
+    // value equal to 0. It tells converter from which state index it should
+    // start numbering states related to loaded language. Very useful, when we
+    // e.g need to consecutively load 2 languages and preserve different state
+    // numbering.
+    // TODO Dear Kuba, plx decide whether we should swap it with
+    // TODO _selectStateCorrespondence or different chuj.
     vector<Language *> *convert(vector<Pattern *> *patterns, int numberOfStates,
-                                int precision);
+                                int precision, int stateStartingIndex = 0);
 
     // Auxiliary method. It returns vector of intervals, where i'th entry
     // represents <min;max> interval of i'th feature.
@@ -55,7 +62,8 @@ namespace patterns_to_languages {
 
     vector<Language *> *_createLanguages(vector<Pattern *> *pPattern,
                                          Alphabet *pAlphabet,
-                                         int numberOfStates);
+                                         int numberOfStates,
+                                         int stateStartingIndex);
 
     /* --------------------- */
     /* ----- AUXILIARY ----- */
@@ -72,7 +80,8 @@ namespace patterns_to_languages {
 
     // Method throws exception when states or precision is < 1,
     // or pointer to patterns is NULL
-    void _checkConditions(int states, int precision, vector<Pattern *> *patterns);
+    void _checkConditions(int states, int precision,
+                          vector<Pattern *> *patterns);
 
 
 }

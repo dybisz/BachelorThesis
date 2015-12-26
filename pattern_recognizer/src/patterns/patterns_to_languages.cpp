@@ -6,10 +6,11 @@
 #include <logger.h>
 #include "patterns_to_languages.h"
 
-
-vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
-                                                   int numberOfStates,
-                                                   int precision) {
+vector<Language *> *patterns_to_languages::convert(
+        vector<Pattern *> *patterns,
+        int numberOfStates,
+        int precision,
+        int stateStartingIndex) {
     _checkConditions(numberOfStates, precision, patterns);
 
     vector<Language *> *languages = NULL;
@@ -17,7 +18,8 @@ vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
         vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
         vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
         Alphabet *alphabet = new Alphabet(precision);
-        languages = _createLanguages(normalized, alphabet, numberOfStates);
+        languages = _createLanguages(normalized, alphabet, numberOfStates,
+                                     stateStartingIndex);
     }
     catch (std::exception &e) {
         LOG_ERROR(e.what())
@@ -98,11 +100,11 @@ vector<Pattern *> *patterns_to_languages::_normalizePatterns(
 }
 
 vector<Language *> *patterns_to_languages::_createLanguages(
-        vector<Pattern *> *pPattern,
-        Alphabet *pAlphabet, int numberOfStates) {
+        vector<Pattern *> *pPattern, Alphabet *pAlphabet, int numberOfStates,
+        int stateStartingIndex) {
 
     vector<Language *> *languages = new vector<Language *>();
-    int stateCounter = 0;
+    int stateCounter = stateStartingIndex;
 
     for (auto iter = pPattern->begin(); iter != pPattern->end(); ++iter) {
 

@@ -6,6 +6,7 @@
 #include <settings/global_settings.h>
 #include <logger/log.h>
 #include <pso.h>
+#include <drawer.h>
 #include "classifier.h"
 
 
@@ -54,6 +55,13 @@ void Classifier::runClassification(){
                         _nativeLanguages, _foreignLanguages);
 
     pso->compute();
+
+    std::vector<Particle *> psoResults = pso->getBestParticles();
+    Particle* firstBest = psoResults[0];
+
+    // Quality results
+    // ...
+    // gooood quality mr Wladyslaw
 };
 
 //-----------------------------------------------------------//

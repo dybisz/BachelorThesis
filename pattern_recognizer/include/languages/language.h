@@ -27,17 +27,14 @@ public:
 
     Word* getWord(int i);
 
-    std::vector<State*>* getStates();
+    vector<State*>* getStates();
+    vector<Word*>* getWords();
     void setStates(std::vector<State*> states);
 
-    /*
-     * Returns number of words
-     */
+    // Returns number of words
     int size() const;
 
-    /*
-     * Checks if state corresponds to this language
-     */
+    // Checks if state corresponds to this language
     bool isCorrespondingState(State*);
 
 private:
