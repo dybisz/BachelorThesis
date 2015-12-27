@@ -53,9 +53,10 @@ Classifier::Classifier(std::vector<Language*>* nativeLanguages,
     this->_nativeTestingSet =
             set_disassociation::detachWords(testingSetRatio,
                                             _nativeLanguages);
+    //this->_foreignTestingSet = NULL;
     this->_foreignTestingSet =
             set_disassociation::detachWords(testingSetRatio,
-                                            _foreignLanguages);
+                                    _foreignLanguages);
 
     _statesPerNative = statesPerNative;
     _statesPerForeign = statesPerForeign;
@@ -72,12 +73,16 @@ Classifier::~Classifier() {
         delete (*_foreignLanguages)[i];
     for (int i = 0; i < _nativeTestingSet->size(); i++)
         delete (*_nativeTestingSet)[i];
-    for (int i = 0; i < _foreignTestingSet->size(); i++)
-        delete (*_foreignTestingSet)[i];
+    if(_foreignTestingSet != NULL){
+        for (int i = 0; i < _foreignTestingSet->size(); i++)
+            delete (*_foreignTestingSet)[i];
+
+        delete _foreignTestingSet;
+    }
     delete _nativeLanguages;
     delete _foreignLanguages;
     delete _nativeTestingSet;
-    delete _foreignTestingSet;
+
 }
 
 //-----------------------------------------------------------//
@@ -107,9 +112,9 @@ void Classifier::runClassification() {
                                          this->_statesPerForeign);
 
     _printSetInfo(_nativeLanguages, "NATIVE_TRAINING");
-    _printSetInfo(_foreignLanguages, "FOREIGN_TRAINING");
+    _printSetInfo(_foreignLanguages, "FOREIGN");
     _printSetInfo(_nativeTestingSet, "NATIVE_TESTING");
-    _printSetInfo(_foreignTestingSet, "FOREIGN_TESTING");
+    //_printSetInfo(_foreignTestingSet, "FOREIGN_TESTING");
     _printStateCorrespondence();
 
     logger::log("Running PSO");
@@ -135,6 +140,15 @@ void Classifier::runClassification() {
                                                 _foreignLanguages,
                                                 (DFA *) bestDFA));
 
+/*
+    logger::log(quality::distinctResultsToString(_nativeTestingSet,
+                                                 _foreignLanguages,
+                                                 (DFA *) bestDFA));
+
+    logger::log(quality::overallResultsToString(_nativeTestingSet,
+                                                _foreignLanguages,
+                                                (DFA *) bestDFA));
+*/
 };
 
 //-----------------------------------------------------------//
