@@ -63,19 +63,19 @@ private:
      */
     unsigned int _calculateAndSetNumberOfStates();
 
-    /*
-     * Selects state correspondence of native and foreign languages
-     */
-    void _selectStateCorrespondence(
-            std::vector<Language*>* nativeLanguages,
-            std::vector<Language*>* foreignLanguages);
-
 public:
     Classifier(std::vector<Language*>* nativeLanguages,
                 std::vector<Language*>* foreignLanguages,
                 unsigned int statesPerNative,
                 unsigned int statesPerForeign,
                 unsigned int alphabetSize);
+
+    Classifier(std::vector<Language*>* nativeLanguages,
+                std::vector<Language*>* foreignLanguages,
+                unsigned int statesPerNative,
+                unsigned int statesPerForeign,
+                unsigned int alphabetSize,
+                double testingSetRatio);
 
     /*
      * Takes care of deleting the memory of all languages
@@ -89,6 +89,11 @@ public:
     void runClassification();
 
     unsigned int getStateCount() const;
+
+    const std::vector<Language*>* getNativeTrainingLanguages() const;
+    const std::vector<Language*>* getNativeTestingLanguages() const;
+    const std::vector<Language*>* getForeignLanguages() const;
+
 };
 
 

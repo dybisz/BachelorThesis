@@ -32,6 +32,10 @@ namespace global_settings {
     extern int STATES_PER_FOREIGN;
     // The alphabet size defines the precision of transformation
     extern int ALPHABET_SIZE;
+    // The ratio of testing set as opposed to full native set.
+    // If Full Set = 100 and ratio = 0.3
+    // then Testing Set = 30.
+    extern double TESTING_SET_RATIO;
 
     /* ------ Words GENERATION SETTINGS ----- */
     extern int GEN_WORDS_SYMBOL_COUNT;

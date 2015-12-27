@@ -46,7 +46,8 @@ namespace experiments {
                 foreignLanguages,
                 global_settings::STATES_PER_NATIVE,
                 global_settings::STATES_PER_FOREIGN,
-                global_settings::ALPHABET_SIZE);
+                global_settings::ALPHABET_SIZE,
+                global_settings::TESTING_SET_RATIO);
 
         classifier->runClassification();
         delete classifier;

@@ -116,6 +116,10 @@ bool Language::isCorrespondingState(State *state) const{
     return false;
 }
 
+void Language::addWord(Word* word){
+    this->_words.push_back(word);
+}
+
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */

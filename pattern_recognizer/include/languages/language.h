@@ -44,6 +44,8 @@ public:
     bool isCorrespondingState(State*) const;
     void setStates(std::vector<State*> states);
 
+    void addWord(Word* word);
+
 private:
     Alphabet _alphabet;
     vector<Word*> _words;
