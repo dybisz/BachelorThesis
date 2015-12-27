@@ -9,8 +9,8 @@ mkdir -p ${MAIN_DIR_LOG}
 # Settings
 #############################################################
 
-MAX_ITER=1000
-SWARM_SIZE=150
+MAX_ITER=10
+SWARM_SIZE=50
 
 STATES_PER_NATIVE=1
 STATES_PER_FOREIGN=1
