@@ -44,6 +44,7 @@ public:
     Symbol operator[](int i);
     Interval operator()(int i);
     bool operator == (const Alphabet &b) const;
+    int getIndex(Symbol& symbol) const;
 
 private:
     int _numberOfSymbols;

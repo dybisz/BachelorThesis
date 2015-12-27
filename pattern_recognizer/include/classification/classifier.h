@@ -5,6 +5,9 @@
 #ifndef BACHELOR_THESIS_CLASSIFICATOR_H
 #define BACHELOR_THESIS_CLASSIFICATOR_H
 
+#include "dfa.h"
+#include "language.h"
+
 /*
  * Classifier is the main class of classification process.
  * It takes all transformed languages and select the state correspondence.
@@ -36,14 +39,19 @@ private:
     unsigned int _numberOfStates;
     unsigned int _alphabetSize;
 
-    // Number of states correspodence per native language
+    // Number of states correspondence per native language
     unsigned int _statesPerNative;
-    // Number of states correspodence per foreign language
+    // Number of states correspondence per foreign language
     unsigned int _statesPerForeign;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
     //-----------------------------------------------------------//
+
+    /*
+     * Calculates and prints quality results of the classifier.
+     */
+    void _calculateAndPrintQualityResults(const DFA* bestDFA);
 
     /*
      * Prints info about state correspondence and the languages
@@ -68,6 +76,13 @@ public:
                 unsigned int statesPerForeign,
                 unsigned int alphabetSize);
 
+    Classifier(std::vector<Language*>* nativeLanguages,
+                std::vector<Language*>* foreignLanguages,
+                unsigned int statesPerNative,
+                unsigned int statesPerForeign,
+                unsigned int alphabetSize,
+                double testingSetRatio);
+
     /*
      * Takes care of deleting the memory of all languages
      */
@@ -78,6 +93,13 @@ public:
     //-----------------------------------------------------------//
 
     void runClassification();
+
+    unsigned int getStateCount() const;
+
+    const std::vector<Language*>* getNativeTrainingLanguages() const;
+    const std::vector<Language*>* getNativeTestingLanguages() const;
+    const std::vector<Language*>* getForeignLanguages() const;
+
 };
 
 

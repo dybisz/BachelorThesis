@@ -7,7 +7,6 @@
 #include "transition_function.h"
 #include "word.h"
 #include "dfa.h"
-//#include <debug_new.h>
 
 //-----------------------------------------------------------//
 //  DECLARATIONS

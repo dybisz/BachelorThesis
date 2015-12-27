@@ -26,5 +26,42 @@ TEST(PatternsToLanguages, Pattern_Wrong_Input) {
     if(languages != NULL) delete languages;
     delete xlsLoader;
 }
+/*
+TEST(PatternsToLanguages, CovertToLanguages_CorrectLanguageCount) {
+    int alphabetSize = 2;
+    unsigned int expectedLanguageCount = 3;
+    XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);
+    vector<Language *> * languages = convert(xlsLoader->getPatterns(),
+                                             alphabetSize);
 
+    unsigned int actualLanguageCount = languages->size();
 
+    EXPECT_EQ(expectedLanguageCount, actualLanguageCount);
+
+    delete xlsLoader;
+    for(unsigned int i = 0; i < languages->size(); i++){
+        delete (*languages)[i];
+    }
+    delete languages;
+}
+
+TEST(PatternsToLanguages, CovertToLanguages_CorrectAlphabetSize) {
+    int expectedAlphabetSize = 2;
+
+    XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);
+    vector<Language *> * languages = convert(xlsLoader->getPatterns(),
+                                             expectedAlphabetSize);
+
+    for(unsigned int i = 0; i < languages->size(); i++){
+        unsigned int actualAlphabetSize = (*languages)[i]->getAlphabet().size();
+
+        EXPECT_EQ(expectedAlphabetSize, actualAlphabetSize);
+    }
+
+    delete xlsLoader;
+
+    for(unsigned int i = 0; i < languages->size(); i++){
+        delete (*languages)[i];
+    }
+    delete languages;
+}*/

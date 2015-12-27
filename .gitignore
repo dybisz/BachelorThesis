@@ -35,3 +35,5 @@ config_gui/out
 config_gui/.idea
 *.class
 *.jar
+
+core

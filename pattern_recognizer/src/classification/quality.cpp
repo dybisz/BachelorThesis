@@ -10,7 +10,8 @@
 
 string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
                                         vector<Language *> *foreignLanguages,
-                                        DFA *dfa) {
+                                        DFA *dfa,
+                                        std::string headerInfo) {
     /* ----- Collected Results ----- */
     double TP = percentageTrueDistinct(nativeLanguages, dfa);
     double TN = percentageTrueDistinct(foreignLanguages, dfa);
@@ -27,7 +28,7 @@ string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
                                                 foreignLanguages, dfa);
 
     /* ----- Create Output String ----- */
-    string out = "[QUALITY_DISTINCT]\n";
+    string out = "[QUALITY_DISTINCT - " + headerInfo + "]\n";
     out += "[TP].............................................. " + to_string(TP) + "\n";
     out += "[TN].............................................. " + to_string(TN) + "\n";
     out += "[FP].............................................. " + to_string(FP) + "\n";
@@ -41,7 +42,8 @@ string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
 
 string quality::overallResultsToString(vector<Language *> *nativeLanguages,
                                        vector<Language *> *foreignLanguages,
-                                       DFA *dfa) {
+                                       DFA *dfa,
+                                       std::string headerInfo) {
     /* ----- Collected Results ----- */
     double TP = percentageTrueOverall(nativeLanguages, dfa);
     double TN = percentageTrueOverall(foreignLanguages, dfa);
@@ -58,7 +60,7 @@ string quality::overallResultsToString(vector<Language *> *nativeLanguages,
                                                foreignLanguages, dfa);
 
     /* ----- Create Output String ----- */
-    string out = "[QUALITY_OVERALL]\n";
+    string out = "[QUALITY_OVERALL - " + headerInfo +"]\n";
     out += "[TP].............................................. " + to_string(TP) + "\n";
     out += "[TN].............................................. " + to_string(TN) + "\n";
     out += "[FP].............................................. " + to_string(FP) + "\n";
@@ -262,7 +264,7 @@ void quality::_convertWord(Word *word) {
     }
 }
 
-bool quality::_stateOnList(int state, vector<State *> *pStates) {
+bool quality::_stateOnList(int state, const vector<State *> *pStates) {
     for (int i = 0; i < pStates->size(); ++i) {
         if (state == (*pStates)[i]->getVal()) {
             return true;
@@ -282,14 +284,11 @@ int quality::_countNumberOfWords(vector<Language *> *languages) {
 
 vector<State *> quality::_collectStates(vector<Language *> *pLanguages) {
     vector<State *> states;
-
     for (auto lang = pLanguages->begin(); lang != pLanguages->end(); ++lang) {
-
-        vector<State *> localStates = *((*lang)->getStates());
+        const vector<State *> localStates = *((*lang)->getStates());
         for (int i = 0; i < localStates.size(); i++) {
             states.push_back(localStates[i]);
         }
-
     }
     return states;
 }
@@ -351,7 +350,7 @@ vector<Word *> *quality::_gatherFalseOverall(
 }
 
 void quality::_getTrueOnesFrom(Language *pLanguage, DFA *pDFA,
-                               vector<State *> *pCorrectStates,
+                               const vector<State *> *pCorrectStates,
                                vector<Word *> *pStorage) {
 
     vector<Word *> *words = pLanguage->getWords();
@@ -368,7 +367,7 @@ void quality::_getTrueOnesFrom(Language *pLanguage, DFA *pDFA,
 }
 
 void quality::_getFalseOnesFrom(Language *pLanguage, DFA *pDFA,
-                                vector<State *> *pCorrectStates,
+                                const vector<State *> *pCorrectStates,
                                 vector<Word *> *pStorage) {
 
     vector<Word *> *words = pLanguage->getWords();
@@ -383,5 +382,3 @@ void quality::_getFalseOnesFrom(Language *pLanguage, DFA *pDFA,
             pStorage->push_back((*word));
     }
 }
-
-

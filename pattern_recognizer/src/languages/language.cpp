@@ -9,9 +9,23 @@
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
 /* ------------------------------------ */
 
+Language::Language(Alphabet alphabet): _alphabet(alphabet){
+
+}
+
 Language::Language(Pattern *pPattern, Alphabet pAlphabet,
                    vector<State *> pStates) : _alphabet(pAlphabet),
                                               _states(pStates) {
+    try {
+        _produceWordsFromPattern(pPattern);
+    }
+    catch (exception &e) {
+        LOG_ERROR(e.what());
+    }
+}
+
+Language::Language(Pattern *pPattern, Alphabet pAlphabet)
+                        : _alphabet(pAlphabet) {
     try {
         _produceWordsFromPattern(pPattern);
     }
@@ -26,6 +40,11 @@ Language::Language(vector<Word *> &words, Alphabet pAlphabet,
                                               _states(pStates) {
 }
 
+Language::Language(vector<Word *> &words, Alphabet pAlphabet)
+                                                : _words(words),
+                                              _alphabet(pAlphabet){
+}
+
 Language::Language(vector<Word *> words, Language *lang) :
         _alphabet(lang->getAlphabet()) {
 
@@ -36,7 +55,7 @@ Language::Language(vector<Word *> words, Language *lang) :
     }
 
     // Copy states values
-    vector<State *> *lStates = lang->getStates();
+    const vector<State *> *lStates = lang->getStates();
 
     for (auto pState = lStates->begin(); pState != lStates->end(); ++pState) {
         State *s = new State(**pState);
@@ -45,6 +64,7 @@ Language::Language(vector<Word *> words, Language *lang) :
 }
 
 Language::~Language() {
+/*
     // Release words
     for (auto iter = _words.begin(); iter != _words.end(); ++iter) {
         delete (*iter);
@@ -52,14 +72,23 @@ Language::~Language() {
     // Release states
     for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
         delete (*iter);
+    }*/
+
+    for(unsigned int i = 0; i < _words.size(); i++){
+        delete (_words)[i];
     }
+
+    for(unsigned int i = 0; i < _states.size(); i++){
+        delete (_states)[i];
+    }
+
 }
 
 /* ------------------------- */
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-vector<State *> *Language::getStates() {
+const vector<State*>* Language::getStates() const{
     return &_states;
 }
 
@@ -67,24 +96,28 @@ vector<Word *> *Language::getWords() {
     return &_words;
 }
 
-Alphabet Language::getAlphabet() {
+Alphabet Language::getAlphabet() const {
     return _alphabet;
-}
-
-void Language::setStates(std::vector<State *> states) {
-    this->_states = states;
 }
 
 int Language::size() const {
     return _words.size();
 }
 
-bool Language::isCorrespondingState(State *state) {
+void Language::setStates(std::vector<State *> states) {
+    this->_states = states;
+}
+
+bool Language::isCorrespondingState(State *state) const{
     for (unsigned int i = 0; i < _states.size(); i++) {
         if ((*_states[i]) == *state)
             return true;
     }
     return false;
+}
+
+void Language::addWord(Word* word){
+    this->_words.push_back(word);
 }
 
 /* --------------------- */
@@ -132,13 +165,13 @@ string Language::toString() {
 }
 
 string Language::statesToString() {
-//    string out = "[States]: \n";
+// string out = "[States]: \n";
     string out = "";
     for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
         out += (*iter)->toString();
         out += " ";
     }
-//    out += "\n";
+// out += "\n";
     return out;
 }
 

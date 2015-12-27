@@ -34,3 +34,9 @@ TEST(StateTest, Equality_Integer_Operator) {
     delete s2;
 }
 
+TEST(StateTest, State_TwoDifferentStates_NotEqual){
+    State state1(0);
+    State state2(1);
+
+    EXPECT_NE(state1, state2);
+}

@@ -40,6 +40,8 @@ namespace patterns_to_languages {
     vector<Language *> *convert(vector<Pattern *> *patterns, int numberOfStates,
                                 int precision, int stateStartingIndex = 0);
 
+    vector<Language *> *convert(vector<Pattern *> *patterns, int precision);
+
     // Auxiliary method. It returns vector of intervals, where i'th entry
     // represents <min;max> interval of i'th feature.
     // WARNING: vector contains pointers, which must be freed after usage.
@@ -65,6 +67,9 @@ namespace patterns_to_languages {
                                          int numberOfStates,
                                          int stateStartingIndex);
 
+    // Creates languages based on the patterns and alphabet
+    vector<Language *> *_createLanguages(vector<Pattern *> *pPattern,
+                                            Alphabet *pAlphabet);
     /* --------------------- */
     /* ----- AUXILIARY ----- */
     /* --------------------- */

@@ -19,6 +19,7 @@ namespace global_settings {
     int STATES_PER_NATIVE           = 1;
     int STATES_PER_FOREIGN          = 1;
     int ALPHABET_SIZE               = 4;
+    double TESTING_SET_RATIO        = 0.4;
 
     /* ------ Words GENERATION SETTINGS ----- */
     int GEN_WORDS_SYMBOL_COUNT      = 5;
@@ -123,6 +124,12 @@ namespace global_settings {
         ss << " ";
         ss << ALPHABET_SIZE << std::endl;
 
+        s = "TESTING_SET_RATIO ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << TESTING_SET_RATIO << std::endl;
 
         ss << std::endl<< "DFA GENERATION SETTINGS" <<std::endl <<std::endl;
         s = "GEN_DFA_PATH ";

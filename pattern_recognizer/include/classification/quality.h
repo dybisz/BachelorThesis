@@ -76,11 +76,13 @@ namespace quality {
     // suited. Output strings are conveniently formatted.
     string distinctResultsToString(vector<Language *> *nativeLanguages,
                                    vector<Language *> *foreignLanguages,
-                                   DFA *dfa);
+                                   DFA *dfa,
+                                   std::string headerInfo);
 
     string overallResultsToString(vector<Language *> *nativeLanguages,
                                   vector<Language *> *foreignLanguages,
-                                  DFA *dfa);
+                                  DFA *dfa,
+                                  std::string headerInfo);
 
     // Methods compute Accuracy/Sensitivity/Precision/F-Measure values.
     // Distinct and Overall methods has been provided for further, more precise
@@ -173,7 +175,7 @@ namespace quality {
     // Check whether given state is on the list of states. For now state to
     // check in form of the integer but later on it should be changed to object
     // of State class.
-    bool _stateOnList(int state, vector<State *> *pStates);
+    bool _stateOnList(int state, const vector<State *> *pStates);
 
     // Returns number of words in provided languages. Just a hidden loop
     // with counter.
@@ -208,14 +210,14 @@ namespace quality {
     // states from pCorrectStates and saves pointers to those words in pStorage.
     // pDFA constitutes a method of computation.
     void _getTrueOnesFrom(Language *pLanguage, DFA *pDFA,
-                          vector<State *> *pCorrectStates,
+                          const vector<State *> *pCorrectStates,
                           vector<Word *> *pStorage);
 
     // Method checks for which words from pLanguage, their computation ends in
     // different states than those provided in pCorrectStates and saves pointers
     // to such a words in pStorage. pDFA is used to perform computations.
     void _getFalseOnesFrom(Language *pLanguage, DFA *pDFA,
-                           vector<State *> *pCorrectStates,
+                           const vector<State *> *pCorrectStates,
                            vector<Word *> *pStorage);
 }
 

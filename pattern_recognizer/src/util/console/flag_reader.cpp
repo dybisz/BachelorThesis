@@ -115,6 +115,10 @@ namespace console {
                              "Size of the alphabet - defines precision",
                              INT, &global_settings::ALPHABET_SIZE));
 
+        flags.push_back(Flag("T", "cl-test-ratio",
+                             "Ratio of Test set",
+                             DOUBLE, &global_settings::TESTING_SET_RATIO));
+
 
         /* ------ DFA GENERATION SETTINGS ----- */
 

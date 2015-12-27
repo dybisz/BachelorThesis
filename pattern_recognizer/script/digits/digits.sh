@@ -3,16 +3,18 @@
 MAIN_DIR_LOG="./logs/DIGITS"
 DIR_LOG="DIGITS"
 
+mkdir -p ${MAIN_DIR_LOG}
+
 #############################################################
 # Settings
 #############################################################
 
-MAX_ITER=100
+MAX_ITER=4
 SWARM_SIZE=50
 
 STATES_PER_NATIVE=2
-STATES_PER_FOREIGN=2
-ALPHABET_SIZE=4
+STATES_PER_FOREIGN=3
+ALPHABET_SIZE=10
 
 NATIVE_XLS_PATH="./res/digits_short/short_Natives.xls"
 FOREIGN_XLS_PATH="./res/digits_short/short_Foreign_90ccl.xls"
@@ -45,7 +47,8 @@ run_optimizer(){
         -F ${FOREIGN_XLS_PATH} \
         --cl-states-native ${STATES_PER_NATIVE} \
         --cl-states-foreign ${STATES_PER_FOREIGN} \
-        --cl-alph-size ${ALPHABET_SIZE}
+        --cl-alph-size ${ALPHABET_SIZE} \
+        --max-vel 10
 }
 
 run_optimizer

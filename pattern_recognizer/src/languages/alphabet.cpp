@@ -56,6 +56,10 @@ Interval Alphabet::getInterval(int i) const{
     return (_intervals[i]);
 }
 
+int Alphabet::getIndex(Symbol& symbol) const{
+    return 1;
+}
+
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */

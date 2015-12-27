@@ -28,6 +28,24 @@ vector<Language *> *patterns_to_languages::convert(
     return languages;
 }
 
+vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
+                                                   int precision) {
+    _checkConditions(1, precision, patterns);
+
+    vector<Language *> *languages = NULL;
+    try {
+        vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
+        vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
+        Alphabet *alphabet = new Alphabet(precision);
+        languages = _createLanguages(normalized, alphabet);
+    }
+    catch (std::exception &e) {
+        LOG_ERROR(e.what())
+    }
+
+    return languages;
+}
+
 vector<Interval *> patterns_to_languages::_calculateFeaturesIntervals(
         vector<Pattern *> *pPatterns) {
 
@@ -119,6 +137,21 @@ vector<Language *> *patterns_to_languages::_createLanguages(
         }
 
         Language *language = new Language((*iter), (*pAlphabet), states);
+        languages->push_back(language);
+    }
+
+    return languages;
+}
+
+
+vector<Language *> *patterns_to_languages::_createLanguages(
+        vector<Pattern *> *pPattern, Alphabet *pAlphabet) {
+
+    vector<Language *> *languages = new vector<Language *>();
+
+    for (auto iter = pPattern->begin(); iter != pPattern->end(); ++iter) {
+
+        Language *language = new Language((*iter), (*pAlphabet));
         languages->push_back(language);
     }
 

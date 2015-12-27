@@ -5,7 +5,6 @@
 #ifndef AC_PSO_NEIGHBOURHOOD_H
 #define AC_PSO_NEIGHBOURHOOD_H
 
-#endif //AC_PSO_NEIGHBOURHOOD_H
 
 /*
  * Contains all the algorithms needed to compute neighbourhood:
@@ -39,3 +38,5 @@ namespace pso
                                   int& lastNumberOfClusters);
     }
 }
+
+#endif //AC_PSO_NEIGHBOURHOOD_H

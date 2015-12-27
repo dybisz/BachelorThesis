@@ -39,3 +39,7 @@ bool State::operator==(const State &b) const
 bool State::operator == (const int &b) const {
     return (this->getVal() == b);
 }
+
+bool State::operator!=(const State &b) const{
+    return (this->getVal() != b.getVal());
+}

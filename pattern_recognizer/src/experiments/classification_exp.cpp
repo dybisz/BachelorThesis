@@ -29,17 +29,12 @@ namespace experiments {
         logger::log("Language Transformation");
 
         std::vector<Language *> *nativeLanguages =
-                patterns_to_languages::convert(
-                        nativePatterns,
-                        global_settings::STATES_PER_NATIVE,
-                        global_settings::ALPHABET_SIZE);
+                patterns_to_languages::convert(nativePatterns,
+                                               global_settings::ALPHABET_SIZE);
 
         std::vector<Language *> *foreignLanguages =
-                patterns_to_languages::convert(
-                        foreignPatterns,
-                        global_settings::STATES_PER_FOREIGN,
-                        global_settings::ALPHABET_SIZE,
-                        global_settings::STATES_PER_NATIVE * nativeLanguages->size());
+                patterns_to_languages::convert(foreignPatterns,
+                                               global_settings::ALPHABET_SIZE);
 
 //        classification::printTransformedLanguagesInfo(nativeLanguages,
 //                                                      "NATIVE");
@@ -51,10 +46,14 @@ namespace experiments {
                 foreignLanguages,
                 global_settings::STATES_PER_NATIVE,
                 global_settings::STATES_PER_FOREIGN,
-                global_settings::ALPHABET_SIZE);
+                global_settings::ALPHABET_SIZE,
+                global_settings::TESTING_SET_RATIO);
 
         classifier->runClassification();
         delete classifier;
+
+        // TODO memeory of alphabet from
+        // TODO patterns_to_languages::convert is not fred
     }
 
     namespace classification {
