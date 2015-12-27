@@ -6,6 +6,10 @@
 #include <sstream>
 #include "transition_function.h"
 
+//-----------------------------------------------------------//
+//  CONSTRUCTORS
+//-----------------------------------------------------------//
+
 TransitionFunction::TransitionFunction(unsigned int stateCount,
                                         unsigned int symbolCount) :
                             stateCount(stateCount),
@@ -30,6 +34,14 @@ TransitionFunction::TransitionFunction(const TransitionFunction& tf){
     this->stateCount = tf.stateCount;
     this->symbolCount = tf.symbolCount;
     this->entries = tf.entries;
+}
+
+TransitionFunction::TransitionFunction(Alphabet* alphabet,
+                                       unsigned int stateCount){
+    this->stateCount = stateCount;
+
+    this->alphabet = alphabet;
+    this->symbolCount = alphabet->size();
 }
 
 TransitionFunction::~TransitionFunction(){

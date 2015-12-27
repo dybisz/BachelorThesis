@@ -10,6 +10,13 @@
 
 Word::Word() {}
 
+Word::Word(const Word* w) {
+    for(int i = 0; i < w->size(); ++i) {
+        Symbol* symbol = new Symbol(w->getSymbol(i)->getVal());
+        _entries.push_back(symbol);
+    }
+}
+
 Word::Word(const int entries[], int n) {
     for(int i = 0; i < n ; i++) {
         Symbol* symbol = new Symbol(entries[i]);
@@ -80,16 +87,32 @@ Symbol*Word::getSymbol(int i) const {
     return _entries[i];
 }
 
+void Word::clear() {
+    for (auto it = _entries.begin() ; it != _entries.end(); ++it)
+    {
+        delete (*it);
+    }
+    _entries.clear();
+}
+
 /* --------------------- */
 /* ----- OPERATORS ----- */
 /* --------------------- */
 
 Symbol*Word::operator[](int i) {
+    if (size() < 1) {
+        throw invalid_argument("size of word is < 1");
+    }
+
     return _entries[i];
 }
 
 int Word::operator()(int i)
 {
+    if (size() < 1) {
+        throw invalid_argument("size of word is < 1");
+    }
+
     return _entries[i]->getVal();
 }
 

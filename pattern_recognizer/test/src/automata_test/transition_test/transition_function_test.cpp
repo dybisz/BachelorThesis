@@ -92,3 +92,15 @@ TEST(Automata, TransitionFunction_AddTransition_CorrectState){
 
     EXPECT_EQ(expectedToState, actualToState);
 }
+
+TEST(Automata, TransitionFunction_Alphabet){
+    unsigned int expectedNumberOfSymbols = 5;
+    unsigned int numberOfStates = 3;
+    Alphabet alphabet(expectedNumberOfSymbols );
+
+    TransitionFunction tf(&alphabet, numberOfStates);
+
+    unsigned int actualNumberOfSymbols = tf.getSymbolCount();
+
+    EXPECT_EQ(expectedNumberOfSymbols, actualNumberOfSymbols);
+}

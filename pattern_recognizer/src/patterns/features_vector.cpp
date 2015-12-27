@@ -55,6 +55,10 @@ double FeaturesVector::getEntry(int i) const {
 /* --------------------- */
 
 double FeaturesVector::operator[](int i) {
+    if (size() < 1) {
+        throw invalid_argument("size of word is < 1");
+    }
+
     return this->getEntry(i);
 }
 

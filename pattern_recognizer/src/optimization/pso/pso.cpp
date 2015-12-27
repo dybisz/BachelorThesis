@@ -12,6 +12,7 @@
 #include <algorithms/pso_neighbourhood.h>
 #include <particle_factory.h>
 #include <geometry.h>
+#include <quality.h>
 #include "pso_update_common.h"
 #include "thread_pool.h"
 #include "pso_common.h"
@@ -97,6 +98,7 @@ void PSO::compute() {
         _printInfoAndPlot(t, consolePlot, numberOfLinesToReset);
     }
     logger::log(Verbose(PSO_V), "Particle Swarm Optimization ends");
+
     delete consolePlot;
 }
 

@@ -34,7 +34,6 @@ public:
     //          comparison, there is possibility to State-to-Integer check.
     bool operator==(const State &b) const;
     bool operator==(const int &b) const;
-    bool operator!=(const State &b) const;
 
 private:
     int _val;

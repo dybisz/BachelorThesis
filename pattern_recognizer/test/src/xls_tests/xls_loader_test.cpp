@@ -10,7 +10,7 @@
 
 using namespace std;
 
-string DATA_PATH = "./src/xls/Natives.xls";
+string DATA_PATH = "./res/Natives.xls";
 
 // not much to testing for now
 TEST(XlsLoaderTest, Read_Data){

@@ -9,9 +9,8 @@
 #include <patterns_to_languages.h>
 #include <classifier.h>
 
-namespace experiments
-{
-    void runClassificationExperiment(){
+namespace experiments {
+    void runClassificationExperiment() {
         logger::log("Starting Classification Experiment");
 
         logger::log("Loading Patterns");
@@ -20,34 +19,29 @@ namespace experiments
         XlsLoader nativeXLSLoader(global_settings::NATIVE_XLS_PATH);
         XlsLoader foreignXLSLoader(global_settings::FOREIGN_XLS_PATH);
 
-        std::vector<Pattern*>* nativePatterns = nativeXLSLoader.getPatterns();
-        std::vector<Pattern*>* foreignPatterns = foreignXLSLoader.getPatterns();
+        std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
+        std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
 
-        classification::printLoadedPatternsInfo(nativePatterns, "Native");
-        classification::printLoadedPatternsInfo(foreignPatterns, "Foreign");
+        classification::printLoadedPatternsInfo(nativePatterns, "NATIVE");
+        classification::printLoadedPatternsInfo(foreignPatterns, "FOREIGN");
 
         /* Transformation */
         logger::log("Language Transformation");
 
-        std::vector<Language*>* nativeLanguages =
-                patterns_to_languages::convert(
-                        nativePatterns,
-                        global_settings::STATES_PER_NATIVE,
-                        global_settings::ALPHABET_SIZE);
+        std::vector<Language *> *nativeLanguages =
+                patterns_to_languages::convert(nativePatterns,
+                                               global_settings::ALPHABET_SIZE);
 
-        std::vector<Language*>* foreignLanguages =
-                patterns_to_languages::convert(
-                        foreignPatterns,
-                        global_settings::STATES_PER_FOREIGN,
-                        global_settings::ALPHABET_SIZE);
+        std::vector<Language *> *foreignLanguages =
+                patterns_to_languages::convert(foreignPatterns,
+                                               global_settings::ALPHABET_SIZE);
 
-        classification::printTransformedLanguagesInfo(nativeLanguages,
-                                                      "Native");
-        classification::printTransformedLanguagesInfo(foreignLanguages,
-                                                      "Foreign");
+//        classification::printTransformedLanguagesInfo(nativeLanguages,
+//                                                      "NATIVE");
+//        classification::printTransformedLanguagesInfo(foreignLanguages,
+//                                                      "FOREIGN");
 
-
-        Classifier* classifier = new Classifier(
+        Classifier *classifier = new Classifier(
                 nativeLanguages,
                 foreignLanguages,
                 global_settings::STATES_PER_NATIVE,
@@ -56,45 +50,27 @@ namespace experiments
 
         classifier->runClassification();
         delete classifier;
+
+        // TODO memeory of alphabet from
+        // TODO patterns_to_languages::convert is not fred
     }
 
-    namespace classification
-    {
-        void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
-                                     std::string headerInfo){
+    namespace classification {
+        void printLoadedPatternsInfo(std::vector<Pattern *> *patterns,
+                                     std::string headerInfo) {
             std::stringstream ss;
-            ss << "Patterns. " << headerInfo << std::endl;
-            ss << "Different Patterns count. "
-                << patterns->size() << std::endl;
+            ss << "[PATTERNS_" << headerInfo << "]\n";
 
             int sum = 0;
-            for(int i = 0; i < patterns->size(); i++){
+            for (int i = 0; i < patterns->size(); i++) {
                 sum += (*patterns)[i]->size();
                 ss << "Pattern["
-                    << i
-                    << "] count: "
-                    << (*patterns)[i]->size() << std::endl;
-            }
-            ss << "All Patterns count: " << sum;
-
-            logger::log(ss.str());
-        }
-
-        void printTransformedLanguagesInfo(std::vector<Language*>* languages,
-                                            std::string headerInfo){
-            std::stringstream ss;
-            ss << "Languages. " << headerInfo << std::endl;
-            ss << "Languages count " << languages->size() << std::endl;
-
-            int sum = 0;
-            for(int i = 0; i < languages->size(); i++){
-                sum += (*languages)[i]->size();
-                ss << "Language["
                 << i
-                << "] word count: "
-                << (*languages)[i]->size() << std::endl;
+                << "] ....................................... "
+                << (*patterns)[i]->size() << std::endl;
             }
-            ss << "All Words count: " << sum;
+//            string temp = "\u222A";
+            ss << "-------------------------------------------------+ " << sum;
 
             logger::log(ss.str());
         }

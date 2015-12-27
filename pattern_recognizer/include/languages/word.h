@@ -22,10 +22,12 @@ public:
 
     // Feature vector can be created:
     // 1) Empty.
-    // 2) From provided vectors of integers - WARNING: copy will be created
-    // 3) From vector of Symbol class objects
-    // 4) From vector of pointers to Symbol class objects
+    // 2) Copy entries from provided Word's pointer.
+    // 3) From provided vectors of integers - WARNING: copy will be created
+    // 4) From vector of Symbol class objects
+    // 5) From vector of pointers to Symbol class objects
     Word();
+    Word(const Word* w);
     Word(const int entries[], int length);
     Word(const vector<int> &entries);
     Word(const vector<Symbol> &entries);
@@ -48,6 +50,7 @@ public:
     int size() const;
     string toString() const;
     Symbol* getSymbol(int i) const;
+    void clear();
 
     // Overloaded operators and their purpose:
     // 1) []    accessing i'th symbol in the vector. Returns pointer to

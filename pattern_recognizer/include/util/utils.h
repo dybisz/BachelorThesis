@@ -8,7 +8,7 @@
 #include <random>
 #include <vector>
 #include <string>
-#include <patterns/word.h>
+#include <languages/word.h>
 #include "word.h"
 #include "point.h"
 #include <math.h>

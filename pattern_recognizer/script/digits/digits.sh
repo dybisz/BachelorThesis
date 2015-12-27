@@ -7,15 +7,15 @@ DIR_LOG="DIGITS"
 # Settings
 #############################################################
 
-MAX_ITER=1000
+MAX_ITER=1
 SWARM_SIZE=50
 
-STATES_PER_NATIVE=1
-STATES_PER_FOREIGN=10
+STATES_PER_NATIVE=2
+STATES_PER_FOREIGN=3
 ALPHABET_SIZE=10
 
-NATIVE_XLS_PATH="./res/digits/Natives.xls"
-FOREIGN_XLS_PATH="./res/digits/Foreigns_90cl.xls"
+NATIVE_XLS_PATH="./res/digits_short/short_Natives.xls"
+FOREIGN_XLS_PATH="./res/digits_short/short_Foreign_90ccl.xls"
 
 
 #############################################################

@@ -5,6 +5,8 @@
 #ifndef BACHELOR_THESIS_CLASSIFICATOR_H
 #define BACHELOR_THESIS_CLASSIFICATOR_H
 
+#include "language.h"
+
 /*
  * Classifier is the main class of classification process.
  * It takes all transformed languages and select the state correspondence.
@@ -29,13 +31,16 @@ private:
     // Set of foreign languages
     std::vector<Language*>* _foreignLanguages;
 
+    std::vector<Language*>* _nativeTestingSet;
+    std::vector<Language*>* _foreignTestingSet;
+
     // Used to run PSO
     unsigned int _numberOfStates;
     unsigned int _alphabetSize;
 
-    // Number of states correspodence per native language
+    // Number of states correspondence per native language
     unsigned int _statesPerNative;
-    // Number of states correspodence per foreign language
+    // Number of states correspondence per foreign language
     unsigned int _statesPerForeign;
 
     //-----------------------------------------------------------//
@@ -43,23 +48,27 @@ private:
     //-----------------------------------------------------------//
 
     /*
-     * Selects state correspondence.
-     * Foreign languages are considered to be one big
-     * TODO remove global state
-     */
-    void _selectStateCorrespondence(std::vector<Language*>* nativeLanguages,
-                                    std::vector<Language*>* foreignLanguages);
-
-    /*
      * Prints info about state correspondence and the languages
      */
     void _printStateCorrespondence();
+
+    /*
+     * Prints out information about sizes of provided languages/sets.
+     */
+    void _printSetInfo(std::vector<Language *> *pLanguages,
+                        std::string setName);
 
     /*
      * Calculate and save number of states
      */
     unsigned int _calculateAndSetNumberOfStates();
 
+    /*
+     * Selects state correspondence of native and foreign languages
+     */
+    void _selectStateCorrespondence(
+            std::vector<Language*>* nativeLanguages,
+            std::vector<Language*>* foreignLanguages);
 
 public:
     Classifier(std::vector<Language*>* nativeLanguages,
@@ -78,6 +87,8 @@ public:
     //-----------------------------------------------------------//
 
     void runClassification();
+
+    unsigned int getStateCount() const;
 };
 
 

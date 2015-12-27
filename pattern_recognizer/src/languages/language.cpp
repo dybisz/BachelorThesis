@@ -9,9 +9,23 @@
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
 /* ------------------------------------ */
 
+Language::Language(Alphabet alphabet): _alphabet(alphabet){
+
+}
+
 Language::Language(Pattern *pPattern, Alphabet pAlphabet,
                    vector<State *> pStates) : _alphabet(pAlphabet),
                                               _states(pStates) {
+    try {
+        _produceWordsFromPattern(pPattern);
+    }
+    catch (exception &e) {
+        LOG_ERROR(e.what());
+    }
+}
+
+Language::Language(Pattern *pPattern, Alphabet pAlphabet)
+                        : _alphabet(pAlphabet) {
     try {
         _produceWordsFromPattern(pPattern);
     }
@@ -26,7 +40,31 @@ Language::Language(vector<Word *> &words, Alphabet pAlphabet,
                                               _states(pStates) {
 }
 
+Language::Language(vector<Word *> &words, Alphabet pAlphabet)
+                                                : _words(words),
+                                              _alphabet(pAlphabet){
+}
+
+Language::Language(vector<Word *> words, Language *lang) :
+        _alphabet(lang->getAlphabet()) {
+
+    // Create new pointers to words
+    for (auto w = words.begin(); w != words.end(); ++w) {
+        Word* word = new Word((*w));
+        _words.push_back(word);
+    }
+
+    // Copy states values
+    vector<State *> *lStates = lang->getStates();
+
+    for (auto pState = lStates->begin(); pState != lStates->end(); ++pState) {
+        State *s = new State(**pState);
+        _states.push_back(s);
+    }
+}
+
 Language::~Language() {
+
     // Release words
     for (auto iter = _words.begin(); iter != _words.end(); ++iter) {
         delete (*iter);
@@ -35,27 +73,60 @@ Language::~Language() {
     for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
         delete (*iter);
     }
+/*
+    for(unsigned int i = 0; i < _words.size(); i++){
+        delete (_words)[i];
+    }
+
+    for(unsigned int i = 0; i < _states.size(); i++){
+        delete (_states)[i];
+    }
+*/
 }
 
 /* ------------------------- */
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-std::vector<State*>* Language::getStates(){
+vector<State *> *Language::getStates() {
     return &_states;
 }
 
-void Language::setStates(std::vector<State*> states){
-    this->_states=states;
+const vector<State>* Language::getStatesPtr() const{
+    return &_statesPtr;
 }
 
-int Language::size() const{
+vector<Word *> *Language::getWords() {
+    return &_words;
+}
+
+Alphabet Language::getAlphabet() {
+    return _alphabet;
+}
+
+void Language::setStates(std::vector<State *> states) {
+    this->_states = states;
+}
+
+void Language::setStates(std::vector<State> states) {
+    this->_statesPtr = states;
+}
+
+int Language::size() const {
     return _words.size();
 }
 
-bool Language::isCorrespondingState(State* state){
-    for(unsigned int i = 0; i < _states.size(); i++){
-        if((*_states[i]) == *state)
+bool Language::isCorrespondingStatePtr(State *state) {
+    for (unsigned int i = 0; i < _statesPtr.size(); i++) {
+        if (_statesPtr[i] == *state)
+            return true;
+    }
+    return false;
+}
+
+bool Language::isCorrespondingState(State *state) {
+    for (unsigned int i = 0; i < _states.size(); i++) {
+        if ((*_states[i]) == *state)
             return true;
     }
     return false;
@@ -106,11 +177,13 @@ string Language::toString() {
 }
 
 string Language::statesToString() {
-    string out = "[States]: \n";
-    for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
-        out += (*iter)->toString();
-        out += "\n";
+//    string out = "[States]: \n";
+    string out = "";
+    for(unsigned int i = 0; i <  _statesPtr.size(); i++){
+        out += (_statesPtr[i]).toString();
+        out += " ";
     }
+//    out += "\n";
     return out;
 }
 
@@ -131,8 +204,14 @@ string Language::alphabetToString() {
     return out;
 }
 
-Word* Language::getWord(int i) {
+Word *Language::getWord(int i) {
     return _words[i];
+}
+
+Word *Language::stealLastWord() {
+    Word *word = _words.back();
+    _words.pop_back();
+    return word;
 }
 
 /* --------------------- */
