@@ -10,7 +10,8 @@
 
 string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
                                         vector<Language *> *foreignLanguages,
-                                        DFA *dfa) {
+                                        DFA *dfa,
+                                        std::string headerInfo) {
     /* ----- Collected Results ----- */
     double TP = percentageTrueDistinct(nativeLanguages, dfa);
     double TN = percentageTrueDistinct(foreignLanguages, dfa);
@@ -27,7 +28,7 @@ string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
                                                 foreignLanguages, dfa);
 
     /* ----- Create Output String ----- */
-    string out = "[QUALITY_DISTINCT]\n";
+    string out = "[QUALITY_DISTINCT - " + headerInfo + "]\n";
     out += "[TP].............................................. " + to_string(TP) + "\n";
     out += "[TN].............................................. " + to_string(TN) + "\n";
     out += "[FP].............................................. " + to_string(FP) + "\n";
@@ -41,7 +42,8 @@ string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
 
 string quality::overallResultsToString(vector<Language *> *nativeLanguages,
                                        vector<Language *> *foreignLanguages,
-                                       DFA *dfa) {
+                                       DFA *dfa,
+                                       std::string headerInfo) {
     /* ----- Collected Results ----- */
     double TP = percentageTrueOverall(nativeLanguages, dfa);
     double TN = percentageTrueOverall(foreignLanguages, dfa);
@@ -58,7 +60,7 @@ string quality::overallResultsToString(vector<Language *> *nativeLanguages,
                                                foreignLanguages, dfa);
 
     /* ----- Create Output String ----- */
-    string out = "[QUALITY_OVERALL]\n";
+    string out = "[QUALITY_OVERALL - " + headerInfo +"]\n";
     out += "[TP].............................................. " + to_string(TP) + "\n";
     out += "[TN].............................................. " + to_string(TN) + "\n";
     out += "[FP].............................................. " + to_string(FP) + "\n";
@@ -380,5 +382,3 @@ void quality::_getFalseOnesFrom(Language *pLanguage, DFA *pDFA,
             pStorage->push_back((*word));
     }
 }
-
-

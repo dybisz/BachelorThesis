@@ -5,6 +5,7 @@
 #ifndef BACHELOR_THESIS_CLASSIFICATOR_H
 #define BACHELOR_THESIS_CLASSIFICATOR_H
 
+#include "dfa.h"
 #include "language.h"
 
 /*
@@ -46,6 +47,11 @@ private:
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
     //-----------------------------------------------------------//
+
+    /*
+     * Calculates and prints quality results of the classifier.
+     */
+    void _calculateAndPrintQualityResults(const DFA* bestDFA);
 
     /*
      * Prints info about state correspondence and the languages

@@ -95,15 +95,7 @@ namespace pso
                 Language* language = (*nativeLanguages)[i];
                 for(int w = 0; w < language->size(); w++){
                     Word* word = language->getWord(w);
-                    std::vector<int> entries;
-                    for(int j = 0; j < word->size(); j++){
-                        int value = word->getSymbol(j)->getVal();
-                        value--;
-                        entries.push_back(value);
-                    }
-                    Word hackedWord(entries);
-
-                    unsigned int stateInt = dfa->compute(hackedWord);
+                    unsigned int stateInt = dfa->compute(*word);
                     State* s = new State(stateInt);
                     if(language->isCorrespondingState(s)){
                         correctCount++;
@@ -118,15 +110,8 @@ namespace pso
                 Language* language = (*foreignLanguages)[i];
                 for(int w = 0; w < language->size(); w++){
                     Word* word = language->getWord(w);
-                    std::vector<int> entries;
-                    for(int j = 0; j < word->size(); j++){
-                        int value = word->getSymbol(j)->getVal();
-                        value--;
-                        entries.push_back(value);
-                    }
-                    Word hackedWord(entries);
 
-                    unsigned int stateInt = dfa->compute(hackedWord);
+                    unsigned int stateInt = dfa->compute(*word);
                     State* s = new State(stateInt);
                     if(language->isCorrespondingState(s)){
                         correctCount++;
@@ -142,6 +127,7 @@ namespace pso
             //std::cout << "Val: " << val << std::endl;
             return val;
         }
+
 
         void calculateGBestFitness(Particle* particle,
                                    std::vector<Particle*>* bestParticles,

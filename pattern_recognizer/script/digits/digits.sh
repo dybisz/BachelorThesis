@@ -3,11 +3,13 @@
 MAIN_DIR_LOG="./logs/DIGITS"
 DIR_LOG="DIGITS"
 
+mkdir -p ${MAIN_DIR_LOG}
+
 #############################################################
 # Settings
 #############################################################
 
-MAX_ITER=1
+MAX_ITER=4
 SWARM_SIZE=50
 
 STATES_PER_NATIVE=2

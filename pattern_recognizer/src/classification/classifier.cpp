@@ -50,12 +50,16 @@ Classifier::Classifier(std::vector<Language*>* nativeLanguages,
     this->_nativeLanguages = nativeLanguages;
     this->_foreignLanguages = foreignLanguages;
 
+    // TODO integers -> states
+    quality::_convertWords(_nativeLanguages);
+    quality::_convertWords(_foreignLanguages);
+
     this->_nativeTestingSet =
             set_disassociation::detachWords(testingSetRatio,
                                             _nativeLanguages);
     this->_foreignTestingSet =
             set_disassociation::detachWords(testingSetRatio,
-                                    _foreignLanguages);
+                                            _foreignLanguages);
 
     _statesPerNative = statesPerNative;
     _statesPerForeign = statesPerForeign;
@@ -111,9 +115,9 @@ void Classifier::runClassification() {
                                          this->_statesPerForeign);
 
     _printSetInfo(_nativeLanguages, "NATIVE_TRAINING");
-    _printSetInfo(_foreignLanguages, "FOREIGN");
+    _printSetInfo(_foreignLanguages, "FOREIGN_TRAINING");
     _printSetInfo(_nativeTestingSet, "NATIVE_TESTING");
-    //_printSetInfo(_foreignTestingSet, "FOREIGN_TESTING");
+    _printSetInfo(_foreignTestingSet, "FOREIGN_TESTING");
     _printStateCorrespondence();
 
     logger::log("Running PSO");
@@ -122,37 +126,39 @@ void Classifier::runClassification() {
 
     pso->compute();
 
-    /* ----- Quality Results ----- */
-    // TODO integers -> states
-    quality::_convertWords(_nativeLanguages);
-    quality::_convertWords(_foreignLanguages);
-
     std::vector<Particle *> psoResults = pso->getBestParticles();
     Particle* firstBest = psoResults[0];
     const DFA* bestDFA = firstBest->getBestDFA();
 
-    logger::log(quality::distinctResultsToString(_nativeLanguages,
-                                                 _foreignLanguages,
-                                                 (DFA *) bestDFA));
-
-    logger::log(quality::overallResultsToString(_nativeLanguages,
-                                                _foreignLanguages,
-                                                (DFA *) bestDFA));
-
-/*
-    logger::log(quality::distinctResultsToString(_nativeTestingSet,
-                                                 _foreignLanguages,
-                                                 (DFA *) bestDFA));
-
-    logger::log(quality::overallResultsToString(_nativeTestingSet,
-                                                _foreignLanguages,
-                                                (DFA *) bestDFA));
-*/
+    _calculateAndPrintQualityResults(bestDFA);
 };
 
 //-----------------------------------------------------------//
 //  PRIVATE METHODS
 //-----------------------------------------------------------//
+
+void Classifier::_calculateAndPrintQualityResults(const DFA* bestDFA){
+    std::string trainingInfo    = "TRAINING";
+    std::string testingInfo     = "TESTING";
+
+    logger::log(quality::distinctResultsToString(_nativeLanguages,
+                                                 _foreignLanguages,
+                                                 (DFA *) bestDFA,
+                                                 trainingInfo));
+    logger::log(quality::overallResultsToString(_nativeLanguages,
+                                                _foreignLanguages,
+                                                (DFA *) bestDFA,
+                                                trainingInfo));
+
+    logger::log(quality::distinctResultsToString(_nativeTestingSet,
+                                                 _foreignTestingSet,
+                                                 (DFA *) bestDFA,
+                                                 testingInfo));
+    logger::log(quality::overallResultsToString(_nativeTestingSet,
+                                                _foreignTestingSet,
+                                                (DFA *) bestDFA,
+                                                testingInfo));
+}
 
 void Classifier::_printStateCorrespondence() {
     std::stringstream ss;

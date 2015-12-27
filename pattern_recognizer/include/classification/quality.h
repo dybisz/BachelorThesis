@@ -76,11 +76,13 @@ namespace quality {
     // suited. Output strings are conveniently formatted.
     string distinctResultsToString(vector<Language *> *nativeLanguages,
                                    vector<Language *> *foreignLanguages,
-                                   DFA *dfa);
+                                   DFA *dfa,
+                                   std::string headerInfo);
 
     string overallResultsToString(vector<Language *> *nativeLanguages,
                                   vector<Language *> *foreignLanguages,
-                                  DFA *dfa);
+                                  DFA *dfa,
+                                  std::string headerInfo);
 
     // Methods compute Accuracy/Sensitivity/Precision/F-Measure values.
     // Distinct and Overall methods has been provided for further, more precise
