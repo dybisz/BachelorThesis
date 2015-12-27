@@ -43,14 +43,6 @@ private:
     //-----------------------------------------------------------//
 
     /*
-     * Selects state correspondence.
-     * Foreign languages are considered to be one big
-     * TODO remove global state
-     */
-    void _selectStateCorrespondence(std::vector<Language*>* nativeLanguages,
-                                    std::vector<Language*>* foreignLanguages);
-
-    /*
      * Prints info about state correspondence and the languages
      */
     void _printStateCorrespondence();

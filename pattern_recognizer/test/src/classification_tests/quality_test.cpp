@@ -17,7 +17,6 @@ using namespace std;
 /* ----- QUALITY TESTS SETTINGS ----- */
 string SHORT_NATIVE = "./res/short_Natives.xls";
 string SHORT_FOREIGN = "./res/short_Foreign_90ccl.xls";
-int ALL_WORDS = 402;
 int ALPHABET_SIZE = 4;
 int STATES_PER_NATIVE = 2;
 int STATES_PER_FOREIGN = 2;
@@ -291,6 +290,7 @@ TEST(QualityTest, Summary_Print) {
     /* ----- FREE DATA ----- */
     releaseGlobals();
 }
+
 /* --------------------------------- */
 /* ----- AUXILIARY DEFINITIONS ----- */
 /* --------------------------------- */

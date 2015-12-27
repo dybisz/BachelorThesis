@@ -9,9 +9,8 @@
 #include <patterns_to_languages.h>
 #include <classifier.h>
 
-namespace experiments
-{
-    void runClassificationExperiment(){
+namespace experiments {
+    void runClassificationExperiment() {
         logger::log("Starting Classification Experiment");
 
         logger::log("Loading Patterns");
@@ -20,8 +19,8 @@ namespace experiments
         XlsLoader nativeXLSLoader(global_settings::NATIVE_XLS_PATH);
         XlsLoader foreignXLSLoader(global_settings::FOREIGN_XLS_PATH);
 
-        std::vector<Pattern*>* nativePatterns = nativeXLSLoader.getPatterns();
-        std::vector<Pattern*>* foreignPatterns = foreignXLSLoader.getPatterns();
+        std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
+        std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
 
         classification::printLoadedPatternsInfo(nativePatterns, "NATIVE");
         classification::printLoadedPatternsInfo(foreignPatterns, "FOREIGN");
@@ -29,25 +28,25 @@ namespace experiments
         /* Transformation */
         logger::log("Language Transformation");
 
-        std::vector<Language*>* nativeLanguages =
+        std::vector<Language *> *nativeLanguages =
                 patterns_to_languages::convert(
                         nativePatterns,
                         global_settings::STATES_PER_NATIVE,
                         global_settings::ALPHABET_SIZE);
 
-        std::vector<Language*>* foreignLanguages =
+        std::vector<Language *> *foreignLanguages =
                 patterns_to_languages::convert(
                         foreignPatterns,
                         global_settings::STATES_PER_FOREIGN,
-                        global_settings::ALPHABET_SIZE);
+                        global_settings::ALPHABET_SIZE,
+                        global_settings::STATES_PER_NATIVE);
 
         classification::printTransformedLanguagesInfo(nativeLanguages,
                                                       "NATIVE");
         classification::printTransformedLanguagesInfo(foreignLanguages,
                                                       "FOREIGN");
 
-
-        Classifier* classifier = new Classifier(
+        Classifier *classifier = new Classifier(
                 nativeLanguages,
                 foreignLanguages,
                 global_settings::STATES_PER_NATIVE,
@@ -58,41 +57,40 @@ namespace experiments
         delete classifier;
     }
 
-    namespace classification
-    {
-        void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
-                                     std::string headerInfo){
+    namespace classification {
+        void printLoadedPatternsInfo(std::vector<Pattern *> *patterns,
+                                     std::string headerInfo) {
             std::stringstream ss;
             ss << "[PATTERNS_" << headerInfo << "]\n";
 
             int sum = 0;
-            for(int i = 0; i < patterns->size(); i++){
+            for (int i = 0; i < patterns->size(); i++) {
                 sum += (*patterns)[i]->size();
                 ss << "Pattern["
-                    << i
-                    << "] .................. : "
-                    << (*patterns)[i]->size() << std::endl;
+                << i
+                << "] ....................................... "
+                << (*patterns)[i]->size() << std::endl;
             }
 //            string temp = "\u222A";
-            ss << "----------------------------  + " << sum;
+            ss << "-------------------------------------------------+ " << sum;
 
             logger::log(ss.str());
         }
 
-        void printTransformedLanguagesInfo(std::vector<Language*>* languages,
-                                            std::string headerInfo){
+        void printTransformedLanguagesInfo(std::vector<Language *> *languages,
+                                           std::string headerInfo) {
             std::stringstream ss;
             ss << "[LANGUAGES_" << headerInfo << "]\n";
 
             int sum = 0;
-            for(int i = 0; i < languages->size(); i++){
+            for (int i = 0; i < languages->size(); i++) {
                 sum += (*languages)[i]->size();
                 ss << "Language["
                 << i
-                << "] ................. : "
+                << "] ...................................... "
                 << (*languages)[i]->size() << std::endl;
             }
-            ss << "----------------------------- + " << sum;
+            ss << "-------------------------------------------------+ " << sum;
             logger::log(ss.str());
         }
     }

@@ -26,6 +26,24 @@ Language::Language(vector<Word *> &words, Alphabet pAlphabet,
                                               _states(pStates) {
 }
 
+Language::Language(vector<Word *> words, Language *lang) :
+        _alphabet(lang->getAlphabet()) {
+
+    // Create new pointers to words
+    for (auto w = words.begin(); w != words.end(); ++w) {
+        Word* word = new Word((*w));
+        _words.push_back(word);
+    }
+
+    // Copy states values
+    vector<State *> *lStates = lang->getStates();
+
+    for (auto pState = lStates->begin(); pState != lStates->end(); ++pState) {
+        State *s = new State(**pState);
+        _states.push_back(s);
+    }
+}
+
 Language::~Language() {
     // Release words
     for (auto iter = _words.begin(); iter != _words.end(); ++iter) {
@@ -41,26 +59,29 @@ Language::~Language() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-vector<State*>* Language::getStates(){
+vector<State *> *Language::getStates() {
     return &_states;
 }
 
-vector<Word*>* Language::getWords() {
+vector<Word *> *Language::getWords() {
     return &_words;
 }
 
-
-void Language::setStates(std::vector<State*> states){
-    this->_states=states;
+Alphabet Language::getAlphabet() {
+    return _alphabet;
 }
 
-int Language::size() const{
+void Language::setStates(std::vector<State *> states) {
+    this->_states = states;
+}
+
+int Language::size() const {
     return _words.size();
 }
 
-bool Language::isCorrespondingState(State* state){
-    for(unsigned int i = 0; i < _states.size(); i++){
-        if((*_states[i]) == *state)
+bool Language::isCorrespondingState(State *state) {
+    for (unsigned int i = 0; i < _states.size(); i++) {
+        if ((*_states[i]) == *state)
             return true;
     }
     return false;
@@ -111,11 +132,13 @@ string Language::toString() {
 }
 
 string Language::statesToString() {
-    string out = "[States]: \n";
+//    string out = "[States]: \n";
+    string out = "";
     for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
         out += (*iter)->toString();
-        out += "\n";
+        out += " ";
     }
+//    out += "\n";
     return out;
 }
 
@@ -136,8 +159,14 @@ string Language::alphabetToString() {
     return out;
 }
 
-Word* Language::getWord(int i) {
+Word *Language::getWord(int i) {
     return _words[i];
+}
+
+Word *Language::stealLastWord() {
+    Word *word = _words.back();
+    _words.pop_back();
+    return word;
 }
 
 /* --------------------- */

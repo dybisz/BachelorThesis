@@ -28,14 +28,14 @@ string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
 
     /* ----- Create Output String ----- */
     string out = "[QUALITY_DISTINCT]\n";
-    out += "[TP]....................... :" + to_string(TP) + "\n";
-    out += "[TN]........................:" + to_string(TN) + "\n";
-    out += "[FP]........................:" + to_string(FP) + "\n";
-    out += "[FN]........................:" + to_string(FN) + "\n";
-    out += "[ACCURACY]..................:" + to_string(accuracy) + "\n";
-    out += "[SENSITIVITY]...............:" + to_string(sensitivity) + "\n";
-    out += "[PRECISION].................:" + to_string(precision) + "\n";
-    out += "[F-MEASURE].................:" + to_string(FMeasure);
+    out += "[TP].............................................. " + to_string(TP) + "\n";
+    out += "[TN].............................................. " + to_string(TN) + "\n";
+    out += "[FP].............................................. " + to_string(FP) + "\n";
+    out += "[FN].............................................. " + to_string(FN) + "\n";
+    out += "[ACCURACY]........................................ " + to_string(accuracy) + "\n";
+    out += "[SENSITIVITY]..................................... " + to_string(sensitivity) + "\n";
+    out += "[PRECISION]....................................... " + to_string(precision) + "\n";
+    out += "[F-MEASURE]....................................... " + to_string(FMeasure);
     return out;
 }
 
@@ -59,14 +59,14 @@ string quality::overallResultsToString(vector<Language *> *nativeLanguages,
 
     /* ----- Create Output String ----- */
     string out = "[QUALITY_OVERALL]\n";
-    out += "[TP]....................... :" + to_string(TP) + "\n";
-    out += "[TN]........................:" + to_string(TN) + "\n";
-    out += "[FP]........................:" + to_string(FP) + "\n";
-    out += "[FN]........................:" + to_string(FN) + "\n";
-    out += "[ACCURACY]..................:" + to_string(accuracy) + "\n";
-    out += "[SENSITIVITY]...............:" + to_string(sensitivity) + "\n";
-    out += "[PRECISION].................:" + to_string(precision) + "\n";
-    out += "[F-MEASURE].................:" + to_string(FMeasure);
+    out += "[TP].............................................. " + to_string(TP) + "\n";
+    out += "[TN].............................................. " + to_string(TN) + "\n";
+    out += "[FP].............................................. " + to_string(FP) + "\n";
+    out += "[FN].............................................. " + to_string(FN) + "\n";
+    out += "[ACCURACY]........................................ " + to_string(accuracy) + "\n";
+    out += "[SENSITIVITY]..................................... " + to_string(sensitivity) + "\n";
+    out += "[PRECISION]....................................... " + to_string(precision) + "\n";
+    out += "[F-MEASURE]....................................... " + to_string(FMeasure);
     return out;
 }
 

@@ -47,7 +47,6 @@ void Classifier::runClassification(){
     logger::log("Running Classifcation");
 
     logger::log("Selecting State Correspondence");
-    _selectStateCorrespondence(_nativeLanguages, _foreignLanguages);
     _printStateCorrespondence();
 
     logger::log("Running PSO");
@@ -62,49 +61,15 @@ void Classifier::runClassification(){
 //  PRIVATE METHODS
 //-----------------------------------------------------------//
 
-void Classifier::_selectStateCorrespondence(
-        std::vector<Language*>* nativeLanguages,
-        std::vector<Language*>* foreignLanguages){
-    int nativeSize = nativeLanguages->size();
-    int foreignSize = foreignLanguages->size();
-
-    int statesPerNative = global_settings::STATES_PER_NATIVE;
-    int statesPerForeign = global_settings::STATES_PER_FOREIGN;
-
-    int currentStateKey = 0;
-
-    for(int i = 0; i < nativeSize; i++){
-        std::vector<State*> states;
-        for(int j = 0; j < statesPerNative; j++){
-            State* state = new State(currentStateKey);
-            states.push_back(state);
-
-            currentStateKey++;
-        }
-        (*nativeLanguages)[i]->setStates(states);
-    }
-
-    std::vector<State*> states;
-    for(int i = 0; i < statesPerForeign; i++){
-        State* state = new State(currentStateKey);
-        states.push_back(state);
-
-        currentStateKey++;
-    }
-    for(int i = 0; i < foreignSize; i++){
-        (*foreignLanguages)[i]->setStates(states);
-    }
-}
-
 void Classifier::_printStateCorrespondence(){
     std::stringstream ss;
-    ss << "State correspondence" << std::endl;
+    ss << "[STATE CORRESPONDENCE]";
     for(int i = 0; i < _nativeLanguages->size(); i++){
-        ss << "Native Lan[" << i << "]" << std::endl;
+        ss << "\nNative  Lan[" << i << "] ................................... ";
         ss << (*_nativeLanguages)[i]->statesToString();
     }
     for(int i = 0; i < _foreignLanguages->size(); i++){
-        ss << "Foreign Lan[" << i << "]" << std::endl;
+        ss << "\nForeign Lan[" << i << "] ................................... ";
         ss << (*_foreignLanguages)[i]->statesToString();
     }
     logger::log(ss.str());
