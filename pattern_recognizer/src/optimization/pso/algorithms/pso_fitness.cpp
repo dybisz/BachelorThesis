@@ -90,7 +90,6 @@ namespace pso
 
             const DFA* dfa = p->getCurrentDFA();
 
-
             for(int i = 0; i < nativeSize; i++){
                 Language* language = (*nativeLanguages)[i];
                 for(int w = 0; w < language->size(); w++){
@@ -110,7 +109,6 @@ namespace pso
                 Language* language = (*foreignLanguages)[i];
                 for(int w = 0; w < language->size(); w++){
                     Word* word = language->getWord(w);
-
                     unsigned int stateInt = dfa->compute(*word);
                     State* s = new State(stateInt);
                     if(language->isCorrespondingState(s)){
@@ -121,6 +119,7 @@ namespace pso
                     delete s;
                 }
             }
+
             double val = correctCount / countAll;
             //std::cout << "correctCount: " << correctCount << std::endl;
             //std::cout << "countAll: " << countAll << std::endl;

@@ -26,7 +26,7 @@ Classifier::Classifier(std::vector<Language *> *nativeLanguages,
     this->_foreignLanguages = foreignLanguages;
 
     /* ----- TESTING SET ----- */
-    double subsetRatio = 0.3; // TODO make flag
+    double subsetRatio = 0.3;
     this->_nativeTestingSet = set_disassociation::detachWords(subsetRatio,
                                                               _nativeLanguages);
     this->_foreignTestingSet = set_disassociation::detachWords(subsetRatio,
@@ -50,6 +50,14 @@ Classifier::Classifier(std::vector<Language*>* nativeLanguages,
     this->_nativeLanguages = nativeLanguages;
     this->_foreignLanguages = foreignLanguages;
 
+    _statesPerNative = statesPerNative;
+    _statesPerForeign = statesPerForeign;
+
+    languages::selectStateCorrespondence(this->_nativeLanguages,
+                                         this->_foreignLanguages,
+                                         this->_statesPerNative,
+                                         this->_statesPerForeign);
+
     // TODO integers -> states
     quality::_convertWords(_nativeLanguages);
     quality::_convertWords(_foreignLanguages);
@@ -61,8 +69,6 @@ Classifier::Classifier(std::vector<Language*>* nativeLanguages,
             set_disassociation::detachWords(testingSetRatio,
                                             _foreignLanguages);
 
-    _statesPerNative = statesPerNative;
-    _statesPerForeign = statesPerForeign;
 
     _alphabetSize = alphabetSize;
 
@@ -109,11 +115,6 @@ const std::vector<Language*>* Classifier::getForeignLanguages() const {
 }
 
 void Classifier::runClassification() {
-    languages::selectStateCorrespondence(this->_nativeLanguages,
-                                         this->_foreignLanguages,
-                                         this->_statesPerNative,
-                                         this->_statesPerForeign);
-
     _printSetInfo(_nativeLanguages, "NATIVE_TRAINING");
     _printSetInfo(_foreignLanguages, "FOREIGN_TRAINING");
     _printSetInfo(_nativeTestingSet, "NATIVE_TESTING");
