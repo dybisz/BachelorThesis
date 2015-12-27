@@ -41,10 +41,10 @@ namespace experiments {
                         global_settings::ALPHABET_SIZE,
                         global_settings::STATES_PER_NATIVE);
 
-        classification::printTransformedLanguagesInfo(nativeLanguages,
-                                                      "NATIVE");
-        classification::printTransformedLanguagesInfo(foreignLanguages,
-                                                      "FOREIGN");
+//        classification::printTransformedLanguagesInfo(nativeLanguages,
+//                                                      "NATIVE");
+//        classification::printTransformedLanguagesInfo(foreignLanguages,
+//                                                      "FOREIGN");
 
         Classifier *classifier = new Classifier(
                 nativeLanguages,
@@ -74,23 +74,6 @@ namespace experiments {
 //            string temp = "\u222A";
             ss << "-------------------------------------------------+ " << sum;
 
-            logger::log(ss.str());
-        }
-
-        void printTransformedLanguagesInfo(std::vector<Language *> *languages,
-                                           std::string headerInfo) {
-            std::stringstream ss;
-            ss << "[LANGUAGES_" << headerInfo << "]\n";
-
-            int sum = 0;
-            for (int i = 0; i < languages->size(); i++) {
-                sum += (*languages)[i]->size();
-                ss << "Language["
-                << i
-                << "] ...................................... "
-                << (*languages)[i]->size() << std::endl;
-            }
-            ss << "-------------------------------------------------+ " << sum;
             logger::log(ss.str());
         }
     }

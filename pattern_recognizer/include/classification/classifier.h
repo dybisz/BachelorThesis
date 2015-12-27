@@ -29,6 +29,9 @@ private:
     // Set of foreign languages
     std::vector<Language*>* _foreignLanguages;
 
+    std::vector<Language*>* _nativeTestingSet;
+    std::vector<Language*>* _foreignTestingSet;
+
     // Used to run PSO
     unsigned int _numberOfStates;
     unsigned int _alphabetSize;
@@ -48,10 +51,15 @@ private:
     void _printStateCorrespondence();
 
     /*
+     * Prints out information about sizes of provided languages/sets.
+     */
+    void _printSetInfo(std::vector<Language *> *pLanguages,
+                        std::string setName);
+
+    /*
      * Calculate and save number of states
      */
     unsigned int _calculateAndSetNumberOfStates();
-
 
 public:
     Classifier(std::vector<Language*>* nativeLanguages,
