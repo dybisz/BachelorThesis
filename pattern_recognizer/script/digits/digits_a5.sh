@@ -58,18 +58,17 @@ run_optimizer(){
     echo "DIR Path : " $5
     echo "---------------------"
 
-
-#    ./bin/pattern_recognizer -E 0 \
-#        --log-dir ${DIR_LOG} \
-#        --log-main-dir ${MAIN_DIR_LOG} \
-#        -I ${MAX_ITER} \
-#        -S ${SWARM_SIZE} \
-#        -N ${NATIVE_XLS_PATH} \
-#        -F $4 \
-#        --cl-states-native $1 \
-#        --cl-states-foreign $2 \
-#        --cl-alph-size $3 \
-#        --max-vel ${MAX_VEL}
+    ./bin/pattern_recognizer -E 0 \
+        --log-dir $5 \
+        --log-main-dir ${MAIN_DIR_LOG} \
+        -I ${MAX_ITER} \
+        -S ${SWARM_SIZE} \
+        -N ${NATIVE_XLS_PATH} \
+        -F $4 \
+        --cl-states-native $1 \
+        --cl-states-foreign $2 \
+        --cl-alph-size $3 \
+        --max-vel ${MAX_VEL}
 
 }
 
