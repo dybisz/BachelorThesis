@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <iostream>
+#include <state.h>
+#include <symbol.h>
 
 /*
  * Transition Function is of the form known as Natural Decoding. Formally:
@@ -84,6 +86,10 @@ public:
     void addTransition( const unsigned int fromState,
                         const unsigned int symbol,
                         const unsigned int toState);
+
+    void addTransition( const State& fromState,
+                        const Symbol& symbol,
+                        const State& toState);
 
     //-----------------------------------------------------------//
     //  OPERATORS

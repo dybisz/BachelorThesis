@@ -94,6 +94,13 @@ void TransitionFunction::addTransition(
     entries[getIndex(fromState, symbol)] = toState;
 }
 
+
+void TransitionFunction::addTransition( const State& fromState,
+                                        const Symbol& symbol,
+                                        const State& toState){
+
+}
+
 //-----------------------------------------------------------//
 //  OPERATORS
 //-----------------------------------------------------------//
