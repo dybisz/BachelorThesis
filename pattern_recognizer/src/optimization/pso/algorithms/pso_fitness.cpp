@@ -105,7 +105,7 @@ namespace pso
 
                     unsigned int stateInt = dfa->compute(hackedWord);
                     State* s = new State(stateInt);
-                    if(language->isCorrespondingStatePtr(s)){
+                    if(language->isCorrespondingState(s)){
                         correctCount++;
                     }
                     countAll++;
@@ -128,7 +128,7 @@ namespace pso
 
                     unsigned int stateInt = dfa->compute(hackedWord);
                     State* s = new State(stateInt);
-                    if(language->isCorrespondingStatePtr(s)){
+                    if(language->isCorrespondingState(s)){
                         correctCount++;
                     }
                     countAll++;

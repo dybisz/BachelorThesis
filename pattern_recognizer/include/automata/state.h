@@ -35,6 +35,8 @@ public:
     bool operator==(const State &b) const;
     bool operator==(const int &b) const;
 
+    bool operator!=(const State &b) const;
+
 private:
     int _val;
 };

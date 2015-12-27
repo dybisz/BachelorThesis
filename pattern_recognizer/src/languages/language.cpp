@@ -55,7 +55,7 @@ Language::Language(vector<Word *> words, Language *lang) :
     }
 
     // Copy states values
-    vector<State *> *lStates = lang->getStates();
+    const vector<State *> *lStates = lang->getStates();
 
     for (auto pState = lStates->begin(); pState != lStates->end(); ++pState) {
         State *s = new State(**pState);
@@ -64,7 +64,7 @@ Language::Language(vector<Word *> words, Language *lang) :
 }
 
 Language::~Language() {
-
+/*
     // Release words
     for (auto iter = _words.begin(); iter != _words.end(); ++iter) {
         delete (*iter);
@@ -72,8 +72,8 @@ Language::~Language() {
     // Release states
     for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
         delete (*iter);
-    }
-/*
+    }*/
+
     for(unsigned int i = 0; i < _words.size(); i++){
         delete (_words)[i];
     }
@@ -81,50 +81,34 @@ Language::~Language() {
     for(unsigned int i = 0; i < _states.size(); i++){
         delete (_states)[i];
     }
-*/
+
 }
 
 /* ------------------------- */
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-vector<State *> *Language::getStates() {
+const vector<State*>* Language::getStates() const{
     return &_states;
-}
-
-const vector<State>* Language::getStatesPtr() const{
-    return &_statesPtr;
 }
 
 vector<Word *> *Language::getWords() {
     return &_words;
 }
 
-Alphabet Language::getAlphabet() {
+Alphabet Language::getAlphabet() const {
     return _alphabet;
-}
-
-void Language::setStates(std::vector<State *> states) {
-    this->_states = states;
-}
-
-void Language::setStates(std::vector<State> states) {
-    this->_statesPtr = states;
 }
 
 int Language::size() const {
     return _words.size();
 }
 
-bool Language::isCorrespondingStatePtr(State *state) {
-    for (unsigned int i = 0; i < _statesPtr.size(); i++) {
-        if (_statesPtr[i] == *state)
-            return true;
-    }
-    return false;
+void Language::setStates(std::vector<State *> states) {
+    this->_states = states;
 }
 
-bool Language::isCorrespondingState(State *state) {
+bool Language::isCorrespondingState(State *state) const{
     for (unsigned int i = 0; i < _states.size(); i++) {
         if ((*_states[i]) == *state)
             return true;
@@ -177,13 +161,13 @@ string Language::toString() {
 }
 
 string Language::statesToString() {
-//    string out = "[States]: \n";
+// string out = "[States]: \n";
     string out = "";
-    for(unsigned int i = 0; i <  _statesPtr.size(); i++){
-        out += (_statesPtr[i]).toString();
+    for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
+        out += (*iter)->toString();
         out += " ";
     }
-//    out += "\n";
+// out += "\n";
     return out;
 }
 
