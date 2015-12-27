@@ -53,7 +53,6 @@ Classifier::Classifier(std::vector<Language*>* nativeLanguages,
     this->_nativeTestingSet =
             set_disassociation::detachWords(testingSetRatio,
                                             _nativeLanguages);
-    //this->_foreignTestingSet = NULL;
     this->_foreignTestingSet =
             set_disassociation::detachWords(testingSetRatio,
                                     _foreignLanguages);
