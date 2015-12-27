@@ -39,7 +39,7 @@ namespace experiments {
                         foreignPatterns,
                         global_settings::STATES_PER_FOREIGN,
                         global_settings::ALPHABET_SIZE,
-                        global_settings::STATES_PER_NATIVE);
+                        global_settings::STATES_PER_NATIVE * nativeLanguages->size());
 
 //        classification::printTransformedLanguagesInfo(nativeLanguages,
 //                                                      "NATIVE");
