@@ -245,3 +245,18 @@ TEST(Language, SetStates_IsNotCorrespodingToCorrectState2) {
 
     EXPECT_EQ(expectedValue, actualValue);
 }
+
+TEST(Language, AddWord_SizeIncreased) {
+    unsigned int alhpabetSize = 2;
+    Alphabet alphabet(alhpabetSize);
+
+    Language language(alphabet);
+
+    Word* word = new Word();
+    language.addWord(word);
+
+    unsigned int expectedSize = 1;
+    unsigned int actualSize = language.size();
+
+    EXPECT_EQ(expectedSize, actualSize);
+}
