@@ -84,7 +84,7 @@ void XlsLoader::_processSheet(BasicExcelWorksheet *pSheet) {
     _loadFeaturesVectorsToPatterns(pSheet);
 }
 
-void XlsLoader::_loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet) {
+void XlsLoader::_loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet, int numberOfLabels, int numberOfPatterns) {
     const int startRow = 2;
     const int labelCol = 0;
 
@@ -107,7 +107,8 @@ bool XlsLoader::_cellIsNotEmpty(const int row, const int col,
 
 void XlsLoader::_addPatternWithLabel(int label) {
 
-    // Check if pattern with provided label exists
+    // Check if pattern with provided label already
+    // exists in loaded patterns.
     for (auto iter = _loadedPatterns.begin();
          iter != _loadedPatterns.end(); ++iter) {
         if ((*iter)->getLabel() == label) {
