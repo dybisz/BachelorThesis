@@ -31,7 +31,7 @@ public:
 
     // Different words accesing:
     // 1) returns ith pointer to the word, not interfering with set of words.
-    // 2) removes and returns last element from the set of words.
+    // 2) removes and restarturns last element from the set of words.
     Word* getWord(int i);
     Word* stealLastWord();
 

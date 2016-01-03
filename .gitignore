@@ -37,3 +37,4 @@ config_gui/.idea
 *.jar
 
 core
+./pattern_recognizer/test/core
