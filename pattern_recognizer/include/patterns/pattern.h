@@ -34,8 +34,6 @@ public:
 private:
     vector<FeaturesVector*> _features;
     int _label;
-
-
 };
 
 #endif //BACHELOR_THESIS_PATTERN_H

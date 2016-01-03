@@ -6,16 +6,21 @@
 #include <logger.h>
 #include <state.h>
 
+/* ---------------------------- */
+/* ----- STATIC VARIABLES ----- */
+/* ---------------------------- */
+const int XlsLoader::ALL_ENTRIES = 0;
+
 /* ------------------------------------ */
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
 /* ------------------------------------ */
 
 XlsLoader::XlsLoader() { }
 
-XlsLoader::XlsLoader(string url) {
+XlsLoader::XlsLoader(string url, int numberOfLabels, int numberOfPatterns) {
     try {
         setUrl(url);
-        loadDataFromFile(url);
+        loadDataFromFile(url, numberOfLabels, numberOfPatterns);
     }
     catch (exception &e) {
         LOG_ERROR(e.what());
@@ -37,7 +42,8 @@ void XlsLoader::setUrl(string url) {
     this->_url = url.c_str();
 }
 
-void XlsLoader::loadDataFromFile(string url) {
+void XlsLoader::loadDataFromFile(string url, int numberOfLabels,
+                                 int numberOfPatterns) {
     BasicExcel xls(_url);
     XLSFormatManager fmt_mgr(xls);
     BasicExcelWorksheet *sheet = xls.GetWorksheet(0);
@@ -45,7 +51,7 @@ void XlsLoader::loadDataFromFile(string url) {
     fmt_general.set_format_string("0.00000");
 
     if (sheet) {
-        _processSheet(sheet);
+        _loadFeaturesVectorsToPatterns(sheet, numberOfLabels, numberOfPatterns);
     } else {
         throw invalid_argument("ExcelFormat cannot open sheet");
     }
@@ -71,7 +77,6 @@ string XlsLoader::printLabels() {
 /* --------------------- */
 string XlsLoader::toString() {
     string out = "";
-    int a = 0;
     for (auto iter = _loadedPatterns.begin();
          iter != _loadedPatterns.end(); ++iter) {
         out += " ";
@@ -80,11 +85,10 @@ string XlsLoader::toString() {
     return out;
 }
 
-void XlsLoader::_processSheet(BasicExcelWorksheet *pSheet) {
-    _loadFeaturesVectorsToPatterns(pSheet);
-}
 
-void XlsLoader::_loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet, int numberOfLabels, int numberOfPatterns) {
+void XlsLoader::_loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet,
+                                               int numLabels,
+                                               int numPatterns) {
     const int startRow = 2;
     const int labelCol = 0;
 
@@ -93,8 +97,13 @@ void XlsLoader::_loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet, int 
     while (_cellIsNotEmpty(iterRow, labelCol, pSheet)) {
         BasicExcelCell *cell = pSheet->Cell(iterRow, labelCol);
         int label = cell->GetDouble();
-        _addPatternWithLabel(label);
-        _addFeatureVectorToPattern(label, iterRow, labelCol + 1, pSheet);
+
+        // Check loading constraints
+        if (_patternInBoundaries(label, iterRow, numLabels, numPatterns)) {
+            _addPatternWithLabel(label);
+            _addFeatureVectorToPattern(label, iterRow, labelCol + 1, pSheet);
+        }
+
         iterRow++;
     }
 }
@@ -147,4 +156,23 @@ Pattern *XlsLoader::_getPatternWithLabel(int label) {
     }
 
     return NULL;
+}
+
+bool XlsLoader::_patternInBoundaries(int label, int row, int numLabels,
+                                     int numPatterns) {
+    // Pattern numbering
+//    int pattern = row - ((label * (numPatterns)) + 2);
+    Pattern* patt = _getPatternWithLabel(label);
+    bool labelDecision = true;
+    bool patternDecision = true;
+
+    if (numLabels != ALL_ENTRIES) {
+        labelDecision = (label < numLabels);
+    }
+
+    if (numPatterns != ALL_ENTRIES && patt != NULL) {
+        patternDecision = (patt->size() < numPatterns);
+    }
+
+    return labelDecision && patternDecision;
 }
