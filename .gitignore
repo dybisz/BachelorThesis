@@ -35,6 +35,10 @@ config_gui/out
 config_gui/.idea
 *.class
 *.jar
+*.html
+*.jnlp
+bundles
+out
 
 core
 ./pattern_recognizer/test/core

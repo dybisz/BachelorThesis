@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<project name="Configuration Panel" default="default" basedir="."
+         xmlns:fx="javafx:com.sun.javafx.tools.ant">
+
+    <property name="JAVA_HOME" value="/usr/lib/jvm/java-8-oracle"/>
+    <property name="build.src.dir" value="src"/>
+    <property name="build.resources.dir" value="resources"/>
+    <property name="build.classes.dir" value="classes"/>
+    <property name="build.dist.dir" value="dist"/>
+
+    <target name="default" depends="clean,compile">
+
+        <taskdef resource="com/sun/javafx/tools/ant/antlib.xml"
+                 uri="javafx:com.sun.javafx.tools.ant"
+                 classpath="${JAVA_HOME}/lib/ant-javafx.jar"/>
+
+        <fx:application id="ConfigurationPanelID"
+                        name="ConfigurationPanel"
+                        mainClass="ConfigurationPanel"/>
+
+        <fx:resources id="appRes">
+            <fx:fileset dir="${build.dist.dir}" includes="ConfigurationPanel.jar"/>
+            <fx:fileset dir="${build.resources.dir}" includes="ConfigurationPanel.jar"/>
+        </fx:resources>
+
+        <fx:jar destfile="${build.dist.dir}/ConfigurationPanel.jar">
+            <fx:application refid="ConfigurationPanelID"/>
+            <fx:resources refid="appRes"/>
+            <fileset dir="${build.classes.dir}"/>
+            <fileset dir="${build.resources.dir}"/>
+        </fx:jar>
+
+        <fx:deploy width="300" height="250"
+                   outdir="." embedJNLP="true"
+                   outfile="ConfigurationPanel">
+
+            <fx:application refId="ConfigurationPanelID"/>
+
+            <fx:resources refid="appRes"/>
+
+            <fx:info title="JavaFX Hello World Application"
+                     vendor="Oracle Corporation"/>
+
+        </fx:deploy>
+
+    </target>
+
+    <target name="clean">
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.dist.dir}"/>
+
+        <delete>
+            <fileset dir="${build.classes.dir}" includes="**/*"/>
+            <fileset dir="${build.dist.dir}" includes="**/*"/>
+        </delete>
+
+    </target>
+
+    <target name="compile" depends="clean">
+
+        <javac includeantruntime="false"
+               srcdir="${build.src.dir}"
+               destdir="${build.classes.dir}"
+               fork="yes"
+               executable="${JAVA_HOME}/bin/javac"
+               source="1.8"
+               debug="on">
+        </javac>
+    </target>
+
+</project>
