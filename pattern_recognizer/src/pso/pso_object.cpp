@@ -3,3 +3,17 @@
 //
 
 #include "pso_object.h"
+
+using namespace pso;
+
+//-----------------------------------------------------------//
+//  CONSTRUCTORS
+//-----------------------------------------------------------//
+
+PSOObject::PSOObject() {
+
+}
+
+PSOObject::~PSOObject() {
+
+}

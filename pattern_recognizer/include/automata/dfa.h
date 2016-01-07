@@ -9,6 +9,7 @@
 
 #include <ostream>
 #include <vector>
+#include <pso_object.h>
 
 #include "transition_function.h"
 
@@ -34,9 +35,11 @@
  *      5) Set of Accepting
  *          - Can be empty.
  *
+ *  DFA takes ownership over TransitionFunction
+ *
  */
 
-class DFA {
+class DFA : public pso::PSOObject{
 private:
     //-----------------------------------------------------------//
     //  PRIVATE FIELDS

@@ -89,18 +89,6 @@ public:
      */
     std::string toString();
 
-    /*
-     * Static. general method for calculating euclidian distance between
-     * given points.
-     *
-     *
-     * @p1 - Point one.
-     * @p2 - Point two.
-     *
-     * @Deprecated - Use the distance(x, y) function in <math/geometry.h>
-     */
-    static double euclidianDistance(Point<T> p1, Point<T> p2);
-
     //-----------------------------------------------------------//
     //  OPERATORS
     //-----------------------------------------------------------//

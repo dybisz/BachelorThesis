@@ -2,19 +2,19 @@
 // Created by jakub on 12/29/15.
 //
 
-#include "particle_updater.h"
+#include "neighbourhood_updater.h"
 
 //-----------------------------------------------------------//
-//  CONSTRUCTORS
+//  CONSTRUCTOR
 //-----------------------------------------------------------//
 
 using namespace pso;
 
-ParticleUpdater::ParticleUpdater(
-                ParticleShPtr_ConstVectorShPtr particles) {
+NeighbourhoodUpdater::NeighbourhoodUpdater(
+                        ParticleShPtr_ConstVectorShPtr particles){
     this->particles = particles;
 }
 
-ParticleUpdater::~ParticleUpdater() {
+NeighbourhoodUpdater::~NeighbourhoodUpdater() {
 
 }

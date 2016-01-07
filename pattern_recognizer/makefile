@@ -139,7 +139,7 @@ TST = test
 # Can be used to compile your static libraries before linking.
 # Surrounded the path with '...' and separate different paths
 # with a space.
-MAKE_EXTERNAL =
+MAKE_EXTERNAL = './lib/excel_format/'
 
 #---------------- LIBRARIES -------------------#
 
