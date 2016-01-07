@@ -41,7 +41,6 @@ public:
               int numberOfPatterns = ALL_ENTRIES);
     ~XlsLoader();
 
-    void setUrl(string url);
     void loadDataFromFile(string url, int i, int i1);
 
     vector<Pattern *> *getPatterns();
@@ -67,21 +66,15 @@ private:
     // ...
     // [LABEL][FEATURES VALUES]
     //
-    // WARNING: Labels must be grouped together, no mixing!
-    //
     // Methods will automatically detect resolution of the table so there
     // is no need to provide sizes - just stick to the format.
     bool _cellIsNotEmpty(const int row, const int col,
                          BasicExcelWorksheet *pSheet);
-
     void _loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet,
                                         int numberOfLabels,
                                         int numberOfPatterns);
-
     void _addFeatureVectorToPattern(int label, int row, const int col,
                                     BasicExcelWorksheet *pSheet);
-
-
     bool _patternInBoundaries(int label, int row, int numLabels, int numPatterns);
 };
 

@@ -9,7 +9,7 @@
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
 /* ------------------------------------ */
 
-Language::Language(Alphabet alphabet): _alphabet(alphabet){
+Language::Language(Alphabet alphabet) : _alphabet(alphabet) {
 
 }
 
@@ -25,7 +25,7 @@ Language::Language(Pattern *pPattern, Alphabet pAlphabet,
 }
 
 Language::Language(Pattern *pPattern, Alphabet pAlphabet)
-                        : _alphabet(pAlphabet) {
+        : _alphabet(pAlphabet) {
     try {
         _produceWordsFromPattern(pPattern);
     }
@@ -41,8 +41,8 @@ Language::Language(vector<Word *> &words, Alphabet pAlphabet,
 }
 
 Language::Language(vector<Word *> &words, Alphabet pAlphabet)
-                                                : _words(words),
-                                              _alphabet(pAlphabet){
+        : _words(words),
+          _alphabet(pAlphabet) {
 }
 
 Language::Language(vector<Word *> words, Language *lang) :
@@ -50,7 +50,7 @@ Language::Language(vector<Word *> words, Language *lang) :
 
     // Create new pointers to words
     for (auto w = words.begin(); w != words.end(); ++w) {
-        Word* word = new Word((*w));
+        Word *word = new Word((*w));
         _words.push_back(word);
     }
 
@@ -74,11 +74,11 @@ Language::~Language() {
         delete (*iter);
     }*/
 
-    for(unsigned int i = 0; i < _words.size(); i++){
+    for (unsigned int i = 0; i < _words.size(); i++) {
         delete (_words)[i];
     }
 
-    for(unsigned int i = 0; i < _states.size(); i++){
+    for (unsigned int i = 0; i < _states.size(); i++) {
         delete (_states)[i];
     }
 
@@ -88,7 +88,7 @@ Language::~Language() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-const vector<State*>* Language::getStates() const{
+vector<State *> *Language::getStates() {
     return &_states;
 }
 
@@ -105,10 +105,11 @@ int Language::size() const {
 }
 
 void Language::setStates(std::vector<State *> states) {
+    _safeDeleteContent(this->_states);
     this->_states = states;
 }
 
-bool Language::isCorrespondingState(State *state) const{
+bool Language::isCorrespondingState(State *state) const {
     for (unsigned int i = 0; i < _states.size(); i++) {
         if ((*_states[i]) == *state)
             return true;
@@ -116,7 +117,7 @@ bool Language::isCorrespondingState(State *state) const{
     return false;
 }
 
-void Language::addWord(Word* word){
+void Language::addWord(Word *word) {
     this->_words.push_back(word);
 }
 
@@ -208,3 +209,10 @@ Word *Language::stealLastWord() {
 
 
 
+void Language::_safeDeleteContent(vector<State *> vec) {
+    for (auto it = vec.begin(); it != vec.end(); ++it) {
+        delete (*it);
+    }
+
+    vec.clear();
+}

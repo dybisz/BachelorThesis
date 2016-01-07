@@ -12,10 +12,8 @@ using namespace std;
 
 string DATA_PATH = "./res/short_Natives.xls";
 
-// not much to testing for now
 TEST(XlsLoaderTest, Read_Data){
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH);
-
     delete xlsLoader;
 }
 

@@ -19,7 +19,6 @@ XlsLoader::XlsLoader() { }
 
 XlsLoader::XlsLoader(string url, int numberOfLabels, int numberOfPatterns) {
     try {
-        setUrl(url);
         loadDataFromFile(url, numberOfLabels, numberOfPatterns);
     }
     catch (exception &e) {
@@ -38,13 +37,9 @@ XlsLoader::~XlsLoader() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-void XlsLoader::setUrl(string url) {
-    this->_url = url.c_str();
-}
-
 void XlsLoader::loadDataFromFile(string url, int numberOfLabels,
                                  int numberOfPatterns) {
-    BasicExcel xls(_url);
+    BasicExcel xls(url.c_str());
     XLSFormatManager fmt_mgr(xls);
     BasicExcelWorksheet *sheet = xls.GetWorksheet(0);
     CellFormat fmt_general(fmt_mgr);

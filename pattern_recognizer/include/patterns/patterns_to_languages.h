@@ -35,8 +35,6 @@ namespace patterns_to_languages {
     // start numbering states related to loaded language. Very useful, when we
     // e.g need to consecutively load 2 languages and preserve different state
     // numbering.
-    // TODO Dear Kuba, plx decide whether we should swap it with
-    // TODO _selectStateCorrespondence or different chuj.
     vector<Language *> *convert(vector<Pattern *> *patterns, int numberOfStates,
                                 int precision, int stateStartingIndex = 0);
 
