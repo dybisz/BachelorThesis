@@ -102,6 +102,12 @@
 ######################################################################
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
+
+#---------------- UNIT TESTS ------------------#
+
+# Path to root of googletest project
+GTEST_ROOT = '../googletest'
+
 #--------------- APPLICATION NAME -------------#
 
 APP_NAME = pattern_recognizer
@@ -144,7 +150,7 @@ MAKE_EXTERNAL = './lib/excel_format/'
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -lpthread ./lib/excel_format/ExcelFormat.so \
+LIBS += -lpthread ./lib/excel_format/ExcelFormat.so
 # -L /opt/cuda/lib64 \
 #		-L /usr/local/cuda/lib64 \
 #		-lGL -lglut -lGLEW -lcudart -lcuda \
@@ -153,10 +159,11 @@ LIBS += -lpthread ./lib/excel_format/ExcelFormat.so \
 #----------------- INCLUDES -------------------#
 
 # Paths to all Includes
-INCLUDES += -I /usr/local/cuda/include \
-			-I /opt/cuda/include \
-			-I ${GRAPHVIZ_ROOT}/include \
-			-I ./lib/excel_format/ \
+INCLUDES += -I /usr/local/cuda/include\
+            -I $(GTEST_ROOT)/include \
+            -I /opt/cuda/include \
+            -I ${GRAPHVIZ_ROOT}/include \
+            -I ./lib/excel_format/
 
 #------------------- FLAGS --------------------#
 

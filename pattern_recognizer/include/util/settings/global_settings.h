@@ -7,6 +7,7 @@
 
 #include <string>
 #include <cmath>
+#include <iostream>
 
 // Few remarks about whole project:
 // |--o   symbols take values from interval [1; _numberOfSymbols]
@@ -36,6 +37,14 @@ namespace global_settings {
     // If Full Set = 100 and ratio = 0.3
     // then Testing Set = 30.
     extern double TESTING_SET_RATIO;
+    // Number of states in Hill Climber based experiment.
+    extern int HILL_CLIMBER_STATES;
+    // How many of provided classes should be loaded to Hill Climber based
+    // experiment.
+    extern int NUMBER_OF_CLASSES;
+    // How many of provided patterns per class should be loaded to
+    // Hill Climber based experiment
+    extern int PATTERNS_PER_CLASS;
 
     /* ------ Words GENERATION SETTINGS ----- */
     extern int GEN_WORDS_SYMBOL_COUNT;
@@ -137,7 +146,8 @@ namespace global_settings {
      * Prints all the settings.
      * TODO Do it automatically.
      */
-    void printSettings();
+    void printPSOSettings();
+    void printHillClimberSettings();
 }
 
 

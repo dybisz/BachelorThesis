@@ -1,14 +1,19 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application {
+public class ConfigurationPanel extends Application {
 
-    private static final String WINDOW_FXML_URL = "/window.fxml";
+
+    private static final String WINDOW_FXML_URL = "window.fxml";
     private static final String WINDOW_NAME = "Pattern Recognizer Configuration";
 
     @Override
@@ -32,6 +37,7 @@ public class Main extends Application {
         try {
             parent = FXMLLoader.load(getClass().getResource(fxmlURL));
         } catch (IOException e) {
+
             e.printStackTrace();
         }
         return parent;

@@ -15,7 +15,8 @@ namespace experiments
      * Starts the entire classification
      * experiment logic
      */
-    void runClassificationExperiment();
+    void runPSOBasedClassification();
+    void runHillClimberBasedClassification();
 
     namespace classification
     {

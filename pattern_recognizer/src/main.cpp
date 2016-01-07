@@ -39,21 +39,27 @@ int main(int argc, char *argv[]) {
     initApp(argc, argv);
 
     // Choose experiment
-    switch (global_settings::EXPERIMENT_ID){
+    switch (global_settings::EXPERIMENT_ID) {
         case 0:
-        experiments::runClassificationExperiment();
+            // Prints all settings to the console
+            global_settings::printPSOSettings();
+            experiments::runPSOBasedClassification();
             break;
         case 1:
-        experiments::runDFAGenerationExperiment();
+            global_settings::printHillClimberSettings();
+            experiments::runHillClimberBasedClassification();
             break;
         case 2:
-        experiments::runWordsGenerationExperiment();
-        break;
+            experiments::runDFAGenerationExperiment();
+            break;
+        case 3:
+            experiments::runWordsGenerationExperiment();
+            break;
         default:
-        std::string what = "Experiment ID: " +
-                            std::to_string(global_settings::EXPERIMENT_ID) +
-                            " is not a proper Experiment ID";
-        console::usage(argv[0], what.c_str());
+            std::string what = "Experiment ID: " +
+                               std::to_string(global_settings::EXPERIMENT_ID) +
+                               " is not a proper Experiment ID";
+            console::usage(argv[0], what.c_str());
     }
 
     closeApp();
@@ -78,12 +84,11 @@ void initApp(int argc, char *argv[]) {
     // Initiates the logging functionality
     logger::initLog();
 
-    // Prints all settings to the console
-    global_settings::printSettings();
+
 
 }
 
-void closeApp(){
+void closeApp() {
     logger::closeLog();
 }
 

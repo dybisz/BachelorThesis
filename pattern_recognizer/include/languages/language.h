@@ -35,14 +35,14 @@ public:
     Word* getWord(int i);
     Word* stealLastWord();
 
-    const vector<State*>* getStates() const;
+    vector<State*>* getStates();
     vector<Word*>* getWords();
     Alphabet getAlphabet() const;
+    void setStates(std::vector<State*> states);
     int size() const;
 
     // Checks if state corresponds to this language
     bool isCorrespondingState(State*) const;
-    void setStates(std::vector<State*> states);
 
     void addWord(Word* word);
 
@@ -52,6 +52,8 @@ private:
     vector<State*> _states;
 
     void _produceWordsFromPattern(Pattern *pPattern);
+
+    void _safeDeleteContent(vector<State *> vector);
 };
 
 #endif //BACHELOR_THESIS_LANGUAGE_H

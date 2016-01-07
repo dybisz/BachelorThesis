@@ -20,6 +20,9 @@ namespace global_settings {
     int STATES_PER_FOREIGN          = 1;
     int ALPHABET_SIZE               = 4;
     double TESTING_SET_RATIO        = 0.4;
+    int HILL_CLIMBER_STATES         = 50;
+    int NUMBER_OF_CLASSES           = 4;
+    int PATTERNS_PER_CLASS          = 150;
 
     /* ------ Words GENERATION SETTINGS ----- */
     int GEN_WORDS_SYMBOL_COUNT      = 5;
@@ -68,7 +71,7 @@ namespace global_settings {
 
     //--------------------------------------------------------------------------
 
-    void printSettings(){
+    void printPSOSettings(){
         const std::string PATH_TO_VALUE = ".";
         int startColumn = 50;
 
@@ -376,6 +379,90 @@ namespace global_settings {
         ss << " ";
         ss << LOG_CURR_DIR << std::endl;
 
+
+        logger::log(File("settings.txt"), ss.str());
+    }
+
+    void printHillClimberSettings(){
+        const std::string PATH_TO_VALUE = ".";
+        int startColumn = 50;
+
+        std::stringstream ss;
+        std::string s = "";
+
+        ss << std::endl<< "SETTINGS" <<std::endl;
+
+        s = "EXPERIMENT_ID ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << EXPERIMENT_ID << std::endl;
+
+        s = "NATIVE_XLS_PATH ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << NATIVE_XLS_PATH << std::endl;
+
+        s = "FOREIGN_XLS_PATH ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << FOREIGN_XLS_PATH << std::endl;
+
+        s = "STATES ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << HILL_CLIMBER_STATES << std::endl;
+
+        s = "ALPHABET_SIZE ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << ALPHABET_SIZE << std::endl;
+
+
+        s = "MAX_ITER ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << MAX_ITER << std::endl;
+
+        s = "LOADED CLASSES ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << NUMBER_OF_CLASSES << std::endl;
+
+        s = "PATTERNS PER CLASS ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << PATTERNS_PER_CLASS << std::endl;
+
+
+        s = "LOG_MAIN_DIR ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << LOG_MAIN_DIR << std::endl;
+
+        s = "LOG_CURR_DIR ";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << LOG_CURR_DIR;
 
         logger::log(File("settings.txt"), ss.str());
     }

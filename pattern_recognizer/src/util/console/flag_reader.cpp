@@ -87,9 +87,10 @@ namespace console {
 
         flags.push_back(Flag("E", "exp",
                              "Expiriment ID - "
-                                     "0: Main Optimizer, "
-                                     "1: DFA Generation, "
-                                     "2: Word Generation",
+                                     "0: PSO Optimizer, "
+                                     "1: Hill Climber Optimizer,"
+                                     "2: DFA Generation, "
+                                     "3: Word Generation",
                              INT, &global_settings::EXPERIMENT_ID));
 
         /* ------ CLASSIFICATION SETTINGS ----- */
@@ -146,7 +147,7 @@ namespace console {
 
         /* ------ PSO SETTINGS ----- */
         flags.push_back(Flag("I", "max-iter",
-                             "Maximum iterations of PSO",
+                             "Maximum iterations of classifier",
                              INT, &global_settings::MAX_ITER));
 
         flags.push_back(Flag("l", "learn-fac",
@@ -185,6 +186,22 @@ namespace console {
                              "Swarm size",
                              INT,
                              &global_settings::SWARM_SIZE));
+
+        /* ----- HILL CLIMBER SETTINGS ----- */
+        flags.push_back(Flag("H", "hill-climber-states",
+                             "States in Hill Climber experiment",
+                             INT,
+                             &global_settings::HILL_CLIMBER_STATES));
+
+        flags.push_back(Flag("U", "classes-to-load",
+                             "States in Hill Climber experiment",
+                             INT,
+                             &global_settings::NUMBER_OF_CLASSES));
+
+        flags.push_back(Flag("u", "patterns-per-class",
+                             "States in Hill Climber experiment",
+                             INT,
+                             &global_settings::PATTERNS_PER_CLASS));
 
         /* ------ THREADING ----- */
 

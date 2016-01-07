@@ -40,6 +40,7 @@ enum Verbose_t
     DEBUG_V,
 
     PSO_V,
+    HILL_CLIMBER,
     OPTIMIZER_V
 };
 
@@ -69,6 +70,10 @@ struct Verbose
             case PSO_V:
                 this->name = "PSO";
                 this->color = logger::colors::LIGHT_CYAN;
+                break;
+            case HILL_CLIMBER:
+                this->name = "Hill_Climber";
+                this->color = logger::colors::WHITE;
                 break;
             case OPTIMIZER_V:
                 this->name = "Optimizer";
