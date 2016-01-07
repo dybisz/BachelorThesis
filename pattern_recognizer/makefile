@@ -145,7 +145,7 @@ TST = test
 # Can be used to compile your static libraries before linking.
 # Surrounded the path with '...' and separate different paths
 # with a space.
-MAKE_EXTERNAL =
+MAKE_EXTERNAL = './lib/excel_format/'
 
 #---------------- LIBRARIES -------------------#
 
@@ -163,7 +163,7 @@ INCLUDES += -I /usr/local/cuda/include\
             -I $(GTEST_ROOT)/include \
             -I /opt/cuda/include \
             -I ${GRAPHVIZ_ROOT}/include \
-            -I ./lib/excel_format/ \
+            -I ./lib/excel_format/
 
 #------------------- FLAGS --------------------#
 

@@ -37,7 +37,7 @@ public class ConfigurationPanel extends Application {
         try {
             parent = FXMLLoader.load(getClass().getResource(fxmlURL));
         } catch (IOException e) {
-            System.out.println("WYJEBALO");
+
             e.printStackTrace();
         }
         return parent;
