@@ -10,7 +10,7 @@
 #include <clock.h>
 #include "alternative_classifier.h"
 
-unsigned int AlternativeClassifier::FOREIGN_LABEL = -1;
+int AlternativeClassifier::FOREIGN_LABEL = -1;
 
 AlternativeClassifier::AlternativeClassifier(vector<Language *> *nativePatterns,
                                              vector<Language *> *foreignPatterns,
@@ -24,15 +24,11 @@ AlternativeClassifier::AlternativeClassifier(vector<Language *> *nativePatterns,
     _wordsNum = _calculateWordsNum(nativePatterns, foreignPatterns);
 
     /* ----- TESTING SET ----- */
-    double subsetRatio = 0.3;
-    this->_nativeTestingSet = set_disassociation::detachWords(subsetRatio,
+    this->_nativeTestingSet = set_disassociation::detachWords(testingSetRatio,
                                                               _nativeTrainingSet);
-    this->_foreignTestingSet = set_disassociation::detachWords(subsetRatio,
+    this->_foreignTestingSet = set_disassociation::detachWords(testingSetRatio,
                                                                _foreignTrainingSet);
     /* ----------------------- */
-
-//    cout << "[TT_NUMBER_OF_STATES]: " << _statesNum << endl;
-//    cout << "[ALPHABET_SIZE]:       " << _alphabetSize << endl;
 
     try {
         _allocateLabeledWordsMap(nativePatterns, foreignPatterns,
@@ -117,7 +113,8 @@ void AlternativeClassifier::compute() {
     logger::log(Verbose(HILL_CLIMBER), "Computations Ends");
 
     /* ----- Save To DFA ----- */
-    TransitionFunction *tf = new TransitionFunction(_statesNum, _alphabetSize,
+    TransitionFunction *tf = new TransitionFunction((unsigned int)_statesNum,
+                                                    (unsigned int)_alphabetSize,
                                                     _tt);
     _dfa = new DFA(tf);
 
@@ -140,8 +137,8 @@ void AlternativeClassifier::_allocateLabeledWordsMap(
     wordsNum = 0;
 
     // Segregate natives
-    for (auto it = _nativeTrainingSet->begin();
-         it != _nativeTrainingSet->end(); ++it) {
+    for (auto it = pNativePatterns->begin();
+         it != pNativePatterns->end(); ++it) {
         _assignWordsToLabel(labelNum, (*it)->getWords());
         wordsNum += (*it)->size();
         labelNum++;
@@ -149,8 +146,8 @@ void AlternativeClassifier::_allocateLabeledWordsMap(
 
     // Segregate foreign
     FOREIGN_LABEL = labelNum;
-    for (auto it = _foreignTrainingSet->begin();
-         it != _foreignTrainingSet->end(); ++it) {
+    for (auto it = pForeignPatterns->begin();
+         it != pForeignPatterns->end(); ++it) {
         _assignWordsToLabel(FOREIGN_LABEL, (*it)->getWords());
         wordsNum += (*it)->size();
     }
@@ -164,28 +161,6 @@ void AlternativeClassifier::_assignWordsToLabel(int label,
         _wordsMap[label].push_back((*it));
     }
 
-}
-
-void AlternativeClassifier::_printLabeledWords() {
-    for (auto kv : _wordsMap) {
-        if (kv.first == FOREIGN_LABEL) {
-            cout << "[FOREIGN]: " << endl;
-        } else {
-            cout << "[" << kv.first << "]: " << endl;
-        }
-
-        cout << _wordsToString(kv.second);
-        cout << endl;
-    }
-}
-
-string AlternativeClassifier::_wordsToString(vector<Word *> words) {
-    string out = "";
-    for (auto it = words.begin(); it != words.end(); ++it) {
-        out += (*it)->toString();
-        out += "\n";
-    }
-    return out;
 }
 
 void AlternativeClassifier::_allocateTransitionTable(int nStates,
@@ -298,7 +273,7 @@ void AlternativeClassifier::_swapNativeStates(
     int labelNum = 0;
 
     for (auto it = pLanguages->begin(); it != pLanguages->end(); ++it) {
-        vector<State *> states = _selectAndConvert(labelNum, _o);
+        vector<State *> states = _selectAndConvert(labelNum, pOutput);
         (*it)->setStates(states);
         labelNum++;
     }
@@ -322,7 +297,7 @@ void AlternativeClassifier::_swapForeignStates(
         std::vector<Language *> *pLanguages,
         int *pOutput) {
     for (auto it = pLanguages->begin(); it != pLanguages->end(); ++it) {
-        vector<State *> states = _selectAndConvert(FOREIGN_LABEL, _o);
+        vector<State *> states = _selectAndConvert(FOREIGN_LABEL, pOutput);
         (*it)->setStates(states);
     }
 }
@@ -456,13 +431,13 @@ int AlternativeClassifier::_calculateWordsNum(vector<Language *> *pNatives,
                                               vector<Language *> *pForeigns) {
     int wordsNum = 0;
 
-    for (auto it = _nativeTrainingSet->begin();
-         it != _nativeTrainingSet->end(); ++it) {
+    for (auto it = pNatives->begin();
+         it != pNatives->end(); ++it) {
         wordsNum += (*it)->size();
     }
 
-    for (auto it = _foreignTrainingSet->begin();
-         it != _foreignTrainingSet->end(); ++it) {
+    for (auto it = pForeigns->begin();
+         it != pForeigns->end(); ++it) {
         wordsNum += (*it)->size();
     }
 

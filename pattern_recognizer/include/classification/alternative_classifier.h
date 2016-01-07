@@ -21,7 +21,7 @@ struct Backup {
 
 class AlternativeClassifier {
 public:
-    static unsigned int FOREIGN_LABEL;
+    static int FOREIGN_LABEL;
 
     // Constructor compatible with PSO-based classifier
     AlternativeClassifier(vector<Language *> *nativePatterns,
@@ -35,12 +35,9 @@ public:
     void compute();
 
 private:
-    FRIEND_TEST(AlternativeClassifierTest, Allocate_Labeled_Words_Map);
-
+    FRIEND_TEST(AlternativeClassifierTest, Loaded_Parameters_Check);
     FRIEND_TEST(AlternativeClassifierTest, Allocate_Transition_Table);
-
     FRIEND_TEST(AlternativeClassifierTest, Allocate_Smart_State_Table);
-
     FRIEND_TEST(AlternativeClassifierTest, Compute);
 
     vector<Language *> *_nativeTrainingSet;
@@ -66,10 +63,6 @@ private:
                                   int &wordsNum, int &labelNum);
 
     void _assignWordsToLabel(int label, vector<Word *> *pWords);
-
-    void _printLabeledWords();
-
-    string _wordsToString(vector<Word *> words);
 
     // TT BUSINESS
     void _allocateTransitionTable(int nStates, int nSymbols);
