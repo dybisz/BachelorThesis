@@ -27,9 +27,6 @@ private:
     PSOObject* decodePosition(const PointDouble position) const;
 
 public:
-
-
-public:
     //-----------------------------------------------------------//
     //  CONSTRUCTORS
     //-----------------------------------------------------------//

@@ -7,7 +7,7 @@
 
 
 #include <pso/fitness_updater.h>
-#include <pso/particle_t.h>
+#include <pso/entities/particle_t.h>
 #include <pso/particle_decoder_t.h>
 
 using namespace pso;

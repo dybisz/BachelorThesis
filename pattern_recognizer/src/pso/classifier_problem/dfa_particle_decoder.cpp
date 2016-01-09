@@ -3,7 +3,7 @@
 //
 
 #include "dfa_particle_decoder.h"
-#include <pso/particle_t.h>
+#include <pso/entities/particle_t.h>
 #include <pso/pso_common.h>
 #include <vector>
 #include <automata/transition/transition_function.h>

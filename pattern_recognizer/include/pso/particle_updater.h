@@ -6,6 +6,7 @@
 #define BACHELOR_THESIS_PARTICLE_UPDATER_H
 
 #include "pso_common.h"
+#include <pso/entities/particle_t.h>
 
 namespace pso {
 
@@ -19,14 +20,22 @@ namespace pso {
 class ParticleUpdater {
 protected:
     //-----------------------------------------------------------//
-    //  PRIVATE FIELDS
+    //  PROTECTED FIELDS
     //-----------------------------------------------------------//
 
     ParticleShPtr_ConstVectorShPtr particles;
 
     //-----------------------------------------------------------//
-    //  PRIVATE METHODS
+    //  PROTECTED METHODS
     //-----------------------------------------------------------//
+
+    /*
+     * Bounds the particle within the solution space by
+     * making sure that particle's position is within
+     * the interval min max and resets the velocity to 0
+     * in the dimension that had to be bound.
+     */
+    void boundParticleWithinSolutionSpace(Particle_T& p);
 
 public:
     //-----------------------------------------------------------//

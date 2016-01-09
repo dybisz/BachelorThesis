@@ -2,7 +2,7 @@
 // Created by jakub on 12/29/15.
 //
 
-#include "particle_t.h"
+#include <pso/entities/particle_t.h>
 
 //-----------------------------------------------------------//
 //  CONSTRUCTORS
@@ -103,4 +103,18 @@ void Particle_T::setPbest(PointDouble pbest) {
 
 void Particle_T::setLbest(PointDouble lbest) {
     this->lbest= lbest;
+}
+
+void Particle_T::setPositionDim(double value, int dim){
+    if(dim < 0 || dim >= this->position.size()){
+        throw std::invalid_argument("Particle::setVelocityDimension");
+    }
+    this->position[dim] = value;
+}
+
+void Particle_T::setVelocityDim(double value, int dim){
+    if(dim < 0 || dim >= this->velocity.size()){
+        throw std::invalid_argument("Particle::setVelocityDimension");
+    }
+    this->velocity[dim] = value;
 }

@@ -6,7 +6,7 @@
 
 #include <gtest/gtest.h>
 
-#include <pso/particle_t.h>
+#include <pso/entities/particle_t.h>
 #include <pso/classifier_problem/dfa_particle_decoder.h>
 #include <automata/dfa.h>
 #include <pso_t_test.h>

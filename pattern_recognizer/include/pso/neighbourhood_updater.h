@@ -6,6 +6,7 @@
 #define BACHELOR_THESIS_NEIGHBOURHOOD_UPDATER_H
 
 #include "pso_common.h"
+
 namespace pso {
 /*
  * Pure Abstract class used to provide interface for Neighbourhood update.

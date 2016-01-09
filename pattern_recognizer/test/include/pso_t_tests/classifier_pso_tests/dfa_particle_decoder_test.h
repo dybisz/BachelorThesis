@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_DFA_PARTICLE_DECODER_TEST_H
 #define BACHELOR_THESIS_DFA_PARTICLE_DECODER_TEST_H
 
-#include <pso/particle_t.h>
+#include <pso/entities/particle_t.h>
 
 
 #endif //BACHELOR_THESIS_DFA_PARTICLE_DECODER_TEST_H

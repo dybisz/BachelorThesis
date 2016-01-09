@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_FITNESS_UPDATER_H
 #define BACHELOR_THESIS_FITNESS_UPDATER_H
 
-#include <particle_t.h>
+#include <pso/entities/particle_t.h>
 #include "pso_common.h"
 
 namespace pso {

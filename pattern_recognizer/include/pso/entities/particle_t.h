@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_PARTICLE_T_H
 #define BACHELOR_THESIS_PARTICLE_T_H
 
-#include "pso_common.h"
+#include <pso/pso_common.h>
 
 namespace pso {
 class Particle_T {
@@ -85,6 +85,16 @@ public:
 
     void setPbest(PointDouble pbest);
     void setLbest(PointDouble lbest);
+
+    /*
+     * Set value of dim-th dimension of position vector
+     */
+    void setPositionDim(double value, int dim);
+
+    /*
+     * Set value of dim-th dimension of velocity vector
+     */
+    void setVelocityDim(double value, int dim);
 };
 }
 
