@@ -5,22 +5,56 @@
 #ifndef BACHELOR_THESIS_PARTICLE_UPDATER_H
 #define BACHELOR_THESIS_PARTICLE_UPDATER_H
 
+#include "pso_common.h"
+#include <pso/entities/particle_t.h>
 
+namespace pso {
+
+/*
+ * Pure Abstract class used to provide interface for Particle Update.
+ *
+ * Has ownership over:
+ *      - Raw pointer to ParticleDecoder
+ *      - Shared pointer to ParticleShPtr_ConstVectorShPtr
+ */
 class ParticleUpdater {
-private:
+protected:
     //-----------------------------------------------------------//
-    //  PRIVATE FIELDS
+    //  PROTECTED FIELDS
     //-----------------------------------------------------------//
 
+    ParticleShPtr_ConstVectorShPtr particles;
+
     //-----------------------------------------------------------//
-    //  PRIVATE METHODS
+    //  PROTECTED METHODS
     //-----------------------------------------------------------//
+
+    /*
+     * Bounds the particle within the solution space by
+     * making sure that particle's position is within
+     * the interval min max and resets the velocity to 0
+     * in the dimension that had to be bound.
+     */
+    void boundParticleWithinSolutionSpace(Particle_T& p);
 
 public:
-    ParticleUpdater();
+    //-----------------------------------------------------------//
+    //  CONSTRUCTORS
+    //-----------------------------------------------------------//
 
-    ~ParticleUpdater();
+    ParticleUpdater(ParticleShPtr_ConstVectorShPtr particles);
+
+    virtual ~ParticleUpdater();
+
+    //-----------------------------------------------------------//
+    //  PUBLIC METHODS
+    //-----------------------------------------------------------//
+
+    /*
+     * Updates the particles from startIndex to finishIndex
+     */
+    virtual void update(int startIndex, int finishIndex) = 0;
 };
-
+}
 
 #endif //BACHELOR_THESIS_PARTICLE_UPDATER_H

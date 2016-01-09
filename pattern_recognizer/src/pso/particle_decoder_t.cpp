@@ -3,3 +3,15 @@
 //
 
 #include "particle_decoder_t.h"
+
+//-----------------------------------------------------------//
+//  CONSTRUCTOR
+//-----------------------------------------------------------//
+
+pso::ParticleDecoder_T::ParticleDecoder_T() {
+
+}
+
+pso::ParticleDecoder_T::~ParticleDecoder_T() {
+
+}

@@ -73,6 +73,33 @@ namespace math
         return mean;
     }
 
+    Point<double> boundPoint(const Point<double>& srcPoint,
+                             const Point<double>& destPoint,
+                             double maxDelta){
+        Point<double> boundedPoint(srcPoint.size());
+
+        for(int i = 0;i < destPoint.size(); i++){
+            int sign;
+
+            sign = 1;
+            double delta = (srcPoint[i] - destPoint[i]);
+            if (delta < 0)
+                sign = -1;
+
+            delta *= delta;
+            delta = sqrt(delta);
+
+            if(delta > maxDelta){
+                boundedPoint[i] = srcPoint[i] - (maxDelta * sign);
+            }
+            else{
+                boundedPoint[i] = destPoint[i];
+            }
+        }
+
+        return boundedPoint;
+    }
+
     //-----------------------------------------------------------//
     //  TEMPLATE DECLARATIONS
     //-----------------------------------------------------------//

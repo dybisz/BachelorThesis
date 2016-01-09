@@ -29,6 +29,14 @@ namespace math
      */
     template<typename T>
     Point<T> centerOfMass(const std::vector<Point<T>>* points);
+
+    /*
+     * Bounds destPoint such that the delta of each dimension
+     * between srcPoint and destPoint is no bigger than maxDelta.
+     */
+    Point<double> boundPoint(const Point<double>& srcPoint,
+                             const Point<double>& destPoint,
+                             double maxDelta);
 }
 
 #endif //AC_GEOMETRY_H

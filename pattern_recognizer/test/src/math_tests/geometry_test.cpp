@@ -65,3 +65,47 @@ TEST(MathGeometry, CenterOfMass_Points_Mean) {
     EXPECT_EQ(expectedPoint, actualPoint);
 }
 
+
+TEST(MathGeometry, BoundedPoint_MaxDeltaSmallerThanChange_ProperPoint) {
+    const int size = 3;
+
+    double maxDelta = 4.0f;
+
+    double dataSrc[size] = {2.0f, 2.0f, 2.0f};
+    double dataDest[size] = {3.0f, 8.8f, 10.0f};
+
+    double dataExpected[size] = {3.0f, 6.0f, 6.0f};
+
+    Point<double> srcPoint(dataSrc, size);
+    Point<double> destPoint(dataDest, size);
+
+    Point<double> expectedPoint(dataExpected, size);
+
+    Point<double> actualPoint = math::boundPoint(srcPoint,
+                                                 destPoint,
+                                                 maxDelta);
+
+    EXPECT_EQ(expectedPoint, actualPoint);
+}
+
+TEST(MathGeometry, BoundedPoint_MaxDeltaBiggerThanChange_ProperPoint) {
+    const int size = 3;
+
+    double maxDelta = 10.0f;
+
+    double dataSrc[size] = {2.0f, 2.0f, 2.0f};
+    double dataDest[size] = {3.0f, 8.8f, 10.0f};
+
+    double dataExpected[size] = {3.0f, 8.8f, 10.0f};
+
+    Point<double> srcPoint(dataSrc, size);
+    Point<double> destPoint(dataDest, size);
+
+    Point<double> expectedPoint(dataExpected, size);
+
+    Point<double> actualPoint = math::boundPoint(srcPoint,
+                                                 destPoint,
+                                                 maxDelta);
+
+    EXPECT_EQ(expectedPoint, actualPoint);
+}
