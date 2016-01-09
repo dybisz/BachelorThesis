@@ -13,7 +13,7 @@ import java.io.IOException;
 public class ConfigurationPanel extends Application {
 
 
-    private static final String WINDOW_FXML_URL = "window.fxml";
+    private static final String WINDOW_FXML_URL = "window2.fxml";
     private static final String WINDOW_NAME = "Pattern Recognizer Configuration";
 
     @Override
