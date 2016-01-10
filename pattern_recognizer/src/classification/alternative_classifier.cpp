@@ -125,6 +125,7 @@ void AlternativeClassifier::compute() {
     _swapForeignStates(_foreignTestingSet, _o);
 
     /* ----- Quality Results ----- */
+    _logDFA();
     _calculateAndPrintQualityResults(_dfa);
     delete _dfa;
 }
@@ -361,6 +362,9 @@ double AlternativeClassifier::_fitness() {
 }
 
 void AlternativeClassifier::_printInfoAndPlot(double iterTime, int iter) {
+    // Save current time
+    _totalCompuationalTime += iterTime;
+
     // Clean previous entry
     for (int i = 0; i < numberOfLinesToReset; i++) {
         cout << "\e[A\r";
@@ -399,6 +403,8 @@ void AlternativeClassifier::_printInfoAndPlot(double iterTime, int iter) {
     numberOfLinesToReset++;
     LOG_CALC("Fitness        ", _currentFitness);
     numberOfLinesToReset++;
+    LOG_CALC("Estimated Time ", _estimateTime(iter));
+    numberOfLinesToReset++;
 
     /* ----- MOUNTAINS PICTURE ----- */
     cout << endl;
@@ -427,6 +433,12 @@ void AlternativeClassifier::_printInfoAndPlot(double iterTime, int iter) {
     numberOfLinesToReset += 10;
 }
 
+double AlternativeClassifier::_estimateTime(double iter){
+    double averangeIterTime = _totalCompuationalTime / iter;
+    double iterationsLeft = global_settings::MAX_ITER - iter;
+    return iterationsLeft * averangeIterTime;
+}
+
 int AlternativeClassifier::_calculateWordsNum(vector<Language *> *pNatives,
                                               vector<Language *> *pForeigns) {
     int wordsNum = 0;
@@ -442,4 +454,17 @@ int AlternativeClassifier::_calculateWordsNum(vector<Language *> *pNatives,
     }
 
     return wordsNum;
+}
+
+void AlternativeClassifier::_logDFA() {
+    std::string states = "DFA: \n";
+    states += "[FOREIGN_LABEL]: " + to_string(_labelNum-1) + "\n";
+    states += "[STATES]: ";
+    for(int i = 0; i < _statesNum;i++) {
+        states += to_string(_o[i]);
+        states += " ";
+    }
+
+
+    logger::log(states);
 }
