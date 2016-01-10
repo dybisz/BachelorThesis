@@ -61,7 +61,7 @@ private:
     void _allocateLabeledWordsMap(vector<Language *> *pNativePatterns,
                                   vector<Language *> *pForeignPatterns,
                                   int &wordsNum, int &labelNum);
-
+    double _totalCompuationalTime = 0;
     void _assignWordsToLabel(int label, vector<Word *> *pWords);
 
     // TT BUSINESS
@@ -102,6 +102,10 @@ private:
 
     int _calculateWordsNum(vector<Language *> *pNatives,
                            vector<Language *> *pForeigns);
+
+    double _estimateTime(double iter);
+
+    void _logDFA();
 };
 
 #endif //BACHELOR_THESIS_ALTERNATIVE_CLASIFIER_H

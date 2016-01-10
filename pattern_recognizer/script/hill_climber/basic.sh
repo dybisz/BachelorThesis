@@ -13,7 +13,7 @@ mkdir -p ${MAIN_DIR_LOG}
 ##### SETTINGS #####
 ####################
 
-MAX_ITER=22500
+MAX_ITER=100
 STATES=150
 ALPHABET=12
 CLASSES=3
