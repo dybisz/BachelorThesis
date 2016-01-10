@@ -7,6 +7,7 @@
 
 #include "pso_common.h"
 #include <threading/thread_pool.h>
+#include <entities/particle_t.h>
 
 namespace pso{
     extern void* startParallelPSO(void* argv);
@@ -47,6 +48,8 @@ private:
 
     ParticleShPtr bestParticle;
 
+    Particle_T globalBestParticle;
+
     int maxIterations;
 
     unsigned int threadCount;
@@ -58,6 +61,8 @@ private:
     //-----------------------------------------------------------//
 
     void compute();
+
+    void resetParticles();
 
     /*
      * Checks whether the PSO should converge

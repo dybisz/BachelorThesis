@@ -111,7 +111,7 @@ void Language::setStates(std::vector<State *> states) {
 
 bool Language::isCorrespondingState(State *state) const {
     for (unsigned int i = 0; i < _states.size(); i++) {
-        if ((*_states[i]) == *state)
+        if (*(_states[i]) == *state)
             return true;
     }
     return false;

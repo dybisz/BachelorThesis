@@ -9,14 +9,14 @@ mkdir -p ${MAIN_DIR_LOG}
 # Settings
 #############################################################
 
-MAX_ITER=1000
-SWARM_SIZE=250
+MAX_ITER=2500
+SWARM_SIZE=150
 
 STATES_PER_NATIVE=5
-STATES_PER_FOREIGN=25
+STATES_PER_FOREIGN=50
 ALPHABET_SIZE=40
 
-MAX_VEL=10.5
+MAX_VEL=5.5
 
 #NATIVE_XLS_PATH="./res/digits_short/natives_small.xls"
 #FOREIGN_XLS_PATH="./res/digits_short/foreign_small.xls"

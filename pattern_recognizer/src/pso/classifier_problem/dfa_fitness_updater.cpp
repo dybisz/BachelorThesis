@@ -45,7 +45,14 @@ void DFAFitnessUpdater::update(int startIndex, int finishIndex) {
 //-----------------------------------------------------------//
 //  PROTECTED METHODS
 //-----------------------------------------------------------//
-
+/*
+for(int i = 0; i < nativeSize; i++) {
+Language *languageNative = (*nativeLanguages)[i];
+if(languageNative->isCorrespondingState(s)){
+correctCount++;
+break;
+}
+}*/
 double DFAFitnessUpdater::fitnessValue(const Particle_T& p){
     int nativeSize = nativeLanguages->size();
     int foreignSize = foreignLanguages->size();
@@ -61,6 +68,7 @@ double DFAFitnessUpdater::fitnessValue(const Particle_T& p){
             Word* word = language->getWord(w);
             unsigned int stateInt = dfa->compute(*word);
             State* s = new State(stateInt);
+
             if(language->isCorrespondingState(s)){
                 correctCount++;
             }
@@ -88,6 +96,6 @@ double DFAFitnessUpdater::fitnessValue(const Particle_T& p){
     delete dfa;
 
     double val = correctCount / countAll;
-
+    //std::cout << val << std::endl;
     return val;
 }
