@@ -136,14 +136,15 @@ void PSO_T::printInfo(double fitnessUpdateTime,
 
     numberOfLinesToReset = 0;
     string prefix = "          ";
+    string prefixIcons = "               ";
     cout << endl;
     numberOfLinesToReset++;
 
-    cout << prefix << " ___  ___  ___" << endl;
-    cout << prefix << "| _ \\/ __|/ _ \\" << endl;
-    cout << prefix << "|  _/\\__ \\ (_) |" << endl;
-    cout << prefix << "|_|  |___/\\___/" << endl;
-    cout << prefix << "                    " << endl;
+    cout << prefixIcons << " ___  ___  ___" << endl;
+    cout << prefixIcons << "| _ \\/ __|/ _ \\" << endl;
+    cout << prefixIcons << "|  _/\\__ \\ (_) |" << endl;
+    cout << prefixIcons << "|_|  |___/\\___/" << endl;
+    cout << prefixIcons << "                    " << endl;
     numberOfLinesToReset += 5;
 
     cout << prefix << "[Iteration          ]: "
@@ -198,31 +199,31 @@ void PSO_T::printInfo(double fitnessUpdateTime,
         << bestFitness << endl;
     numberOfLinesToReset++;
 
-    cout << "" << endl;
-    cout << "            .-. " << endl;
-    cout << "           o   \\     .-." << endl;
-    cout << "               .----.\'   \\" << endl;
-    cout << "              .\'o)  / `.   o" << endl;
-    cout << "             /         |" << endl;
-    cout << "             \\_)       /-." << endl;
-    cout << "              \'_.`    \\  \\" << endl;
-    cout << "               `.      |  \\" << endl;
-    cout << "               |       \\ |" << endl;
-    cout << "           .--/`-.     / /" << endl;
-    cout << "          .'.-/`-. `.  .\\|" << endl;
-    cout << "         /.' /`._ `-    '-." << endl;
-    cout << "    ____(|__/`-..`-   '-._ \\" << endl;
-    cout << "   |`------.'-._ `      ||\\ \\" << endl;
-    cout << "   || #   /-.   `   /   || \\|" << endl;
-    cout << "   ||   #/   `--'  /  /_::_|)__" << endl;
-    cout << "   `|____|-._.-`  /  ||`--------`" << endl;
-    cout << "         \\-.___.` | / || #      |" << endl;
-    cout << "          \\       | | ||   #  # |" << endl;
-    cout << "          /`.___.'\\ |.`|________|" << endl;
-    cout << "          | /`.__.'|'.`" << endl;
-    cout << "        __/ \\    __/ \\" << endl;
-    cout << "       /__.-.)  /__.-.)" << endl;
-    cout << endl << endl;
+    cout << prefix << "" << endl;
+    cout << prefix << "            .-. " << endl;
+    cout << prefix << "           o   \\     .-." << endl;
+    cout << prefix << "               .----.\'   \\" << endl;
+    cout << prefix << "              .\'o)  / `.   o" << endl;
+    cout << prefix << "             /         |" << endl;
+    cout << prefix << "             \\_)       /-." << endl;
+    cout << prefix << "              \'_.`    \\  \\" << endl;
+    cout << prefix << "               `.      |  \\" << endl;
+    cout << prefix << "               |       \\ |" << endl;
+    cout << prefix << "           .--/`-.     / /" << endl;
+    cout << prefix << "          .'.-/`-. `.  .\\|" << endl;
+    cout << prefix << "         /.' /`._ `-    '-." << endl;
+    cout << prefix << "    ____(|__/`-..`-   '-._ \\" << endl;
+    cout << prefix << "   |`------.'-._ `      ||\\ \\" << endl;
+    cout << prefix << "   || #   /-.   `   /   || \\|" << endl;
+    cout << prefix << "   ||   #/   `--'  /  /_::_|)__" << endl;
+    cout << prefix << "   `|____|-._.-`  /  ||`--------`" << endl;
+    cout << prefix << "         \\-.___.` | / || #      |" << endl;
+    cout << prefix << "          \\       | | ||   #  # |" << endl;
+    cout << prefix << "          /`.___.'\\ |.`|________|" << endl;
+    cout << prefix << "          | /`.__.'|'.`" << endl;
+    cout << prefix << "        __/ \\    __/ \\" << endl;
+    cout << prefix << "       /__.-.)  /__.-.)" << endl;
+    cout << prefix << endl << endl;
     numberOfLinesToReset += 26;
 }
 
