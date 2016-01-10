@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.collections.*?>
+
+<fx:root prefHeight="218.0" prefWidth="640.0" type="javafx.scene.layout.AnchorPane" xmlns="http://javafx.com/javafx/8.0.66" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="212.0" prefWidth="640.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Particle Swarm Optimization Settings">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="5.0" top="5.0" />
+               </VBox.margin>
+            </Label>
+            <HBox>
+               <children>
+                  <VBox maxWidth="1.7976931348623157E308" prefHeight="189.0" prefWidth="320.0">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label fx:id="populationFactorLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Population Factor" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="populationFactor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="fitnessToleranceLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Fitness Tolerance" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="fitnessTolerance" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="swarmSizeLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Swarm Size" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="swarmSize" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="defaultThreadsLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Default # Threads" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="defaultThreads" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="trueThreadsLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="True # Threads" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="trueThreads" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="kmToleranceLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="K-Means Tolerance" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="kmTolerance" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="kmIterationsLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="K-Means Iterations" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="kmIterations" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="kmStartingKLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Starting K" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="kmStartingK" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="kmEndingKLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Ending K" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="kmEndingK" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="1.7976931348623157E308" prefWidth="320.0">
+                     <children>
+                        <HBox>
+                           <children>
+                              <Label fx:id="nativeStatesLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Native States:" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="nativeStates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="foreignStatesLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Foreign States:" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="foreignStates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="startingStatesLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Starting # States" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="startingStates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="endingStatesLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Ending # States" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="endingStates" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="learningFactorLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Learning Factor" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="learningFactor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="particleVelocityLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Particle Velocity" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="particleVelocity" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="speedFactorLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Speed Factor" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="speedFactor" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox>
+                           <children>
+                              <Label fx:id="maxVelocityLabel" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefWidth="150.0" text="Max Velocity" HBox.hgrow="ALWAYS" />
+                              <TextField fx:id="maxVelocity" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="9.0" />
+                                 </font></TextField>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets left="2.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</fx:root>
