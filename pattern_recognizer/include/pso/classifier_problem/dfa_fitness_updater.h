@@ -36,9 +36,9 @@ public:
     //-----------------------------------------------------------//
 
     DFAFitnessUpdater(ParticleShPtr_ConstVectorShPtr particles,
-                                const ParticleDecoder_T* particleDecoder,
-                                std::vector<Language*>* nativeLanguages,
-                                std::vector<Language*>* foreignLanguages);
+                        const ParticleDecoder_T* particleDecoder,
+                        std::vector<Language*>* nativeLanguages,
+                        std::vector<Language*>* foreignLanguages);
 
     virtual ~DFAFitnessUpdater();
 

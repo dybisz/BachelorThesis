@@ -35,6 +35,10 @@ void DFAFitnessUpdater::update(int startIndex, int finishIndex) {
         Particle_T& p = *((*particles)[i]);
         double fitnessValue = this->fitnessValue(p);
         p.setFitness(fitnessValue);
+
+        if(fitnessValue > p.getBestFitness()){
+            p.saveCurrentConfigAsBest();
+        }
     }
 }
 
@@ -84,5 +88,6 @@ double DFAFitnessUpdater::fitnessValue(const Particle_T& p){
     delete dfa;
 
     double val = correctCount / countAll;
+
     return val;
 }

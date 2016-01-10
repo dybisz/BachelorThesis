@@ -42,6 +42,5 @@ void ParticleUpdater::boundParticleWithinSolutionSpace(Particle_T &p) {
             p.setPositionDim(intervalMax, i);
             p.setVelocityDim(0, i);
         }
-
     }
 }

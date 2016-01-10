@@ -4,7 +4,7 @@
 
 #include "particle_updater_spherical.h"
 #include <utils.h>
-#include <hyper_sphere.h>
+#include <math/hyper_sphere.h>
 #include <geometry.h>
 
 using namespace pso;
@@ -13,7 +13,7 @@ using namespace pso;
 //  CONSTRUCTORS
 //-----------------------------------------------------------//
 
-ParticleUpdaterNaive::ParticleUpdaterNaive(
+ParticleUpdaterSpherical::ParticleUpdaterSpherical(
                         ParticleShPtr_ConstVectorShPtr particles,
                         double learningFactor, double velocityWeight,
                         int timesToAttemptPointGenerationWithinHyperSphere) :
@@ -25,7 +25,7 @@ ParticleUpdaterNaive::ParticleUpdaterNaive(
             = timesToAttemptPointGenerationWithinHyperSphere;
 }
 
-ParticleUpdaterNaive::~ParticleUpdaterNaive(){
+ParticleUpdaterSpherical::~ParticleUpdaterSpherical(){
 
 }
 
@@ -33,11 +33,13 @@ ParticleUpdaterNaive::~ParticleUpdaterNaive(){
 //  PUBLIC METHODS
 //-----------------------------------------------------------//
 
-void ParticleUpdaterNaive::update(int startIndex, int finishIndex){
+void ParticleUpdaterSpherical::update(int startIndex, int finishIndex){
+
     for(int i = startIndex; i <= finishIndex; i++){
         ParticleShPtr particle = (*particles)[i];
 
         this->updateParticle(*particle);
+
     }
 }
 
@@ -45,7 +47,7 @@ void ParticleUpdaterNaive::update(int startIndex, int finishIndex){
 //  PRIVATE METHODS
 //-----------------------------------------------------------//
 
-void ParticleUpdaterNaive::updateParticle(Particle_T& particle){
+void ParticleUpdaterSpherical::updateParticle(Particle_T& particle){
     const Point<double>& currentPosition = particle.getPosition();
     const Point<double>& pbest = particle.getPbest();
     const Point<double>& lbest = particle.getLbest();
@@ -62,18 +64,31 @@ void ParticleUpdaterNaive::updateParticle(Particle_T& particle){
                     ((*randomPointWithin) - currentPosition);
     Point<double> newPosition = weightedVelocity + (*randomPointWithin);
 
+/*
+    std::cout << std::endl;
+    std::cout << std::endl;
+
+    std::cout << currentVelocity << std::endl;
+    std::cout << newVelocity << std::endl;
+
+    std::cout << std::endl;
+
+    std::cout << currentPosition << std::endl;
+*/
     newPosition = math::boundPoint(currentPosition,
                                    newPosition,
                                    particle.getMaxVelocity());
+
     particle.setVelocity(newVelocity);
     particle.setPosition(newPosition);
+
     this->boundParticleWithinSolutionSpace(particle);
 
     delete hyperSphere;
     delete randomPointWithin;
 }
 
-HyperSphere* ParticleUpdaterNaive::generateHyperSphere(
+HyperSphere*ParticleUpdaterSpherical::generateHyperSphere(
                                     const Point<double>& currentPosition,
                                     const Point<double>& pbest,
                                     const Point<double>& lbest){
@@ -112,7 +127,7 @@ HyperSphere* ParticleUpdaterNaive::generateHyperSphere(
     return hyperSphere;
 }
 
-Point<double>* ParticleUpdaterNaive::centerOfGravity(
+Point<double>*ParticleUpdaterSpherical::centerOfGravity(
                                 const Point<double>& currentPosition,
                                 const Point<double>& pbest,
                                 const Point<double>& lbest,
@@ -129,7 +144,7 @@ Point<double>* ParticleUpdaterNaive::centerOfGravity(
     return centerOfGravity;
 }
 
-Point<double>* ParticleUpdaterNaive::generateRandomPointWithinHyperSphere(
+Point<double>*ParticleUpdaterSpherical::generateRandomPointWithinHyperSphere(
         const HyperSphere& hyperSphere, int numberOfTries){
     Point<double>* randomPointWithin;
 

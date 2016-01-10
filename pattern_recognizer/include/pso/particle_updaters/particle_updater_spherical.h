@@ -24,7 +24,7 @@ namespace pso {
  *      - Distance between G and current position.
  *
  */
-class ParticleUpdaterNaive : public ParticleUpdater {
+class ParticleUpdaterSpherical : public ParticleUpdater {
 private:
 
     //-----------------------------------------------------------//
@@ -85,11 +85,11 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    ParticleUpdaterNaive(ParticleShPtr_ConstVectorShPtr particles,
+    ParticleUpdaterSpherical(ParticleShPtr_ConstVectorShPtr particles,
                             double learningFactor, double velocityWeight,
                             int timesToAttemptPointGenerationWithinHyperSphere);
 
-    virtual ~ParticleUpdaterNaive();
+    virtual ~ParticleUpdaterSpherical();
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS

@@ -344,3 +344,17 @@ TEST(MathPoint, Sum_Equal_Operator_Equal) {
     actualPoint += summer;
     EXPECT_EQ(expectedPoint, actualPoint);
 }
+
+TEST(MathPoint, PointDouble_NoValueSpecified_ExpectedZeroInEachDimension) {
+    int summer = 3;
+    const int size = 5;
+
+    Point<double> point(size);
+
+    double expectedValue = 0;
+
+    for(int i = 0 ; i < size; i++){
+        double actualValue = point[i];
+        EXPECT_EQ(expectedValue, actualValue);
+    }
+}

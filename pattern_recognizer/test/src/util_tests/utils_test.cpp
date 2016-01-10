@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <thread>
+#include <utils.h>
 #include "string_utils.h"
 
 //-----------------------------------------------------------//

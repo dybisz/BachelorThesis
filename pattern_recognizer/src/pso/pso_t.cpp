@@ -8,25 +8,31 @@
 #include <pso/fitness_updater.h>
 #include <pso/neighbourhood_updater.h>
 #include <pso/particle_updater.h>
+#include <pso/particle_decoder_t.h>
+#include <clock.h>
+
+
+using namespace std;
 
 namespace pso {
+
 //-----------------------------------------------------------//
 //  CONSTRUCTORS
 //-----------------------------------------------------------//
 
-PSO_T::PSO_T(int maxIterations,
+PSO_T::PSO_T(ParticleShPtr_ConstVectorShPtr particles,
                 FitnessUpdater* fitnessUpdater,
                 NeighbourhoodUpdater* neighUpdater,
                 ParticleUpdater* particleUpdater,
-                unsigned int threadCount,
-                unsigned int swarmSize):
-        maxIterations(maxIterations),
+                int maxIterations,
+                unsigned int threadCount):
         fitnessUpdater(fitnessUpdater),
         neighUpdater(neighUpdater),
         particleUpdater(particleUpdater),
-        threadCount(threadCount),
-        swarmSize(swarmSize){
-
+        maxIterations(maxIterations),
+        threadCount(threadCount){
+    this->particles = particles;
+    swarmSize = particles->size();
 }
 
 PSO_T::~PSO_T() {
@@ -82,6 +88,17 @@ const Particle_T* PSO_T::getBestParticle() const{
     return bestParticle.get();
 }
 
+const PSOObject* PSO_T::getBestPSOObject() const {
+    PSOObject* psoObject =
+            this->getDecoder().decodePBest((*this->getBestParticle()));
+
+    return psoObject;
+}
+
+const ParticleDecoder_T& PSO_T::getDecoder() const {
+    return this->fitnessUpdater->getParticleDecoder();
+}
+
 //-----------------------------------------------------------//
 //  PRIVATE METHODS
 //-----------------------------------------------------------//
@@ -89,6 +106,129 @@ const Particle_T* PSO_T::getBestParticle() const{
 bool PSO_T::hasConvereged(const int* iter){
     return (*iter >= this->maxIterations);
 }
+
+bool PSO_T::updateBestParticle(){
+    bool hasChanged = false;
+
+    bestParticle = (*particles)[0];
+    for(unsigned int i = 0; i < swarmSize; i++){
+        if((*particles)[i]->getBestFitness() > bestParticle->getBestFitness()){
+            bestParticle = (*particles)[i];
+            hasChanged = true;
+        }
+    }
+
+    return hasChanged;
+}
+
+void PSO_T::printInfo(double fitnessUpdateTime,
+                      double neighbourhoodUpdateTime,
+                      double particleUpdateTime,
+                      double overallTime,
+                      double averageTimeOfIteration,
+                      double ETA,
+                      int currentIteration,
+                      int& numberOfLinesToReset) {
+    // Clean previous entry
+    for (int i = 0; i < numberOfLinesToReset; i++) {
+        cout << "\e[A\r";
+    }
+
+    numberOfLinesToReset = 0;
+    string prefix = "          ";
+    cout << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << " ___  ___  ___" << endl;
+    cout << prefix << "| _ \\/ __|/ _ \\" << endl;
+    cout << prefix << "|  _/\\__ \\ (_) |" << endl;
+    cout << prefix << "|_|  |___/\\___/" << endl;
+    cout << prefix << "                    " << endl;
+    numberOfLinesToReset += 5;
+
+    cout << prefix << "[Iteration          ]: "
+        << currentIteration << "/" << this->maxIterations << endl;
+    numberOfLinesToReset++;
+
+    cout << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[Swarm Size         ]: "
+    << this->swarmSize << endl;
+    numberOfLinesToReset++;
+
+    cout << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[Overall Time       ]: "
+    << overallTime << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[ETA Time           ]: "
+    << ETA << endl;
+    numberOfLinesToReset++;
+
+    cout << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[Avg Iter Time      ]: "
+    << averageTimeOfIteration << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[Last Fitness Time  ]: "
+        << fitnessUpdateTime << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[Last Neigh Time    ]: "
+    << neighbourhoodUpdateTime << endl;
+    numberOfLinesToReset++;
+
+    cout << prefix << "[Last Particle Time ]: "
+    << particleUpdateTime << endl;
+    numberOfLinesToReset++;
+
+    cout << endl;
+    numberOfLinesToReset++;
+
+    double bestFitness = 0;
+    if (bestParticle != NULL) {
+        bestFitness = bestParticle->getBestFitness();
+    }
+    cout << prefix << "[Best Fitness       ]: "
+        << bestFitness << endl;
+    numberOfLinesToReset++;
+
+    cout << "" << endl;
+    cout << "            .-. " << endl;
+    cout << "           o   \\     .-." << endl;
+    cout << "               .----.\'   \\" << endl;
+    cout << "              .\'o)  / `.   o" << endl;
+    cout << "             /         |" << endl;
+    cout << "             \\_)       /-." << endl;
+    cout << "              \'_.`    \\  \\" << endl;
+    cout << "               `.      |  \\" << endl;
+    cout << "               |       \\ |" << endl;
+    cout << "           .--/`-.     / /" << endl;
+    cout << "          .'.-/`-. `.  .\\|" << endl;
+    cout << "         /.' /`._ `-    '-." << endl;
+    cout << "    ____(|__/`-..`-   '-._ \\" << endl;
+    cout << "   |`------.'-._ `      ||\\ \\" << endl;
+    cout << "   || #   /-.   `   /   || \\|" << endl;
+    cout << "   ||   #/   `--'  /  /_::_|)__" << endl;
+    cout << "   `|____|-._.-`  /  ||`--------`" << endl;
+    cout << "         \\-.___.` | / || #      |" << endl;
+    cout << "          \\       | | ||   #  # |" << endl;
+    cout << "          /`.___.'\\ |.`|________|" << endl;
+    cout << "          | /`.__.'|'.`" << endl;
+    cout << "        __/ \\    __/ \\" << endl;
+    cout << "       /__.-.)  /__.-.)" << endl;
+    cout << endl << endl;
+    numberOfLinesToReset += 26;
+}
+
+//-----------------------------------------------------------//
+//  FRIEND METHODS
+//-----------------------------------------------------------//
 
 void *startParallelPSO(void *argv) {
     thread_argv *targs = (thread_argv *) argv;
@@ -115,23 +255,61 @@ void *startParallelPSO(void *argv) {
 
     threadPool->synchronizeAll();
 
+    int numberOfLines = 0;
+
+    double fitnessTime = 0;
+    double neighTime = 0;
+    double updateTime = 0;
+    double overallTime = 0;
+    double averageTimeOfIteration = 0;
+    double ETA = 0;
+
     while (*do_work) {
-
-        threadPool->synchronizeAll();
-
-        pso->fitnessUpdater->update(targs->startIndex,
-                                    targs->finishIndex);
-
-        threadPool->synchronizeAll();
-
         if (tid == threading::T_BOSS) {
-            pso->neighUpdater->update();
+            overallTime += fitnessTime + neighTime + updateTime;
+            if(*curr_iter != 0)
+                averageTimeOfIteration = overallTime / *curr_iter;
+            ETA = averageTimeOfIteration * (pso->maxIterations - (*curr_iter));
+            pso->printInfo(fitnessTime,
+                           neighTime,
+                           updateTime,
+                           overallTime,
+                           averageTimeOfIteration,
+                           ETA,
+                           *curr_iter, numberOfLines);
         }
 
         threadPool->synchronizeAll();
 
+        if(tid == threading::T_BOSS)
+            clk::startClock();
+        pso->fitnessUpdater->update(targs->startIndex,
+                                    targs->finishIndex);
+        if(tid == threading::T_BOSS)
+            fitnessTime = clk::stopClock();
+
+        threadPool->synchronizeAll();
+        bool doNeighUpdate = true;
+        if(tid == threading::T_BOSS)
+            doNeighUpdate = pso->updateBestParticle();
+
+        threadPool->synchronizeAll();
+
+        if (tid == threading::T_BOSS) {
+            clk::startClock();
+            if(doNeighUpdate)
+                pso->neighUpdater->update();
+            neighTime = clk::stopClock();
+        }
+
+        threadPool->synchronizeAll();
+
+        if(tid == threading::T_BOSS)
+            clk::startClock();
         pso->particleUpdater->update(targs->startIndex,
                                      targs->finishIndex);
+        if(tid == threading::T_BOSS)
+            updateTime = clk::stopClock();
 
         threadPool->synchronizeAll();
 
