@@ -13,13 +13,14 @@ import java.io.IOException;
 public class ConfigurationPanel extends Application {
 
 
-    private static final String WINDOW_FXML_URL = "window2.fxml";
+    private static final String WINDOW_FXML_URL = "window3.fxml";
     private static final String WINDOW_NAME = "Pattern Recognizer Configuration";
 
     @Override
     public void start(Stage primaryStage) {
         Parent root = loadFxmlAsParent(WINDOW_FXML_URL);
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("main_style.css");
         primaryStage.setResizable(false);
         primaryStage.setTitle(WINDOW_NAME);
         primaryStage.setScene(scene);

@@ -4,7 +4,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -20,6 +19,7 @@ import java.io.IOException;
  * Created by dybisz on 07.01.16.
  */
 public class ComputationGeneralControls {
+
     /* ---------------------------------------- */
     /* ----- FXML OBJECTS - CORE SETTINGS ----- */
     /* ---------------------------------------- */
@@ -29,8 +29,6 @@ public class ComputationGeneralControls {
     AnchorPane methodSpecificConfig;
     @FXML
     ComboBox<String> methodChoice;
-    @FXML
-    TextFlow infoArea;
     @FXML
     TextField executablePath;
     @FXML
@@ -43,27 +41,35 @@ public class ComputationGeneralControls {
     TextField maxIterations;
     @FXML
     TextField alphabetSize;
+    @FXML
+    Label executableLabel;
+    @FXML
+    Label logsDirLabel;
+    @FXML
+    Label nativeSrcLabel;
+    @FXML
+    Label foreignSrcLabel;
+    @FXML
+    Label maxIterationsLabel;
+    @FXML
+    Label alphabetSizeLabel;
 
     @FXML
     void initialize() {
         initMethodChoiceBox();
-        setTestingValues();
+        setTooltips();
+        setDefaultValues();
     }
 
     /* ------------------- */
     /* ----- METHODS ----- */
     /* ------------------- */
 
-    private final String METHOD_1 = "PSO";
+    private final String METHOD_1 = "Particle Swarm Optimization";
     private final String METHOD_2 = "Hill Climber";
-
-    /* ------------------------------- */
-    /* ----- METHODS INFORMATION ----- */
-    /* ------------------------------- */
     private final String METHOD_1_ID = "0";
     private final String METHOD_2_ID = "1";
-    private String METHOD_1_INFO = "__INFO__ to be done ...";
-    private String METHOD_2_INFO = " Straigh forward method .. bla bla bla ...";
+    private AnchorPane CURRENT_METHOD = null;
 
     /* ----------------- */
     /* ----- FLAGS ----- */
@@ -74,6 +80,39 @@ public class ComputationGeneralControls {
     private final String FLAG_FOREIGN_SRC = " --cl-foreign-path ";
     private final String FLAG_MAX_ITERATIONS = " --max-iter ";
     private final String FLAG_ALPHABET_SIZE = " --cl-alph-size ";
+
+    /* ---------------------------- */
+    /* ------ PARAMETERS INFO ----- */
+    /* ---------------------------- */
+    private final String INFO_EXECUTABLE = "Path to executable file computing" +
+            " DFA";
+    private final String INFO_LOGS_DIR = "Main directory to store all logs";
+    private final String INFO_NATIVE_SRC = "Path to xls file with Native" +
+            " objects";
+    private final String INFO_FOREIGN_SRC = "Path to xls file with " +
+            "Foreign objects";
+    private final String INFO_MAX_ITERATIONS = "Maximum iterations of " +
+            "classifier";
+    private final String INFO_ALPHABET_SIZE = "Size of the alphabet - defines" +
+            " precision";
+
+    /* ------------------------------------- */
+    /* ----- PARAMETERS DEFAULT VALUES ----- */
+    /* ------------------------------------- */
+    private final String DEFAULT_EXECUTABLE_PATH =
+            "/home/dybisz/Repositories/BachelorThesis" +
+                    "/pattern_recognizer/bin/pattern_recognizer";
+    private final String DEFAULT_LOGS_DIR_PATH =
+            "/home/dybisz/Repositories/BachelorThesis" +
+            "/pattern_recognizer/logs";
+    private final String DEFAULT_NATIVE_SRC_PATH =
+            "/home/dybisz/Repositories/BachelorThesis"+
+            "/pattern_recognizer/res/digits/Natives.xls";
+    private final String DEFAULT_FOREIGN_SRC_PATH =
+            "/home/dybisz/Repositories/BachelorThesis"+
+            "/pattern_recognizer/res/digits/Foreign_90ccl.xls";
+    private final String DEFAULT_MAX_ITERATIONS_VALUE = "1000";
+    private final String DEFAULT_ALPHABET_SIZE_VALUE = "12";
 
     /* ---------------------- */
     /* ----- EXPERIMENT ----- */
@@ -174,21 +213,30 @@ public class ComputationGeneralControls {
     }
 
     /**
+     * Most of User Interface Objects has tooltip assign to them. This method
+     * initializes tooltips and perform connection with elements.
+     */
+    private void setTooltips() {
+        executablePath.setTooltip(Tooltips.generateTooltip(INFO_EXECUTABLE));
+        logsDirPath.setTooltip(Tooltips.generateTooltip(INFO_LOGS_DIR));
+        nativeSrcPath.setTooltip(Tooltips.generateTooltip(INFO_NATIVE_SRC));
+        foreignSrcPath.setTooltip(Tooltips.generateTooltip(INFO_FOREIGN_SRC));
+        maxIterations.setTooltip(Tooltips.generateTooltip(INFO_MAX_ITERATIONS));
+        alphabetSize.setTooltip(Tooltips.generateTooltip(INFO_ALPHABET_SIZE));
+    }
+
+    /**
      * Sets default values for global settings.
      * IMPORTANT: This method will be switch to set default values coherent
      * with deployed application.
      */
-    private void setTestingValues() {
-        executablePath.setText("/home/dybisz/Repositories/BachelorThesis" +
-                "/pattern_recognizer/bin/pattern_recognizer");
-        logsDirPath.setText("/home/dybisz/Repositories/BachelorThesis" +
-                "/pattern_recognizer/logs");
-        nativeSrcPath.setText("/home/dybisz/Repositories/BachelorThesis" +
-                "/pattern_recognizer/res/digits/Natives.xls");
-        foreignSrcPath.setText("/home/dybisz/Repositories/BachelorThesis" +
-                "/pattern_recognizer/res/digits/Foreign_90ccl.xls");
-        maxIterations.setText("1000");
-        alphabetSize.setText("12");
+    private void setDefaultValues() {
+        executablePath.setText(DEFAULT_EXECUTABLE_PATH);
+        logsDirPath.setText(DEFAULT_LOGS_DIR_PATH);
+        nativeSrcPath.setText(DEFAULT_NATIVE_SRC_PATH);
+        foreignSrcPath.setText(DEFAULT_FOREIGN_SRC_PATH);
+        maxIterations.setText(DEFAULT_MAX_ITERATIONS_VALUE);
+        alphabetSize.setText(DEFAULT_ALPHABET_SIZE_VALUE);
     }
 
     private boolean computationsConditionsMet() {
@@ -230,22 +278,46 @@ public class ComputationGeneralControls {
         }
     }
 
+    /**
+     * Loads User Interface objects related to PSO settings into
+     * {@link #methodSpecificConfig} panel. Previous content, if exists,
+     * is removed. App's window is adapted accordingly.
+     */
     private void loadPSOInterface() {
-        // LOAD INFO
-        Label psoInfo = new Label(METHOD_1_INFO);
-        psoInfo.setWrapText(true);
-        infoArea.getChildren().removeAll(infoArea.getChildren());
-        infoArea.getChildren().addAll(psoInfo);
+        resetWindow();
 
-        // Refresh content
-        methodSpecificConfig.getChildren().removeAll(methodSpecificConfig.getChildren());
-        methodSpecificConfig.getChildren().add(new ComputationPSOControls());
+        CURRENT_METHOD = new ComputationPSOControls();
+        getStage().setHeight(getStage().getHeight() + CURRENT_METHOD.getPrefHeight());
+        Animations.fadeIn(methodSpecificConfig.opacityProperty(), 600);
+        methodSpecificConfig.getChildren().add(CURRENT_METHOD);
     }
 
+    /**
+     * Loads User Interface objects related to Hill Climber settings into
+     * {@link #methodSpecificConfig} panel. Previous content, if exists,
+     * is removed. App's window is adapted accordingly.
+     */
     private void loadHillClimberInterface() {
-        // Refresh content
-        methodSpecificConfig.getChildren().removeAll(methodSpecificConfig.getChildren());
-        methodSpecificConfig.getChildren().add(new ComputationHillClimberControls());
+        resetWindow();
+
+        CURRENT_METHOD = new ComputationHillClimberControls();
+        getStage().setHeight(getStage().getHeight() + CURRENT_METHOD.getPrefHeight());
+        Animations.fadeIn(methodSpecificConfig.opacityProperty(), 600);
+        methodSpecificConfig.getChildren().add(CURRENT_METHOD);
+    }
+
+    /**
+     * Purge content of {@link #methodSpecificConfig} and shrink app's window
+     * to the original size.
+     */
+    private void resetWindow() {
+        /* ----- Reset Window's Height ----- */
+        double height = methodSpecificConfig.getHeight();
+        getStage().setHeight(getStage().getHeight() - height);
+
+        /* ----- Delete Current Method Settings ----- */
+        methodSpecificConfig.getChildren().removeAll(methodSpecificConfig
+                .getChildren());
     }
 
     /**
@@ -324,10 +396,23 @@ public class ComputationGeneralControls {
      * It is formatted in a way that can be run as a terminal command.
      */
     private String buildComputationsCommand() {
-        return executablePath.getText() + " " +
+        String generalSettingsCmd = executablePath.getText() + " " +
                 FLAG_EXPERIMENT + EXPERIMENT_ID + " " + getLogsDirAsFlag() +
                 getNativesSrcAsFlag() + getForeignSrcAsFlag() +
                 getMaxIterationsAsFlag() + getAlphabetSizesAsFlag();
+        String methodFlags = acquireMethodFlags();
+
+        return generalSettingsCmd + " " + methodFlags;
+    }
+
+    /**
+     * Recovers flags from appropriate method.
+     *
+     * @return Formatted String object with flags corresponding to currently
+     * set method of computations.
+     */
+    private String acquireMethodFlags() {
+        return ((ComputationsControls) CURRENT_METHOD).collectFlags();
     }
 
     /**
@@ -371,4 +456,6 @@ public class ComputationGeneralControls {
     private String getAlphabetSizesAsFlag() {
         return FLAG_ALPHABET_SIZE + alphabetSize.getText();
     }
+
+
 }
