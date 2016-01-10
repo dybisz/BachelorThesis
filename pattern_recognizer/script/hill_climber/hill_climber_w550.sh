@@ -105,7 +105,7 @@ for (( p=0; p<${ENTRY_COUNT_FOREIGN_XLS_PATH}; p++ )) do
     for (( states=0; states<${ENTRY_COUNT_STATES}; states++ )) do
             for ((a=0; a <= ${ENTRY_COUNT_ALPHABET}; a++)) do
 
-                run_optimizer ${STATES[$states]} ${ALPHABET[$a]} ${FOREIGN_XLS_PATH[$p]} "${DIR_LOG}_${DIR_SUB_NAME[fpath]}_w${WORDS}_a${a}_s${states}"
+                run_optimizer ${STATES[$states]} ${ALPHABET[$a]} ${FOREIGN_XLS_PATH[$p]} "${DIR_LOG}_${DIR_SUB_NAME[fpath]}_w${WORDS}_a${ALPHATBET[$a]}_s${STATES[$s]}"
 
             done
     done
