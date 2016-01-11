@@ -3,6 +3,7 @@ bin
 *~
 *.o
 *.a
+*.so
 googletest/make/sample1_unittest
 
 doc/business_analysis/*.aux

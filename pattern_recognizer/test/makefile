@@ -50,7 +50,7 @@ MAKE_EXTERNAL = $(GTEST_ROOT)/make/
 
 # Paths and names of libraries to link with
 LIBS += $(GTEST_ROOT)/make/gtest_main.a -lpthread \
-         ../lib/excel_format/ExcelFormat.so
+         ../lib/excel_format/libexcel_format.so
 
 
 #----------------- INCLUDES -------------------#

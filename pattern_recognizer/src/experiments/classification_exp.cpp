@@ -64,8 +64,8 @@ namespace experiments {
         logger::log("Loading Patterns");
 
         // Note: if xlsLoader goes out of scope, patterns are deleted.
-        XlsLoader nativeXLSLoader(global_settings::NATIVE_XLS_PATH);
-        XlsLoader foreignXLSLoader(global_settings::FOREIGN_XLS_PATH);
+        XlsLoader nativeXLSLoader(global_settings::NATIVE_XLS_PATH, 1, 900);
+        XlsLoader foreignXLSLoader(global_settings::FOREIGN_XLS_PATH, 1, 900);
 
         std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
         std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
