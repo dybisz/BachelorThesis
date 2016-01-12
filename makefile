@@ -17,4 +17,4 @@ GUI:
 	cd gui && ant -DJAVA_HOME="${JAVA_JDK}" && cp ConfigurationPanel.jar ../bin
 
 PATTERN_RECOGNIZER:
-	cd pattern_recognizer && make && cp ./bin/pattern_recognizer ../bin
+	cd pattern_recognizer && make && cp ./bin/fac ../bin
