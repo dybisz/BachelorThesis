@@ -3,7 +3,7 @@
 #---------------------------- COMMENTS ------------------------------#
 #--------------------------------------------------------------------#
 ######################################################################
-
+SHELL := /bin/bash
 #---------------------------------------------------------------------
 #
 # Structure.
@@ -92,9 +92,37 @@
 # 11.01.2016 - Made new clean functionality for libraries
 # 11.01.2016 - Automatic header include and library
 #				paths for all libraries in lib/
-#
+# 11.01.2016 - Added Config section.
 #---------------------------------------------------------------------
 
+######################################################################
+#--------------------------------0-----------------------------------#
+#--------------------------- RULE NAMES -----------------------------#
+#--------------------------------------------------------------------#
+######################################################################
+
+INSTALL_RULE_NAME=install
+
+######################################################################
+#--------------------------------0-----------------------------------#
+#-------------------------- CONFIG SECTION --------------------------#
+#--------------------------------------------------------------------#
+######################################################################
+
+PATH_TO_CONFIGS = .
+
+include ${PATH_TO_CONFIGS}/app_config.sh
+
+APP_NAME := $(CFG_APP_NAME)
+APP_CODE_NAME := $(CFG_APP_CODE_NAME)
+
+# MAKECMDGOALS is set to name of target rule
+# Select INSTALL_ROOT_PATH
+ifeq ($(MAKECMDGOALS),$(INSTALL_RULE_NAME))
+	INSTALL_ROOT_PATH := $(CFG_INSTALL_PATH)
+else
+	INSTALL_ROOT_PATH := $(shell pwd)
+endif
 
 ######################################################################
 #--------------------------------1-----------------------------------#
@@ -105,10 +133,6 @@
 ######################################################################
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
-
-#--------------- APPLICATION NAME -------------#
-
-APP_NAME = pattern_recognizer
 
 #---------------- UNIT TESTS ------------------#
 
@@ -136,6 +160,8 @@ SRC = src
 BIN = bin
 # Unit tests
 TST = test
+# All scripts to run all
+SCRIPT=scripts
 
 #------------- EXTERNAL MAKEFILES -------------#
 
@@ -181,15 +207,9 @@ INFO_FILLER = "  <<  "
 CC = g++
 NVCC = nvcc
 
-#----------------- INSTALL DIRECTORY -----------------#
-
-INSTALL_PATH_ARG=${INSTALL_PATH}
-# If INSTALL_PATH was not set. set it to default
-ifeq (${INSTALL_PATH_ARG},)
-	INSTALL_PATH_ARG=./install
-endif 
-
 #----------------- PROJECT MODULES -----------------#
+
+CURRENT_PATH = ${shell pwd}
 
 # List of all subdirectories in source directory
 SRC_MODULES = $(shell find ${SRC} -type d 2>/dev/null)
@@ -201,16 +221,22 @@ INC_MODULES =  $(addprefix -I , $(shell find ${INC} -type d 2>/dev/null))
 # Variable representing comma ','
 COMMA = ,
 
-# Adds each module in lib folder to search for libs
-LIB_MODULES = $(shell find ${LIB} -type d 2>/dev/null)
-LIB_LINK_MODULES = $(addprefix -L , $(LIB_MODULES))
-
 # The flags needed for ld path
 LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
+
+# Adds each module in lib folder to search for libs
+LIB_MODULES = $(shell find ${INSTALL_ROOT_PATH}/${LIB} -type d 2>/dev/null)
+
+# Add link flag to all LIB_MODULES
+LIB_LINK_MODULES = $(addprefix -L , $(LIB_MODULES))
+
 # The paths to all shared libraries
 LIB_LINK_RPATH = $(addprefix ${LD_SHARED_PATH_FLAG} , $(LIB_MODULES))
+
 # All Lib modules to include
 LIB_INC_MODULES = $(addprefix -I , $(shell find ${LIB} -type d 2>/dev/null))
+
+${LIB_MODULES_FUN}
 
 LIBS += ${LIB_LINK_MODULES}
 INCLUDES += ${INC_MODULES} ${LIB_INC_MODULES}
@@ -250,21 +276,17 @@ VPATH = ${SRC_MODULES}
 ################################################
 
 # All
-all: rel utest
+debug: init_scripts link utest
 
 # Release rule
-rel: $(MAKE_EXTERNAL) info_prefix init ${APP_NAME} info_suffix
+link: $(MAKE_EXTERNAL) info_prefix init_project ${APP_CODE_NAME} info_suffix
 
-# Debug rule
-debug:
-	@echo 'Debug TODO'
+# Install rule
+${INSTALL_RULE_NAME}: clean_bin install_init link install_post
 
 # Unit Test rule, assumes that $(TST) has a makefile inside
 utest:
 	@$(MAKE) -C $(TST)
-
-# Install rule	
-install: rel init_install
 
 ################################################
 #--------------- LINKER / COMPILER ------------#
@@ -273,8 +295,8 @@ install: rel init_install
 #------------------ LINKER --------------------#
 
 # Used in debug
-${APP_NAME}: ${OBJECTS}
-	@$(CC) -o ${BIN}/${APP_NAME} $^ $(L_FLAGS)
+${APP_CODE_NAME}: ${OBJECTS}
+	@$(CC) -o ${BIN}/${APP_CODE_NAME} $^ $(L_FLAGS)
 
 #----------------- COMPILERS ------------------#
 
@@ -307,22 +329,70 @@ $(MAKE_EXTERNAL):
 	@echo 'Compiling External $@ Finished'
 	@echo
 
+######################################################################
+#------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
+######################################################################
+
 ################################################
-#---------------- UTILITY RULES ---------------#
+#-------------- INITIALIZATION ----------------#
 ################################################
+
+init_all: init_project init_scripts
 
 # Creates all the directories of the project
-init:
+init_project:
 	@mkdir -p ${OBJ} ${BIN} ${SRC} ${LIB} ${INC} ${TST}
 
-clean:
+# Initializes scripts folder and a config script for exec path
+init_scripts:
+	@mkdir -p ${SCRIPT}
+	@touch ./${SCRIPT}/config.cfg
+	@chmod 755 ./${SCRIPT}/config.cfg
+	$(shell > ./${SCRIPT}/config.cfg)
+	$(shell echo "APP_ROOT_PATH="${INSTALL_ROOT_PATH} >> ./${SCRIPT}/config.cfg)
+	$(shell echo "APP_EXEC_PATH="${INSTALL_ROOT_PATH}/${BIN}/${APP_CODE_NAME} \
+	>> ./${SCRIPT}/config.cfg)
+
+################################################
+#---------------- INSTALLATION ----------------#
+################################################
+
+# TODO Seperate installation function
+install_init:
+	@echo "Install to directory: " ${INSTALL_ROOT_PATH}
+	@mkdir -p ${INSTALL_ROOT_PATH}
+	@echo "Installing resources"
+	@cp -r ./res ${INSTALL_ROOT_PATH}
+	@echo "Installing scripts"
+	@cp -r ./${SCRIPT} ${INSTALL_ROOT_PATH}
+	$(shell > ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
+	$(shell echo "APP_ROOT_PATH="${INSTALL_ROOT_PATH} \
+	>> ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
+	$(shell echo "APP_EXEC_PATH="${INSTALL_ROOT_PATH}/${APP_CODE_NAME} \
+	>> ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
+	@echo "Installing Libraries"
+	@cp -r ${LIB} ${INSTALL_ROOT_PATH}
+
+# This rule should be used to define the installation process.
+# Add all requirement for your installation here.
+# This will be ran after compilation.
+install_post:
+	@cp ${BIN}/${APP_CODE_NAME} ${INSTALL_ROOT_PATH}
+
+################################################
+#------------------- CLEAN --------------------#
+################################################
+
+clean: clean_obj clean_bin
+	@$(MAKE) -C $(TST) clean
+
+clean_obj:
 	$(eval OBJECTS=$(shell find ${OBJ} -name *.o))
 	$(eval DEPS=$(shell find ${OBJ} -name *.d))
 	$(eval TMPS=$(shell find ${OBJ} -name *.~))
-	$(eval BINS=$(shell find ${BIN} -type f))
 	@echo ${INFO_SEPARATOR}
 	@echo
-	@echo ${INFO_FILLER} "Cleaning: ${OBJ}/ ${BIN}/"
+	@echo ${INFO_FILLER} "Cleaning: ${OBJ}/"
 	@echo
 	@echo ${INFO_SEPARATOR}
 	@echo ${INFO_SEPARATOR}
@@ -338,6 +408,20 @@ clean:
 	@$(foreach var, ${DEPS}, echo ${var};)
 	@echo
 	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@$(foreach var, ${OBJECTS}, rm -f ${var})
+	@$(foreach var, ${DEPS}, rm -f ${var})
+	@$(foreach var, ${TMPS}, rm -f ${var})
+	@rm -rf ${OBJ}
+
+clean_bin:
+	$(eval BINS=$(shell find ${BIN} -type f))
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo ${INFO_FILLER} "Cleaning: ${BIN}/"
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
 	@echo
 	@echo "Binary Files:"
 	@echo
@@ -345,11 +429,8 @@ clean:
 	@echo
 	@echo ${INFO_SEPARATOR}
 	@echo ${INFO_SEPARATOR}
-	@$(foreach var, ${OBJECTS}, rm -f ${var})
-	@$(foreach var, ${DEPS}, rm -f ${var})
-	@$(foreach var, ${TMPS}, rm -f ${var})
 	@$(foreach var, ${BINS}, rm -f ${var})
-	@$(MAKE) -C $(TST) clean
+	@rm -rf ${BIN}
 
 # Cleans all compiled objects within the lib directory
 clean_lib:
@@ -396,23 +477,6 @@ clean_lib:
 clean_all: clean clean_lib
 
 .PHONY: $(SUBDIRS) clean
-
-######################################################################
-#------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
-######################################################################
-
-# This rule should be used to define the installation process.
-# Add all requiremnt for your installation here.
-# This will be ran after compilation.
-init_install:
-	@mkdir -p ${INSTALL_PATH_ARG}
-	@echo "Installing resources"
-	@cp -r ./res ${INSTALL_PATH_ARG}
-	@echo "Installing scripts"
-	@cp -r ./script ${INSTALL_PATH_ARG}
-	@echo "Installing Libraries"
-	@cp -r ${LIB} ${INSTALL_PATH_ARG}
-	@cp ${BIN}/${APP_NAME} ${INSTALL_PATH_ARG}
 
 ################################################
 #----------------- PRINT RULES-----------------#
