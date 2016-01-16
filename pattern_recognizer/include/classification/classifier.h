@@ -5,6 +5,7 @@
 #ifndef BACHELOR_THESIS_CLASSIFICATOR_H
 #define BACHELOR_THESIS_CLASSIFICATOR_H
 
+#include <pso/pso_t.h>
 #include "dfa.h"
 #include "language.h"
 
@@ -20,12 +21,16 @@
  *      - Foreign language and their state correspondence.
  *          Foreign language might represent some specific pattern but
  *          all foreign languages are considered to be one big language.
+ *
+ * Classifier takes ownership over PSO
  */
 class Classifier {
 private:
     //-----------------------------------------------------------//
     //  PRIVATE FIELDS
     //-----------------------------------------------------------//
+
+    pso::PSO_T* pso;
 
     // Set of native languages
     std::vector<Language*>* _nativeLanguages;
@@ -83,6 +88,13 @@ public:
                 unsigned int alphabetSize,
                 double testingSetRatio);
 
+    Classifier(pso::PSO_T* pso,
+               std::vector<Language*>* nativeLanguages,
+               std::vector<Language*>* foreignLanguages,
+               unsigned int statesPerNative,
+               unsigned int statesPerForeign,
+               unsigned int alphabetSize,
+               double testingSetRatio);
     /*
      * Takes care of deleting the memory of all languages
      */
@@ -93,6 +105,8 @@ public:
     //-----------------------------------------------------------//
 
     void runClassification();
+
+    void runClassificationNew();
 
     unsigned int getStateCount() const;
 

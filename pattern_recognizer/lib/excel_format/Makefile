@@ -10,7 +10,7 @@ HEADERS = $(shell echo *.h)
 OBJECTS=$(SOURCES:.cpp=.o)
 
 
-TARGET=ExcelFormat.so
+TARGET=libexcel_format.so
 
 all: $(TARGET)
 

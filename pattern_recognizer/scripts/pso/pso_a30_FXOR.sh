@@ -1,7 +1,7 @@
 #!/bin/bash
 
-MAIN_DIR_LOG="./logs/DIGITS"
-DIR_LOG="DIGITS"
+MAIN_DIR_LOG="./logs/PSO/F_XOR/ALPHABET_30"
+DIR_LOG="PSO"
 
 mkdir -p ${MAIN_DIR_LOG}
 
@@ -9,31 +9,28 @@ mkdir -p ${MAIN_DIR_LOG}
 # Settings
 #############################################################
 
-MAX_ITER=1000
+MAX_ITER=2000
 SWARM_SIZE=150
-MAX_VEL=0.6
+MAX_VEL=15.5
 
-NATIVE_CLASS_COUNT=10
+ALPHABET_SIZE_START=30
+ALPHABET_SIZE_END=30
 
 STATES_PER_NATIVE_START=1
 STATES_PER_NATIVE_END=5
 
-STATES_PER_FOREIGN_MULTIPLIER_LAST_INDEX=2
+STATES_PER_FOREIGN_MULTIPLIER_COUNT=3
 STATES_PER_FOREIGN_MULTIPLIERS[0]=1
-STATES_PER_FOREIGN_MULTIPLIERS[1]=1,5
-STATES_PER_FOREIGN_MULTIPLIERS[2]=2
+STATES_PER_FOREIGN_MULTIPLIERS[1]=2
+STATES_PER_FOREIGN_MULTIPLIERS[2]=4
 
-ALPHABET_SIZE_START=4
-ALPHABET_SIZE_END=4
-
+NATIVE_CLASS_COUNT=10
 NATIVE_XLS_PATH="./res/digits/Natives.xls"
 
-FOREIGN_XLS_LAST_INDEX=1
-FOREIGN_XLS_PATH[0]="./res/digits/Foreigns_90cl.xls"
-FOREIGN_XLS_PATH[1]="./res/digits/Foreign_90ccl.xls"
+FOREIGN_XLS_PATH_COUNT=1
+FOREIGN_XLS_PATH[0]="./res/digits/Foreigns_02_005_XOR.xls"
 
-DIR_SUB_NAME[0]='Foreigns_90cl'
-DIR_SUB_NAME[1]='Foreign_90ccl'
+DIR_SUB_NAME[0]='F_XOR'
 
 
 #############################################################
@@ -42,10 +39,11 @@ DIR_SUB_NAME[1]='Foreign_90ccl'
 
 
 #
-# $1: Tool Path
-# $2: Start State
-# $3: End States
-# $4: Log dir
+# $1: States Per Native
+# $2: States Per Foreign
+# $3: Alphabet size
+# $4: Foreign path
+# $5: DIR path
 #
 run_optimizer(){
     echo "---------------------"
@@ -72,12 +70,17 @@ run_optimizer(){
 
 }
 
-for (( p=0; p<=${FOREIGN_XLS_LAST_INDEX}; p++ )) do
+for (( p=0; p<${FOREIGN_XLS_PATH_COUNT}; p++ )) do
     for (( n=${STATES_PER_NATIVE_START}; n<=${STATES_PER_NATIVE_END}; n++ )) do
-        for (( f=0; f<=${STATES_PER_FOREIGN_MULTIPLIER_LAST_INDEX}; f++ )) do
+        for (( f=0; f<${STATES_PER_FOREIGN_MULTIPLIER_COUNT}; f++ )) do
             for ((a=${ALPHABET_SIZE_START}; a <= ${ALPHABET_SIZE_END}; a++)) do
-                STATES_PER_FOREIGN=$(($n*${STATES_PER_FOREIGN_MULTIPLIERS[$f]}*${NATIVE_CLASS_COUNT}))
-                run_optimizer $n ${STATES_PER_FOREIGN} $a ${FOREIGN_XLS_PATH[$p]} "${DIR_LOG}_${DIR_SUB_NAME[fpath]}_n${n}_f${STATES_PER_FOREIGN}_a${a}"
+				
+				NATIVE_STATES_TOTAL_COUNT=$(($n*${NATIVE_CLASS_COUNT}))
+                STATES_PER_FOREIGN=$((${NATIVE_STATES_TOTAL_COUNT}*${STATES_PER_FOREIGN_MULTIPLIERS[$f]}))
+                
+                run_optimizer $n ${STATES_PER_FOREIGN} $a ${FOREIGN_XLS_PATH[$p]} \
+					"${DIR_LOG}__${DIR_SUB_NAME[p]}__NSTATES_${NATIVE_STATES_TOTAL_COUNT}__FSTATES_${STATES_PER_FOREIGN}__ALPHABET_${a}"
+                
             done
         done
     done

@@ -3,7 +3,7 @@
 #---------------------------- COMMENTS ------------------------------#
 #--------------------------------------------------------------------#
 ######################################################################
-
+SHELL := /bin/bash
 #---------------------------------------------------------------------
 #
 # Structure.
@@ -89,9 +89,40 @@
 #		#include "math/clustering/kmeans.h"
 #
 # 15.12.2015 - Added install rule
-#
+# 11.01.2016 - Made new clean functionality for libraries
+# 11.01.2016 - Automatic header include and library
+#				paths for all libraries in lib/
+# 11.01.2016 - Added Config section.
 #---------------------------------------------------------------------
 
+######################################################################
+#--------------------------------0-----------------------------------#
+#--------------------------- RULE NAMES -----------------------------#
+#--------------------------------------------------------------------#
+######################################################################
+
+INSTALL_RULE_NAME=install
+
+######################################################################
+#--------------------------------0-----------------------------------#
+#-------------------------- CONFIG SECTION --------------------------#
+#--------------------------------------------------------------------#
+######################################################################
+
+PATH_TO_CONFIGS = .
+
+include ${PATH_TO_CONFIGS}/app_config.sh
+
+APP_NAME := $(CFG_APP_NAME)
+APP_CODE_NAME := $(CFG_APP_CODE_NAME)
+
+# MAKECMDGOALS is set to name of target rule
+# Select INSTALL_ROOT_PATH
+ifeq ($(MAKECMDGOALS),$(INSTALL_RULE_NAME))
+	INSTALL_ROOT_PATH := $(CFG_INSTALL_PATH)
+else
+	INSTALL_ROOT_PATH := $(shell pwd)
+endif
 
 ######################################################################
 #--------------------------------1-----------------------------------#
@@ -107,14 +138,6 @@
 
 # Path to root of googletest project
 GTEST_ROOT = '../googletest'
-
-#--------------- APPLICATION NAME -------------#
-
-APP_NAME = pattern_recognizer
-
-#--------------- EXTERNAL APPS ----------------#
-
-GRAPHVIZ_ROOT = '../graphviz'
 
 #--------------- FILE EXTENSIONS --------------#
 
@@ -137,33 +160,27 @@ SRC = src
 BIN = bin
 # Unit tests
 TST = test
+# All scripts to run all
+SCRIPT=scripts
 
 #------------- EXTERNAL MAKEFILES -------------#
 
 # Paths to the Makefiles to be ran before this Makefile.
-# Default target will be executed. (TODO verify this)
+# Default target will be executed.
 # Can be used to compile your static libraries before linking.
 # Surrounded the path with '...' and separate different paths
 # with a space.
-MAKE_EXTERNAL = './lib/excel_format/'
+MAKE_EXTERNAL = './${LIB}/excel_format/'
 
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -lpthread ./lib/excel_format/ExcelFormat.so
-# -L /opt/cuda/lib64 \
-#		-L /usr/local/cuda/lib64 \
-#		-lGL -lglut -lGLEW -lcudart -lcuda \
-
+LIBS += -lpthread -lexcel_format
 
 #----------------- INCLUDES -------------------#
 
 # Paths to all Includes
-INCLUDES += -I /usr/local/cuda/include\
-            -I $(GTEST_ROOT)/include \
-            -I /opt/cuda/include \
-            -I ${GRAPHVIZ_ROOT}/include \
-            -I ./lib/excel_format/
+INCLUDES += -I $(GTEST_ROOT)/include
 
 #------------------- FLAGS --------------------#
 
@@ -185,26 +202,50 @@ INFO_FILLER = "  <<  "
 #------------------ STATIC SUBSECTION - DO NOT MODIFY ---------------#
 ######################################################################
 
-#----------------- INSTALL DIRECTORY -----------------#
-
-INSTALL_PATH_ARG=${INSTALL_PATH}
-# If INSTALL_PATH was not set. set it to default
-ifeq (${INSTALL_PATH_ARG},)
-	INSTALL_PATH_ARG=./install
-endif 
-
-# Adds each modules in include separately.
-INC_MODULES =  $(addprefix -I , $(shell find ${INC} -type d 2>/dev/null))
-
-LIBS += -L ${LIB}
-INCLUDES += ${INC_MODULES}
+#----------------- COMPILERS -----------------#
 
 CC = g++
 NVCC = nvcc
 
-L_FLAGS += ${LIBS}
+#----------------- PROJECT MODULES -----------------#
+
+CURRENT_PATH = ${shell pwd}
+
+# List of all subdirectories in source directory
+SRC_MODULES = $(shell find ${SRC} -type d 2>/dev/null)
+# Adds each modules in include separately.
+INC_MODULES =  $(addprefix -I , $(shell find ${INC} -type d 2>/dev/null))
+
+#----------------- LIBRARIES MODULES -----------------#
+
+# Variable representing comma ','
+COMMA = ,
+
+# The flags needed for ld path
+LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
+
+# Adds each module in lib folder to search for libs
+LIB_MODULES = $(shell find ${INSTALL_ROOT_PATH}/${LIB} -type d 2>/dev/null)
+
+# Add link flag to all LIB_MODULES
+LIB_LINK_MODULES = $(addprefix -L , $(LIB_MODULES))
+
+# The paths to all shared libraries
+LIB_LINK_RPATH = $(addprefix ${LD_SHARED_PATH_FLAG} , $(LIB_MODULES))
+
+# All Lib modules to include
+LIB_INC_MODULES = $(addprefix -I , $(shell find ${LIB} -type d 2>/dev/null))
+
+${LIB_MODULES_FUN}
+
+LIBS += ${LIB_LINK_MODULES}
+INCLUDES += ${INC_MODULES} ${LIB_INC_MODULES}
+
+L_FLAGS += ${LIBS} ${LIB_LINK_RPATH}
 C_FLAGS += ${INCLUDES} -MMD
 NVCC_FLAGS +=
+
+#----------------- SOURCE/OBJECT FILES -----------------#
 
 # All source files
 # [2>/dev/null] is added to supresss the 'file not found'
@@ -213,15 +254,12 @@ NVCC_FLAGS +=
 CPP_SOURCES = $(shell find ${SRC} -name *${CPP_EXT} 2>/dev/null)
 CUDA_SOURCES = $(shell find ${SRC} -name *${CUDA_EXT} 2>/dev/null)
 
-# List of all subdirectories in source directory
-MODULES = $(shell find ${SRC} -type d 2>/dev/null)
-
 # All objects to be compiled
 OBJECTS += $(addprefix ${OBJ}/,$(notdir $(CPP_SOURCES:${CPP_EXT}=.o)))
 OBJECTS += $(addprefix ${OBJ}/,$(notdir $(CUDA_SOURCES:${CUDA_EXT}=.o)))
 
 # Add modules to vpath
-VPATH = ${MODULES}
+VPATH = ${SRC_MODULES}
 
 ######################################################################
 #---------------------------------2----------------------------------#
@@ -238,21 +276,17 @@ VPATH = ${MODULES}
 ################################################
 
 # All
-all: rel utest
+debug: init_scripts link utest
 
 # Release rule
-rel: $(MAKE_EXTERNAL) info_prefix init ${APP_NAME} info_suffix
+link: $(MAKE_EXTERNAL) info_prefix init_project ${APP_CODE_NAME} info_suffix
 
-# Debug rule
-debug:
-	@echo 'Debug TODO'
+# Install rule
+${INSTALL_RULE_NAME}: clean_bin install_init link install_post
 
 # Unit Test rule, assumes that $(TST) has a makefile inside
 utest:
 	@$(MAKE) -C $(TST)
-
-# Install rule	
-install: $(MAKE_EXTERNAL) info_prefix init ${APP_NAME} info_suffix init_install clean
 
 ################################################
 #--------------- LINKER / COMPILER ------------#
@@ -261,8 +295,8 @@ install: $(MAKE_EXTERNAL) info_prefix init ${APP_NAME} info_suffix init_install 
 #------------------ LINKER --------------------#
 
 # Used in debug
-${APP_NAME}: ${OBJECTS}
-	@$(CC) -o ${BIN}/${APP_NAME} $^ $(L_FLAGS)
+${APP_CODE_NAME}: ${OBJECTS}
+	@$(CC) -o ${BIN}/${APP_CODE_NAME} $^ $(L_FLAGS)
 
 #----------------- COMPILERS ------------------#
 
@@ -295,34 +329,154 @@ $(MAKE_EXTERNAL):
 	@echo 'Compiling External $@ Finished'
 	@echo
 
-################################################
-#---------------- UTILITY RULES ---------------#
-################################################
-
-# Creates all the directories of the project
-init:
-	@mkdir -p ${OBJ} ${BIN} ${SRC} ${LIB} ${INC} ${TST}
-
-clean:
-	@$(RM) *.o *~ ${OBJ}/*.o ${OBJ}/*.d ${OBJ}/*~ ${BIN}/*
-	@$(MAKE) -C $(TST) clean
-
-.PHONY: $(SUBDIRS) clean
-
 ######################################################################
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
 
-# This rule should be used to define the installation process.
-# Add all requiremnt for your installation here.
-# This will be ran after compilation.
-init_install:
-	@mkdir -p ${INSTALL_PATH_ARG}
+################################################
+#-------------- INITIALIZATION ----------------#
+################################################
+
+init_all: init_project init_scripts
+
+# Creates all the directories of the project
+init_project:
+	@mkdir -p ${OBJ} ${BIN} ${SRC} ${LIB} ${INC} ${TST}
+
+# Initializes scripts folder and a config script for exec path
+init_scripts:
+	@mkdir -p ${SCRIPT}
+	@touch ./${SCRIPT}/config.cfg
+	@chmod 755 ./${SCRIPT}/config.cfg
+	$(shell > ./${SCRIPT}/config.cfg)
+	$(shell echo "APP_ROOT_PATH="${INSTALL_ROOT_PATH} >> ./${SCRIPT}/config.cfg)
+	$(shell echo "APP_EXEC_PATH="${INSTALL_ROOT_PATH}/${BIN}/${APP_CODE_NAME} \
+	>> ./${SCRIPT}/config.cfg)
+
+################################################
+#---------------- INSTALLATION ----------------#
+################################################
+
+# TODO Seperate installation function
+install_init:
+	@echo "Install to directory: " ${INSTALL_ROOT_PATH}
+	@mkdir -p ${INSTALL_ROOT_PATH}
 	@echo "Installing resources"
-	@cp -r ./res ${INSTALL_PATH_ARG}
+	@cp -r ./res ${INSTALL_ROOT_PATH}
 	@echo "Installing scripts"
-	@cp -r ./script ${INSTALL_PATH_ARG}
-	@cp ${BIN}/${APP_NAME} ${INSTALL_PATH_ARG}
+	@cp -r ./${SCRIPT} ${INSTALL_ROOT_PATH}
+	$(shell > ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
+	$(shell echo "APP_ROOT_PATH="${INSTALL_ROOT_PATH} \
+	>> ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
+	$(shell echo "APP_EXEC_PATH="${INSTALL_ROOT_PATH}/${APP_CODE_NAME} \
+	>> ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
+	@echo "Installing Libraries"
+	@cp -r ${LIB} ${INSTALL_ROOT_PATH}
+
+# This rule should be used to define the installation process.
+# Add all requirement for your installation here.
+# This will be ran after compilation.
+install_post:
+	@cp ${BIN}/${APP_CODE_NAME} ${INSTALL_ROOT_PATH}
+
+################################################
+#------------------- CLEAN --------------------#
+################################################
+
+clean: clean_obj clean_bin
+	@$(MAKE) -C $(TST) clean
+
+clean_obj:
+	$(eval OBJECTS=$(shell find ${OBJ} -name *.o))
+	$(eval DEPS=$(shell find ${OBJ} -name *.d))
+	$(eval TMPS=$(shell find ${OBJ} -name *.~))
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo ${INFO_FILLER} "Cleaning: ${OBJ}/"
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Object files:"
+	@echo
+	@$(foreach var, ${OBJECTS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Dependency files:"
+	@echo
+	@$(foreach var, ${DEPS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@$(foreach var, ${OBJECTS}, rm -f ${var})
+	@$(foreach var, ${DEPS}, rm -f ${var})
+	@$(foreach var, ${TMPS}, rm -f ${var})
+	@rm -rf ${OBJ}
+
+clean_bin:
+	$(eval BINS=$(shell find ${BIN} -type f))
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo ${INFO_FILLER} "Cleaning: ${BIN}/"
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Binary Files:"
+	@echo
+	@$(foreach var, ${BINS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@$(foreach var, ${BINS}, rm -f ${var})
+	@rm -rf ${BIN}
+
+# Cleans all compiled objects within the lib directory
+clean_lib:
+	$(eval OBJS=$(shell find ${LIB} -name *.o))
+	$(eval DEPS=$(shell find ${LIB} -name *.d))
+	$(eval ST_LIBS=$(shell find ${LIB} -name *.a))
+	$(eval SH_LIBS=$(shell find ${LIB} -name *.so))
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo ${INFO_FILLER} "Cleaning: ${LIB}/"
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Object files:"
+	@echo
+	@$(foreach var, ${OBJS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Dependency files:"
+	@echo
+	@$(foreach var, ${DEPS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Static Libraries:"
+	@echo
+	@$(foreach var, ${ST_LIBS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Shared Libraries:"
+	@echo
+	@$(foreach var, ${SH_LIBS}, echo ${var};)
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo ${INFO_SEPARATOR}
+	@$(foreach var, ${OBJS}, rm -f ${var})
+	@$(foreach var, ${DEPS}, rm -f ${var})
+	@$(foreach var, ${ST_LIBS}, rm -f ${var})
+	@$(foreach var, ${SH_LIBS}, rm -f ${var})
+
+clean_all: clean clean_lib
+
+.PHONY: $(SUBDIRS) clean
 
 ################################################
 #----------------- PRINT RULES-----------------#

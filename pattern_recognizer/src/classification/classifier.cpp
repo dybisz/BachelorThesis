@@ -39,6 +39,8 @@ Classifier::Classifier(std::vector<Language *> *nativeLanguages,
     _alphabetSize = alphabetSize;
 
     _calculateAndSetNumberOfStates();
+
+    pso = NULL;
 }
 
 Classifier::Classifier(std::vector<Language*>* nativeLanguages,
@@ -73,6 +75,45 @@ Classifier::Classifier(std::vector<Language*>* nativeLanguages,
     _alphabetSize = alphabetSize;
 
     _calculateAndSetNumberOfStates();
+
+    pso = NULL;
+}
+
+Classifier::Classifier(pso::PSO_T* pso,
+                        std::vector<Language*>* nativeLanguages,
+                       std::vector<Language*>* foreignLanguages,
+                       unsigned int statesPerNative,
+                       unsigned int statesPerForeign,
+                       unsigned int alphabetSize,
+                       double testingSetRatio){
+    this->_nativeLanguages = nativeLanguages;
+    this->_foreignLanguages = foreignLanguages;
+
+    _statesPerNative = statesPerNative;
+    _statesPerForeign = statesPerForeign;
+
+    languages::selectStateCorrespondence(this->_nativeLanguages,
+                                         this->_foreignLanguages,
+                                         this->_statesPerNative,
+                                         this->_statesPerForeign);
+
+    // TODO integers -> states
+    quality::_convertWords(_nativeLanguages);
+    quality::_convertWords(_foreignLanguages);
+
+    this->_nativeTestingSet =
+            set_disassociation::detachWords(testingSetRatio,
+                                            _nativeLanguages);
+    this->_foreignTestingSet =
+            set_disassociation::detachWords(testingSetRatio,
+                                            _foreignLanguages);
+
+
+    _alphabetSize = alphabetSize;
+
+    _calculateAndSetNumberOfStates();
+
+    this->pso = pso;
 }
 
 Classifier::~Classifier() {
@@ -91,6 +132,9 @@ Classifier::~Classifier() {
     delete _nativeLanguages;
     delete _foreignLanguages;
     delete _nativeTestingSet;
+
+    if(pso != NULL)
+        delete pso;
 
 }
 
@@ -133,6 +177,21 @@ void Classifier::runClassification() {
 
     _calculateAndPrintQualityResults(bestDFA);
 };
+
+void Classifier::runClassificationNew() {
+    _printSetInfo(_nativeLanguages, "NATIVE_TRAINING");
+    _printSetInfo(_foreignLanguages, "FOREIGN_TRAINING");
+    _printSetInfo(_nativeTestingSet, "NATIVE_TESTING");
+    _printSetInfo(_foreignTestingSet, "FOREIGN_TESTING");
+    _printStateCorrespondence();
+
+    pso->start();
+
+    const DFA* bestDFA = (DFA*)pso->getBestPSOObject();
+
+    _calculateAndPrintQualityResults(bestDFA);
+};
+
 
 //-----------------------------------------------------------//
 //  PRIVATE METHODS

@@ -7,6 +7,7 @@
 
 #include "pso_common.h"
 #include <threading/thread_pool.h>
+#include <entities/particle_t.h>
 
 namespace pso{
     extern void* startParallelPSO(void* argv);
@@ -39,13 +40,17 @@ private:
     //  PRIVATE FIELDS
     //-----------------------------------------------------------//
 
-    int maxIterations;
+    ParticleShPtr_ConstVectorShPtr particles;
 
     FitnessUpdater* fitnessUpdater;
     NeighbourhoodUpdater* neighUpdater;
     ParticleUpdater* particleUpdater;
 
     ParticleShPtr bestParticle;
+
+    Particle_T globalBestParticle;
+
+    int maxIterations;
 
     unsigned int threadCount;
 
@@ -57,19 +62,39 @@ private:
 
     void compute();
 
+    void resetParticles();
+
+    /*
+     * Checks whether the PSO should converge
+     */
     bool hasConvereged(const int* iter);
+
+    /*
+     * Updates the best particle among all particles.
+     * Returns true if new particle has became best
+     */
+    bool updateBestParticle();
+
+    void printInfo(double fitnessUpdateTime,
+                    double neighbourhoodUpdateTime,
+                    double particleUpdateTime,
+                    double overallTime,
+                    double averageTimeOfIteration,
+                    double ETA,
+                    int currentIteration,
+                    int& numberOfLinesToReset);
 
 public:
     //-----------------------------------------------------------//
     //  CONSTRUCTORS
     //-----------------------------------------------------------//;
 
-    PSO_T(int maxIterations,
-            FitnessUpdater* fitnessUpdater,
-            NeighbourhoodUpdater* neighUpdater,
-            ParticleUpdater* particleUpdater,
-            unsigned int threadCount,
-            unsigned int swarmSize);
+    PSO_T(ParticleShPtr_ConstVectorShPtr particles,
+          FitnessUpdater* fitnessUpdater,
+          NeighbourhoodUpdater* neighUpdater,
+          ParticleUpdater* particleUpdater,
+          int maxIterations,
+          unsigned int threadCount);
 
     ~PSO_T();
 
@@ -86,6 +111,18 @@ public:
      * Returns the best particle found by the computations
      */
     const Particle_T* getBestParticle() const;
+
+    /*
+     * Decodes best particle and returns the PSOObject
+     * representing this particle
+     */
+    const PSOObject* getBestPSOObject() const;
+
+    const ParticleDecoder_T& getDecoder() const;
+
+    //-----------------------------------------------------------//
+    //  FRIEND METHODS
+    //-----------------------------------------------------------//
 
     friend void* startParallelPSO(void* argv);
 };

@@ -14,11 +14,13 @@ Particle_T::Particle_T(double posIntervalMin, double posIntervalMax,
                             double velIntervalMin, double velIntervalMax,
                             double maxVelocity,
                             Point<double> position, Point<double> velocity) :
-                posIntervalMin(posIntervalMin), posIntervalMax(posIntervalMin),
-                velIntervalMin(velIntervalMin), velIntervalMax(velIntervalMin),
+                posIntervalMin(posIntervalMin), posIntervalMax(posIntervalMax),
+                velIntervalMin(velIntervalMin), velIntervalMax(velIntervalMax),
                 maxVelocity(maxVelocity),
                 position(position), velocity(velocity),
                 pbest(position), lbest(position){
+    fitness = 0;
+    bestFitness = 0;
 }
 
 Particle_T::~Particle_T() {
@@ -28,6 +30,12 @@ Particle_T::~Particle_T() {
 //-----------------------------------------------------------//
 //  PUBLIC METHODS
 //-----------------------------------------------------------//
+
+void Particle_T::saveCurrentConfigAsBest(){
+    this->bestFitness = this->fitness;
+    this->pbest = this->position;
+}
+
 
 //-----------------------------------------------------------//
 //  GETTERS

@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
         case 0:
             // Prints all settings to the console
             global_settings::printPSOSettings();
-            experiments::runPSOBasedClassification();
+            experiments::runPSOBasedClassification2();
             break;
         case 1:
             global_settings::printHillClimberSettings();

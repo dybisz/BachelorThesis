@@ -2,6 +2,7 @@
 // Created by jakub on 12/3/15.
 //
 
+#include <sstream>
 #include "dfa.h"
 
 DFA::DFA(TransitionFunction* tf) :
@@ -59,13 +60,16 @@ void DFA::createAlphabet(unsigned int symbolCount){
     }
 }
 
-void DFA::  checkDeterminism(){
+void DFA::checkDeterminism(){
     for(unsigned int i = 0; i < this->getStateCount(); i++){
         for(unsigned int j = 0; j < this->getSymbolCount(); j++){
             int toState = this->transitionFunction->getState(i, j);
             if(toState < 0 || toState >= (int)this->getStateCount()) {
-                throw std::invalid_argument("Determinism not satisfied "
-                                                    "DFA_T::checkDeterminism");
+                std::stringstream ss;
+                ss << "Determinism not satisfied DFA_T::checkDeterminism"
+                    << std::endl;
+                ss << "toState: " << toState << std::endl;
+                throw std::invalid_argument(ss.str());
             }
         }
     }

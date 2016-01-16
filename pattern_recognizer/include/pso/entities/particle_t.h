@@ -28,7 +28,6 @@ private:
     Point<double> pbest;
     Point<double> lbest;
 
-private:
     double fitness;
     double bestFitness;
 
@@ -51,6 +50,8 @@ public:
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
+
+    void saveCurrentConfigAsBest();
 
     //-----------------------------------------------------------//
     //  GETTERS
