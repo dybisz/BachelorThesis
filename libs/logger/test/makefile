@@ -49,13 +49,16 @@ BIN = bin
 # Can be used to compile your static libraries before linking.
 # Surrounded the path with '...' and separate different paths
 # with a space.
-MAKE_EXTERNAL = $(GTEST_ROOT)/make/
+MAKE_EXTERNAL = '$(GTEST_ROOT)/make/'
 
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
 LIBS += $(GTEST_ROOT)/make/gtest_main.a -lpthread\
- 			-ltime -lstrings -lerror
+			-lpso -lparallel -ltime\
+			-lmath \
+			-lpatterns -lexcel_format\
+			-lstrings
 
 #----------------- INCLUDES -------------------#
 

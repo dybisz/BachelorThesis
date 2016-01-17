@@ -49,7 +49,7 @@ BIN = bin
 # Can be used to compile your static libraries before linking.
 # Surrounded the path with '...' and separate different paths
 # with a space.
-MAKE_EXTERNAL = $(GTEST_ROOT)/make/
+MAKE_EXTERNAL = '$(GTEST_ROOT)/make/'
 
 #---------------- LIBRARIES -------------------#
 
