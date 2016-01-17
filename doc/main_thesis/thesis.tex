@@ -3,7 +3,8 @@
 % PACKAGES
 %------------------------------------------------------------------------------%
 \usepackage[utf8]{inputenc}
-
+\usepackage{tikz}
+\usepackage{pgfplots}
 \usepackage{wrapfig}
 
 \usepackage{amsmath}
@@ -1127,6 +1128,61 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
 
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
+
+%
+% HILL CLIMBER RESULTS
+%
+\section{Classifier Based on Hill Climber}
+This section presents results for building classifier based only on Hill Climber. We were trying to catch all pros and cons of building DFA, rather naively, based on one heuristic with no interference in states structure. 
+
+\subsection{Results Layout}
+Two sets of graphs are presented. Each of them has 6 plots. Plots represents consecutive classes, from $\langle1;6\rangle$ interval, that we are considering. Single outcome is based on the best fitness function value out of 4 computations performed. In each case we take 550 features vectors per class (including foreign ones). 
+
+First set assumes fixed number of states (chosen intuitively) equal to 35 and varying number of alphabet symbols - even numbers from 2 to 18 (inclusively), which are drawn against 4 measures presented in section \ref{evaluation} i.e. Accuracy, Sensitivity, Precision and F-Measure. 
+
+On the other hand, second set fixes number of symbol in alphabet to 6 and presents the measures values for different number of states: 15, 35, 50, 65, 80, 105, 120, 135, 150. We were trying to observe what happens to our DFA-based classifier if we give him wider collection of states to operate on. In addition size of the alphabet was not chosen randomly - based on first set, in every case 6 symbols works relatively well for all 4 measures.
+
+\subsection{Results Outcomes}
+
+
+\begin{figure}
+% CLASSES: 1
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/a_c1_fig.png}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/a_c2_fig.png}
+  \label{fig:sfig2}
+\end{subfigure}
+% CLASSES: 2
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/a_c3_fig.png}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/a_c4_fig.png}
+  \label{fig:sfig2}
+\end{subfigure}
+% CLASSES: 3
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/a_c5_fig.png}
+  \label{fig:sfig1}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=1\linewidth]{images/a_c6_fig.png}
+  \label{fig:sfig2}
+\end{subfigure}
+\caption{Plots depict how various measures react to elevating number of considered classes. Each graph assumes fix number of states (35) and varying number of symbols in alphabet (2-18). Consecutive plots presents increasing number of classes - from 1 to 6.}
+\label{fig:fig}
+\end{figure}
+
 
 %---------------------------------------------------------------
 \chapter{Domain} \label{chap:domain}
