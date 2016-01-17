@@ -4,8 +4,12 @@ bin
 *.o
 *.a
 *.so
+
 ./dependencies/googletest/make/sample1_unittest
 dependencies/googletest/make/gtest_main.a
+
+./dependencies/include/
+./dependencies/lib
 
 logs
 
