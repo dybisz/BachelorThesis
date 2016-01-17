@@ -13,13 +13,13 @@ mkdir -p ${MAIN_DIR_LOG}
 ##### SETTINGS #####
 ####################
 
-MAX_ITER=100
-STATES=150
-ALPHABET=12
-CLASSES=3
-PATTERNS_PER_CLASS=350
+MAX_ITER=10000
+STATES=35
+ALPHABET=8
+CLASSES=4
+PATTERNS_PER_CLASS=550
 NATIVE_XLS_PATH="./res/digits/Natives.xls"
-FOREIGN_XLS_PATH="./res/digits/Foreign_90ccl.xls"
+FOREIGN_XLS_PATH="./res/digits/Foreigns_02_005_XOR.xls"
 
 ################
 ##### RUN ######
@@ -33,7 +33,7 @@ run_optimizer(){
     echo "---------------------"
 
     ./bin/pattern_recognizer -E 1 \
-        --log-dir ${DIR_LOG} \
+        --log-dir "c${CLASSES}_a${ALPHABET}" \
         --log-main-dir ${MAIN_DIR_LOG} \
         -I ${MAX_ITER} \
         -N ${NATIVE_XLS_PATH} \
