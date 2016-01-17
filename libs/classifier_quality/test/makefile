@@ -55,10 +55,8 @@ MAKE_EXTERNAL = '$(GTEST_ROOT)/make/'
 
 # Paths and names of libraries to link with
 LIBS += $(GTEST_ROOT)/make/gtest_main.a -lpthread\
-			-lpso -lparallel -ltime\
-			-lmath \
-			-lpatterns -lexcel_format\
-			-lstrings
+			-latl -lmath -lpatterns -lexcel_format \
+			-lpso -lparallel -ltime -lstrings
 
 #----------------- INCLUDES -------------------#
 
