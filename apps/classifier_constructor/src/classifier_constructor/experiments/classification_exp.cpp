@@ -2,17 +2,15 @@
 // Created by jakub on 12/22/15.
 //
 
-#include <experiments/classification_exp.h>
+#include <classifier_constructor/experiments/classification_exp.h>
 
-#include <settings/global_settings.h>
+#include <classifier_constructor/settings/global_settings.h>
 #include <logger/log.h>
 #include <patterns_to_languages.h>
-#include <classification/classifier.h>
+#include <classifier_constructor/classification/classifier.h>
 
-#include <pso_classifier/dfa_particle_decoder.h>
-#include <pso_classifier/dfa_fitness_updater.h>
+#include <classifier_constructor/pso_classifier/dfa_particle_decoder.h>
 
-#include <pso/pso.h>
 #include <pso/particle_factory.h>
 #include <pso/neighbourhood_updaters/nb_star_topology.h>
 #include <pso/particle_updaters/particle_updater_spherical.h>

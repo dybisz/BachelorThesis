@@ -9,7 +9,7 @@
 #include <language/language.h>
 #include <vector>
 #include <pso/particle_updater.h>
-#include <pso_classifier/dfa_fitness_updater.h>
+#include <classifier_constructor/pso_classifier/dfa_fitness_updater.h>
 
 namespace experiments
 {

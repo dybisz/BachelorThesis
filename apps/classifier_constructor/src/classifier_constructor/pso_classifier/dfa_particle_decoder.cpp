@@ -2,10 +2,9 @@
 // Created by jakub on 1/7/16.
 //
 
-#include <pso_classifier/dfa_particle_decoder.h>
+#include <classifier_constructor/pso_classifier/dfa_particle_decoder.h>
 #include <pso/entities/particle.h>
-#include <pso/pso_common.h>
-#include <vector>
+
 #include <automata/transition/transition_function.h>
 #include <automata/dfa.h>
 

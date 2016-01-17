@@ -4,7 +4,7 @@
 
 #include <sstream>
 #include <logger/log.h>
-#include "settings/global_settings.h"
+#include "classifier_constructor/settings/global_settings.h"
 #include <console/flag.h>
 #include <console/flag_reader.h>
 

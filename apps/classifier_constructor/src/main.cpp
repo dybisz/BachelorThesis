@@ -1,8 +1,8 @@
 #ifndef AC_MAIN_H
 #define AC_MAIN_H
 
-#include <experiments/classification_exp.h>
-#include <settings/global_settings.h>
+#include <classifier_constructor/experiments/classification_exp.h>
+#include <classifier_constructor/settings/global_settings.h>
 
 #include <math/random.h>
 
@@ -11,6 +11,9 @@
 #include <console/flag_reader.h>
 
 #include <threading/thread_util.h>
+
+#include <string>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -44,9 +47,10 @@ int main(int argc, char *argv[]) {
             break;
         default:
             std::string what = "Experiment ID: " +
-                               std::to_string(global_settings::EXPERIMENT_ID) +
+                               to_string(global_settings::EXPERIMENT_ID) +
                                " is not a proper Experiment ID";
             console::usage(argv[0], what.c_str());
+
     }
 
     closeApp();

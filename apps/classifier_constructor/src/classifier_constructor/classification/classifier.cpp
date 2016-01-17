@@ -2,11 +2,11 @@
 // Created by jakub on 12/22/15.
 //
 
-#include <classification/classifier.h>
+#include <classifier_constructor/classification/classifier.h>
 #include <language/sets_disassociation.h>
 #include <classifier_quality.h>
 
-#include <settings/global_settings.h>
+#include <classifier_constructor/settings/global_settings.h>
 
 #include <logger/log.h>
 

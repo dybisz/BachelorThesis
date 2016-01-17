@@ -2,7 +2,7 @@
 // Created by jakub on 1/7/16.
 //
 
-#include <pso_classifier/dfa_fitness_updater.h>
+#include <classifier_constructor/pso_classifier/dfa_fitness_updater.h>
 #include <pso/particle_decoder.h>
 #include <automata/dfa.h>
 

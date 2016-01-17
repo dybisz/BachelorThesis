@@ -9,7 +9,7 @@
 #include <pso/particle_decoder.h>
 
 #include <math/random.h>
-#include <time/clock.h>
+#include <clock.h>
 
 
 using namespace std;

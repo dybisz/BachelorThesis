@@ -8,7 +8,7 @@
 #include <gtest/gtest.h>
 
 #include <pso/entities/particle.h>
-#include <pso_classifier/dfa_particle_decoder.h>
+#include <classifier_constructor/pso_classifier/dfa_particle_decoder.h>
 #include <automata/dfa.h>
 
 using namespace pso;

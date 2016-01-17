@@ -7,8 +7,8 @@
 
 #include <gtest/gtest.h>
 
-#include <pso_classifier/dfa_particle_decoder.h>
-#include <pso_classifier/dfa_fitness_updater.h>
+#include <classifier_constructor/pso_classifier/dfa_particle_decoder.h>
+#include <classifier_constructor/pso_classifier/dfa_fitness_updater.h>
 #include <language/word.h>
 #include <language/language.h>
 
