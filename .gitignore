@@ -4,7 +4,9 @@ bin
 *.o
 *.a
 *.so
-googletest/make/sample1_unittest
+./dependencies/googletest/make/sample1_unittest
+
+logs
 
 doc/business_analysis/*.aux
 doc/business_analysis/*.log
@@ -13,8 +15,6 @@ doc/business_analysis/*.gz
 doc/business_analysis/*.pdf
 
 doc/uml_diagrams/
-
-logs
 
 *.aux
 *.log
@@ -42,4 +42,3 @@ bundles
 out
 
 core
-./pattern_recognizer/test/core

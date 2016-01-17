@@ -36,6 +36,181 @@
 \usepackage{wrapfig}
 \usepackage{amsfonts}
 
+%-------------------------------------------
+% Group Plots
+%-------------------------------------------
+\usepackage{xcolor} % Colors
+
+\usepackage{tikz}
+\usepackage{keyval}
+\usepackage{pgfplots} % Bar charts
+
+\usepgfplotslibrary{groupplots}
+
+%\usepackage{groupplots}
+%\usepgfplotslibrary{groupplots}
+\pgfplotsset{compat=newest}
+
+
+%
+% Define bar chart colors
+%
+\definecolor{bblue}{HTML}{4F81BD}
+\definecolor{rred}{HTML}{C0504D}
+\definecolor{ggreen}{HTML}{9BBB59}
+\definecolor{ppurple}{HTML}{9F4C7C}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           START OF COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Save results to be later used in addBarPlotResults
+% #1: Train Small
+% #2: Train Big
+% #3: Train All
+% #4: Test
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\saveResultsFirst}[4]{
+    \def\TrainSmallFirst{#1}%
+    \def\TrainBigFirst{#2}%
+    \def\TrainAllFirst{#3}%
+    \def\TestFirst{#4}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Save results to be later used in addBarPlotResults
+% #1: Train Small
+% #2: Train Big
+% #3: Train All
+% #4: Test
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\saveResultsSecond}[4]{
+    \def\TrainSmallSecond{#1}%
+    \def\TrainBigSecond{#2}%
+    \def\TrainAllSecond{#3}%
+    \def\TestSecond{#4}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds Results to Bars labeled by #1, #2
+%
+% Label #1 is used for saveResultsFirst
+% Label #2 is used for saveResultsSecond
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\addBarPlotResults}[2]{
+    % TRAINING |w| < C    
+    \addplot[style={bblue, fill=bblue, mark=none}]
+    coordinates 
+    {
+        (#1,  \TrainSmallFirst)
+        (#2,  \TrainSmallSecond)
+    };
+    
+    % TRAINING |w| > C
+    \addplot[style={rred, fill=rred, mark=none}]
+    coordinates 
+    {
+        (#1,  \TrainBigFirst)
+        (#2,  \TrainBigSecond)
+    };
+    
+    % TRAINING ALL
+    \addplot[style={ggreen, fill=ggreen, mark=none}]
+    coordinates 
+    {
+        (#1,  \TrainAllFirst)
+        (#2,  \TrainAllSecond)
+    };
+    
+    % TESTING
+    \addplot[style={ppurple, fill=ppurple, mark=none}]
+    coordinates 
+    {
+        (#1,  \TestFirst)
+        (#2,  \TestSecond)
+    };
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Adds needed style to pgfplot
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\setPlotStyle}[0]{
+    \pgfplotsset{xticklabel style={text width=2em, align=center}}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Starts groupplot with given style
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\beginGroupPlot}[0]{
+    \begin{groupplot}[
+        group style={group size= 2 by 2,  vertical sep=50pt},
+        height = 5.5cm, 
+        ybar=4*\pgflinewidth, 
+        ymin=0, 
+        ymax=1,
+        width  = 0.37*\textwidth, 
+        enlarge x limits={abs=0.85cm}, 
+        major x tick style = transparent, 
+        ymajorgrids = true, 
+        symbolic x coords={
+            C=4,
+            C=4 Q=3,
+            C=4 Q=4,
+            C=4 Q=5,
+            C=4 Q=6,
+            C=4 Q=7,
+            C=4 Q=8,
+            C=4 Q=9,
+            C=4 Q=10,
+            C=4 Q=11,
+            C=4 Q=12,
+            C=4 Q=13,
+            C=4 Q=14,
+            C=4 Q=15,
+            C=5,
+            C=5 Q=3,
+            C=5 Q=4,
+            C=5 Q=5,
+            C=5 Q=6,
+            C=5 Q=7,
+            C=5 Q=8,
+            C=5 Q=9,
+            C=5 Q=10,
+            C=5 Q=11,
+            C=5 Q=12,
+            C=5 Q=13,
+            C=5 Q=14,
+            C=5 Q=15
+        },
+        xtick = data, 
+        scaled y ticks = false, 
+        legend cell align=center, 
+        legend columns=1,
+        legend style={
+            at={(1.45, 0.45)}, 
+            anchor=north,
+        }
+        ]
+    }%beginGroupPlot
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Sets legends for Bar plot
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \newcommand{\setPlotLegend}[0]{
+        \legend{Training $|w|<C$,  Training $|w|>C$,  Training All,  Testing}
+    }
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           END OF COMMANDS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 % COMMANDS
 %------------------------------------------------------------------------------%
@@ -1124,6 +1299,54 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
 
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
+
+\section{PSO}
+Native symbols used in the experiments were
+
+
+\begin{figure}[H]
+    \caption{Reconstruction. The average accuracy of 10 automata from each class: 4, 6, 10, 15}
+    \label{fig:recons_results}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlot
+    
+    
+    \nextgroupplot[title=Class 4,  ylabel=Accuracy]
+    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
+    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
+    \addBarPlotResults  {C=4}{C=5}
+    
+    \nextgroupplot[title=Class 6]%
+    \saveResultsFirst   {0.77}{0.77}{0.77}{0.77}
+    \saveResultsSecond  {0.77} {0.77}{0.77}{0.77}
+    \addBarPlotResults  {C=4}{C=5}
+    
+    \nextgroupplot[title=Class 10, ylabel=Accuracy]
+    \saveResultsFirst   {0.83}{0.83}{0.83}{0.83}
+    \saveResultsSecond  {0.83}{0.83}{0.83}{0.83}
+    \addBarPlotResults  {C=4}{C=5}
+    
+    
+    \nextgroupplot[title=Class 15]
+    \saveResultsFirst   {0.86}{0.86}{0.86}{0.86}
+    \saveResultsSecond  {0.86}{0.86}{0.86}{0.86}
+    \addBarPlotResults  {C=4}{C=5}
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+
 
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
