@@ -12,6 +12,16 @@ Language::Language(Alphabet alphabet) : _alphabet(alphabet) {
 
 }
 
+Language::Language(const Language &language) :
+        _alphabet(language.getAlphabet()){
+    for(unsigned int i = 0; i < language.size(); i++){
+        Word* otherWord = language.getWord(i);
+        Word *word = new Word(otherWord);
+
+        this->addWord(word);
+    }
+}
+
 Language::Language(Pattern *pPattern, Alphabet pAlphabet,
                    vector<State *> pStates) : _alphabet(pAlphabet),
                                               _states(pStates) {
@@ -120,6 +130,15 @@ void Language::addWord(Word *word) {
     this->_words.push_back(word);
 }
 
+
+void Language::append(const Language &language) {
+    for(unsigned int i = 0; i < language.size(); i++){
+        Word* word = language.getWord(i);
+
+        this->addWord(new Word(word));
+    }
+}
+
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */
@@ -192,7 +211,7 @@ string Language::alphabetToString() {
     return out;
 }
 
-Word *Language::getWord(int i) {
+Word *Language::getWord(int i) const{
     return _words[i];
 }
 

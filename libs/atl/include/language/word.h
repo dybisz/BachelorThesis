@@ -16,6 +16,9 @@ using namespace std;
 /*
  * Created mainly for abstraction level maintaining. It allows user to
  * access and manipulate word representation in a convenient way.
+ *
+ * Ownership:
+ *      Symbols
  */
 class Word {
 public:

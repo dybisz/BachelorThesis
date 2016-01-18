@@ -15,10 +15,14 @@
 #include <vector>
 
 using namespace std;
-
+/**
+ * Ownership:
+ *      Words
+ */
 class Language {
 public:
     Language(Alphabet alphabet);
+    Language(const Language& language);
     Language(Pattern* pPattern, Alphabet pAlphabet, vector<State *> pStates);
     Language(Pattern* pPattern, Alphabet pAlphabet);
     Language(vector<Word*> &words, Alphabet pAlphabet, vector<State *> pStates);
@@ -35,7 +39,7 @@ public:
     // Different words accesing:
     // 1) returns ith pointer to the word, not interfering with set of words.
     // 2) removes and restarturns last element from the set of words.
-    Word* getWord(int i);
+    Word* getWord(int i) const;
     Word* stealLastWord();
 
     vector<State*>* getStates();
@@ -48,6 +52,12 @@ public:
     bool isCorrespondingState(State*) const;
 
     void addWord(Word* word);
+
+    /*
+     * Appends all words from given language.
+     * Memory for all words is reallocated.
+     */
+    void append(const Language& language);
 
 private:
     Alphabet _alphabet;

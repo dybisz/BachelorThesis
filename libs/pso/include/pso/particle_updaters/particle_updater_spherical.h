@@ -8,7 +8,7 @@
 #include <pso/entities/particle.h>
 #include <pso/particle_updater.h>
 #include <pso/pso_common.h>
-#include <math/math/hyper_sphere.h>
+#include <math/hyper_sphere.h>
 
 namespace pso {
 /*

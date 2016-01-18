@@ -8,7 +8,6 @@ This has been made for your convenience.
 
             cmake_minimum_required(VERSION 3.3)
 
-
             set(PROJECT_NAME "bachelor_thesis")
 
             set(APPS_PATH "apps")
@@ -16,7 +15,7 @@ This has been made for your convenience.
 
             project(${PROJECT_NAME})
 
-            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+            set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -Wall -MMD")
 
             #############################################################################
 
@@ -65,6 +64,9 @@ This has been made for your convenience.
             FIND_INCLUDE_DIR(LIBS_INC_DIRS ${LIBS_PATH}/*/include/*.h)
             FIND_SRC_DIR(LIBS_SRC_DIRS ${LIBS_PATH}/*/src/*.cpp)
 
+            FIND_INCLUDE_DIR(LIBS_TEST_INC_DIRS ${LIBS_PATH}/*/test/include/*.h)
+            FIND_SRC_DIR(LIBS_TEST_SRC_DIRS ${LIBS_PATH}/*/test/src/*.cpp)
+
             include_directories(${APPS_INC_DIRS})
             include_directories(${APPS_SRC_DIRS})
             include_directories(${APPS_TEST_INC_DIRS})
@@ -72,6 +74,8 @@ This has been made for your convenience.
 
             include_directories(${LIBS_INC_DIRS})
             include_directories(${LIBS_SRC_DIRS})
+            include_directories(${LIBS_TEST_INC_DIRS})
+            include_directories(${LIBS_TEST_SRC_DIRS})
 
             include_directories(dependencies/googletest/include)
 
@@ -83,9 +87,10 @@ This has been made for your convenience.
                     dependencies/googletest/include/*.h
             )
 
-            set(SPAM)
+            set(SPAM )
 
             add_executable(${PROJECT_NAME} ${SPAM} ${FILES})
+
 
 #--------------------------------------------------------------------#
 

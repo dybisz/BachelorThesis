@@ -52,6 +52,8 @@ TEST(DFALoader, ReadFile_ProperStateCount) {
 
         EXPECT_EQ(expectedStateCount, stateCount);
         EXPECT_EQ(expectedSymbolCount, symbolCount);
+
+        inFile.close();
     }
     std::remove(filename);
 }

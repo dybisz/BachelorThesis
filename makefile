@@ -84,11 +84,11 @@ endif
 
 DEPENDENCIES_INCLUDES =\
 $(shell find ${DEPENDENCIES}/include/  \
--mindepth 1 -maxdepth 1 ! -name 'excel_format')
+-mindepth 1 -maxdepth 1)
 
 DEPENDENCIES_LIBS =\
 $(shell find ${DEPENDENCIES}/lib/ \
--mindepth 1 -maxdepth 1 ! -name 'excel_format')
+-mindepth 1 -maxdepth 1)
 
 #--------------------------------------------
 # RULES

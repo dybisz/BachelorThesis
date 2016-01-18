@@ -260,3 +260,34 @@ TEST(Language, AddWord_SizeIncreased) {
 
     EXPECT_EQ(expectedSize, actualSize);
 }
+
+TEST(Language, EmptyLangauge_AppendLanguage_SameSize) {
+    int alphabetSize1 = 5;
+    int alphabetSize2 = 5;
+
+    Alphabet alphabet1(alphabetSize1);
+    Alphabet alphabet2(alphabetSize2);
+
+    Language language1(alphabet1);
+    Language language2(alphabet2);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{3, 2, 1};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    language2.addWord(word1);
+    language2.addWord(word2);
+    language2.addWord(word3);
+
+    language1.append(language2);
+
+    int expectedSize = 3;
+
+    int actualSize = language1.size();
+
+    EXPECT_EQ(expectedSize, actualSize);
+}

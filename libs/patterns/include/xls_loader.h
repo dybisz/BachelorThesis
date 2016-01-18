@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <patterns/pattern.h>
-#include <excel_format/ExcelFormat.h>
+#include <ExcelFormat.h>
 #include <cstdlib>
 #include <algorithm>
 

@@ -10,3 +10,6 @@
 
 MAKE_EXTERNAL[0]='../../atl/make/'
 MAKE_EXTERNAL_RULE[0]='install'
+
+MAKE_EXTERNAL[1]='../../excel_format/make/'
+MAKE_EXTERNAL_RULE[1]='install'

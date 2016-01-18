@@ -127,7 +127,7 @@ void Word::operator+(Symbol* a) {
 
 bool Word::operator == (const Word &b) const {
     if(this->size() != b.size()) {
-        throw invalid_argument( "Feature vectors sizes do not match.");
+        throw invalid_argument( "Word sizes do not match.");
     }
 
     bool areTheSame = true;

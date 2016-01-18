@@ -85,6 +85,7 @@ void PSO::start() {
 
     threadPool.joinAll();
 }
+
 const Particle *PSO::getBestParticle() const{
     return &globalBestParticle;
 }

@@ -7,6 +7,7 @@ flagger
 patterns
 logger
 pso
+classifier_quality
 
 ###############################################
 #                INSTALL                      #
