@@ -11,17 +11,7 @@ using namespace std;
 
 string DATA_PATH = "./res/short_Natives.xls";
 
-#include <string>
-#include <limits.h>
-#include <unistd.h>
-
-
 TEST(XlsLoaderTest, Read_Data){
-
-    char cwd[1024];
-    if (getcwd(cwd, sizeof(cwd)) != NULL)
-        fprintf(stdout, "Current working dir: %s\n", cwd);
-
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH);
     delete xlsLoader;
 }
