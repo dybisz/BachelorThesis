@@ -8,6 +8,8 @@
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
 
+INSTALL_ROOT_PATH := $(shell pwd)
+
 PROJECT_ROOT=..
 
 EXTERNAL_LIBS_INCLUDE_PATH=${PROJECT_ROOT}/../../dependencies/include
@@ -67,7 +69,7 @@ INCLUDES += -I $(GTEST_ROOT)/include
 # Use '-static' for static libraries
 # Use '-shared' for shared libraries
 L_FLAGS +=
-C_FLAGS += -g -Wall -std=c++11
+C_FLAGS += -g -Wall -std=c++11 -g3 -gdwarf-2 -DDEBUG
 NVCC_FLAGS += -arch=sm_20
 
 #----------------- PRINT OUTS -----------------#
@@ -90,7 +92,9 @@ COMMA = ,
 LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
 
 # Adds each module in lib folder to search for libs
-EXTERNAL_LIB_MODULES = $(shell find ${EXTERNAL_LIBS_LIB_PATH} -type d 2>/dev/null)
+EXTERNAL_LIB_MODULES =\
+ $(shell find ${INSTALL_ROOT_PATH}/${EXTERNAL_LIBS_LIB_PATH} \
+ -type d 2>/dev/null)
 
 # Add link flag to all LIB_MODULES
 EXTERNAL_LIB_LINK_MODULES = $(addprefix -L , $(EXTERNAL_LIB_MODULES))

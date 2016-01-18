@@ -8,6 +8,8 @@
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
 
+INSTALL_ROOT_PATH := $(shell pwd)
+
 PROJECT_ROOT=..
 
 EXTERNAL_LIBS_INCLUDE_PATH=${PROJECT_ROOT}/../../dependencies/include
@@ -89,7 +91,10 @@ COMMA = ,
 LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
 
 # Adds each module in lib folder to search for libs
-EXTERNAL_LIB_MODULES = $(shell find ${EXTERNAL_LIBS_LIB_PATH} -type d 2>/dev/null)
+EXTERNAL_LIB_MODULES =\
+ $(shell find ${INSTALL_ROOT_PATH}/${EXTERNAL_LIBS_LIB_PATH} \
+ -type d 2>/dev/null)
+
 
 # Add link flag to all LIB_MODULES
 EXTERNAL_LIB_LINK_MODULES = $(addprefix -L , $(EXTERNAL_LIB_MODULES))

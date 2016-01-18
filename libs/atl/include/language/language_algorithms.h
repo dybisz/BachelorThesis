@@ -25,6 +25,13 @@ namespace language
                                     std::vector<Language*>* foreignLanguages,
                                     unsigned int statesPerNative,
                                     unsigned int statesPerForeign);
+
+
+    /*
+     * Returns number of cccurrences of input word in input vector of words
+     */
+    int numberOfOccurrences(const vector<Word*>& words,
+                            const Word& word);
 }
 
 #endif //BACHELOR_THESIS_LANGUAGE_ALGORITHMS_H

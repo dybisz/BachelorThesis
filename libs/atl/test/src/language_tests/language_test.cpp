@@ -291,3 +291,180 @@ TEST(Language, EmptyLangauge_AppendLanguage_SameSize) {
 
     EXPECT_EQ(expectedSize, actualSize);
 }
+
+TEST(Language, LanguageContainsTwoEqualWords_OccurenceCounterEqualsTwo) {
+    int alphabetSize1 = 5;
+
+    Alphabet alphabet(alphabetSize1);
+
+    Language language(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{3, 2, 3};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    language.addWord(word1);
+    language.addWord(word2);
+    language.addWord(word3);
+
+    int expectedOccurrenceCounter = 2;
+
+    int actualOccurrenceCounter = language.numberOfOccurrences(*word1);
+
+    EXPECT_EQ(expectedOccurrenceCounter, actualOccurrenceCounter);
+}
+
+TEST(Language, LanguageContainsTwoEqualWords_OccurenceCounterEqualsOne) {
+    int alphabetSize1 = 5;
+
+    Alphabet alphabet(alphabetSize1);
+
+    Language language(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{3, 2, 3};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    language.addWord(word1);
+    language.addWord(word2);
+    language.addWord(word3);
+
+    int expectedOccurrenceCounter = 1;
+
+    int actualOccurrenceCounter = language.numberOfOccurrences(*word2);
+
+    EXPECT_EQ(expectedOccurrenceCounter, actualOccurrenceCounter);
+}
+
+TEST(Language,
+     LanguageContainsTwoEqualWords_OccurrenceInputIsNotContained_ReturnZero) {
+    int alphabetSize1 = 5;
+
+    Alphabet alphabet(alphabetSize1);
+
+    Language language(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{3, 2, 3};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    std::vector<int> wordEntries4{3, 3, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    Word* word4 = new Word(wordEntries4);
+
+    language.addWord(word1);
+    language.addWord(word2);
+    language.addWord(word3);
+
+    int expectedOccurrenceCounter = 0;
+
+    int actualOccurrenceCounter = language.numberOfOccurrences(*word4);
+
+    EXPECT_EQ(expectedOccurrenceCounter, actualOccurrenceCounter);
+
+    delete word4;
+}
+/*
+TEST(Language,
+     LanguageContainsTwoDuplicateWords_SizeShorterByOne) {
+    int alphabetSize1 = 5;
+
+    Alphabet alphabet(alphabetSize1);
+
+    Language language(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{3, 2, 3};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    language.addWord(word1);
+    language.addWord(word2);
+    language.addWord(word3);
+
+    int expectedLanguageWithoutDuplicatesSize = 2;
+
+    language.removeDuplicates();
+
+    int actualLanguageWithoutDuplicatesSize = language.size();
+
+    EXPECT_EQ(expectedLanguageWithoutDuplicatesSize,
+              actualLanguageWithoutDuplicatesSize);
+
+
+}
+
+TEST(Language,
+     LanguageContainsAllDuplicateWords_NewSizeEqualOne) {
+    int alphabetSize1 = 5;
+
+    Alphabet alphabet(alphabetSize1);
+
+    Language language(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{1, 2, 3};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    language.addWord(word1);
+    language.addWord(word2);
+    language.addWord(word3);
+
+    int expectedLanguageWithoutDuplicatesSize = 1;
+
+    language.removeDuplicates();
+
+    int actualLanguageWithoutDuplicatesSize = language.size();
+
+    EXPECT_EQ(expectedLanguageWithoutDuplicatesSize,
+              actualLanguageWithoutDuplicatesSize);
+}
+
+TEST(Language,
+     LanguageContainsNoDuplicateWords_NoChangeInSize) {
+    int alphabetSize1 = 5;
+
+    Alphabet alphabet(alphabetSize1);
+
+    Language language(alphabet);
+
+    std::vector<int> wordEntries1{2, 2, 3};
+    std::vector<int> wordEntries2{3, 2, 3};
+    std::vector<int> wordEntries3{1, 2, 3};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+
+    language.addWord(word1);
+    language.addWord(word2);
+    language.addWord(word3);
+
+    int expectedLanguageWithoutDuplicatesSize = 3;
+
+    language.removeDuplicates();
+
+    int actualLanguageWithoutDuplicatesSize = language.size();
+
+    EXPECT_EQ(expectedLanguageWithoutDuplicatesSize,
+              actualLanguageWithoutDuplicatesSize);
+}*/

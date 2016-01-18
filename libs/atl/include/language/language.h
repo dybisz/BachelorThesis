@@ -59,6 +59,17 @@ public:
      */
     void append(const Language& language);
 
+    /*
+     * Removes all duplicate words.
+     * The resulting language is then a proper set of words.
+     */
+    void removeDuplicates();
+
+    /*
+     * Returns number of occurrences of input word
+     */
+    int numberOfOccurrences(const Word& word);
+
 private:
     Alphabet _alphabet;
     vector<Word*> _words;
@@ -67,6 +78,31 @@ private:
     void _produceWordsFromPattern(Pattern *pPattern);
 
     void _safeDeleteContent(vector<State *> vector);
+
+    /*
+     * Returns a vector of words without any duplications.
+     * Allocates memory for each appended word.
+     */
+    vector<Word*> getWordsWithoutDuplicates(const vector<Word*>& words);
+
+    /*
+     * New Words are set. The current ones are freed
+     * and the vector is cleared.
+     *
+     * Reallocates memory for the new words. Does not touch the words
+     * in input vector.
+     */
+    void setNewWords(const vector<Word*>& words);
+
+    /*
+     * Frees all the memory taken by words
+     */
+    void freeWordsMemory();
+
+    /*
+     * Frees all the memory taken by states
+     */
+    void freeStatesMemory();
 };
 
 #endif //BACHELOR_THESIS_LANGUAGE_H

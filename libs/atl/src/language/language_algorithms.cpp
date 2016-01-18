@@ -37,4 +37,19 @@ namespace language
             (*foreignLanguages)[f]->setStates(*states);
         }
     }
+
+    int numberOfOccurrences(const vector<Word*>& words,
+                            const Word& word) {
+        int occurenceCounter = 0;
+
+        for(unsigned int i = 0; i < words.size(); i++){
+            Word* currentWord = words[i];
+            if (*currentWord == word){
+                occurenceCounter++;
+            }
+        }
+
+        return occurenceCounter;
+    }
+
 }

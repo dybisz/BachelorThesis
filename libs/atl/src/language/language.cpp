@@ -3,6 +3,7 @@
 //
 
 #include <language/language.h>
+#include <language/language_algorithms.h>
 
 /* ------------------------------------ */
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
@@ -73,24 +74,8 @@ Language::Language(vector<Word *> words, Language *lang) :
 }
 
 Language::~Language() {
-/*
-    // Release words
-    for (auto iter = _words.begin(); iter != _words.end(); ++iter) {
-        delete (*iter);
-    }
-    // Release states
-    for (auto iter = _states.begin(); iter != _states.end(); ++iter) {
-        delete (*iter);
-    }*/
-
-    for (unsigned int i = 0; i < _words.size(); i++) {
-        delete (_words)[i];
-    }
-
-    for (unsigned int i = 0; i < _states.size(); i++) {
-        delete (_states)[i];
-    }
-
+    freeWordsMemory();
+    freeStatesMemory();
 }
 
 /* ------------------------- */
@@ -130,7 +115,6 @@ void Language::addWord(Word *word) {
     this->_words.push_back(word);
 }
 
-
 void Language::append(const Language &language) {
     for(unsigned int i = 0; i < language.size(); i++){
         Word* word = language.getWord(i);
@@ -139,9 +123,47 @@ void Language::append(const Language &language) {
     }
 }
 
+void Language::removeDuplicates() {
+    /*
+    vector<Word*> wordsWithNoDuplicates
+                    = getWordsWithoutDuplicates(this->_words);
+
+    this->freeWordsMemory();
+    _words = wordsWithNoDuplicates;
+     */
+}
+
+int Language::numberOfOccurrences(const Word& word) {
+    return language::numberOfOccurrences(this->_words, word);
+}
+
 /* --------------------- */
 /* ----- AUXILIARY ----- */
 /* --------------------- */
+
+void Language::setNewWords(const vector<Word *> &words) {
+    this->freeWordsMemory();
+
+    for(unsigned int i = 0; i < words.size(); i++){
+        Word* word = new Word(words[i]);
+        this->addWord(word);
+    }
+}
+
+
+vector<Word*> Language::getWordsWithoutDuplicates(
+                                    const vector<Word *> &words){
+    vector<Word*> newWords;
+
+    for(unsigned int i = 0; i < this->size(); i++){
+        Word* word = _words[i];
+        if (language::numberOfOccurrences(newWords, *word) == 0){
+            newWords.push_back(new Word(*word));
+        }
+    }
+    return newWords;
+}
+
 
 void Language::_produceWordsFromPattern(Pattern *pPattern) {
     // Get features
@@ -225,12 +247,24 @@ Word *Language::stealLastWord() {
 /* ----- OPERATORS ----- */
 /* --------------------- */
 
-
-
 void Language::_safeDeleteContent(vector<State *> vec) {
     for (auto it = vec.begin(); it != vec.end(); ++it) {
         delete (*it);
     }
-
     vec.clear();
+}
+
+void Language::freeWordsMemory() {
+    for (unsigned int i = 0; i < _words.size(); i++) {
+        delete (_words)[i];
+    }
+    _words.clear();
+}
+
+
+void Language::freeStatesMemory() {
+    for (unsigned int i = 0; i < _states.size(); i++) {
+        delete (_states)[i];
+    }
+    _states.clear();
 }
