@@ -80,6 +80,10 @@ namespace console {
         }
     }
 
+    void clearFlags(){
+        flags.clear();
+    }
+
     void addFlag(Flag flag){
         flags.push_back(flag);
     }

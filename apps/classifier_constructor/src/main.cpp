@@ -2,7 +2,6 @@
 #define AC_MAIN_H
 
 #include <classifier_constructor/experiments/classification_exp.h>
-#include <classifier_constructor/settings/global_settings.h>
 
 #include <math/random.h>
 
@@ -14,6 +13,12 @@
 
 #include <string>
 #include <stdlib.h>
+#include <classifier_constructor/settings/thread_settings.h>
+#include <classifier_constructor/settings/pso_settings.h>
+#include <classifier_constructor/settings/log_settings.h>
+#include <classifier_constructor/settings/classifier_settings.h>
+#include <classifier_constructor/settings/app_settings.h>
+#include <classifier_constructor/settings/settings.h>
 
 using namespace std;
 
@@ -25,6 +30,11 @@ using namespace std;
  * Initialises the application resources
  */
 void initApp(int argc, char *argv[]);
+
+/*
+ * Initiates all flags from settings
+ */
+void initFlags();
 
 /*
  * Closes the application resources
@@ -39,15 +49,13 @@ int main(int argc, char *argv[]) {
     initApp(argc, argv);
 
     // Choose experiment
-    switch (global_settings::EXPERIMENT_ID) {
+    switch (settings::EXPERIMENT_ID) {
         case 0:
-            // Prints all settings to the console
-            global_settings::printPSOSettings();
             experiments::runPSOBasedClassification();
             break;
         default:
             std::string what = "Experiment ID: " +
-                               to_string(global_settings::EXPERIMENT_ID) +
+                               to_string(settings::EXPERIMENT_ID) +
                                " is not a proper Experiment ID";
             console::usage(argv[0], what.c_str());
 
@@ -63,21 +71,26 @@ int main(int argc, char *argv[]) {
 //-----------------------------------------------------------//
 
 void initApp(int argc, char *argv[]) {
-    global_settings::setFlags();
-
     // Start the seed
     rnd::seed();
-
-    // Read flags must be first!!!!
-    console::readFlags(argc, argv);
 
     // Set the number of threads to be activated
     setTrueNumberOfThreads();
 
     // Initiates the logging functionality
-    logger::settings::LOG_MAIN_DIR = global_settings::LOG_MAIN_DIR;
-    logger::settings::LOG_CURR_DIR = global_settings::LOG_CURR_DIR;
+    logger::settings::LOG_MAIN_DIR = settings::LOG_MAIN_DIR;
+    logger::settings::LOG_CURR_DIR = settings::LOG_CURR_DIR;
     logger::initLog();
+
+    initFlags();
+
+}
+
+void initFlags(){
+    console::clearFlags();
+
+    settings::setAllFlags();
+    settings::printAllSettings();
 }
 
 void closeApp() {
@@ -86,20 +99,15 @@ void closeApp() {
 
 void setTrueNumberOfThreads(){
     // If the user set value below 1, change it
-    if(global_settings::TRUE_THREAD_COUNT < 1){
-        global_settings::TRUE_THREAD_COUNT = threading::getNumberOfCores();
+    if(settings::TRUE_THREAD_COUNT < 1){
+        settings::TRUE_THREAD_COUNT = threading::getNumberOfCores();
         // If the system could not determine, choose the default value
-        if(global_settings::TRUE_THREAD_COUNT < 1){
-            global_settings::TRUE_THREAD_COUNT =
-                    global_settings::DEFAULT_THREAD_COUNT;
+        if(settings::TRUE_THREAD_COUNT < 1){
+            settings::TRUE_THREAD_COUNT =
+                    settings::DEFAULT_THREAD_COUNT;
         }
     }
 }
 
-//------------------------------------------------------------------------------
 
-
-
-//------------------------------------------------------------------------------
-
-#endif //AC_STANDARD_TRANSITION_T_H
+#endif //AC_MAIN

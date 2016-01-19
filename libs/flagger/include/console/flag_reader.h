@@ -40,6 +40,11 @@ namespace console
     void usage(char *appName, const char *what);
 
     /*
+     * Clears all flags
+     */
+    void clearFlags();
+
+    /*
      * Returns of developer defined flags
      */
     std::vector<Flag> getFlags();

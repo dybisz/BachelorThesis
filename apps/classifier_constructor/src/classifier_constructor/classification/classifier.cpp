@@ -6,8 +6,6 @@
 #include <language/sets_disassociation.h>
 #include <classifier_quality.h>
 
-#include <classifier_constructor/settings/global_settings.h>
-
 #include <logger/log.h>
 
 #include <language/language_algorithms.h>

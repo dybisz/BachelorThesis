@@ -89,7 +89,7 @@ void AlternativeClassifier::compute() {
 
 
     logger::log(Verbose(HILL_CLIMBER), "Computations Starts... ");
-    for (int iter = 1; iter <= global_settings::MAX_ITER; iter++) {
+    for (int iter = 1; iter <= settings::MAX_ITER; iter++) {
         clk::startClock();
         _ttOrigin = _randomTransitionChange();
 
@@ -387,7 +387,7 @@ void AlternativeClassifier::_printInfoAndPlot(double iterTime, int iter) {
     cout << "                                                      " << endl;
     numberOfLinesToReset += 5;
 
-    cout << "           [Iteration      ]: " << iter << "/" << global_settings::MAX_ITER << endl;
+    cout << "           [Iteration      ]: " << iter << "/" << settings::MAX_ITER << endl;
     numberOfLinesToReset++;
     LOG_CALC("Iteration Time ", iterTime);
     numberOfLinesToReset++;
@@ -435,7 +435,7 @@ void AlternativeClassifier::_printInfoAndPlot(double iterTime, int iter) {
 
 double AlternativeClassifier::_estimateTime(double iter){
     double averangeIterTime = _totalCompuationalTime / iter;
-    double iterationsLeft = global_settings::MAX_ITER - iter;
+    double iterationsLeft = settings::MAX_ITER - iter;
     return iterationsLeft * averangeIterTime;
 }
 

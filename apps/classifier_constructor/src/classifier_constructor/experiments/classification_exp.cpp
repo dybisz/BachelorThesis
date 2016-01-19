@@ -4,7 +4,6 @@
 
 #include <classifier_constructor/experiments/classification_exp.h>
 
-#include <classifier_constructor/settings/global_settings.h>
 #include <logger/log.h>
 #include <patterns_to_languages.h>
 #include <classifier_constructor/classification/classifier.h>
@@ -17,6 +16,12 @@
 
 #include <xls_loader.h>
 
+#include <classifier_constructor/settings/thread_settings.h>
+#include <classifier_constructor/settings/pso_settings.h>
+#include <classifier_constructor/settings/log_settings.h>
+#include <classifier_constructor/settings/classifier_settings.h>
+#include <classifier_constructor/settings/app_settings.h>
+
 using namespace pso;
 
 namespace experiments {
@@ -26,14 +31,14 @@ namespace experiments {
 
         logger::log("Loading Patterns");
 
-        if (global_settings::NATIVE_XLS_PATH == ""){
+        if (settings::NATIVE_XLS_PATH == ""){
             logger::log("Please Provide NATIVE_XLS_PATH");
             return ;
         }
 
         // Note: if xlsLoader goes out of scope, patterns are deleted.
-        XlsLoader nativeXLSLoader(global_settings::NATIVE_XLS_PATH, 1, 900);
-        XlsLoader foreignXLSLoader(global_settings::FOREIGN_XLS_PATH, 1, 900);
+        XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH, 1, 900);
+        XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH, 1, 900);
 
         std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
         std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
@@ -46,26 +51,26 @@ namespace experiments {
 
         std::vector<Language *> *nativeLanguages =
                 patterns_to_languages::convert(nativePatterns,
-                                               global_settings::ALPHABET_SIZE);
+                                               settings::ALPHABET_SIZE);
 
         std::vector<Language *> *foreignLanguages =
                 patterns_to_languages::convert(foreignPatterns,
-                                               global_settings::ALPHABET_SIZE);
+                                               settings::ALPHABET_SIZE);
 
 
         int nativeSize = nativeLanguages->size();
-        int numberOfStates = nativeSize * global_settings::STATES_PER_NATIVE +
-                                global_settings::STATES_PER_FOREIGN;
+        int numberOfStates = nativeSize * settings::STATES_PER_NATIVE +
+                             settings::STATES_PER_FOREIGN;
 
-        int particleDimension = numberOfStates * global_settings::ALPHABET_SIZE;
+        int particleDimension = numberOfStates * settings::ALPHABET_SIZE;
         ParticleFactory particleFactory =
                 classification::createParticleFactory(
-                        global_settings::SWARM_SIZE, particleDimension,
-                        global_settings::ENCODING_DELTA,
-                        numberOfStates + global_settings::ENCODING_DELTA
-                        - global_settings::UPPER_BOUND_ERR,
+                        settings::SWARM_SIZE, particleDimension,
+                        settings::ENCODING_DELTA,
+                        numberOfStates + settings::ENCODING_DELTA
+                        - settings::UPPER_BOUND_ERR,
                         (double)-numberOfStates, (double)numberOfStates,
-                        global_settings::MAX_VELOCITY
+                        settings::MAX_VELOCITY
                 );
         /*
         std::stringstream ss;
@@ -88,8 +93,8 @@ namespace experiments {
 
         ParticleDecoder * particleDecoder =
                 classification::createParticleDecoder(numberOfStates,
-                                            global_settings::ALPHABET_SIZE,
-                                            global_settings::ENCODING_DELTA);
+                                            settings::ALPHABET_SIZE,
+                                            settings::ENCODING_DELTA);
 
         FitnessUpdater* fitnessUpdater =
                 classification::createFitnessUpdater(particles,
@@ -103,25 +108,25 @@ namespace experiments {
 
         ParticleUpdater* particleUpdater =
                 classification::createPaticleUpdater(particles,
-                              global_settings::LEARNING_FACTOR,
-                              global_settings::PARTICLE_VEL_WEIGHT,
+                              settings::LEARNING_FACTOR,
+                              settings::PARTICLE_VEL_WEIGHT,
                               numberOfTries);
 
         PSO * pso =
                 classification::createPSO(particles, fitnessUpdater,
                                           neighbourhoodUpdater,
                                           particleUpdater,
-                                          global_settings::MAX_ITER,
-                                          global_settings::TRUE_THREAD_COUNT);
+                                          settings::MAX_ITER,
+                                          settings::TRUE_THREAD_COUNT);
 
         Classifier *classifier = new Classifier(
                 pso,
                 nativeLanguages,
                 foreignLanguages,
-                global_settings::STATES_PER_NATIVE,
-                global_settings::STATES_PER_FOREIGN,
-                global_settings::ALPHABET_SIZE,
-                global_settings::TESTING_SET_RATIO);
+                settings::STATES_PER_NATIVE,
+                settings::STATES_PER_FOREIGN,
+                settings::ALPHABET_SIZE,
+                settings::TESTING_SET_RATIO);
 
         classifier->runClassification();
 

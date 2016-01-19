@@ -3,12 +3,12 @@
 //
 
 #include "logger/log.h"
-#include <error/error.h>
+#include <error.h>
 
 #include <sys/stat.h>
 #include <ctime>
 
-#include <time/clock.h>
+#include <clock.h>
 
 namespace logger
 {

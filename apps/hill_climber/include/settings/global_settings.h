@@ -15,7 +15,7 @@
 // |--o   actual values declared in global_settings.cpp (<3 c++)
 // |--o   alphabet is represented by integers from interval [_alphabet[0], _alphabet.size()]
 
-namespace global_settings {
+namespace settings {
     /* ------ EXPERIMENT SETTINGS ----- */
     // ID of experiment to run
     // 0: Main optimizer

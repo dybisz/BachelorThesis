@@ -18,12 +18,12 @@ namespace experiments {
         logger::log("Loading Patterns");
 
         // Note: if xlsLoader goes out of scope, patterns are deleted.
-        XlsLoader nativeXLSLoader(global_settings::NATIVE_XLS_PATH,
-                                  global_settings::NUMBER_OF_CLASSES,
-                                  global_settings::PATTERNS_PER_CLASS);
-        XlsLoader foreignXLSLoader(global_settings::FOREIGN_XLS_PATH,
-                                   global_settings::NUMBER_OF_CLASSES,
-                                   global_settings::PATTERNS_PER_CLASS);
+        XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH,
+                                  settings::NUMBER_OF_CLASSES,
+                                  settings::PATTERNS_PER_CLASS);
+        XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH,
+                                   settings::NUMBER_OF_CLASSES,
+                                   settings::PATTERNS_PER_CLASS);
 
         std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
         std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
@@ -36,18 +36,18 @@ namespace experiments {
 
         std::vector<Language *> *nativeLanguages =
                 patterns_to_languages::convert(nativePatterns,
-                                               global_settings::ALPHABET_SIZE);
+                                               settings::ALPHABET_SIZE);
 
         std::vector<Language *> *foreignLanguages =
                 patterns_to_languages::convert(foreignPatterns,
-                                               global_settings::ALPHABET_SIZE);
+                                               settings::ALPHABET_SIZE);
 
         AlternativeClassifier *classifier = new AlternativeClassifier(
                 nativeLanguages,
                 foreignLanguages,
-                global_settings::HILL_CLIMBER_STATES,
-                global_settings::ALPHABET_SIZE,
-                global_settings::TESTING_SET_RATIO);
+                settings::HILL_CLIMBER_STATES,
+                settings::ALPHABET_SIZE,
+                settings::TESTING_SET_RATIO);
 
         classifier->compute();
         delete classifier;
