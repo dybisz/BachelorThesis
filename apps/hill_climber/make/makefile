@@ -294,6 +294,8 @@ VPATH = ${SRC_MODULES}
 
 all: compile_objects link utest
 
+link_without_test: compile_objects link
+
 compile_objects: init_project $(EXTERNALS_RULE_NAME) ${OBJECTS}
 
 link: info_prefix init_project ${PROJ_CODE_NAME} info_suffix
