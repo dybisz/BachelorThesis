@@ -17,7 +17,7 @@ Language::Language(const Language &language) :
         _alphabet(language.getAlphabet()){
     for(unsigned int i = 0; i < language.size(); i++){
         Word* otherWord = language.getWord(i);
-        Word *word = new Word(otherWord);
+        Word *word = new Word(*otherWord);
 
         this->addWord(word);
     }
@@ -124,7 +124,6 @@ void Language::append(const Language &language) {
 }
 
 void Language::removeDuplicates() {
-
     vector<Word*> wordsWithNoDuplicates
                     = getWordsWithoutDuplicates(this->_words);
 

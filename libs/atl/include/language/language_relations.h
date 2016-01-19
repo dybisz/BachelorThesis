@@ -37,6 +37,14 @@ namespace language{
      * Checks if the set of languages have equal alphabet.
      */
     bool equalAlphabets(const std::vector<Language *> *languages);
+
+    /*
+     * Take w in L1, find the maximum similarity(w,v) for
+     * all v in L2 and store the result.
+     * Repeat for every w in L1 and take the average.
+     */
+    double similarity(const Language& language1,
+                      const Language& language2);
 }
 
 

@@ -40,6 +40,8 @@ namespace patterns_to_languages {
     vector<Language *> *convert(vector<Pattern *> *patterns, int numberOfStates,
                                 int precision, int stateStartingIndex = 0);
 
+    Language* convert(Pattern& pattern, int precision);
+
     vector<Language *> *convert(vector<Pattern *> *patterns, int precision);
 
     // Auxiliary method. It returns vector of intervals, where i'th entry

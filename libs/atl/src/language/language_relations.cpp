@@ -2,7 +2,10 @@
 // Created by jakub on 1/17/16.
 //
 
+#include <language/word_relations.h>
 #include "language/language_relations.h"
+#include <algorithm>
+#include <math/math.h>
 
 namespace language{
 
@@ -79,5 +82,27 @@ namespace language{
             }
         }
         return true;
+    }
+
+    double similarity(const Language &language1, const Language &language2) {
+        unsigned int size1 = language1.size();
+        unsigned int size2 = language2.size();
+
+        std::vector<double> wordSimilarities;
+        double similarityLanguage = 0;
+        for(unsigned int i = 0; i < size1; i++){
+            wordSimilarities.clear();
+            Word* word1 = language1.getWord(i);
+            for(unsigned int j = 0; j < size2; j++){
+                Word* word2 = language2.getWord(j);
+                double similarity = word::similarity(*word1, *word2);
+                wordSimilarities.push_back(similarity);
+            }
+            double maxSimilarity = math::max(wordSimilarities);
+            similarityLanguage += maxSimilarity;
+        }
+        similarityLanguage /= size1;
+
+        return similarityLanguage;
     }
 }

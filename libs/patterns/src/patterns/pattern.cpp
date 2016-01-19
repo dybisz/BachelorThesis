@@ -66,11 +66,11 @@ double Pattern::getFeatureMax(int i) {
 /* ----- AUXILIARY ----- */
 /* --------------------- */
 
-int Pattern::size() {
+int Pattern::size() const {
     return this->_features.size();
 }
 
-int Pattern::getLabel() {
+int Pattern::getLabel() const{
     return this->_label;
 }
 

@@ -27,6 +27,21 @@ vector<Language *> *patterns_to_languages::convert(
     return languages;
 }
 
+Language* patterns_to_languages::convert(Pattern& pattern, int precision) {
+
+    std::vector<Pattern*> patternVector;
+    patternVector.push_back(&pattern);
+
+    std::vector<Language*>* languageVector = convert(&patternVector, precision);
+
+    Language* convertedLanguage = (*languageVector)[0];
+
+    delete languageVector;
+
+    return convertedLanguage;
+}
+
+
 vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
                                                    int precision) {
     _checkConditions(1, precision, patterns);
@@ -35,7 +50,7 @@ vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
     try {
         vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
         vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
-        Alphabet *alphabet = new Alphabet(precision);
+        Alphabet *alphabet = new Alphabet(precision); // TODO memory leak
         languages = _createLanguages(normalized, alphabet);
     }
     catch (std::exception &e) {

@@ -25,8 +25,8 @@ public:
     double getFeatureMin(int i);
     double getFeatureMax(int i);
 
-    int size();
-    int getLabel();
+    int size() const;
+    int getLabel() const;
     vector<FeaturesVector*>* getFeatures();
     string toString();
 

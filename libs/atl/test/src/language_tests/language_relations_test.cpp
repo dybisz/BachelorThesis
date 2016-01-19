@@ -405,3 +405,100 @@ TEST(LanguageRelation_EqualAlphabets,
 
     EXPECT_ANY_THROW(language::equalAlphabets(&languages));
 }
+
+TEST(LanguageRelations_Similarity,
+     LanguageSimilarityIsEqualAverageOfWordSimilarities) {
+    int alphabetSize = 4;
+
+    Alphabet alphabet(alphabetSize);
+
+    Language language1(alphabet);
+    Language language2(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{2, 3, 4};
+
+    std::vector<int> wordEntries3{1, 2, 4};
+    std::vector<int> wordEntries4{4, 2, 3};
+    std::vector<int> wordEntries5{1, 3, 2};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+    Word* word4 = new Word(wordEntries4);
+    Word* word5 = new Word(wordEntries5);
+
+    language1.addWord(word1);
+    language1.addWord(word2);
+
+    language2.addWord(word3);
+    language2.addWord(word4);
+    language2.addWord(word5);
+
+    float expectedSimilarity = 0.5f;
+    float actualSimilarity = language::similarity(language1, language2);
+
+    EXPECT_EQ(expectedSimilarity, actualSimilarity);
+}
+
+
+TEST(LanguageRelations_Similarity,
+     LanguageSimilarityIsEqualAverageOfWordSimilarities2) {
+    int alphabetSize = 4;
+
+    Alphabet alphabet(alphabetSize);
+
+    Language language1(alphabet);
+    Language language2(alphabet);
+
+    std::vector<int> wordEntries1{1, 2, 3};
+    std::vector<int> wordEntries2{2, 3, 4};
+
+    std::vector<int> wordEntries3{1, 2, 4};
+    std::vector<int> wordEntries4{4, 2, 3};
+    std::vector<int> wordEntries5{1, 3, 2};
+
+    Word* word1 = new Word(wordEntries1);
+    Word* word2 = new Word(wordEntries2);
+    Word* word3 = new Word(wordEntries3);
+    Word* word4 = new Word(wordEntries4);
+    Word* word5 = new Word(wordEntries5);
+
+    language1.addWord(word1);
+    language1.addWord(word2);
+
+    language2.addWord(word3);
+    language2.addWord(word4);
+    language2.addWord(word5);
+
+    float expectedSimilarity = 5.0f/9.0f;
+    float actualSimilarity = language::similarity(language2, language1);
+
+    EXPECT_EQ(expectedSimilarity, actualSimilarity);
+}
+
+TEST(LanguageRelations_Similarity,
+     SameLanguage_SimilarityEqualOne) {
+    int alphabetSize = 4;
+
+    Alphabet alphabet(alphabetSize);
+
+    Language language2(alphabet);
+
+    std::vector<int> wordEntries3{1, 2, 4};
+    std::vector<int> wordEntries4{4, 2, 3};
+    std::vector<int> wordEntries5{1, 3, 2};
+
+    Word* word3 = new Word(wordEntries3);
+    Word* word4 = new Word(wordEntries4);
+    Word* word5 = new Word(wordEntries5);
+
+    language2.addWord(word3);
+    language2.addWord(word4);
+    language2.addWord(word5);
+
+    float expectedSimilarity = 1.0f;
+    float actualSimilarity = language::similarity(language2, language2);
+
+    EXPECT_EQ(expectedSimilarity, actualSimilarity);
+}

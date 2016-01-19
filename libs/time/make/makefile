@@ -283,7 +283,7 @@ VPATH = ${SRC_MODULES}
 ################################################
 
 # All
-all: compile_lib utest
+all: compile_lib run_test
 
 compile_lib: $(EXTERNALS_RULE_NAME) compile_objects \
 			info_prefix ${PROJ_CODE_NAME} info_suffix
@@ -296,8 +296,11 @@ ${INSTALL_RULE_NAME}: compile_lib
 ${RELEASE_RULE_NAME}: compile_lib
 	@$(RUN_RELEASE_SCRIPT)
 
+compile_test:
+	@$(MAKE) link -C $(TST)
+
 # Unit Test rule, assumes that $(TST) has a makefile inside
-utest:
+run_test:
 	@$(MAKE) -C $(TST)
 
 ################################################

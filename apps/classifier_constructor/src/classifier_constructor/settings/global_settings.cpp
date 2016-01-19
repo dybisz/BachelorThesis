@@ -172,7 +172,6 @@ namespace global_settings {
         ss << " ";
         ss << EXPERIMENT_ID << std::endl;
 
-
         ss << std::endl<< "CLASSIFICATION SETTINGS" <<std::endl <<std::endl;
 
         s = "NATIVE_XLS_PATH ";

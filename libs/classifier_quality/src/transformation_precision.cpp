@@ -2,26 +2,24 @@
 // Created by jakub on 1/17/16.
 //
 
+#include <patterns_to_languages.h>
 #include "transformation_precision.h"
-
-
 
 namespace quality {
 
-    double computeTransformationPrecision(std::vector<Language*>* languages){
-        int intersectionSize = 0;
-        int unionSize = 0;
+    double computeTransformationPrecision(Pattern& pattern,
+                                          int alphabetSize){
+        Language* language = patterns_to_languages::convert(pattern,
+                                                            alphabetSize);
+        language->removeDuplicates();
 
-        unsigned int languageCount = languages->size();
-        std::vector<Word*> alreadyProcessedWords;
+        double objectsCount = pattern.size();
+        double transformedSize = language->size();
 
-        for(unsigned int i = 0; i < languageCount - 1; i++){
-            Language* language1 = (*languages)[i];
-            for(unsigned int j = i + 1; j < languageCount; j++){
-                Language* language2 = (*languages)[j];
+        double ratio = ((double)transformedSize/(double)objectsCount);
 
-            }
-        }
+        delete language;
+
+        return ratio;
     }
-
 }
