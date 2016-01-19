@@ -30,6 +30,7 @@ public:
     // 4) From vector of Symbol class objects
     // 5) From vector of pointers to Symbol class objects
     Word();
+    Word(const Word& w);
     Word(const Word* w);
     Word(const int entries[], int length);
     Word(const vector<int> &entries);

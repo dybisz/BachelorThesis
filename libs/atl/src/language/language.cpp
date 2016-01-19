@@ -124,13 +124,12 @@ void Language::append(const Language &language) {
 }
 
 void Language::removeDuplicates() {
-    /*
+
     vector<Word*> wordsWithNoDuplicates
                     = getWordsWithoutDuplicates(this->_words);
 
     this->freeWordsMemory();
     _words = wordsWithNoDuplicates;
-     */
 }
 
 int Language::numberOfOccurrences(const Word& word) {
@@ -153,15 +152,16 @@ void Language::setNewWords(const vector<Word *> &words) {
 
 vector<Word*> Language::getWordsWithoutDuplicates(
                                     const vector<Word *> &words){
-    vector<Word*> newWords;
+    vector<Word*> wordsWithoutDuplicates;
 
     for(unsigned int i = 0; i < this->size(); i++){
         Word* word = _words[i];
-        if (language::numberOfOccurrences(newWords, *word) == 0){
-            newWords.push_back(new Word(*word));
+        if (language::numberOfOccurrences(wordsWithoutDuplicates, *word) == 0){
+            Word* nonDuplicatingWord = new Word(*word);
+            wordsWithoutDuplicates.push_back(nonDuplicatingWord);
         }
     }
-    return newWords;
+    return wordsWithoutDuplicates;
 }
 
 

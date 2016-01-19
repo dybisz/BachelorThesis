@@ -10,9 +10,18 @@
 
 Word::Word() {}
 
+Word::Word(const Word &w) {
+    for(int i = 0; i < w.size(); ++i) {
+        Symbol* symbolToCopy = w._entries[i];
+        Symbol* symbol = new Symbol(*symbolToCopy);
+        _entries.push_back(symbol);
+    }
+}
+
 Word::Word(const Word* w) {
     for(int i = 0; i < w->size(); ++i) {
-        Symbol* symbol = new Symbol(w->getSymbol(i)->getVal());
+        Symbol* symbolToCopy = w->getSymbol(i);
+        Symbol* symbol = new Symbol(symbolToCopy->getVal());
         _entries.push_back(symbol);
     }
 }

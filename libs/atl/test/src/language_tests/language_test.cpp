@@ -376,7 +376,7 @@ TEST(Language,
 
     delete word4;
 }
-/*
+
 TEST(Language,
      LanguageContainsTwoDuplicateWords_SizeShorterByOne) {
     int alphabetSize1 = 5;
@@ -405,8 +405,6 @@ TEST(Language,
 
     EXPECT_EQ(expectedLanguageWithoutDuplicatesSize,
               actualLanguageWithoutDuplicatesSize);
-
-
 }
 
 TEST(Language,
@@ -467,4 +465,4 @@ TEST(Language,
 
     EXPECT_EQ(expectedLanguageWithoutDuplicatesSize,
               actualLanguageWithoutDuplicatesSize);
-}*/
+}
