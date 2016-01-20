@@ -3,8 +3,8 @@
 //
 
 #include "logger/logger_engine.h"
-#include <strings/string_utils.h>
-#include <time/clock.h>
+#include <string_utils.h>
+#include <clock.h>
 
 namespace logger
 {

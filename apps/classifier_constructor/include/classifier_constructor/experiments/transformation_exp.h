@@ -9,5 +9,4 @@ namespace experiments {
     void runTransformationAnalysis();
 }
 
-
 #endif //BACHELOR_THESIS_TRANSFORMATION_EXP_H

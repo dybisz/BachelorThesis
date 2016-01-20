@@ -46,5 +46,28 @@ namespace logger
         settings::DEFAULT_FILE_STREAM.close();
     }
 
+    void makeDir(std::string dir){
+        if (mkdir(dir.c_str(), 0777) < 0)
+            if (errno !=EEXIST)
+                ERR(dir.c_str());
+    }
 
+
+    std::string makePath(std::string dir, std::string appendToDir){
+        std::string path;
+        std::string PATH_SEPARATOR = "/";
+
+        path += dir + PATH_SEPARATOR + appendToDir;
+        return path;
+    }
+
+    std::string makePath(const std::vector<std::string>& toPath){
+        std::string path;
+        std::string PATH_SEPARATOR = "/";
+
+        for(unsigned int i = 0; i < toPath.size(); i++){
+            path += toPath[i] + PATH_SEPARATOR;
+        }
+        return path;
+    }
 }

@@ -2,14 +2,54 @@
 // Created by jakub on 12/4/15.
 //
 
-#include "dfa_loader.h"
+#include "dfa_serialization.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <strings/string_utils.h>
+#include <string_utils.h>
+#include <logger/log.h>
 
-namespace dfa_loader
+namespace dfa_serialization
 {
+    std::string saveDFAToString(const DFA& dfa){
+        std::string SEPERATOR = ",";
+        std::stringstream ss;
+        int stateCount = dfa.getStateCount();
+        int symbolCount = dfa.getSymbolCount();
+
+        ss << stateCount << SEPERATOR << symbolCount << SEPERATOR;
+
+        const TransitionFunction* tf = dfa.getTransitionFunction();
+        for(unsigned int state = 0; state < stateCount; state++){
+            for(unsigned int symbol = 0; symbol < symbolCount; symbol++){
+                int toState = tf->getState(state, symbol);
+                // Unified form starts indexing from 1
+                toState += 1;
+
+                ss << toState << SEPERATOR;
+            }
+        }
+        std::string dfaString = ss.str();
+        // Remove the last empty seperator
+        dfaString.pop_back();
+
+        return dfaString;
+    }
+
+    void saveDFAToFile(const DFA& dfa,
+                       std::string filepath, std::string name){
+        std::string dfaString = saveDFAToString(dfa);
+
+        name += DFA_EXTENSION;
+
+        std::ofstream dfaFile;
+        std::string fullPath = logger::makePath(filepath, name);
+        dfaFile.open(fullPath);
+
+        dfaFile << dfaString;
+    }
+
+
     DFA* loadDFAFromFile(std::string dfaURL) {
         ifstream file;
         file.open(dfaURL);

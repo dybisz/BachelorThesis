@@ -22,6 +22,12 @@ namespace logger
 
     void closeLog();
 
+    void makeDir(std::string dir);
+
+    std::string makePath(std::string dir, std::string appendToDir);
+
+    std::string makePath(const std::vector<std::string>& toPath);
+
     // -------------------------------------------------------------------------
 
     /*
@@ -108,70 +114,6 @@ namespace logger
 
         engine::closeExtraFile();
     }
-/*
-    template<typename... Args>
-    inline void log(Verbose verb, File f, Args... args)
-    {
-        settings::CURRENT_VERBOSE = verb;
-        settings::CURRENT_VERBOSE_DEPTH = 0;
-
-        engine::openExtraFile(f.name);
-        settings::EXTRA_FILE = f;
-
-        engine::printVerboseAndTimeStamp(verb, 0);
-        engine::recursivePrint(args...);
-
-        settings::CURRENT_VERBOSE_DEPTH = 0;
-
-        engine::closeExtraFile();
-    }*/
-
-    /*
-    template<typename T1, typename T2, typename... Args>
-    void log_test(T1 t1, T2 t2, Args... args)
-    {
-        settings::CURRENT_VERBOSE = settings::DEFAULT_VERBOSE;
-        settings::CURRENT_VERBOSE_DEPTH = 0;
-        int count = 0;
-
-        // Found File
-        if(std::is_same<T1, File>::value) {
-            count++;
-
-            engine::openExtraFile(t1.name);
-            settings::EXTRA_FILE = t1;
-
-            // Found Verbose
-            if (std::is_same<T2, Verbose>::value) {
-                count++;
-                settings::CURRENT_VERBOSE = t2;
-            }
-        }
-            // Found Verbose
-        else if(std::is_same<T1, Verbose>::value) {
-            count++;
-            settings::CURRENT_VERBOSE = t2;
-
-            // Found File
-            if(std::is_same<T2, File>::value) {
-                engine::openExtraFile(t1.name);
-                settings::EXTRA_FILE = t1;
-            }
-        }
-
-        engine::printVerboseAndTimeStamp(settings::CURRENT_VERBOSE, 0);
-
-        if(count == 0)
-            engine::recursivePrint(t1, t2, args...);
-        if(count == 1)
-            engine::recursivePrint(t2, args...);
-        else if(count == 2)
-            engine::recursivePrint(args...);
-
-        settings::CURRENT_VERBOSE_DEPTH = 0;
-
-    }
-    */
 }
 
 #endif //AC_LOGGER2_H

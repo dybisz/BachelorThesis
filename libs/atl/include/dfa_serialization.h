@@ -22,10 +22,24 @@
  *       q2 | 3 | 3 |
  *       q3 | 3 | 3 |
  *       q4 | 4 | 4 |
+ *  Warning: The states and symbols start indexing from '1'
  */
 
-namespace dfa_loader
+namespace dfa_serialization
 {
+    const std::string DFA_EXTENSION = ".dfa";
+
+    /*
+     * Saves the DFA to string using the unified form
+     */
+    std::string saveDFAToString(const DFA& dfa);
+
+    /*
+     * Saves the DFA to file using the unified form
+     */
+    void saveDFAToFile(const DFA& dfa,
+                       std::string filepath, std::string name);
+
     /*
      * Loads DFA from file
      */

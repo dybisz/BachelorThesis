@@ -4,11 +4,11 @@
 
 #include <automata/dfa_generation/dfa_generator.h>
 
-#include <dfa_loader.h>
+#include "dfa_serialization.h"
 #include <drawing/drawer.h>
 #include <automata/algorithms/automata_algs.h>
 
-#include <error/error.h>
+#include <error.h>
 #include <math/random.h>
 
 #include <fstream>
@@ -47,7 +47,7 @@ namespace automata
             }
             dfaStr = headerStr + transitionStr;
 
-            DFA* dfaRandom = dfa_loader::loadDFAFromString(dfaStr);
+            DFA* dfaRandom = dfa_serialization::loadDFAFromString(dfaStr);
             unreachableStateCount =
                     automata::removeUnreachableStates(&dfaRandom);
             delete dfaRandom;
@@ -72,7 +72,7 @@ namespace automata
 
         // Draw created DFA
         std::string filePathDraw = dirpath + "/" + fileName;
-        DFA* dfa = dfa_loader::loadDFAFromFile(filePathDFA);
+        DFA* dfa = dfa_serialization::loadDFAFromFile(filePathDFA);
         drawing::drawDFA(*dfa, filePathDraw);
     }
 

@@ -6,6 +6,7 @@ pso
 math
 strings
 patterns
+logger
 
 ###############################################
 #                INSTALL                      #
