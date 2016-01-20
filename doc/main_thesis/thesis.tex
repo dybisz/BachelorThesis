@@ -1301,6 +1301,95 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
 
+
+
+\section{Object Transformation}
+
+
+\begin{figure}[H]
+    \caption{Similarity of Transformed Languages}
+    \label{fig:lang_sim}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    \begin{groupplot}[group style={group size= 1 by 1,
+        vertical sep=50pt, horizontal sep=40pt}, 
+    height=5cm,
+    width=9cm,
+    ylabel=Similarity,
+    xlabel=Alphabet Size,
+    legend cell align=left, 
+    legend columns=1,
+    legend style={
+        at={(1.3, 0.7)}, 
+        anchor=south east, 
+        column sep=2ex
+    }
+    ]
+    
+    \nextgroupplot[title=Similarity of Languages]
+    
+    % RECONS_C4_CL4
+    \addplot[color=rred, mark=x] coordinates {
+        (1, 1.0)
+        (2, 0.885624)
+        (3, 0.820992)
+        (4, 0.730032)
+        (5, 0.683266)
+        (6, 0.630893)
+        (7, 0.597193)
+        (8, 0.556699)
+        (9, 0.530009)
+        (10, 0.501454)
+        (11, 0.483245)
+        (12, 0.468839)
+        (13, 0.449223)
+        (14, 0.439578)
+        (15, 0.424618)
+        (16, 0.414595)
+        (17, 0.40647)
+        (18, 0.40111)
+        (19, 0.395343)
+        (20, 0.387143)
+        (21, 0.379669)
+        (22, 0.373499)
+        (23, 0.367048)
+        (24, 0.360526)
+        (25, 0.352155)
+        (26, 0.344844)
+        (27, 0.341559)
+        (28, 0.3371)
+        (29, 0.334055)
+        (30, 0.323485)
+        (31, 0.320073)
+        (32, 0.316891)
+        (33, 0.314173)
+        (34, 0.312831)
+        (35, 0.31173)
+        (36, 0.310632)
+        (37, 0.308987)
+        (38, 0.308271)
+        (39, 0.307231)
+        (40, 0.306493)
+    };
+    
+    \end{groupplot}
+    
+    \end{tikzpicture}
+    
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
 \section{PSO}
 Native symbols used in the experiments were
 
