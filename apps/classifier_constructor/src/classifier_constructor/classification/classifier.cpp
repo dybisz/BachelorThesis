@@ -182,20 +182,27 @@ void Classifier::_calculateAndPrintQualityResults(const DFA* bestDFA){
     std::string trainingInfo    = "TRAINING";
     std::string testingInfo     = "TESTING";
 
-    logger::log(quality::distinctResultsToString(_nativeLanguages,
+    std::string resultFileName = "results.txt";
+
+    logger::log(File(resultFileName, false),
+                quality::distinctResultsToString(_nativeLanguages,
                                                  _foreignLanguages,
                                                  (DFA *) bestDFA,
                                                  trainingInfo));
-    logger::log(quality::overallResultsToString(_nativeLanguages,
+    logger::log(File(resultFileName, false),
+                quality::overallResultsToString(_nativeLanguages,
                                                 _foreignLanguages,
                                                 (DFA *) bestDFA,
                                                 trainingInfo));
 
-    logger::log(quality::distinctResultsToString(_nativeTestingSet,
+    logger::log(File(resultFileName, false),
+                quality::distinctResultsToString(_nativeTestingSet,
                                                  _foreignTestingSet,
                                                  (DFA *) bestDFA,
                                                  testingInfo));
-    logger::log(quality::overallResultsToString(_nativeTestingSet,
+
+    logger::log(File(resultFileName, false),
+                quality::overallResultsToString(_nativeTestingSet,
                                                 _foreignTestingSet,
                                                 (DFA *) bestDFA,
                                                 testingInfo));

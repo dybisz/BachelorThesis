@@ -19,6 +19,7 @@
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
 #include <classifier_constructor/settings/settings.h>
+#include <classifier_constructor/experiments/transformation_exp.h>
 
 using namespace std;
 
@@ -51,7 +52,7 @@ int main(int argc, char *argv[]) {
     // Choose experiment
     switch (settings::EXPERIMENT_ID) {
         case 0:
-            experiments::runClassifierConstructor();
+            experiments::runClassification();
             break;
         case 1:
             experiments::runTransformationAnalysis();
@@ -80,12 +81,14 @@ void initApp(int argc, char *argv[]) {
     // Set the number of threads to be activated
     setTrueNumberOfThreads();
 
+    initFlags(argc, argv);
+
     // Initiates the logging functionality
     logger::settings::LOG_MAIN_DIR = settings::LOG_MAIN_DIR;
     logger::settings::LOG_CURR_DIR = settings::LOG_CURR_DIR;
     logger::initLog();
 
-    initFlags(argc, argv);
+    settings::printAllSettings();
 }
 
 void initFlags(int argc, char *argv[]){
@@ -94,8 +97,6 @@ void initFlags(int argc, char *argv[]){
     settings::setAllFlags();
 
     console::readFlags(argc, argv);
-
-    settings::printAllSettings();
 }
 
 void closeApp() {

@@ -14,7 +14,6 @@ namespace pso {
  * Pure Abstract class used to provide interface for Particle Update.
  *
  * Has ownership over:
- *      - Raw pointer to ParticleDecoder
  *      - Shared pointer to ParticleShPtr_ConstVectorShPtr
  */
 class ParticleUpdater {

@@ -13,51 +13,10 @@
 
 namespace experiments
 {
-    void runClassifierConstructor();
+    void runClassification();
 
-    void runTransformationAnalysis();
+    void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
+                                 std::string headerInfo);
 
-    namespace classification
-    {
-        pso::PSO * createPSO(pso::ParticleShPtr_ConstVectorShPtr particles,
-                              pso::FitnessUpdater* fitnessUpdater,
-                              pso::NeighbourhoodUpdater* neighUpdater,
-                              pso::ParticleUpdater* particleUpdater,
-                              int maxIterations, int threadCount);
-
-        pso::ParticleFactory createParticleFactory(int swarmSize,
-                                                     int particleDimension,
-                                                     double posIntervalMin,
-                                                     double posIntervalMax,
-                                                     double velIntervalMin,
-                                                     double velIntervalMax,
-                                                     double maxVelocity );
-
-        pso::ParticleDecoder * createParticleDecoder(int numberOfStates,
-                                                      int numberOfSymbols,
-                                                      double encodingDelta);
-
-        pso::NeighbourhoodUpdater* createNeighbourhoodUpdater(
-                pso::ParticleShPtr_ConstVectorShPtr particles,
-                int numberOfParticlesToInform );
-
-        pso::FitnessUpdater* createFitnessUpdater(
-                pso::ParticleShPtr_ConstVectorShPtr particles,
-                pso::ParticleDecoder * particleDecoder,
-                std::vector<Language*>* nativeLanguages,
-                std::vector<Language*>* foreignLanguages);
-
-
-        pso::ParticleUpdater* createPaticleUpdater(
-                pso::ParticleShPtr_ConstVectorShPtr particles,
-                double learningFactor, double velocityWeight,
-                int timesToAttemptPointGenerationWithinHyperSphere);
-
-        void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
-                                     std::string headerInfo);
-
-        void printTransformedLanguagesInfo(std::vector<Language*>* languages,
-                                           std::string headerInfo);
-    }
 }
 #endif //BACHELOR_THESIS_CLASSIFICATION_EXP_H

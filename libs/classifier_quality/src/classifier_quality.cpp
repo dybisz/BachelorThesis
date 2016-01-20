@@ -2,6 +2,8 @@
 // Created by dybisz on 23.12.15.
 //
 
+#include <sstream>
+#include <iomanip>
 #include "classifier_quality.h"
 
 /* ----------------------- */
@@ -28,16 +30,20 @@ string quality::distinctResultsToString(vector<Language *> *nativeLanguages,
                                                 foreignLanguages, dfa);
 
     /* ----- Create Output String ----- */
-    string out = "[QUALITY_DISTINCT - " + headerInfo + "]\n";
-    out += "[TP].............................................. " + to_string(TP) + "\n";
-    out += "[TN].............................................. " + to_string(TN) + "\n";
-    out += "[FP].............................................. " + to_string(FP) + "\n";
-    out += "[FN].............................................. " + to_string(FN) + "\n";
-    out += "[ACCURACY]........................................ " + to_string(accuracy) + "\n";
-    out += "[SENSITIVITY]..................................... " + to_string(sensitivity) + "\n";
-    out += "[PRECISION]....................................... " + to_string(precision) + "\n";
-    out += "[F-MEASURE]....................................... " + to_string(FMeasure);
-    return out;
+    stringstream ss;
+    int FLOAT_PRINT_PRECISION = 2;
+    ss << std::setprecision(FLOAT_PRINT_PRECISION);
+
+    ss << "[QUALITY_DISTINCT - " << headerInfo << "]\n";
+    ss << "[TP].............................................. " << TP << "\n";
+    ss << "[TN].............................................. " << (TN) << "\n";
+    ss << "[FP].............................................. " << (FP) << "\n";
+    ss << "[FN].............................................. " << (FN) << "\n";
+    ss << "[ACCURACY]........................................ " << (accuracy) << "\n";
+    ss << "[SENSITIVITY]..................................... " << (sensitivity) << "\n";
+    ss << "[PRECISION]....................................... " << (precision) << "\n";
+    ss << "[F-MEASURE]....................................... " << (FMeasure);
+    return ss.str();
 }
 
 string quality::overallResultsToString(vector<Language *> *nativeLanguages,
@@ -59,17 +65,20 @@ string quality::overallResultsToString(vector<Language *> *nativeLanguages,
     double FMeasure = calculateFMeasureOverall(nativeLanguages,
                                                foreignLanguages, dfa);
 
-    /* ----- Create Output String ----- */
-    string out = "[QUALITY_OVERALL - " + headerInfo +"]\n";
-    out += "[TP].............................................. " + to_string(TP) + "\n";
-    out += "[TN].............................................. " + to_string(TN) + "\n";
-    out += "[FP].............................................. " + to_string(FP) + "\n";
-    out += "[FN].............................................. " + to_string(FN) + "\n";
-    out += "[ACCURACY]........................................ " + to_string(accuracy) + "\n";
-    out += "[SENSITIVITY]..................................... " + to_string(sensitivity) + "\n";
-    out += "[PRECISION]....................................... " + to_string(precision) + "\n";
-    out += "[F-MEASURE]....................................... " + to_string(FMeasure);
-    return out;
+    stringstream ss;
+    int FLOAT_PRINT_PRECISION = 2;
+    ss << std::setprecision(FLOAT_PRINT_PRECISION);
+
+    ss << "[QUALITY_OVERALL - " << headerInfo << "]\n";
+    ss << "[TP].............................................. " << TP << "\n";
+    ss << "[TN].............................................. " << (TN) << "\n";
+    ss << "[FP].............................................. " << (FP) << "\n";
+    ss << "[FN].............................................. " << (FN) << "\n";
+    ss << "[ACCURACY]........................................ " << (accuracy) << "\n";
+    ss << "[SENSITIVITY]..................................... " << (sensitivity) << "\n";
+    ss << "[PRECISION]....................................... " << (precision) << "\n";
+    ss << "[F-MEASURE]....................................... " << (FMeasure);
+    return ss.str();
 }
 
 double quality::calculateAccuracyDistinct(vector<Language *> *nativeLanguages,

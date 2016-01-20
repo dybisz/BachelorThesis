@@ -63,17 +63,6 @@ void ParticleUpdaterSpherical::updateParticle(Particle& particle){
                     ((*randomPointWithin) - currentPosition);
     Point<double> newPosition = weightedVelocity + (*randomPointWithin);
 
-/*
-    std::cout << std::endl;
-    std::cout << std::endl;
-
-    std::cout << currentVelocity << std::endl;
-    std::cout << newVelocity << std::endl;
-
-    std::cout << std::endl;
-
-    std::cout << currentPosition << std::endl;
-*/
     newPosition = math::boundPoint(currentPosition,
                                    newPosition,
                                    particle.getMaxVelocity());

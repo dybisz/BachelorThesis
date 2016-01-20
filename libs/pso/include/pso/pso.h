@@ -91,11 +91,11 @@ public:
     //-----------------------------------------------------------//;
 
     PSO(ParticleShPtr_ConstVectorShPtr particles,
-          FitnessUpdater* fitnessUpdater,
-          NeighbourhoodUpdater* neighUpdater,
-          ParticleUpdater* particleUpdater,
-          int maxIterations,
-          unsigned int threadCount);
+        FitnessUpdater* fitnessUpdater,
+        NeighbourhoodUpdater* neighUpdater,
+        ParticleUpdater* particleUpdater,
+        int maxIterations,
+        unsigned int threadCount);
 
     ~PSO();
 
