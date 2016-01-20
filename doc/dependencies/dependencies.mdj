@@ -6994,7 +6994,7 @@
 							"containerChangeable": false,
 							"containerExtending": false,
 							"left": 72,
-							"top": 32,
+							"top": 48,
 							"width": 121,
 							"height": 38,
 							"autoResize": false,
@@ -7023,7 +7023,7 @@
 								"$ref": "AAAAAAFSWzoP6vDxca0="
 							},
 							"lineStyle": 1,
-							"points": "137:70;153:134"
+							"points": "138:86;153:134"
 						},
 						{
 							"_type": "UMLDependencyView",
