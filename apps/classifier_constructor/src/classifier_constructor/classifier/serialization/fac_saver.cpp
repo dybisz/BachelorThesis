@@ -3,6 +3,7 @@
 //
 
 #include <logger/log.h>
+#include <dfa_serialization.h>
 #include "classifier_constructor/classifier/serialization/fac_saver.h"
 
 using namespace std;
@@ -35,7 +36,8 @@ void FACSaver::save() {
 
     for(unsigned int i = 0; i < subClassifiers.size(); i++){
         FACClassifier subClassifier = subClassifiers[i];
-
+        string dirName = "classifier_" + to_string(i);
+        saveSubClassifier(subClassifier, dirName);
     }
 
     //std::ofstream stateCorrFile;
@@ -53,18 +55,36 @@ void FACSaver::createMainDir(){
     logger::makeDir(dirFullPath);
 }
 
-void FACSaver::saveSubClassifier(const FACClassifier& subClassifier, int id) {
-    string name = to_string(id);
-    string path = logger::makePath(dirFullPath, name);
-
+void FACSaver::saveSubClassifier(const FACClassifier& subClassifier,
+                                 string dirName) {
+    string path = logger::makePath(dirFullPath, dirName);
     logger::makeDir(path);
+
+    const DFA& dfa = subClassifier.getDFA();
+    const std::vector<StateCorrespondence>& stateCorrespondenceVector
+            = subClassifier.getStateCorrespondence();
+
+    string dfaName = DEFAULT_DFA_NAME;
+    saveDFA(dfa, path, dfaName);
+
+    string stateCorrespodenceName = DEFAULT_STATE_CORRES_NAME;
+    saveStateCorrespondenceVector(stateCorrespondenceVector,
+                            path, stateCorrespodenceName);
 }
 
-void FACSaver::saveDFA(const DFA &dfa, std::string path) {
-
+void FACSaver::saveDFA(const DFA &dfa,
+                       string path, string name) {
+    dfa_serialization::saveDFAToFile(dfa, path, name);
 }
 
-void FACSaver::saveStateCorrespondence(
-        const StateCorrespondence &stateCorrespondence, std::string path) {
+void FACSaver::saveStateCorrespondenceVector(
+        const std::vector<StateCorrespondence>& stateCorrespondenceVector,
+        string path,
+        string name) {
+    name += STATE_CORRES_EXT;
+    std::ofstream stateCorrFile;
+    string fullPath = logger::makePath(path, name);
+    stateCorrFile.open(fullPath);
 
+    stateCorrFile.close();
 }

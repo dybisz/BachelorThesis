@@ -35,7 +35,8 @@ const DFA &FACClassifier::getDFA() const {
     return this->dfa;
 }
 
-const std::vector<StateCorrespondence> &FACClassifier::getStateCorrespondence() const {
+const std::vector<StateCorrespondence>&
+FACClassifier::getStateCorrespondence() const {
     return this->stateCorrespondenceVector;
 }
 

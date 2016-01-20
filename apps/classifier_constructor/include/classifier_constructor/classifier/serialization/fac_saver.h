@@ -47,12 +47,16 @@ private:
 
     void createMainDir();
 
-    void saveSubClassifier(const FACClassifier& subClassifier, int id);
+    void saveSubClassifier(const FACClassifier& subClassifier,
+                           std::string dirName);
 
-    void saveDFA(const DFA& dfa, std::string path);
+    void saveDFA(const DFA& dfa,
+                 std::string path, std::string name);
 
-    void saveStateCorrespondence(const StateCorrespondence& stateCorrespondence,
-                                 std::string path);
+    void saveStateCorrespondenceVector(
+            const std::vector<StateCorrespondence>& stateCorrespondenceVector,
+            std::string path,
+            std::string name);
 
 public:
     //-----------------------------------------------------------//

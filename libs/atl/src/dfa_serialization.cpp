@@ -47,6 +47,8 @@ namespace dfa_serialization
         dfaFile.open(fullPath);
 
         dfaFile << dfaString;
+
+        dfaFile.close();
     }
 
 
