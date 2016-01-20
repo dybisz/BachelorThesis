@@ -45,6 +45,9 @@ namespace language{
      */
     double similarity(const Language& language1,
                       const Language& language2);
+
+    double averageSimilarity(const Language &language1,
+                             const Language &language2);
 }
 
 

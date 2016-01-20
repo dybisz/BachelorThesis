@@ -14,12 +14,13 @@ using namespace console;
 
 namespace settings {
 
-    int EXPERIMENT_ID = 0;
+    int EXPERIMENT_ID = 1;
 
     void setAppFlags(){
         addFlag(Flag("E", "exp",
                      "Expiriment ID - "
-                             "0: PSO Optimizer",
+                             "0: Classifier Construction"
+                             " 1: Transformation Analysis",
                      INT, &settings::EXPERIMENT_ID));
     }
 

@@ -13,7 +13,9 @@
 
 namespace experiments
 {
-    void runPSOBasedClassification();
+    void runClassifierConstructor();
+
+    void runTransformationAnalysis();
 
     namespace classification
     {

@@ -14,8 +14,9 @@
 using namespace console;
 
 namespace settings {
-    std::string NATIVE_XLS_PATH     = "";
-    std::string FOREIGN_XLS_PATH    = "";
+    std::string NATIVE_XLS_PATH     = "../../../resources/digits/Natives.xls";
+    std::string FOREIGN_XLS_PATH    =
+            "../../../resources/digits/Foreign_90ccl.xls";
 
     int STATES_PER_NATIVE           = 1;
     int STATES_PER_FOREIGN          = 1;

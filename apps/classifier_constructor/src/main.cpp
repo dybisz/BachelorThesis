@@ -34,7 +34,7 @@ void initApp(int argc, char *argv[]);
 /*
  * Initiates all flags from settings
  */
-void initFlags();
+void initFlags(int argc, char *argv[]);
 
 /*
  * Closes the application resources
@@ -51,7 +51,10 @@ int main(int argc, char *argv[]) {
     // Choose experiment
     switch (settings::EXPERIMENT_ID) {
         case 0:
-            experiments::runPSOBasedClassification();
+            experiments::runClassifierConstructor();
+            break;
+        case 1:
+            experiments::runTransformationAnalysis();
             break;
         default:
             std::string what = "Experiment ID: " +
@@ -82,14 +85,16 @@ void initApp(int argc, char *argv[]) {
     logger::settings::LOG_CURR_DIR = settings::LOG_CURR_DIR;
     logger::initLog();
 
-    initFlags();
-
+    initFlags(argc, argv);
 }
 
-void initFlags(){
+void initFlags(int argc, char *argv[]){
     console::clearFlags();
 
     settings::setAllFlags();
+
+    console::readFlags(argc, argv);
+
     settings::printAllSettings();
 }
 

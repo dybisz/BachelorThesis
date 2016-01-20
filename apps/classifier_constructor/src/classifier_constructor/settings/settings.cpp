@@ -7,6 +7,7 @@
 #include <classifier_constructor/settings/pso_settings.h>
 #include <classifier_constructor/settings/log_settings.h>
 #include <classifier_constructor/settings/thread_settings.h>
+#include <classifier_constructor/settings/transformation_settings.h>
 #include "classifier_constructor/settings/settings.h"
 
 namespace settings{
@@ -16,6 +17,8 @@ namespace settings{
         settings::setLogFlags();
         settings::setPSOFlags();
         settings::setThreadFlags();
+        settings::setTrasformationFlags();
+
     }
 
     void printAllSettings(){
@@ -24,5 +27,6 @@ namespace settings{
         printLogSettings();
         printPSOSettings();
         printThreadSettings();
+        printTransformationSettings();
     }
 }

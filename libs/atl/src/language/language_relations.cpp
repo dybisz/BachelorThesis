@@ -105,4 +105,14 @@ namespace language{
 
         return similarityLanguage;
     }
+
+    double averageSimilarity(const Language &language1,
+                             const Language &language2){
+        double similarity1 = similarity(language1,language2);
+        double similarity2 = similarity(language2,language1);
+
+        double mutualSimilarity = (similarity1 + similarity2) / 2;
+
+        return mutualSimilarity;
+    }
 }

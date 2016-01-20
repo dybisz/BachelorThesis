@@ -4,6 +4,7 @@
 
 #include <classifier_constructor/experiments/classification_exp.h>
 
+#include <classifier_constructor/transformation/transformation_analyzer.h>
 #include <logger/log.h>
 #include <patterns_to_languages.h>
 #include <classifier_constructor/classification/classifier.h>
@@ -21,12 +22,40 @@
 #include <classifier_constructor/settings/log_settings.h>
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
+#include <classifier_constructor/settings/transformation_settings.h>
 
 using namespace pso;
+using namespace transformation;
 
 namespace experiments {
 
-    void runPSOBasedClassification() {
+    void runTransformationAnalysis(){
+        logger::log("Starting Transformation Analysis");
+
+        logger::log("Loading Patterns");
+        XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH);
+        XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH);
+
+        std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
+        std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
+
+        logger::log("Starting Transformation Analysis");
+
+        TransformationAnalyzer transformationAnalyzer
+        (
+            nativePatterns,
+            settings::MIN_ALHPABET_SIZE,
+            settings::MAX_ALHPABET_SIZE
+        );
+
+        transformationAnalyzer.runAnalysis();
+
+        logger::log("Printing Results");
+
+        transformationAnalyzer.printResults();
+    }
+
+    void runClassifierConstructor() {
         logger::log("Starting PSO Experiment");
 
         logger::log("Loading Patterns");
