@@ -29,6 +29,8 @@ public:
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
 
+    int getValue() const;
+
     bool operator==(const Label& label) const;
 
 };

@@ -15,7 +15,7 @@ FACClassifier::FACClassifier(DFA dfa)
 }
 
 FACClassifier::FACClassifier(DFA dfa,
-                             std::vector<StateCorrespondence>
+                             std::vector<Correspondence>
                                                 stateCorrespondence)
         : dfa(dfa), stateCorrespondenceVector(stateCorrespondence){
 
@@ -27,7 +27,7 @@ FACClassifier::FACClassifier(DFA dfa,
 
 
 void FACClassifier::addStateCorrespondence(
-        StateCorrespondence stateCorrespondence) {
+        Correspondence stateCorrespondence) {
     this->stateCorrespondenceVector.push_back(stateCorrespondence);
 }
 
@@ -35,7 +35,7 @@ const DFA &FACClassifier::getDFA() const {
     return this->dfa;
 }
 
-const std::vector<StateCorrespondence>&
+const std::vector<Correspondence>&
 FACClassifier::getStateCorrespondence() const {
     return this->stateCorrespondenceVector;
 }

@@ -15,7 +15,7 @@
  * The main directory contains
  * sub directories - possibly many - each contains DFAC Classifier.
  * Each DFAC Classifier contains:
- *      Saved DFA.
+ *      DFA.
  *      State Correspondence.
  *
  */
@@ -54,7 +54,7 @@ private:
                  std::string path, std::string name);
 
     void saveStateCorrespondenceVector(
-            const std::vector<StateCorrespondence>& stateCorrespondenceVector,
+            const std::vector<Correspondence>& stateCorrespondenceVector,
             std::string path,
             std::string name);
 

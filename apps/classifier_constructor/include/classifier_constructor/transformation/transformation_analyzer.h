@@ -30,6 +30,11 @@ private:
     //  PRIVATE METHODS
     //-----------------------------------------------------------//
 
+    string getMutualResultsPlot(const TotalSimilarity &totalSimilarity);
+
+    string getMutualResultsInfo(const TotalSimilarity &totalSimilarity);
+
+    string getTotalSimilarityResultInfo(const TotalSimilarity &totalSimilarity);
 public:
     //-----------------------------------------------------------//
     //  CONSTRUCTORS

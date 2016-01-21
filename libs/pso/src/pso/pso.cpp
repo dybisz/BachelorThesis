@@ -310,7 +310,7 @@ void *startParallelPSO(void *argv) {
     double ETA = 0;
 
     int noFitnessUpdateInARowCount = 0;
-    int noFitnessUpdateInARowCountBeforeReset = 59;
+    int noFitnessUpdateInARowCountBeforeReset = 100;
 
     while (*do_work) {
         if (tid == threading::T_BOSS) {

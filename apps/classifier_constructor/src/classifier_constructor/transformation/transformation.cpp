@@ -17,6 +17,7 @@ namespace transformation{
 
         std::vector<Similarity> similarites =
                 getSimilarites(languages, alphabetSize);
+
         TotalSimilarity totalSimilarity = getTotalSimilarity(similarites,
                                                              alphabetSize);
 
@@ -27,7 +28,7 @@ namespace transformation{
 
         return totalSimilarity;
     }
-
+/*
     std::vector<Similarity> getSimilarites(std::vector<Language *> *languages,
                                            int alphabetSize){
         unsigned int languageCount = languages->size();
@@ -38,6 +39,23 @@ namespace transformation{
                 Language* language2 = (*languages)[j];
                 double similarity = language::averageSimilarity(*language1,
                                                                 *language2);
+                Similarity result(i, j, alphabetSize, similarity);
+                results.push_back(result);
+            }
+        }
+        return results;
+    }
+*/
+    std::vector<Similarity> getSimilarites(std::vector<Language *> *languages,
+                                           int alphabetSize){
+        unsigned int languageCount = languages->size();
+        std::vector<Similarity> results;
+        for(unsigned int i = 0; i < languageCount; i++){
+            Language* language1 = (*languages)[i];
+            for(unsigned int j = 0; j < languageCount; j++){
+                Language* language2 = (*languages)[j];
+                double similarity = language::similarity(*language1,
+                                                         *language2);
                 Similarity result(i, j, alphabetSize, similarity);
                 results.push_back(result);
             }

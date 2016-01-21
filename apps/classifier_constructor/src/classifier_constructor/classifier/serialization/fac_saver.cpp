@@ -39,9 +39,6 @@ void FACSaver::save() {
         string dirName = "classifier_" + to_string(i);
         saveSubClassifier(subClassifier, dirName);
     }
-
-    //std::ofstream stateCorrFile;
-    //stateCorrFile.open(logger::makePath(fullPath,"test.sc"));
 }
 
 //-----------------------------------------------------------//
@@ -61,7 +58,7 @@ void FACSaver::saveSubClassifier(const FACClassifier& subClassifier,
     logger::makeDir(path);
 
     const DFA& dfa = subClassifier.getDFA();
-    const std::vector<StateCorrespondence>& stateCorrespondenceVector
+    const std::vector<Correspondence>& stateCorrespondenceVector
             = subClassifier.getStateCorrespondence();
 
     string dfaName = DEFAULT_DFA_NAME;
@@ -78,7 +75,7 @@ void FACSaver::saveDFA(const DFA &dfa,
 }
 
 void FACSaver::saveStateCorrespondenceVector(
-        const std::vector<StateCorrespondence>& stateCorrespondenceVector,
+        const std::vector<Correspondence>& stateCorrespondenceVector,
         string path,
         string name) {
     name += STATE_CORRES_EXT;

@@ -7,7 +7,7 @@
 
 
 #include <automata/dfa.h>
-#include "classifier_constructor/classifier/state_correspondence.h"
+#include <classifier_constructor/classifier/correspondence/correspondence.h>
 
 class FACClassifier {
 private:
@@ -17,7 +17,7 @@ private:
 
     DFA dfa;
 
-    std::vector<StateCorrespondence> stateCorrespondenceVector;
+    std::vector<Correspondence> stateCorrespondenceVector;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
@@ -31,18 +31,18 @@ public:
     FACClassifier(DFA dfa);
 
     FACClassifier(DFA dfa,
-                  std::vector<StateCorrespondence> stateCorrespondence);
+                  std::vector<Correspondence> stateCorrespondence);
 
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
 
-    void addStateCorrespondence(StateCorrespondence stateCorrespondence);
+    void addStateCorrespondence(Correspondence stateCorrespondence);
 
     const DFA& getDFA() const;
 
-    const std::vector<StateCorrespondence>& getStateCorrespondence() const;
+    const std::vector<Correspondence>& getStateCorrespondence() const;
 
     const Label& classify(const Word& word) const;
 };
