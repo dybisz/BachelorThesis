@@ -8,7 +8,7 @@
 #include <automata/dfa.h>
 #include <xls_loader.h>
 #include <language/language.h>
-#include <patterns_to_languages.h>
+#include "classes_to_languages.h"
 #include "classifier_quality.h"
 
 using namespace std;
@@ -300,8 +300,8 @@ void initGlobals() {
     XlsLoader nativeXLSLoader(SHORT_NATIVE);
     XlsLoader foreignXLSLoader(SHORT_FOREIGN);
 
-    vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
-    vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
+    vector<Class *> *nativePatterns = nativeXLSLoader.getClasses();
+    vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
     nativeLanguages =
             patterns_to_languages::convert(

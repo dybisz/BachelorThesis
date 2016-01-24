@@ -3,7 +3,7 @@
 //
 
 #include <vector>
-#include "classifier_constructor/experiments/pso_factory.h"
+#include "classifier_constructor/experiments/classification/pso_factory.h"
 #include <pso/pso.h>
 
 using namespace pso;

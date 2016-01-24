@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <language/language.h>
 #include <xls_loader.h>
-#include <patterns_to_languages.h>
+#include "classes_to_languages.h"
 #include <language/sets_disassociation.h>
 
 using namespace std;
@@ -66,8 +66,8 @@ void auxInit() {
     XlsLoader nativeXLSLoader(NATIVE_SHORT);
     XlsLoader foreignXLSLoader(FOREIGN_SHORT);
 
-    vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
-    vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
+    vector<Class *> *nativePatterns = nativeXLSLoader.getClasses();
+    vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
     nLanguages =
             patterns_to_languages::convert(

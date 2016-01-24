@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <language/language.h>
-#include <patterns/pattern.h>
+#include "class.h"
 
 namespace quality {
 
@@ -16,7 +16,7 @@ namespace quality {
      * transformed language size (without duplicating words)
      * to the size of the pattern recognition object.
      */
-    double computeTransformationPrecision(Pattern& pattern,
+    double computeTransformationPrecision(Class& pattern,
                                           int alphabetSize);
 
 }

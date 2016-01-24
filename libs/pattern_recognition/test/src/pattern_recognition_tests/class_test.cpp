@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <patterns/pattern.h>
+#include "class.h"
 
 using namespace std;
 
@@ -16,7 +16,7 @@ TEST(PatternTest, Pattern_Init) {
     FeaturesVector *fv3 = new FeaturesVector(v3);
     vector<FeaturesVector *> *features = new vector<FeaturesVector*>({fv1, fv2, fv3});
 
-    Pattern *pattern = new Pattern(features, 0);
+    Class *pattern = new Class(features, 0);
     EXPECT_EQ(3, pattern->size());
     delete pattern;
 }
@@ -30,7 +30,7 @@ TEST(PatternTest, Get_Value_Operator) {
     FeaturesVector *fv3 = new FeaturesVector(v3);
     vector<FeaturesVector *> *features = new vector<FeaturesVector*>({fv1, fv2, fv3});
 
-    Pattern *pattern = new Pattern(features, 0);
+    Class *pattern = new Class(features, 0);
     double e1 = (*(*pattern)[0])[0];
     double e2 = (*(*pattern)[0])[2];
     double e3 = (*(*pattern)[1])[2];

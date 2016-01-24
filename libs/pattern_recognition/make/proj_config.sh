@@ -5,7 +5,7 @@
 ######################################################################
 
 # Full name of the project
-PROJ_NAME=Patterns
+PROJ_NAME=PatternRecognition
 
 # Code name of the project
-PROJ_CODE_NAME=patterns
+PROJ_CODE_NAME=ptrec

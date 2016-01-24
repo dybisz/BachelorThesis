@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_CLASSIFICATION_EXP_H
 #define BACHELOR_THESIS_CLASSIFICATION_EXP_H
 
-#include "patterns/pattern.h"
+#include "class.h"
 #include <vector>
 #include <language/language.h>
 
@@ -15,7 +15,7 @@ namespace experiments
 
     namespace classification
     {
-        void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
+        void printLoadedPatternsInfo(std::vector<Class*>* patterns,
                                      std::string headerInfo);
     }
 }

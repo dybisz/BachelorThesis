@@ -2,7 +2,7 @@
 // Created by jakub on 1/20/16.
 //
 
-#include "patterns/label.h"
+#include "label.h"
 
 //-----------------------------------------------------------//
 //  CONSTRUCTORS

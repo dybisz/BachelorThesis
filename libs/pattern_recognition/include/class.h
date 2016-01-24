@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_PATTERN_H
 #define BACHELOR_THESIS_PATTERN_H
 
-#include <patterns/features_vector.h>
+#include <features_vector.h>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -14,11 +14,11 @@ using namespace std;
 /*
  * Class represents a patter via set of features vectors and a label;
  */
-class Pattern {
+class Class {
 public:
-    Pattern(int label);
-    Pattern(vector<FeaturesVector*>* features, int label);
-    ~Pattern();
+    Class(int label);
+    Class(vector<FeaturesVector*>* features, int label);
+    ~Class();
 
     void appendFeatureVector(FeaturesVector* featuresVector);
     FeaturesVector* getVector(unsigned int i);

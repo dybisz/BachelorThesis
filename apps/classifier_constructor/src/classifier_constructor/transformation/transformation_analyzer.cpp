@@ -16,7 +16,7 @@ namespace transformation{
 //-----------------------------------------------------------//
 
 TransformationAnalyzer::TransformationAnalyzer(
-                                std::vector<Pattern *>* patterns,
+                                std::vector<Class *>* patterns,
                                 int minAlphabetSize,
                                 int maxAlphabetSize) {
     this->patterns = patterns;

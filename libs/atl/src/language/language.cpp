@@ -23,7 +23,7 @@ Language::Language(const Language &language) :
     }
 }
 
-Language::Language(Pattern *pPattern, Alphabet pAlphabet,
+Language::Language(Class *pPattern, Alphabet pAlphabet,
                    vector<State *> pStates) : _alphabet(pAlphabet),
                                               _states(pStates) {
     try {
@@ -34,7 +34,7 @@ Language::Language(Pattern *pPattern, Alphabet pAlphabet,
     }
 }
 
-Language::Language(Pattern *pPattern, Alphabet pAlphabet)
+Language::Language(Class *pPattern, Alphabet pAlphabet)
         : _alphabet(pAlphabet) {
     try {
         _produceWordsFromPattern(pPattern);
@@ -164,7 +164,7 @@ vector<Word*> Language::getWordsWithoutDuplicates(
 }
 
 
-void Language::_produceWordsFromPattern(Pattern *pPattern) {
+void Language::_produceWordsFromPattern(Class *pPattern) {
     // Get features
     vector<FeaturesVector *> *features = pPattern->getFeatures();
     // TODO create method for getting number of features

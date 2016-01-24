@@ -3,19 +3,19 @@
 //
 
 #include <language/alphabet.h>
-#include <patterns_to_languages.h>
+#include "classes_to_languages.h"
 
 vector<Language *> *patterns_to_languages::convert(
-        vector<Pattern *> *patterns,
+        vector<Class *> *classes,
         int numberOfStates,
         int precision,
         int stateStartingIndex) {
-    _checkConditions(numberOfStates, precision, patterns);
+    _checkConditions(numberOfStates, precision, classes);
 
     vector<Language *> *languages = NULL;
     try {
-        vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
-        vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
+        vector<Interval *> intervals = _calculateFeaturesIntervals(classes);
+        vector<Class *> *normalized = _normalizeClasses(classes, intervals);
         Alphabet *alphabet = new Alphabet(precision);
         languages = _createLanguages(normalized, alphabet, numberOfStates,
                                      stateStartingIndex);
@@ -27,9 +27,9 @@ vector<Language *> *patterns_to_languages::convert(
     return languages;
 }
 
-Language* patterns_to_languages::convert(Pattern& pattern, int precision) {
+Language* patterns_to_languages::convert(Class& pattern, int precision) {
 
-    std::vector<Pattern*> patternVector;
+    std::vector<Class*> patternVector;
     patternVector.push_back(&pattern);
 
     std::vector<Language*>* languageVector = convert(&patternVector, precision);
@@ -42,14 +42,14 @@ Language* patterns_to_languages::convert(Pattern& pattern, int precision) {
 }
 
 
-vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
+vector<Language *> *patterns_to_languages::convert(vector<Class *> *patterns,
                                                    int precision) {
     _checkConditions(1, precision, patterns);
 
     vector<Language *> *languages = NULL;
     try {
         vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
-        vector<Pattern *> *normalized = _normalizePatterns(patterns, intervals);
+        vector<Class *> *normalized = _normalizeClasses(patterns, intervals);
         Alphabet *alphabet = new Alphabet(precision); // TODO memory leak
         languages = _createLanguages(normalized, alphabet);
     }
@@ -61,7 +61,7 @@ vector<Language *> *patterns_to_languages::convert(vector<Pattern *> *patterns,
 }
 
 vector<Interval *> patterns_to_languages::_calculateFeaturesIntervals(
-        vector<Pattern *> *pPatterns) {
+        vector<Class *> *pPatterns) {
 
     vector<Interval *> intervals;
     int numberOfFeatures = (*pPatterns)[0]->getVector(0)->size();
@@ -93,8 +93,8 @@ vector<Interval *> patterns_to_languages::_calculateFeaturesIntervals(
     return intervals;
 }
 
-vector<Pattern *> *patterns_to_languages::_normalizePatterns(
-        vector<Pattern *> *pPatterns,
+vector<Class *> *patterns_to_languages::_normalizeClasses(
+        vector<Class *> *pPatterns,
         vector<Interval *> intervals) {
 
     int numberOfFeatures = (*pPatterns)[0]->getVector(0)->size();
@@ -132,7 +132,7 @@ vector<Pattern *> *patterns_to_languages::_normalizePatterns(
 }
 
 vector<Language *> *patterns_to_languages::_createLanguages(
-        vector<Pattern *> *pPattern, Alphabet *pAlphabet, int numberOfStates,
+        vector<Class *> *pPattern, Alphabet *pAlphabet, int numberOfStates,
         int stateStartingIndex) {
 
     vector<Language *> *languages = new vector<Language *>();
@@ -159,7 +159,7 @@ vector<Language *> *patterns_to_languages::_createLanguages(
 
 
 vector<Language *> *patterns_to_languages::_createLanguages(
-        vector<Pattern *> *pPattern, Alphabet *pAlphabet) {
+        vector<Class *> *pPattern, Alphabet *pAlphabet) {
 
     vector<Language *> *languages = new vector<Language *>();
 
@@ -187,8 +187,8 @@ string patterns_to_languages::_vectorOfIntervalsToString(
     return out;
 }
 
-vector<Word *> *patterns_to_languages::_convertPatternsToWords(
-        vector<Pattern *> *pPatterns, Alphabet *alphabet) {
+vector<Word *> *patterns_to_languages::_convertClassesToWords(
+        vector<Class *> *pPatterns, Alphabet *alphabet) {
 
     vector<Word *> *words = new vector<Word *>();
 
@@ -226,7 +226,7 @@ Word *patterns_to_languages::_convertFeatureToWord(
 }
 
 void patterns_to_languages::_checkConditions(int states, int precision,
-                                             vector<Pattern *> *patterns) {
+                                             vector<Class *> *patterns) {
     if (patterns == NULL) {
         throw invalid_argument(
                 "pointer to patters is NULL");

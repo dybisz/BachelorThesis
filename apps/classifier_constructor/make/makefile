@@ -166,7 +166,7 @@ SCRIPT=scripts
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -latl -lflagger -lpatterns -llogger -lpso \
+LIBS += -latl -lflagger -lptrec -llogger -lpso \
 		-lmath -lparallel -ltime -lstrings -lcquality \
 		-lexcel_format
 

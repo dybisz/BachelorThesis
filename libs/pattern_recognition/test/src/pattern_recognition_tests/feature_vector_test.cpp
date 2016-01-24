@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <patterns/features_vector.h>
+#include <features_vector.h>
 
 //#include <debug_new.h>
 using namespace std;

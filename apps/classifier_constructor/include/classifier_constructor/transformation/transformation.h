@@ -6,7 +6,7 @@
 #define BACHELOR_THESIS_TRANSFORMATION_H
 
 #include <vector>
-#include <patterns/pattern.h>
+#include "class.h"
 #include <sstream>
 #include <language/language.h>
 
@@ -56,7 +56,7 @@ namespace transformation{
      * Computes similarity analysis between transformed languages
      * from given classes and alphabet size.
      */
-    TotalSimilarity computeSimilarityAnalysis(std::vector<Pattern *> *patterns,
+    TotalSimilarity computeSimilarityAnalysis(std::vector<Class *> *patterns,
                                               int alphabetSize);
 
     /*

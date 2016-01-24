@@ -6,7 +6,7 @@
 #define BACHELOR_THESIS_STATECORRESPONDENCE_H
 
 #include <automata/state.h>
-#include <patterns/label.h>
+#include <label.h>
 
 #include <vector>
 

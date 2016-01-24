@@ -6,7 +6,7 @@
 #include <xls_loader.h>
 #include <settings/global_settings.h>
 #include <logger/log.h>
-#include <patterns_to_languages.h>
+#include "classes_to_languages.h"
 #include <classification/alternative_classifier.h>
 
 using namespace pso;
@@ -25,8 +25,8 @@ namespace experiments {
                                    settings::NUMBER_OF_CLASSES,
                                    settings::PATTERNS_PER_CLASS);
 
-        std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
-        std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
+        std::vector<Class *> *nativePatterns = nativeXLSLoader.getClasses();
+        std::vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
         classification::printLoadedPatternsInfo(nativePatterns, "NATIVE");
         classification::printLoadedPatternsInfo(foreignPatterns, "FOREIGN");
@@ -55,7 +55,7 @@ namespace experiments {
     }
 
     namespace classification {
-        void printLoadedPatternsInfo(std::vector<Pattern *> *patterns,
+        void printLoadedPatternsInfo(std::vector<Class *> *patterns,
                                      std::string headerInfo) {
             std::stringstream ss;
             ss << "[PATTERNS_" << headerInfo << "]\n";

@@ -23,8 +23,8 @@ namespace experiments {
         XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH);
         XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH);
 
-        std::vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
-        std::vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
+        std::vector<Class *> *nativePatterns = nativeXLSLoader.getClasses();
+        std::vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
         logger::log("Starting Transformation Analysis");
 

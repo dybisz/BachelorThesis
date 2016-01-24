@@ -12,7 +12,7 @@ MAKE_EXTERNAL_RULE[0]='install'
 MAKE_EXTERNAL[1]='../../../libs/flagger/make/'
 MAKE_EXTERNAL_RULE[1]='install'
 
-MAKE_EXTERNAL[2]='../../../libs/patterns/make/'
+MAKE_EXTERNAL[2]='../../../libs/pattern_recognition/make/'
 MAKE_EXTERNAL_RULE[2]='install'
 
 MAKE_EXTERNAL[3]='../../../libs/logger/make/'

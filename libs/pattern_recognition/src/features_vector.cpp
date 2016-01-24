@@ -2,7 +2,7 @@
 // Created by dybisz on 19.12.15.
 //
 
-#include <patterns/features_vector.h>
+#include <features_vector.h>
 #include <stdexcept>
 
 /* ------------------------------------ */

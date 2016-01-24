@@ -28,7 +28,7 @@ TEST(TransformationPrecision,
     featuresVector3->appendSymbol(feature3);
 
     int label = 0;
-    Pattern pattern(label);
+    Class pattern(label);
     pattern.appendFeatureVector(featuresVector1);
     pattern.appendFeatureVector(featuresVector2);
     pattern.appendFeatureVector(featuresVector3);

@@ -17,7 +17,7 @@ MAKE_EXTERNAL_RULE[1]='install'
 MAKE_EXTERNAL[2]='../../strings/make/'
 MAKE_EXTERNAL_RULE[2]='install'
 
-MAKE_EXTERNAL[3]='../../patterns/make/'
+MAKE_EXTERNAL[3]='../../pattern_recognition/make/'
 MAKE_EXTERNAL_RULE[3]='install'
 
 MAKE_EXTERNAL[4]='../../logger/make/'

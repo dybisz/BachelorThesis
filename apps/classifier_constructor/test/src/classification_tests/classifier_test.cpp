@@ -3,7 +3,7 @@
 //
 
 #include <gtest/gtest.h>
-#include <classifier_constructor/classification/classifier.h>
+#include <classifier_constructor/experiments/classification/classifier.h>
 #include <language/language.h>
 
 TEST(Classification, ClassifierSmallLanguage_ProperStateCount) {

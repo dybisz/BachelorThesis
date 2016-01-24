@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include <patterns/pattern.h>
+#include "class.h"
 #include <ExcelFormat.h>
 #include <cstdlib>
 #include <algorithm>
@@ -43,7 +43,7 @@ public:
 
     void loadDataFromFile(string url, int i, int i1);
 
-    vector<Pattern *> *getPatterns();
+    vector<Class *> *getClasses();
     string printLabels();
     string toString();
 
@@ -51,11 +51,11 @@ private:
     // Relative path to a data file.
     // Type: const char*, because of libxls demands.
     const char *_url;
-    vector<Pattern *> _loadedPatterns;
+    vector<Class *> _loadedClasses;
 
-    void _addPatternWithLabel(int label);
+    void _addClassWithLabel(int label);
 
-    Pattern *_getPatternWithLabel(int label);
+    Class *_getClassWithLabel(int label);
 
     // One needs to know that appropriate format of loading files looks as
     // follows:
@@ -70,12 +70,13 @@ private:
     // is no need to provide sizes - just stick to the format.
     bool _cellIsNotEmpty(const int row, const int col,
                          BasicExcelWorksheet *pSheet);
-    void _loadFeaturesVectorsToPatterns(BasicExcelWorksheet *pSheet,
-                                        int numberOfLabels,
-                                        int numberOfPatterns);
-    void _addFeatureVectorToPattern(int label, int row, const int col,
+    void _loadFeaturesVectorsToClass(BasicExcelWorksheet *pSheet,
+                                       int numberOfLabels,
+                                       int numberOfClasses);
+    void _addFeatureVectorToClass(int label, int row, const int col,
                                     BasicExcelWorksheet *pSheet);
-    bool _patternInBoundaries(int label, int row, int numLabels, int numPatterns);
+    bool _classInBoundaries(int label, int row, int numLabels,
+                              int numPatterns);
 };
 
 #endif //BACHELOR_THESIS_XLS_LOADER_H

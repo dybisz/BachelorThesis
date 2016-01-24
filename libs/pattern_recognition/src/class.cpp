@@ -2,23 +2,23 @@
 // Created by dybisz on 19.12.15.
 //
 
-#include <patterns/pattern.h>
+#include "class.h"
 #include <stdexcept>
 
 /* ------------------------------------ */
 /* ----- CONSTRUCTORS/DESTRUCTORS ----- */
 /* ------------------------------------ */
 
-Pattern::Pattern(int label) : _label(label) {
+Class::Class(int label) : _label(label) {
 
 }
 
-Pattern::Pattern(vector<FeaturesVector *> *features, int label) : _label(
+Class::Class(vector<FeaturesVector *> *features, int label) : _label(
         label) {
     this->_features = (*features);
 }
 
-Pattern::~Pattern() {
+Class::~Class() {
     for (auto iter = _features.begin(); iter != _features.end(); ++iter) {
         delete (*iter);
     }
@@ -28,7 +28,7 @@ Pattern::~Pattern() {
 /* ----- PUBLIC/VITAL ------ */
 /* ------------------------- */
 
-void Pattern::appendFeatureVector(FeaturesVector *featuresVector) {
+void Class::appendFeatureVector(FeaturesVector *featuresVector) {
     if (_features.size() != 0 &&
         _features[0]->size() != featuresVector->size()) {
         throw invalid_argument("Feature vectors sizes do not match.");
@@ -37,14 +37,14 @@ void Pattern::appendFeatureVector(FeaturesVector *featuresVector) {
     this->_features.push_back(featuresVector);
 }
 
-FeaturesVector *Pattern::getVector(unsigned int i) {
+FeaturesVector *Class::getVector(unsigned int i) {
     if (_features.size() <= i) {
         throw invalid_argument("Index out of bound");
     }
     return _features[i];
 }
 
-double Pattern::getFeatureMin(int i) {
+double Class::getFeatureMin(int i) {
     double min = INT32_MAX;
     for (auto iter = _features.begin(); iter != _features.end(); ++iter) {
         double value = (*(*iter))[i]; // TODO check if correct
@@ -53,7 +53,7 @@ double Pattern::getFeatureMin(int i) {
     return min;
 }
 
-double Pattern::getFeatureMax(int i) {
+double Class::getFeatureMax(int i) {
     double max = INT32_MIN;
     for (auto iter = _features.begin(); iter != _features.end(); ++iter) {
         double value = (*(*iter))[i]; // TODO check if correct
@@ -66,19 +66,19 @@ double Pattern::getFeatureMax(int i) {
 /* ----- AUXILIARY ----- */
 /* --------------------- */
 
-int Pattern::size() const {
+int Class::size() const {
     return this->_features.size();
 }
 
-int Pattern::getLabel() const{
+int Class::getLabel() const{
     return this->_label;
 }
 
-vector<FeaturesVector *> *Pattern::getFeatures() {
+vector<FeaturesVector *> *Class::getFeatures() {
     return &_features;
 };
 
-string Pattern::toString() {
+string Class::toString() {
     string out = "[";
     out += to_string(_label);
     out += "]\n";
@@ -94,6 +94,6 @@ string Pattern::toString() {
 /* ----- OPERATORS ----- */
 /* --------------------- */
 
-FeaturesVector *Pattern::operator[](int i) {
+FeaturesVector *Class::operator[](int i) {
     return this->getVector(i);
 }

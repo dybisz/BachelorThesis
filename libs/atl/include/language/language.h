@@ -10,7 +10,7 @@
 
 #include <automata/state.h>
 
-#include <patterns/pattern.h>
+#include "class.h"
 
 #include <vector>
 
@@ -23,8 +23,8 @@ class Language {
 public:
     Language(Alphabet alphabet);
     Language(const Language& language);
-    Language(Pattern* pPattern, Alphabet pAlphabet, vector<State *> pStates);
-    Language(Pattern* pPattern, Alphabet pAlphabet);
+    Language(Class* pPattern, Alphabet pAlphabet, vector<State *> pStates);
+    Language(Class* pPattern, Alphabet pAlphabet);
     Language(vector<Word*> &words, Alphabet pAlphabet, vector<State *> pStates);
     Language(vector<Word*> &words, Alphabet pAlphabet);
     Language(vector<Word*> words, Language* lang);
@@ -75,7 +75,7 @@ private:
     vector<Word*> _words;
     vector<State*> _states;
 
-    void _produceWordsFromPattern(Pattern *pPattern);
+    void _produceWordsFromPattern(Class *pPattern);
 
     void _safeDeleteContent(vector<State *> vector);
 

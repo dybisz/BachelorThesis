@@ -2,11 +2,11 @@
 // Created by jakub on 12/22/15.
 //
 
-#include <classifier_constructor/experiments/classification_exp.h>
+#include <classifier_constructor/experiments/classification/classification_exp.h>
+#include <classifier_constructor/experiments/classification/classifier.h>
 
 #include <logger/log.h>
-#include <patterns_to_languages.h>
-#include <classifier_constructor/classification/classifier.h>
+#include "classes_to_languages.h"
 
 #include <xls_loader.h>
 
@@ -16,7 +16,7 @@
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
 
-#include <classifier_constructor/experiments/pso_factory.h>
+#include <classifier_constructor/experiments/classification/pso_factory.h>
 
 using namespace pso;
 
@@ -36,13 +36,13 @@ namespace experiments {
                                    settings::NUMBER_OF_CLASSES,
                                    settings::PATTERNS_PER_CLASS);
 
-        std::vector<Pattern *> *nativePatterns
-                = nativeXLSLoader.getPatterns();
-        std::vector<Pattern *> *foreignPatterns
-                = foreignXLSLoader.getPatterns();
+        std::vector<Class *> *nativePatterns
+                = nativeXLSLoader.getClasses();
+        std::vector<Class *> *foreignPatterns
+                = foreignXLSLoader.getClasses();
 
-        printLoadedPatternsInfo(nativePatterns, "NATIVE PATTERNS");
-        printLoadedPatternsInfo(foreignPatterns, "FOREIGN PATTERNS");
+        printLoadedClassesInfo(nativePatterns, "NATIVE PATTERNS");
+        printLoadedClassesInfo(foreignPatterns, "FOREIGN PATTERNS");
 
         logger::log("Transforming Patterns to Languages");
 
@@ -79,8 +79,8 @@ namespace experiments {
         classifier->runClassification();
     }
 
-    void printLoadedPatternsInfo(std::vector<Pattern *> *patterns,
-                                 std::string headerInfo) {
+    void printLoadedClassesInfo(std::vector<Class *> *patterns,
+                                std::string headerInfo) {
         std::stringstream ss;
         ss << "[PATTERNS_" << headerInfo << "]\n";
 

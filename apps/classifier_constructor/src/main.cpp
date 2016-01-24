@@ -1,25 +1,20 @@
 #ifndef AC_MAIN_H
 #define AC_MAIN_H
 
-#include <classifier_constructor/experiments/classification_exp.h>
+#include <classifier_constructor/experiments/classification/classification_exp.h>
+#include <classifier_constructor/experiments/transformation_exp.h>
 
 #include <math/random.h>
-
 #include <logger/log.h>
-
 #include <console/flag_reader.h>
-
 #include <threading/thread_util.h>
 
-#include <string>
-#include <stdlib.h>
 #include <classifier_constructor/settings/thread_settings.h>
 #include <classifier_constructor/settings/pso_settings.h>
 #include <classifier_constructor/settings/log_settings.h>
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
 #include <classifier_constructor/settings/settings.h>
-#include <classifier_constructor/experiments/transformation_exp.h>
 
 using namespace std;
 

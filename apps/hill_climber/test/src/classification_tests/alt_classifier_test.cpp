@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <classification/alternative_classifier.h>
 #include <xls_loader.h>
-#include <patterns_to_languages.h>
+#include "classes_to_languages.h"
 
 using namespace std;
 
@@ -81,8 +81,8 @@ void globalClassifierInit() {
                                _PATTERNS_TO_LOAD);
 
     // Deleted by XlsLoader class
-    vector<Pattern *> *nativePatterns = nativeXLSLoader.getPatterns();
-    vector<Pattern *> *foreignPatterns = foreignXLSLoader.getPatterns();
+    vector<Class *> *nativePatterns = nativeXLSLoader.getClasses();
+    vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
     // Deleted by AlternativeClassifier class
     std::vector<Language *> *nativeLanguages =

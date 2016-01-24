@@ -2,12 +2,12 @@
 // Created by jakub on 1/17/16.
 //
 
-#include <patterns_to_languages.h>
+#include "classes_to_languages.h"
 #include "transformation_precision.h"
 
 namespace quality {
 
-    double computeTransformationPrecision(Pattern& pattern,
+    double computeTransformationPrecision(Class& pattern,
                                           int alphabetSize){
         Language* language = patterns_to_languages::convert(pattern,
                                                             alphabetSize);

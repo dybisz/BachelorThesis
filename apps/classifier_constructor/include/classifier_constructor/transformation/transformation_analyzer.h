@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_TRANSFORMATIONANALYZER_H
 #define BACHELOR_THESIS_TRANSFORMATIONANALYZER_H
 
-#include <patterns/pattern.h>
+#include "class.h"
 #include "classifier_constructor/transformation/transformation.h"
 
 namespace transformation {
@@ -19,7 +19,7 @@ private:
     //  PRIVATE FIELDS
     //-----------------------------------------------------------//
 
-    std::vector<Pattern *> *patterns;
+    std::vector<Class *> *patterns;
 
     int minAlphabetSize;
     int maxAlphabetSize;
@@ -35,12 +35,13 @@ private:
     string getMutualResultsInfo(const TotalSimilarity &totalSimilarity);
 
     string getTotalSimilarityResultInfo(const TotalSimilarity &totalSimilarity);
+
 public:
     //-----------------------------------------------------------//
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    TransformationAnalyzer(std::vector<Pattern *> *patterns,
+    TransformationAnalyzer(std::vector<Class *> *patterns,
                            int minAlphabetSize,
                            int maxAlphabetSize);
 

@@ -8,7 +8,7 @@
 #include <language/interval.h>
 #include <language/language.h>
 
-#include <patterns/pattern.h>
+#include "class.h"
 
 #include <vector>
 #include <string>
@@ -37,23 +37,23 @@ namespace patterns_to_languages {
     // start numbering states related to loaded language. Very useful, when we
     // e.g need to consecutively load 2 languages and preserve different state
     // numbering.
-    vector<Language *> *convert(vector<Pattern *> *patterns, int numberOfStates,
+    vector<Language *> *convert(vector<Class *> *classes, int numberOfStates,
                                 int precision, int stateStartingIndex = 0);
 
-    Language* convert(Pattern& pattern, int precision);
+    Language* convert(Class& pattern, int precision);
 
-    vector<Language *> *convert(vector<Pattern *> *patterns, int precision);
+    vector<Language *> *convert(vector<Class *> *patterns, int precision);
 
     // Auxiliary method. It returns vector of intervals, where i'th entry
     // represents <min;max> interval of i'th feature.
     // WARNING: vector contains pointers, which must be freed after usage.
     vector<Interval *> _calculateFeaturesIntervals(
-            vector<Pattern *> *pPatterns);
+            vector<Class *> *pPatterns);
 
     // Having min/max interval for each feature, method will normalize every
     // entry to be from interval <0;1>
-    vector<Pattern *> *_normalizePatterns(vector<Pattern *> *pPatterns,
-                                          vector<Interval *> pInterval);
+    vector<Class *> *_normalizeClasses(vector<Class *> *pPatterns,
+                                       vector<Interval *> pInterval);
 
     // WARNING: input data must be normalized
     // Intermediate conversion has been provide to elevate flexibility of this
@@ -61,16 +61,16 @@ namespace patterns_to_languages {
     // and do whatever he/she wants with it.
     // Output data is just a vector of words created from all features vectors
     // hidden in provided patterns.
-    vector<Word *> *_convertPatternsToWords(vector<Pattern *> *pPatterns,
-                                            Alphabet *alphabet);
+    vector<Word *> *_convertClassesToWords(vector<Class *> *pPatterns,
+                                           Alphabet *alphabet);
 
-    vector<Language *> *_createLanguages(vector<Pattern *> *pPattern,
+    vector<Language *> *_createLanguages(vector<Class *> *pPattern,
                                          Alphabet *pAlphabet,
                                          int numberOfStates,
                                          int stateStartingIndex);
 
     // Creates languages based on the patterns and alphabet
-    vector<Language *> *_createLanguages(vector<Pattern *> *pPattern,
+    vector<Language *> *_createLanguages(vector<Class *> *pPattern,
                                             Alphabet *pAlphabet);
     /* --------------------- */
     /* ----- AUXILIARY ----- */
@@ -88,7 +88,7 @@ namespace patterns_to_languages {
     // Method throws exception when states or precision is < 1,
     // or pointer to patterns is NULL
     void _checkConditions(int states, int precision,
-                          vector<Pattern *> *patterns);
+                          vector<Class *> *patterns);
 
 
 }

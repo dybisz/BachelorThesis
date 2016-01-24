@@ -18,14 +18,14 @@ TEST(XlsLoaderTest, Read_Data){
 
 TEST(XlsLoaderTest, Read_Specified_Num_Of_Labels) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH, 1);
-    vector<Pattern*> loadedPatterns = *(xlsLoader->getPatterns());
+    vector<Class*> loadedPatterns = *(xlsLoader->getClasses());
     EXPECT_EQ(1, loadedPatterns.size());
     delete xlsLoader;
 }
 
 TEST(XlsLoaderTest, Read_Specified_Num_Of_Patterns) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH, XlsLoader::ALL_ENTRIES, 5);
-    vector<Pattern*> loadedPatterns = *(xlsLoader->getPatterns());
+    vector<Class*> loadedPatterns = *(xlsLoader->getClasses());
     EXPECT_EQ(2, loadedPatterns.size());
     EXPECT_EQ(5, loadedPatterns[0]->size());
     delete xlsLoader;
@@ -33,7 +33,7 @@ TEST(XlsLoaderTest, Read_Specified_Num_Of_Patterns) {
 
 TEST(XlsLoaderTest, Read_Specified_Num_Of_Labels_And_Patterns) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH, 1, 50);
-    vector<Pattern*> loadedPatterns = *(xlsLoader->getPatterns());
+    vector<Class*> loadedPatterns = *(xlsLoader->getClasses());
     EXPECT_EQ(50, loadedPatterns[0]->size());
     delete xlsLoader;
 }

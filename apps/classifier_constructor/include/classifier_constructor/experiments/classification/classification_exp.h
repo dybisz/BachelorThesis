@@ -5,7 +5,7 @@
 #ifndef BACHELOR_THESIS_CLASSIFICATION_EXP_H
 #define BACHELOR_THESIS_CLASSIFICATION_EXP_H
 
-#include <patterns/pattern.h>
+#include "class.h"
 #include <language/language.h>
 #include <vector>
 #include <pso/particle_updater.h>
@@ -15,8 +15,8 @@ namespace experiments
 {
     void runClassification();
 
-    void printLoadedPatternsInfo(std::vector<Pattern*>* patterns,
-                                 std::string headerInfo);
+    void printLoadedClassesInfo(std::vector<Class *> *patterns,
+                                std::string headerInfo);
 
 }
 #endif //BACHELOR_THESIS_CLASSIFICATION_EXP_H

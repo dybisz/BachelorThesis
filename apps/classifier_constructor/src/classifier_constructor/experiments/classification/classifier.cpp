@@ -2,7 +2,7 @@
 // Created by jakub on 12/22/15.
 //
 
-#include <classifier_constructor/classification/classifier.h>
+#include <classifier_constructor/experiments/classification/classifier.h>
 #include <language/sets_disassociation.h>
 #include <classifier_quality.h>
 
