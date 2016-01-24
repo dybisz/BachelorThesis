@@ -7,6 +7,7 @@
 
 
 #include <classifier_constructor/classifier/fac.h>
+#include <classifier_constructor/classifier/cfac.h>
 
 /**
  * FAC Saver saves FAC Classifier to hard disk memory.
@@ -30,7 +31,7 @@ private:
     const std::string DEFAULT_DFA_NAME = "automaton";
     const std::string DEFAULT_STATE_CORRES_NAME = "states_corres";
 
-    const FAC* classifier;
+    const CFAC* classifier;
 
     // Path where the classifier should be saved
     std::string dirPath;
@@ -47,7 +48,7 @@ private:
 
     void createMainDir();
 
-    void saveSubClassifier(const FACClassifier& subClassifier,
+    void saveSubClassifier(const FAC& subClassifier,
                            std::string dirName);
 
     void saveDFA(const DFA& dfa,
@@ -63,7 +64,7 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    FACSaver(const FAC* classifier,
+    FACSaver(const CFAC* classifier,
              std::string dirPath, std::string dirName);
 
     ~FACSaver();

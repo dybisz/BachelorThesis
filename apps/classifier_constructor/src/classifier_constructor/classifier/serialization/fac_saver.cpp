@@ -12,7 +12,7 @@ using namespace std;
 //  CONSTRUCTORS
 //-----------------------------------------------------------//
 
-FACSaver::FACSaver(const FAC *classifier,
+FACSaver::FACSaver(const CFAC *classifier,
                    string directoryPath, string dirName) {
     this->classifier = classifier;
 
@@ -31,11 +31,11 @@ FACSaver::~FACSaver() {
 void FACSaver::save() {
     this->createMainDir();
 
-    const vector<FACClassifier>& subClassifiers
+    const vector<FAC>& subClassifiers
             = classifier->getClassifiers();
 
     for(unsigned int i = 0; i < subClassifiers.size(); i++){
-        FACClassifier subClassifier = subClassifiers[i];
+        FAC subClassifier = subClassifiers[i];
         string dirName = "classifier_" + to_string(i);
         saveSubClassifier(subClassifier, dirName);
     }
@@ -52,14 +52,14 @@ void FACSaver::createMainDir(){
     logger::makeDir(dirFullPath);
 }
 
-void FACSaver::saveSubClassifier(const FACClassifier& subClassifier,
+void FACSaver::saveSubClassifier(const FAC& subClassifier,
                                  string dirName) {
     string path = logger::makePath(dirFullPath, dirName);
     logger::makeDir(path);
 
     const DFA& dfa = subClassifier.getDFA();
     const std::vector<Correspondence>& stateCorrespondenceVector
-            = subClassifier.getStateCorrespondence();
+            = subClassifier.getCorrespondence();
 
     string dfaName = DEFAULT_DFA_NAME;
     saveDFA(dfa, path, dfaName);

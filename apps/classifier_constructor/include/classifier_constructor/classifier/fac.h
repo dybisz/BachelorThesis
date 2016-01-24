@@ -2,13 +2,18 @@
 // Created by jakub on 1/20/16.
 //
 
-#ifndef BACHELOR_THESIS_FAC_H
-#define BACHELOR_THESIS_FAC_H
+#ifndef BACHELOR_THESIS_CLASSIFIER_H
+#define BACHELOR_THESIS_CLASSIFIER_H
 
-#include "classifier_constructor/classifier/fac_classifier.h"
+#include <automata/dfa.h>
+#include <classifier_constructor/classifier/correspondence/correspondence.h>
 
-/**
- * Finite Automata Classifier
+/*
+ * Finite Automata Classifier.
+ * Contains:
+ *      - DFA which compute a word and outputs a state.
+ *      - Correspondence of labels to states.
+ *
  */
 class FAC {
 private:
@@ -16,7 +21,9 @@ private:
     //  PRIVATE FIELDS
     //-----------------------------------------------------------//
 
-    std::vector<FACClassifier> facClassifiers;
+    DFA dfa;
+
+    std::vector<Correspondence> correspondenceVector;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
@@ -27,18 +34,24 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    FAC();
+    FAC(DFA dfa);
 
-    ~FAC();
+    FAC(DFA dfa,
+        std::vector<Correspondence> stateCorrespondence);
+
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
 
-    const std::vector<FACClassifier>& getClassifiers() const;
+    void addCorrespondence(Correspondence stateCorrespondence);
+
+    const DFA& getDFA() const;
+
+    const std::vector<Correspondence>& getCorrespondence() const;
 
     const Label& classify(const Word& word) const;
 };
 
 
-#endif //BACHELOR_THESIS_FAC_H
+#endif //BACHELOR_THESIS_CLASSIFIER_H

@@ -2,22 +2,21 @@
 // Created by jakub on 1/20/16.
 //
 
-#ifndef BACHELOR_THESIS_CLASSIFIER_H
-#define BACHELOR_THESIS_CLASSIFIER_H
+#ifndef BACHELOR_THESIS_FAC_H
+#define BACHELOR_THESIS_FAC_H
 
+#include "fac.h"
 
-#include <automata/dfa.h>
-#include <classifier_constructor/classifier/correspondence/correspondence.h>
-
-class FACClassifier {
+/**
+ * Composite Finite Automata Classifier
+ */
+class CFAC {
 private:
     //-----------------------------------------------------------//
     //  PRIVATE FIELDS
     //-----------------------------------------------------------//
 
-    DFA dfa;
-
-    std::vector<Correspondence> stateCorrespondenceVector;
+    std::vector<FAC> facClassifiers;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
@@ -28,24 +27,18 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    FACClassifier(DFA dfa);
+    CFAC();
 
-    FACClassifier(DFA dfa,
-                  std::vector<Correspondence> stateCorrespondence);
-
+    ~CFAC();
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
 
-    void addStateCorrespondence(Correspondence stateCorrespondence);
-
-    const DFA& getDFA() const;
-
-    const std::vector<Correspondence>& getStateCorrespondence() const;
+    const std::vector<FAC>& getClassifiers() const;
 
     const Label& classify(const Word& word) const;
 };
 
 
-#endif //BACHELOR_THESIS_CLASSIFIER_H
+#endif //BACHELOR_THESIS_FAC_H

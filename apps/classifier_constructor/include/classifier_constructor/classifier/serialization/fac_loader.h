@@ -6,7 +6,7 @@
 #define BACHELOR_THESIS_FACLOADER_H
 
 
-#include <classifier_constructor/classifier/fac.h>
+#include "classifier_constructor/classifier/cfac.h"
 
 class FACLoader {
 private:
