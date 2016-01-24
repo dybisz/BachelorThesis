@@ -35,12 +35,12 @@ namespace experiments {
         logger::log("Language Transformation");
 
         std::vector<Language *> *nativeLanguages =
-                transformation::convert(nativePatterns,
-                                        settings::ALPHABET_SIZE);
+                transformation::transform(nativePatterns,
+                                          settings::ALPHABET_SIZE);
 
         std::vector<Language *> *foreignLanguages =
-                transformation::convert(foreignPatterns,
-                                        settings::ALPHABET_SIZE);
+                transformation::transform(foreignPatterns,
+                                          settings::ALPHABET_SIZE);
 
         AlternativeClassifier *classifier = new AlternativeClassifier(
                 nativeLanguages,

@@ -12,7 +12,7 @@ namespace transformation{
     TotalSimilarity computeSimilarityAnalysis(std::vector<Class *> *patterns,
                                               int alphabetSize){
         std::vector<Language*>* languages =
-                transformation::convert(patterns, alphabetSize);
+                transformation::transform(patterns, alphabetSize);
 
         std::vector<Similarity> similarites =
                 getSimilarites(languages, alphabetSize);

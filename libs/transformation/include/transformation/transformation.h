@@ -37,12 +37,12 @@ namespace transformation {
     // start numbering states related to loaded language. Very useful, when we
     // e.g need to consecutively load 2 languages and preserve different state
     // numbering.
-    vector<Language *> *convert(vector<Class *> *classes, int numberOfStates,
-                                int precision, int stateStartingIndex = 0);
+    vector<Language *> *transform(vector<Class *> *classes, int numberOfStates,
+                                  int precision, int stateStartingIndex = 0);
 
-    Language* convert(Class& pattern, int precision);
+    Language*transform(Class &pattern, int precision);
 
-    vector<Language *> *convert(vector<Class *> *patterns, int precision);
+    vector<Language *> *transform(vector<Class *> *patterns, int precision);
 
     // Auxiliary method. It returns vector of intervals, where i'th entry
     // represents <min;max> interval of i'th feature.

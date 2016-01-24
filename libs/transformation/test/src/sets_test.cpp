@@ -70,13 +70,13 @@ void auxInit() {
     vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
     nLanguages =
-            transformation::convert(
+            transformation::transform(
                     nativePatterns,
                     STATES_NATIVE,
                     ALPHABET);
 
     fLanguages =
-            transformation::convert(
+            transformation::transform(
                     foreignPatterns,
                     STATES_FOREIGN,
                     ALPHABET,

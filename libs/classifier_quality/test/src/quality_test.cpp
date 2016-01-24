@@ -304,13 +304,13 @@ void initGlobals() {
     vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
     nativeLanguages =
-            transformation::convert(
+            transformation::transform(
                     nativePatterns,
                     STATES_PER_NATIVE,
                     ALPHABET_SIZE);
 
     foreignLanguages =
-            transformation::convert(
+            transformation::transform(
                     foreignPatterns,
                     STATES_PER_FOREIGN,
                     ALPHABET_SIZE,

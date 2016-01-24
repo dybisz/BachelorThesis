@@ -14,7 +14,7 @@ string DATA_PATH2 = "./res/fv_example.xls";
 
 TEST(PatternsToLanguages, Pattern_Init) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);
-    vector<Language *> * languages = convert(xlsLoader->getClasses(),2, 5);
+    vector<Language *> * languages = transform(xlsLoader->getClasses(), 2, 5);
     delete xlsLoader;
     delete languages;
 }
@@ -22,7 +22,7 @@ TEST(PatternsToLanguages, Pattern_Init) {
 TEST(PatternsToLanguages, Pattern_Wrong_Input) {
     XlsLoader* xlsLoader = new XlsLoader(DATA_PATH2);
     vector<Language *> * languages = NULL;
-    ASSERT_ANY_THROW(languages = convert(xlsLoader->getClasses(),-1, -1));
+    ASSERT_ANY_THROW(languages = transform(xlsLoader->getClasses(), -1, -1));
     if(languages != NULL) delete languages;
     delete xlsLoader;
 }

@@ -5,7 +5,7 @@
 #include <language/alphabet.h>
 #include "transformation/transformation.h"
 
-vector<Language *> *transformation::convert(
+vector<Language *> *transformation::transform(
         vector<Class *> *classes,
         int numberOfStates,
         int precision,
@@ -27,12 +27,13 @@ vector<Language *> *transformation::convert(
     return languages;
 }
 
-Language*transformation::convert(Class& pattern, int precision) {
+Language*transformation::transform(Class &pattern, int precision) {
 
     std::vector<Class*> patternVector;
     patternVector.push_back(&pattern);
 
-    std::vector<Language*>* languageVector = convert(&patternVector, precision);
+    std::vector<Language*>* languageVector = transform(&patternVector,
+                                                       precision);
 
     Language* convertedLanguage = (*languageVector)[0];
 
@@ -42,8 +43,8 @@ Language*transformation::convert(Class& pattern, int precision) {
 }
 
 
-vector<Language *> *transformation::convert(vector<Class *> *patterns,
-                                            int precision) {
+vector<Language *> *transformation::transform(vector<Class *> *patterns,
+                                              int precision) {
     _checkConditions(1, precision, patterns);
 
     vector<Language *> *languages = NULL;

@@ -86,11 +86,11 @@ void globalClassifierInit() {
 
     // Deleted by AlternativeClassifier class
     std::vector<Language *> *nativeLanguages =
-            transformation::convert(nativePatterns,
-                                    _SYMBOLS_IN_ALPHABET);
+            transformation::transform(nativePatterns,
+                                      _SYMBOLS_IN_ALPHABET);
     std::vector<Language *> *foreignLanguages =
-            transformation::convert(foreignPatterns,
-                                    _SYMBOLS_IN_ALPHABET);
+            transformation::transform(foreignPatterns,
+                                      _SYMBOLS_IN_ALPHABET);
 
     classifier = new AlternativeClassifier(
             nativeLanguages,
