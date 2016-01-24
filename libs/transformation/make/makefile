@@ -97,6 +97,32 @@
 
 ######################################################################
 #--------------------------------0-----------------------------------#
+#---------------------- INCLUDE CONFIG FILES ------------------------#
+#--------------------------------------------------------------------#
+######################################################################
+
+PROJECT_ROOT = ..
+PATH_TO_CONFIGS = ${PROJECT_ROOT}/make
+
+# Include make configurations
+include ${PATH_TO_CONFIGS}/proj_config.sh
+include ${PATH_TO_CONFIGS}/lib_config.sh
+include ${PATH_TO_CONFIGS}/struct_config.sh
+include ${PATH_TO_CONFIGS}/compiler_config.sh
+include ${PATH_TO_CONFIGS}/make_external_config.sh
+
+# Get runners scripts handles
+RUN_INSTALL_SCRIPT:=${PATH_TO_CONFIGS}/run_install.sh
+RUN_RELEASE_SCRIPT:=${PATH_TO_CONFIGS}/run_release.sh
+LIB_NAME_SCRIPT:=${PATH_TO_CONFIGS}/lib_name.sh
+
+RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh
+
+# Get a full name of the lib
+LIB_FULL_NAME=$(shell $(LIB_NAME_SCRIPT))
+
+######################################################################
+#--------------------------------0-----------------------------------#
 #--------------------------- RULE NAMES -----------------------------#
 #--------------------------------------------------------------------#
 ######################################################################
@@ -111,23 +137,8 @@ EXTERNALS_RULE_NAME=externals
 #--------------------------------------------------------------------#
 ######################################################################
 
-INSTALL_ROOT_PATH := $(shell pwd)
-
-PROJECT_ROOT = ..
-PATH_TO_CONFIGS = ${PROJECT_ROOT}/make
-
-# Include make configurations
-include ${PATH_TO_CONFIGS}/proj_config.sh
-include ${PATH_TO_CONFIGS}/struct_config.sh
-include ${PATH_TO_CONFIGS}/compiler_config.sh
-include ${PATH_TO_CONFIGS}/make_external_config.sh
-
-# Get runners scripts handles
-RUN_INSTALL_SCRIPT:=${PATH_TO_CONFIGS}/run_install.sh
-RUN_RELEASE_SCRIPT:=${PATH_TO_CONFIGS}/run_release.sh
-LIB_NAME_SCRIPT:=${PATH_TO_CONFIGS}/lib_name.sh
-
-RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh
+PROJ_NAME := $(PROJ_NAME)
+PROJ_CODE_NAME := $(PROJ_CODE_NAME)
 
 ######################################################################
 #--------------------------------1-----------------------------------#
@@ -142,14 +153,13 @@ RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh
 # Path to directory containing
 # common external libs in custom directory
 EXTERNAL_LIBS_INCLUDE_PATH=${PROJECT_ROOT}/../../dependencies/include
-EXTERNAL_LIBS_LIB_PATH=${PROJECT_ROOT}/../../dependencies/lib
 
 #--------------- FILE EXTENSIONS --------------#
 
 # c++ extension
-CPP_EXT = ${COMPILER_CC_EXT}
+CPP_EXT := ${COMPILER_CC_EXT}
 # cuda extension
-CUDA_EXT = ${COMPILER_NVCC_EXT}
+CUDA_EXT := ${COMPILER_NVCC_EXT}
 
 #-------------- PROJECT STRUCTURE -------------#
 
@@ -157,18 +167,22 @@ INC = ${PROJECT_ROOT}/${STRUCT_INC}
 SRC = ${PROJECT_ROOT}/${STRUCT_SRC}
 LIB = ${PROJECT_ROOT}/${STRUCT_LIB}
 OBJ = ${PROJECT_ROOT}/${STRUCT_OBJ}
-BIN = ${PROJECT_ROOT}/${STRUCT_BIN}
 TST = ${PROJECT_ROOT}/${STRUCT_TST}
 DOC = ${PROJECT_ROOT}/${STRUCT_DOC}
-# All scripts to run all
-SCRIPT=scripts
+
+#------------- EXTERNAL MAKEFILES -------------#
+
+# Paths to the Makefiles to be ran before this Makefile.
+# Default target will be executed.
+# Can be used to compile your static libraries before linking.
+# Surrounded the path with '...' and separate different paths
+# with a space.
+#MAKE_EXTERNAL := ${MAKE_EXTERNAL}
 
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += -latl -lflagger -lptrec -llogger -lpso -ltransform\
-		-lmath -lparallel -ltime -lstrings -lcquality\
-		-lexcel_format
+LIBS += -lpthread
 
 #----------------- INCLUDES -------------------#
 
@@ -179,8 +193,8 @@ INCLUDES +=
 
 # Use '-static' for static libraries
 # Use '-shared' for shared libraries
-L_FLAGS +=
-C_FLAGS += -g -Wall -std=c++11
+LD_FLAGS +=
+C_FLAGS += -Wall -std=c++11
 NVCC_FLAGS += -arch=sm_20
 
 #----------------- PRINT OUTS -----------------#
@@ -194,6 +208,10 @@ INFO_FILLER = "  <<  "
 #------------------ STATIC SUBSECTION - DO NOT MODIFY ---------------#
 ######################################################################
 
+# Finds all libraries in libs/include path
+EXTERNAL_LIBS_INCLUDE_MODULES=$(addprefix -I ,\
+$(shell find ${EXTERNAL_LIBS_INCLUDE_PATH} -maxdepth 1 -type d 2>/dev/null))
+
 #----------------- COMPILERS -----------------#
 
 CC = ${COMPILER_CC}
@@ -201,33 +219,20 @@ NVCC = ${COMPILER_NVCC}
 
 #----------------- PROJECT MODULES -----------------#
 
-CURRENT_PATH = ${shell pwd}
-
 # List of all subdirectories in source directory
 SRC_MODULES = $(shell find ${SRC} -type d 2>/dev/null)
-
-#----------------- INCLUDE MODULES -----------------#
-
-# Finds all libraries in libs/include path
-EXTERNAL_LIBS_INCLUDE_MODULES=$(addprefix -I ,\
-$(shell find ${EXTERNAL_LIBS_INCLUDE_PATH} -maxdepth 1 -type d 2>/dev/null))
-
-# All Lib modules to include
-LIB_INC_MODULES = $(addprefix -I , $(shell find ${LIB} -type d 2>/dev/null))
+# Adds each modules in include separately.
+INC_MODULES =  $(addprefix -I , $(shell find ${INC} -type d 2>/dev/null))
 
 #----------------- LIBRARIES MODULES -----------------#
 
 # Variable representing comma ','
 COMMA = ,
-
 # The flags needed for ld path
 LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
 
-#----------------- IN HOUSE LIBRARIES MODULES -----------------#
-
 # Adds each module in lib folder to search for libs
-LIB_MODULES = \
-$(shell find ${INSTALL_ROOT_PATH}/${LIB} -type d 2>/dev/null)
+LIB_MODULES = $(shell find ${LIB} -type d 2>/dev/null)
 
 # Add link flag to all LIB_MODULES
 LIB_LINK_MODULES = $(addprefix -L , $(LIB_MODULES))
@@ -235,31 +240,16 @@ LIB_LINK_MODULES = $(addprefix -L , $(LIB_MODULES))
 # The paths to all shared libraries
 LIB_LINK_RPATH = $(addprefix ${LD_SHARED_PATH_FLAG} , $(LIB_MODULES))
 
-#----------------- EXTERNAL LIBRARIES MODULES -----------------#
+# All Lib modules to include
+LIB_INC_MODULES = $(addprefix -I , $(shell find ${LIB} -type d 2>/dev/null))
 
-# Adds each module in lib folder to search for libs
-EXTERNAL_LIB_MODULES = \
-$(shell find ${INSTALL_ROOT_PATH}/${EXTERNAL_LIBS_LIB_PATH} -type d 2>/dev/null)
-
-# Add link flag to all LIB_MODULES
-EXTERNAL_LIB_LINK_MODULES = \
-$(addprefix -L , $(EXTERNAL_LIB_MODULES))
-
-# The paths to all shared libraries
-EXTERNAL_LIB_LINK_RPATH = \
-$(addprefix ${LD_SHARED_PATH_FLAG} , $(EXTERNAL_LIB_MODULES))
-
-#----------------- LIBS / INCLUDES -----------------#
-
-LIBS += ${LIB_LINK_MODULES} ${LIB_LINK_RPATH} \
-		${EXTERNAL_LIB_LINK_MODULES} ${EXTERNAL_LIB_LINK_RPATH}
-
-INCLUDES += -I ${INC} ${LIB_INC_MODULES} ${EXTERNAL_LIBS_INCLUDE_MODULES}
+LIBS += ${LIB_LINK_MODULES} ${LIB_LINK_RPATH}
+INCLUDES += ${LIB_INC_MODULES} -I ${INC} ${EXTERNAL_LIBS_INCLUDE_MODULES}
 
 #----------------- COMPILER FLAGS -----------------#
 
-L_FLAGS += ${LIBS}
-C_FLAGS += ${INCLUDES} -MMD
+LD_FLAGS += -${LIB_TYPE} ${LIBS}
+C_FLAGS += -fPIC -g -MMD ${INCLUDES}
 NVCC_FLAGS +=
 
 #----------------- SOURCE/OBJECT FILES -----------------#
@@ -292,15 +282,19 @@ VPATH = ${SRC_MODULES}
 #----------------- MAIN RULES -----------------#
 ################################################
 
-all: compile_objects link run_test
+# All
+all: compile_lib run_test
 
-compile_objects: init_project $(EXTERNALS_RULE_NAME) ${OBJECTS}
+compile_lib: $(EXTERNALS_RULE_NAME) compile_objects \
+			info_prefix ${PROJ_CODE_NAME} info_suffix
 
-link: info_prefix init_project ${PROJ_CODE_NAME} info_suffix
+compile_objects: init_project ${OBJECTS}
 
-link_without_test: compile_objects link compile_test
+${INSTALL_RULE_NAME}: compile_lib
+	@$(RUN_INSTALL_SCRIPT)
 
-${INSTALL_RULE_NAME}:
+${RELEASE_RULE_NAME}: compile_lib
+	@$(RUN_RELEASE_SCRIPT)
 
 compile_test:
 	@$(MAKE) link -C $(TST)
@@ -317,7 +311,7 @@ run_test:
 
 # Used in debug
 ${PROJ_CODE_NAME}: ${OBJECTS}
-	@$(CC) -o ${BIN}/${PROJ_CODE_NAME} $^ $(L_FLAGS)
+	@$(CC) -o ${OBJ}/${LIB_FULL_NAME} $^ $(LD_FLAGS)
 
 #----------------- COMPILERS ------------------#
 
@@ -356,57 +350,22 @@ ${EXTERNALS_RULE_NAME}:
 #-------------- INITIALIZATION ----------------#
 ################################################
 
-init_all: init_project init_scripts
+init_all: init_project
 
 # Creates all the directories of the project
 init_project:
-	@mkdir -p ${OBJ} ${BIN} ${SRC} ${LIB} ${INC} ${TST}
-
-# Initializes scripts folder and a config script for exec path
-init_scripts:
-	@mkdir -p ${SCRIPT}
-	@touch ./${SCRIPT}/config.cfg
-	@chmod 755 ./${SCRIPT}/config.cfg
-	$(shell > ./${SCRIPT}/config.cfg)
-	$(shell echo "APP_ROOT_PATH="${INSTALL_ROOT_PATH} >> ./${SCRIPT}/config.cfg)
-	$(shell echo "APP_EXEC_PATH="${INSTALL_ROOT_PATH}/${BIN}/${APP_CODE_NAME} \
-	>> ./${SCRIPT}/config.cfg)
-
-################################################
-#---------------- INSTALLATION ----------------#
-################################################
-
-# TODO Seperate installation function
-install_init:
-	@echo "Install to directory: " ${INSTALL_ROOT_PATH}
-	@mkdir -p ${INSTALL_ROOT_PATH}
-	@echo "Installing resources"
-	@cp -r ./res ${INSTALL_ROOT_PATH}
-	@echo "Installing scripts"
-	@cp -r ./${SCRIPT} ${INSTALL_ROOT_PATH}
-	$(shell > ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
-	$(shell echo "APP_ROOT_PATH="${INSTALL_ROOT_PATH} \
-	>> ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
-	$(shell echo "APP_EXEC_PATH="${INSTALL_ROOT_PATH}/${APP_CODE_NAME} \
-	>> ${INSTALL_ROOT_PATH}/${SCRIPT}/config.cfg)
-	@echo "Installing Libraries"
-	@cp -r ${LIB} ${INSTALL_ROOT_PATH}
-
-# This rule should be used to define the installation process.
-# Add all requirement for your installation here.
-# This will be ran after compilation.
-install_post:
-	@cp ${BIN}/${APP_CODE_NAME} ${INSTALL_ROOT_PATH}
+	@mkdir -p ${OBJ} ${SRC} ${LIB} ${INC} ${TST} ${DOC}
 
 ################################################
 #------------------- CLEAN --------------------#
 ################################################
 
-clean: clean_obj clean_bin
+clean: clean_obj
 	@$(MAKE) -C $(TST) clean
 
 clean_obj:
 	$(eval OBJECTS=$(shell find ${OBJ} -name *.o))
+	$(eval LIBS=$(shell find ${OBJ} -name *.so))
 	$(eval DEPS=$(shell find ${OBJ} -name *.d))
 	$(eval TMPS=$(shell find ${OBJ} -name *.~))
 	@echo ${INFO_SEPARATOR}
@@ -426,30 +385,16 @@ clean_obj:
 	@echo
 	@$(foreach var, ${DEPS}, echo ${var};)
 	@echo
+	@echo
+	@echo ${INFO_SEPARATOR}
+	@echo
+	@echo "Shared Library files:"
+	@echo
+	@$(foreach var, ${LIBS}, echo ${var};)
+	@echo
 	@echo ${INFO_SEPARATOR}
 	@echo ${INFO_SEPARATOR}
-	@$(foreach var, ${OBJECTS}, rm -f ${var})
-	@$(foreach var, ${DEPS}, rm -f ${var})
-	@$(foreach var, ${TMPS}, rm -f ${var})
 	@rm -rf ${OBJ}
-
-clean_bin:
-	$(eval BINS=$(shell find ${BIN} -type f))
-	@echo ${INFO_SEPARATOR}
-	@echo
-	@echo ${INFO_FILLER} "Cleaning: ${BIN}/"
-	@echo
-	@echo ${INFO_SEPARATOR}
-	@echo ${INFO_SEPARATOR}
-	@echo
-	@echo "Binary Files:"
-	@echo
-	@$(foreach var, ${BINS}, echo ${var};)
-	@echo
-	@echo ${INFO_SEPARATOR}
-	@echo ${INFO_SEPARATOR}
-	@$(foreach var, ${BINS}, rm -f ${var})
-	@rm -rf ${BIN}
 
 # Cleans all compiled objects within the lib directory
 clean_lib:
@@ -515,7 +460,7 @@ info_suffix:
 	@echo
 	@echo ${INFO_SEPARATOR}
 	@echo
-	@echo ${INFO_FILLER}"LINKING SUCCESSFULL"
+	@echo ${INFO_FILLER}"COMPILATION SUCCESSFULL"
 	@echo
 	@echo ${INFO_SEPARATOR}
 	@echo ${INFO_SEPARATOR}

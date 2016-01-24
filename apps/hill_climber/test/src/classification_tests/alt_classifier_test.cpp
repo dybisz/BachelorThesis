@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 #include <classification/alternative_classifier.h>
 #include <xls_loader.h>
-#include "classes_to_languages.h"
+#include "transformation/transformation.h"
 
 using namespace std;
 
@@ -86,11 +86,11 @@ void globalClassifierInit() {
 
     // Deleted by AlternativeClassifier class
     std::vector<Language *> *nativeLanguages =
-            patterns_to_languages::convert(nativePatterns,
-                                           _SYMBOLS_IN_ALPHABET);
+            transformation::convert(nativePatterns,
+                                    _SYMBOLS_IN_ALPHABET);
     std::vector<Language *> *foreignLanguages =
-            patterns_to_languages::convert(foreignPatterns,
-                                           _SYMBOLS_IN_ALPHABET);
+            transformation::convert(foreignPatterns,
+                                    _SYMBOLS_IN_ALPHABET);
 
     classifier = new AlternativeClassifier(
             nativeLanguages,

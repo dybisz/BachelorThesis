@@ -23,3 +23,6 @@ MAKE_EXTERNAL_RULE[4]='install'
 
 MAKE_EXTERNAL[5]='../../../libs/classifier_quality/make/'
 MAKE_EXTERNAL_RULE[5]='install'
+
+MAKE_EXTERNAL[6]='../../../libs/transformation/make/'
+MAKE_EXTERNAL_RULE[6]='install'

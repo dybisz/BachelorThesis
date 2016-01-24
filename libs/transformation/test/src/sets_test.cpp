@@ -5,8 +5,8 @@
 #include <gtest/gtest.h>
 #include <language/language.h>
 #include <xls_loader.h>
-#include "classes_to_languages.h"
-#include <language/sets_disassociation.h>
+#include "transformation/transformation.h"
+#include <transformation/sets_disassociation.h>
 
 using namespace std;
 
@@ -70,13 +70,13 @@ void auxInit() {
     vector<Class *> *foreignPatterns = foreignXLSLoader.getClasses();
 
     nLanguages =
-            patterns_to_languages::convert(
+            transformation::convert(
                     nativePatterns,
                     STATES_NATIVE,
                     ALPHABET);
 
     fLanguages =
-            patterns_to_languages::convert(
+            transformation::convert(
                     foreignPatterns,
                     STATES_FOREIGN,
                     ALPHABET,

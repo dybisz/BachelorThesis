@@ -5,7 +5,7 @@
 #include <logger/log.h>
 #include <cmath>
 #include <iomanip>
-#include "classifier_constructor/transformation/transformation_analyzer.h"
+#include "transformation/transformation_analyzer.h"
 
 using namespace std;
 

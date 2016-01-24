@@ -4,7 +4,7 @@
 
 #include "classifier_constructor/experiments/transformation_exp.h"
 
-#include <classifier_constructor/transformation/transformation_analyzer.h>
+#include <transformation/transformation_analyzer.h>
 
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/transformation_settings.h>

@@ -6,7 +6,7 @@
 #include <classifier_constructor/experiments/classification/classifier.h>
 
 #include <logger/log.h>
-#include "classes_to_languages.h"
+#include "transformation/transformation.h"
 
 #include <xls_loader.h>
 
@@ -47,11 +47,11 @@ namespace experiments {
         logger::log("Transforming Patterns to Languages");
 
         std::vector<Language *> *nativeLanguages
-                = patterns_to_languages::convert(nativePatterns,
-                                               settings::ALPHABET_SIZE);
+                = transformation::convert(nativePatterns,
+                                          settings::ALPHABET_SIZE);
         std::vector<Language *> *foreignLanguages
-                = patterns_to_languages::convert(foreignPatterns,
-                                               settings::ALPHABET_SIZE);
+                = transformation::convert(foreignPatterns,
+                                          settings::ALPHABET_SIZE);
 
         PSOFactory psoFactory(
                 nativeLanguages, foreignLanguages,

@@ -8,7 +8,7 @@
 #include <language/interval.h>
 #include <language/language.h>
 
-#include "class.h"
+#include <class.h>
 
 #include <vector>
 #include <string>
@@ -22,7 +22,7 @@ using namespace std;
  * later on processed by an automaton. That is why we produce languages with
  * accepting states attached to them //
  */
-namespace patterns_to_languages {
+namespace transformation {
 
     /* ----------------------- */
     /* -----MAIN METHODS ----- */
@@ -72,6 +72,8 @@ namespace patterns_to_languages {
     // Creates languages based on the patterns and alphabet
     vector<Language *> *_createLanguages(vector<Class *> *pPattern,
                                             Alphabet *pAlphabet);
+
+    vector<Word*> _produceWordsFromPattern(Class *pPattern, Alphabet alphabet);
     /* --------------------- */
     /* ----- AUXILIARY ----- */
     /* --------------------- */

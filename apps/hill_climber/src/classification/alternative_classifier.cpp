@@ -2,7 +2,7 @@
 // Created by dybisz on 30.12.15.
 //
 
-#include <language/sets_disassociation.h>
+#include <transformation/sets_disassociation.h>
 #include <logger/log.h>
 #include <logger.h>
 #include "classifier_quality.h"

@@ -2,18 +2,17 @@
 // Created by jakub on 1/19/16.
 //
 
-#include <transformation_precision.h>
-#include "classes_to_languages.h"
+#include "transformation/transformation.h"
 #include <language/language_relations.h>
 #include <logger/log.h>
-#include "classifier_constructor/transformation/transformation.h"
+#include "transformation/transformation_analysis.h"
 
 namespace transformation{
 
     TotalSimilarity computeSimilarityAnalysis(std::vector<Class *> *patterns,
                                               int alphabetSize){
         std::vector<Language*>* languages =
-                patterns_to_languages::convert(patterns, alphabetSize);
+                transformation::convert(patterns, alphabetSize);
 
         std::vector<Similarity> similarites =
                 getSimilarites(languages, alphabetSize);

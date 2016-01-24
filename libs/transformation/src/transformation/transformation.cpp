@@ -3,9 +3,9 @@
 //
 
 #include <language/alphabet.h>
-#include "classes_to_languages.h"
+#include "transformation/transformation.h"
 
-vector<Language *> *patterns_to_languages::convert(
+vector<Language *> *transformation::convert(
         vector<Class *> *classes,
         int numberOfStates,
         int precision,
@@ -27,7 +27,7 @@ vector<Language *> *patterns_to_languages::convert(
     return languages;
 }
 
-Language* patterns_to_languages::convert(Class& pattern, int precision) {
+Language*transformation::convert(Class& pattern, int precision) {
 
     std::vector<Class*> patternVector;
     patternVector.push_back(&pattern);
@@ -42,8 +42,8 @@ Language* patterns_to_languages::convert(Class& pattern, int precision) {
 }
 
 
-vector<Language *> *patterns_to_languages::convert(vector<Class *> *patterns,
-                                                   int precision) {
+vector<Language *> *transformation::convert(vector<Class *> *patterns,
+                                            int precision) {
     _checkConditions(1, precision, patterns);
 
     vector<Language *> *languages = NULL;
@@ -60,7 +60,7 @@ vector<Language *> *patterns_to_languages::convert(vector<Class *> *patterns,
     return languages;
 }
 
-vector<Interval *> patterns_to_languages::_calculateFeaturesIntervals(
+vector<Interval *> transformation::_calculateFeaturesIntervals(
         vector<Class *> *pPatterns) {
 
     vector<Interval *> intervals;
@@ -93,7 +93,7 @@ vector<Interval *> patterns_to_languages::_calculateFeaturesIntervals(
     return intervals;
 }
 
-vector<Class *> *patterns_to_languages::_normalizeClasses(
+vector<Class *> *transformation::_normalizeClasses(
         vector<Class *> *pPatterns,
         vector<Interval *> intervals) {
 
@@ -131,7 +131,7 @@ vector<Class *> *patterns_to_languages::_normalizeClasses(
     return pPatterns;
 }
 
-vector<Language *> *patterns_to_languages::_createLanguages(
+vector<Language *> *transformation::_createLanguages(
         vector<Class *> *pPattern, Alphabet *pAlphabet, int numberOfStates,
         int stateStartingIndex) {
 
@@ -150,7 +150,9 @@ vector<Language *> *patterns_to_languages::_createLanguages(
             stateCounter++;
         }
 
-        Language *language = new Language((*iter), (*pAlphabet), states);
+        vector<Word*> words = _produceWordsFromPattern((*iter), (*pAlphabet));
+
+        Language *language = new Language(words, (*pAlphabet), states);
         languages->push_back(language);
     }
 
@@ -158,21 +160,54 @@ vector<Language *> *patterns_to_languages::_createLanguages(
 }
 
 
-vector<Language *> *patterns_to_languages::_createLanguages(
+vector<Language *> *transformation::_createLanguages(
         vector<Class *> *pPattern, Alphabet *pAlphabet) {
 
     vector<Language *> *languages = new vector<Language *>();
 
     for (auto iter = pPattern->begin(); iter != pPattern->end(); ++iter) {
 
-        Language *language = new Language((*iter), (*pAlphabet));
+        vector<Word*> words = _produceWordsFromPattern((*iter), (*pAlphabet));
+
+        Language *language = new Language(words, (*pAlphabet));
         languages->push_back(language);
     }
 
     return languages;
 }
 
-string patterns_to_languages::_vectorOfIntervalsToString(
+vector<Word*> transformation::_produceWordsFromPattern(Class *pPattern,
+                                                      Alphabet alphabet) {
+    vector<Word*> words;
+    // Get features
+    vector<FeaturesVector *> *features = pPattern->getFeatures();
+    // TODO create method for getting number of features
+    int numberOfFeatures = pPattern->getVector(0)->size();
+
+    // Convert each features vector to word
+    for (auto iter = features->begin(); iter != features->end(); ++iter) {
+        vector<Symbol> symbols;
+
+        for (int i = 0; i < numberOfFeatures; i++) {
+            double entry = (*(*iter))[i];
+
+            // Stretch normalized entry to the alphabet size
+            entry *= (double) alphabet.size();
+
+//            if(entry > _alphabet.size()) cout << "before: " << (*(*iter))[i] << "entry: " << entry << " alphabet.sz(): " << _alphabet.size() << endl;
+
+            Symbol symbol = alphabet.convertToSymbol(entry);
+            symbols.push_back(symbol);
+
+        }
+        // Create word and save it.
+        Word *word = new Word(symbols);
+        words.push_back(word);
+    }
+    return words;
+}
+
+string transformation::_vectorOfIntervalsToString(
         vector<Interval *> &interval) {
     string out = "intervals: \n";
     int i = 0;
@@ -187,7 +222,7 @@ string patterns_to_languages::_vectorOfIntervalsToString(
     return out;
 }
 
-vector<Word *> *patterns_to_languages::_convertClassesToWords(
+vector<Word *> *transformation::_convertClassesToWords(
         vector<Class *> *pPatterns, Alphabet *alphabet) {
 
     vector<Word *> *words = new vector<Word *>();
@@ -211,7 +246,7 @@ vector<Word *> *patterns_to_languages::_convertClassesToWords(
     return words;
 }
 
-Word *patterns_to_languages::_convertFeatureToWord(
+Word *transformation::_convertFeatureToWord(
         FeaturesVector *pFeatureVector,
         Alphabet *pAlphabet) {
     Word *word = new Word();
@@ -225,8 +260,8 @@ Word *patterns_to_languages::_convertFeatureToWord(
     return word;
 }
 
-void patterns_to_languages::_checkConditions(int states, int precision,
-                                             vector<Class *> *patterns) {
+void transformation::_checkConditions(int states, int precision,
+                                      vector<Class *> *patterns) {
     if (patterns == NULL) {
         throw invalid_argument(
                 "pointer to patters is NULL");

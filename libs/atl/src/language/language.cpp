@@ -23,27 +23,6 @@ Language::Language(const Language &language) :
     }
 }
 
-Language::Language(Class *pPattern, Alphabet pAlphabet,
-                   vector<State *> pStates) : _alphabet(pAlphabet),
-                                              _states(pStates) {
-    try {
-        _produceWordsFromPattern(pPattern);
-    }
-    catch (exception &e) {
-        std::cout << e.what() << std::endl;
-    }
-}
-
-Language::Language(Class *pPattern, Alphabet pAlphabet)
-        : _alphabet(pAlphabet) {
-    try {
-        _produceWordsFromPattern(pPattern);
-    }
-    catch (exception &e) {
-        std::cout << e.what() << std::endl;
-    }
-}
-
 Language::Language(vector<Word *> &words, Alphabet pAlphabet,
                    vector<State *> pStates) : _words(words),
                                               _alphabet(pAlphabet),
@@ -161,36 +140,6 @@ vector<Word*> Language::getWordsWithoutDuplicates(
         }
     }
     return wordsWithoutDuplicates;
-}
-
-
-void Language::_produceWordsFromPattern(Class *pPattern) {
-    // Get features
-    vector<FeaturesVector *> *features = pPattern->getFeatures();
-    // TODO create method for getting number of features
-    int numberOfFeatures = pPattern->getVector(0)->size();
-
-    // Convert each features vector to word
-    for (auto iter = features->begin(); iter != features->end(); ++iter) {
-        vector<Symbol> symbols;
-
-        for (int i = 0; i < numberOfFeatures; i++) {
-            double entry = (*(*iter))[i];
-
-            // Stretch normalized entry to the alphabet size
-            entry *= (double) _alphabet.size();
-
-//            if(entry > _alphabet.size()) cout << "before: " << (*(*iter))[i] << "entry: " << entry << " alphabet.sz(): " << _alphabet.size() << endl;
-
-            Symbol symbol = _alphabet.convertToSymbol(entry);
-            symbols.push_back(symbol);
-
-        }
-        // Create word and save it.
-        Word *word = new Word(symbols);
-        _words.push_back(word);
-    }
-
 }
 
 string Language::toString() {

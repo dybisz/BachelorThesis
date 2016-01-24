@@ -3,7 +3,7 @@
 //
 
 #include <classifier_constructor/experiments/classification/classifier.h>
-#include <language/sets_disassociation.h>
+#include <transformation/sets_disassociation.h>
 #include <classifier_quality.h>
 
 #include <logger/log.h>

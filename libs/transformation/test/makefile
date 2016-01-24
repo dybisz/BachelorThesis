@@ -56,12 +56,11 @@ MAKE_EXTERNAL = '$(GTEST_ROOT)/make/'
 #---------------- LIBRARIES -------------------#
 
 # Paths and names of libraries to link with
-LIBS += $(GTEST_ROOT)/make/gtest_main.a -lpthread\
-			-latl -lptrec -lmath -ltransform \
-			-lstrings -lpso -llogger \
-			-lparallel -ltime\
-			-lerror\
-			-lexcel_format
+LIBS += $(GTEST_ROOT)/make/gtest_main.a -lpthread \
+            -lptrec -latl \
+            -lexcel_format \
+            -lpso -llogger -lstrings -lmath\
+            -ltime -lparallel -lerror \
 
 #----------------- INCLUDES -------------------#
 
@@ -95,6 +94,7 @@ COMMA = ,
 # The flags needed for ld path
 LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
 
+# Adds each module in lib folder to search for libs
 EXTERNAL_LIB_MODULES =\
  $(shell find ${INSTALL_ROOT_PATH}/${EXTERNAL_LIBS_LIB_PATH} \
  -type d 2>/dev/null)

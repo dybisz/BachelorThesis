@@ -4,11 +4,11 @@
 
 #include <gtest/gtest.h>
 #include "class.h"
-#include "classes_to_languages.h"
+#include "transformation/transformation.h"
 #include <xls_loader.h>
 
 using namespace std;
-using namespace patterns_to_languages;
+using namespace transformation;
 
 string DATA_PATH2 = "./res/fv_example.xls";
 

@@ -6,7 +6,7 @@
 #define BACHELOR_THESIS_TRANSFORMATIONANALYZER_H
 
 #include "class.h"
-#include "classifier_constructor/transformation/transformation.h"
+#include "transformation/transformation_analysis.h"
 
 namespace transformation {
 

@@ -2,7 +2,7 @@
 // Created by dybisz on 26.12.15.
 //
 
-#include <language/sets_disassociation.h>
+#include <transformation/sets_disassociation.h>
 
 vector<Language *> *set_disassociation::detachWords(double subsetSetRatio,
                                                     vector<Language *> *baseSet) {

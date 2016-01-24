@@ -6,7 +6,7 @@
 #include <xls_loader.h>
 #include <settings/global_settings.h>
 #include <logger/log.h>
-#include "classes_to_languages.h"
+#include "transformation/transformation.h"
 #include <classification/alternative_classifier.h>
 
 using namespace pso;
@@ -35,12 +35,12 @@ namespace experiments {
         logger::log("Language Transformation");
 
         std::vector<Language *> *nativeLanguages =
-                patterns_to_languages::convert(nativePatterns,
-                                               settings::ALPHABET_SIZE);
+                transformation::convert(nativePatterns,
+                                        settings::ALPHABET_SIZE);
 
         std::vector<Language *> *foreignLanguages =
-                patterns_to_languages::convert(foreignPatterns,
-                                               settings::ALPHABET_SIZE);
+                transformation::convert(foreignPatterns,
+                                        settings::ALPHABET_SIZE);
 
         AlternativeClassifier *classifier = new AlternativeClassifier(
                 nativeLanguages,
