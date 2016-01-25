@@ -1,24 +1,26 @@
 //
-// Created by jakub on 1/20/16.
+// Created by jakub on 1/24/16.
 //
 
-#ifndef BACHELOR_THESIS_FAC_H
-#define BACHELOR_THESIS_FAC_H
+#ifndef BACHELOR_THESIS_FAC_BUILDER_H
+#define BACHELOR_THESIS_FAC_BUILDER_H
 
-#include "fac.h"
 
-/**
- * Composite Finite Automata Classifier
- */
-class CFAC {
+#include <classifier_constructor/classifier/fac.h>
+#include <language/language.h>
+#include <classifier_constructor/experiments/classification/pso_factory.h>
+
+class FACBuilder {
 private:
     //-----------------------------------------------------------//
     //  PRIVATE FIELDS
     //-----------------------------------------------------------//
 
-    std::vector<FAC> facClassifiers;
+    FAC* classifier;
 
-    int alphabetSize;
+    Correspondence correspondence;
+
+    PSO* pso;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
@@ -29,20 +31,19 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    CFAC(std::vector<FAC> facClassifiers, int alphabetSize);
+    FACBuilder(Correspondence correspondence,
+               PSO* pso);
 
-    ~CFAC();
+    ~FACBuilder();
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
 
-    const std::vector<FAC>& getClassifiers() const;
+    void build();
 
-    int getAlphabetSize() const;
-
-    const Label& classify(const Word& word) const;
+    const FAC& getClassifier();
 };
 
 
-#endif //BACHELOR_THESIS_FAC_H
+#endif //BACHELOR_THESIS_FAC_BUILDER_H

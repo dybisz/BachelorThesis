@@ -41,6 +41,22 @@ PSOFactory::PSOFactory(std::vector<Language *> *nativeLanguages,
     this->particleVelocityWeight = particleVelocityWeight;
 }
 
+PSOFactory::PSOFactory(int swarmSize, int maximumIterations, int threadCount,
+                       double maxVelocity, double encodingDelta,
+                       double uppderBoundError, double learningFactor,
+                       double particleVelocityWeight) {
+    this->swarmSize = swarmSize;
+    this->maximumIterations = maximumIterations;
+
+    this->threadCount = threadCount;
+
+    this->maxVelocity = maxVelocity;
+    this->encodingDelta = encodingDelta;
+    this->uppderBoundError = uppderBoundError;
+    this->learningFactor = learningFactor;
+    this->particleVelocityWeight = particleVelocityWeight;
+}
+
 PSOFactory::~PSOFactory() {
 
 }
@@ -87,6 +103,21 @@ PSO* PSOFactory::createPSO(){
                         particleUpdater,
                         maximumIterations, threadCount);
     return pso;
+}
+
+PSO *PSOFactory::createPSO(std::vector<Language *> *nativeLanguages,
+                           std::vector<Language *> *foreignLanguages,
+                           int statesPerNative, int statesPerForeign,
+                           int alphabetSize) {
+    this->nativeLanguages = nativeLanguages;
+    this->foreignLanguages = foreignLanguages;
+
+    this->statesPerNative = statesPerNative;
+    this->statesPerForeign = statesPerForeign;
+
+    this->alphabetSize = alphabetSize;
+
+    this->createPSO();
 }
 
 //-----------------------------------------------------------//

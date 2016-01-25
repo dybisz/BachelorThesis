@@ -8,16 +8,8 @@
 //  CONSTRUCTORS
 //-----------------------------------------------------------//
 
-
-FAC::FAC(DFA dfa)
-        : dfa(dfa){
-
-}
-
-FAC::FAC(DFA dfa,
-         std::vector<Correspondence>
-                                                stateCorrespondence)
-        : dfa(dfa), correspondenceVector(stateCorrespondence){
+FAC::FAC(DFA dfa, Correspondence correspondence)
+        : dfa(dfa), correspondence(correspondence){
 
 }
 
@@ -25,21 +17,23 @@ FAC::FAC(DFA dfa,
 //  PUBLIC METHODS
 //-----------------------------------------------------------//
 
-
-void FAC::addCorrespondence(
-        Correspondence stateCorrespondence) {
-    this->correspondenceVector.push_back(stateCorrespondence);
-}
-
 const DFA &FAC::getDFA() const {
     return this->dfa;
 }
 
-const std::vector<Correspondence>&
-FAC::getCorrespondence() const {
-    return this->correspondenceVector;
+const Correspondence& FAC::getCorrespondence() const {
+    return this->correspondence;
 }
 
-const Label &FAC::classify(const Word &word) const {
-    return Label(0);
+const Label &FAC::classify(Word &word) const {
+    int stateValue = dfa.compute(word);
+    State state(stateValue);
+
+    const vector<Label>& labels = correspondence.getLabels();
+    for(unsigned int i = 0; i < labels.size(); i++){
+        if(correspondence.isCorresponding(labels[i], state))
+            return labels[i];
+    }
+
+    throw invalid_argument("No state correspondence");
 }

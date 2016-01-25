@@ -26,7 +26,6 @@ namespace language
                                     unsigned int statesPerNative,
                                     unsigned int statesPerForeign);
 
-
     /*
      * Returns number of cccurrences of input word in input vector of words
      */

@@ -25,6 +25,11 @@ public:
     double getFeatureMin(int i);
     double getFeatureMax(int i);
 
+    /*
+     * Deletes and pops back the last feature vector
+     */
+    FeaturesVector* popBack();
+
     int size() const;
     int getLabel() const;
     vector<FeaturesVector*>* getFeatures();

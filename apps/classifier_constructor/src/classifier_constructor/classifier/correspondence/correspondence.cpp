@@ -16,6 +16,20 @@ Correspondence::Correspondence(){
 }
 
 
+Correspondence::Correspondence(const Correspondence &correspondence) {
+    for(unsigned int i = 0; i < correspondence.labels.size();i++){
+        this->labels.push_back(correspondence.labels[i]);
+    }
+    for(unsigned int i = 0; i < correspondence.correspondingStates.size();i++){
+        const vector<State>& states = correspondence.correspondingStates[i];
+        vector<State> myStates;
+        for(unsigned int j = 0; j < states.size(); j++){
+            myStates.push_back(states[j]);
+        }
+        this->correspondingStates.push_back(myStates);
+    }
+}
+
 
 //-----------------------------------------------------------//
 //  PUBLIC METHODS
@@ -90,4 +104,38 @@ void Correspondence::addStateToExistingCorrespondence(State state,
     }
     if(!alreadyExists)
         correspondingStates[labelIndex].push_back(state);
+}
+
+//-----------------------------------------------------------//
+//  OPERATORS
+//-----------------------------------------------------------//
+
+Correspondence &Correspondence::operator=(const Correspondence &other) {
+    for(unsigned int i = 0; i < other.labels.size();i++){
+        this->labels.push_back(other.labels[i]);
+    }
+    for(unsigned int i = 0; i < other.correspondingStates.size();i++){
+        const vector<State>& states = other.correspondingStates[i];
+        vector<State> myStates;
+        for(unsigned int j = 0; j < states.size(); j++){
+            myStates.push_back(states[j]);
+        }
+        this->correspondingStates.push_back(myStates);
+    }
+    return *this;
+}
+
+std::ostream &operator<<(std::ostream &os, const Correspondence &c) {
+    for(unsigned int i = 0; i < c.labels.size(); i++){
+        Label label = c.labels[i];
+        os << "Label(" << to_string(label.getValue()) << ") : ";
+        vector<State> states = c.correspondingStates[i];
+        for(unsigned int j = 0; j < states.size(); j++){
+            os << to_string(states[j].getVal());
+            if(j != states.size())
+                os << ", ";
+        }
+        os << "\n";
+    }
+    return os;
 }

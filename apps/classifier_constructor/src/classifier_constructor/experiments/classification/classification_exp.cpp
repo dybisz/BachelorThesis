@@ -82,12 +82,12 @@ namespace experiments {
     void printLoadedClassesInfo(std::vector<Class *> *patterns,
                                 std::string headerInfo) {
         std::stringstream ss;
-        ss << "[PATTERNS_" << headerInfo << "]\n";
+        ss << "[Classes_" << headerInfo << "]\n";
 
         int sum = 0;
         for (int i = 0; i < patterns->size(); i++) {
             sum += (*patterns)[i]->size();
-            ss << "Pattern["
+            ss << "Class["
             << i
             << "] ....................................... "
             << (*patterns)[i]->size() << std::endl;

@@ -14,7 +14,7 @@ using namespace console;
 
 namespace settings {
 
-    int EXPERIMENT_ID = 1;
+    int EXPERIMENT_ID = 2;
 
     void setAppFlags(){
         addFlag(Flag("E", "exp",

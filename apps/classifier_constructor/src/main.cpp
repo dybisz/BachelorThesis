@@ -15,6 +15,8 @@
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
 #include <classifier_constructor/settings/settings.h>
+#include <classifier_constructor/cfac_construction/construction.h>
+#include <classifier_constructor/experiments/binary_classification.h>
 
 using namespace std;
 
@@ -51,6 +53,9 @@ int main(int argc, char *argv[]) {
             break;
         case 1:
             experiments::runTransformationAnalysis();
+            break;
+        case 2:
+            experiments::runBinaryClassification();
             break;
         default:
             std::string what = "Experiment ID: " +

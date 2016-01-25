@@ -1,0 +1,10 @@
+//
+// Created by jakub on 1/24/16.
+//
+
+#ifndef BACHELOR_THESIS_CONSTRUCTION_H
+#define BACHELOR_THESIS_CONSTRUCTION_H
+
+void constructCFAC();
+
+#endif //BACHELOR_THESIS_CONSTRUCTION_H

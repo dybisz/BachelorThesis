@@ -15,7 +15,7 @@ using namespace console;
 
 
 namespace settings {
-    int MAX_ITER                = 99;
+    int MAX_ITER                = 1;
     double LEARNING_FACTOR      = 0.5 + log(2.0);
     double PARTICLE_VEL_WEIGHT  = 1.0 / (2.0 * log(2.0));
     double ENCODING_DELTA       = 0.5f;

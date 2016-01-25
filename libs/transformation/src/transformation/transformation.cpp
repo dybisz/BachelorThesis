@@ -278,3 +278,10 @@ void transformation::_checkConditions(int states, int precision,
                 "precision < 1");
     }
 }
+
+void transformation::deleteLanguages(std::vector<Language *> *languages) {
+    for(unsigned int i = 0; i < languages->size(); i++){
+        delete (*languages)[i];
+    }
+    delete languages;
+}

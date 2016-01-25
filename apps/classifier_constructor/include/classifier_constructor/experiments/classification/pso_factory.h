@@ -90,6 +90,11 @@ public:
                double encodingDelta, double uppderBoundError,
                double learningFactor, double particleVelocityWeight);
 
+    PSOFactory(int swarmSize, int maximumIterations, int threadCount,
+               double maxVelocity,
+               double encodingDelta, double uppderBoundError,
+               double learningFactor, double particleVelocityWeight);
+
     ~PSOFactory();
 
     //-----------------------------------------------------------//
@@ -97,6 +102,11 @@ public:
     //-----------------------------------------------------------//
 
     PSO* createPSO();
+
+    PSO* createPSO(std::vector<Language *> *nativeLanguages,
+                   std::vector<Language *> *foreignLanguages,
+                   int statesPerNative, int statesPerForeign,
+                   int alphabetSize);
 };
 
 

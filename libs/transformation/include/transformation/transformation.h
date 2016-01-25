@@ -92,6 +92,7 @@ namespace transformation {
     void _checkConditions(int states, int precision,
                           vector<Class *> *patterns);
 
+    void deleteLanguages(std::vector<Language*>* languages);
 
 }
 

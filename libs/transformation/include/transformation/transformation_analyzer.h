@@ -56,6 +56,8 @@ public:
      */
     void runAnalysis();
 
+    int getOptimalAlphabetSize();
+
     /*
      * Prints the results to the logs
      */

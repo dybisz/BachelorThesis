@@ -54,8 +54,8 @@ private:
     void saveDFA(const DFA& dfa,
                  std::string path, std::string name);
 
-    void saveStateCorrespondenceVector(
-            const std::vector<Correspondence>& stateCorrespondenceVector,
+    void saveStateCorrespondence(
+            const Correspondence &correspondence,
             std::string path,
             std::string name);
 

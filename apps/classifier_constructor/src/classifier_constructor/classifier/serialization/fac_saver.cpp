@@ -58,14 +58,14 @@ void FACSaver::saveSubClassifier(const FAC& subClassifier,
     logger::makeDir(path);
 
     const DFA& dfa = subClassifier.getDFA();
-    const std::vector<Correspondence>& stateCorrespondenceVector
+    const Correspondence& correspondence
             = subClassifier.getCorrespondence();
 
     string dfaName = DEFAULT_DFA_NAME;
     saveDFA(dfa, path, dfaName);
 
     string stateCorrespodenceName = DEFAULT_STATE_CORRES_NAME;
-    saveStateCorrespondenceVector(stateCorrespondenceVector,
+    saveStateCorrespondence(correspondence,
                             path, stateCorrespodenceName);
 }
 
@@ -74,8 +74,8 @@ void FACSaver::saveDFA(const DFA &dfa,
     dfa_serialization::saveDFAToFile(dfa, path, name);
 }
 
-void FACSaver::saveStateCorrespondenceVector(
-        const std::vector<Correspondence>& stateCorrespondenceVector,
+void FACSaver::saveStateCorrespondence(
+        const Correspondence& correspondence,
         string path,
         string name) {
     name += STATE_CORRES_EXT;

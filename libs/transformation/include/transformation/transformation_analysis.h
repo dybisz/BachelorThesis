@@ -60,11 +60,24 @@ namespace transformation{
                                               int alphabetSize);
 
     /*
-     * Get similaries between languages.
+     * Get Distinct similarities between languages.
+     * Distinct mean that equal languages are not considered.
+     *
      * Returning Simlarity vector contains
      * similarity between all distinct pairs of languages.
      *
      * Similarity is computes by: language::averageSimilarity()
+     */
+    std::vector<Similarity> getDistinctSimilarites(
+            std::vector<Language *>* languages,
+            int alphabetSize);
+
+    /*
+     * Get similarities between languages.
+     * Returning Simlarity vector contains
+     * similarity between all distinct pairs of languages.
+     *
+     * Similarity is computes by: language::similarity()
      */
     std::vector<Similarity> getSimilarites(std::vector<Language *> *languages,
                                            int alphabetSize);

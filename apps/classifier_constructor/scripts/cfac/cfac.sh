@@ -13,21 +13,20 @@ FOREIGN_XLS_PATH="../../../resources/digits/Foreign_90ccl.xls"
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/PSO__A30__STATES_PER-NATIVE_2__STATES_MULTIP_FOREIGN_2"
-DIR_LOG="PSO"
+MAIN_DIR_LOG="logs/CFAC"
+DIR_LOG="CFAC"
 mkdir -p ${MAIN_DIR_LOG}
 
-MAX_ITER=10
+MAX_ITER=100
 SWARM_SIZE=100
 MAX_VEL=10
 
 ALPHABET_SIZE=30
 
-STATES_PER_NATIVE=2
-STATES_PER_FOREIGN_MULTIPLIER=1
+STATES_PER_NATIVE=5
+STATES_PER_FOREIGN=10
 
-CLASSES_COUNT_START=1
-CLASSES_COUNT_END=1
+CLASSES_COUNT=1
 
 OBJECTS_PER_CLASS=900
 
@@ -55,10 +54,9 @@ run_optimizer(){
     echo "Foreign Path :            " $5
     echo "Number of Classes :       " $6
     echo "Object per Class :        " $7
-    echo "DIR Path :                " $8
     echo "---------------------"
 
-    $APP_EXEC_PATH -E 0 \
+    $APP_EXEC_PATH -E 2 \
     -I ${MAX_ITER} \
     -S ${SWARM_SIZE} \
     --max-vel ${MAX_VEL} \
@@ -69,23 +67,17 @@ run_optimizer(){
     -F $5 \
     -U $6 \
     -u $7 \
-    --log-dir $8 \
+    --log-dir ${DIR_LOG} \
     --log-main-dir ${MAIN_DIR_LOG}
 
 
 }
 
+run_optimizer   ${STATES_PER_NATIVE} \
+                ${STATES_PER_FOREIGN} \
+                ${ALPHABET_SIZE} \
+                ${NATIVE_XLS_PATH} \
+                ${FOREIGN_XLS_PATH} \
+                ${CLASSES_COUNT} \
+                ${OBJECTS_PER_CLASS}
 
-for ((c=${CLASSES_COUNT_START}; c <= ${CLASSES_COUNT_END}; c++)) do
-    NATIVE_STATES_TOTAL_COUNT=$((${STATES_PER_NATIVE}*${c}))
-    STATES_PER_FOREIGN=$((${NATIVE_STATES_TOTAL_COUNT}*${STATES_PER_FOREIGN_MULTIPLIER}))
-
-    run_optimizer   ${STATES_PER_NATIVE} \
-                    ${STATES_PER_FOREIGN} \
-                    ${ALPHABET_SIZE} \
-                    ${NATIVE_XLS_PATH} \
-                    ${FOREIGN_XLS_PATH} \
-                    ${c} \
-                    ${OBJECTS_PER_CLASS} \
-                    "${DIR_LOG}__CLASSES_${c}"
-done

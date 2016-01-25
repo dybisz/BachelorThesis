@@ -18,11 +18,11 @@ namespace settings {
     std::string FOREIGN_XLS_PATH    =
             "../../../resources/digits/Foreign_90ccl.xls";
 
-    int STATES_PER_NATIVE           = 1;
-    int STATES_PER_FOREIGN          = 1;
+    int STATES_PER_NATIVE           = 2;
+    int STATES_PER_FOREIGN          = 3;
     int ALPHABET_SIZE               = 4;
     double TESTING_SET_RATIO        = 0.4;
-    int NUMBER_OF_CLASSES           = 4;
+    int NUMBER_OF_CLASSES           = 2;
     int PATTERNS_PER_CLASS          = 800;
 
     void setClassifierFlags(){

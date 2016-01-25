@@ -90,7 +90,7 @@ const Particle *PSO::getBestParticle() const{
     return &globalBestParticle;
 }
 
-const PSOObject*PSO::getBestPSOObject() const {
+const PSOObject* PSO::getBestPSOObject() const {
     PSOObject* psoObject =
             this->getDecoder().decodePBest((*this->getBestParticle()));
 

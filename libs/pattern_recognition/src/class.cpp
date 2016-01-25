@@ -66,6 +66,14 @@ double Class::getFeatureMax(int i) {
 /* ----- AUXILIARY ----- */
 /* --------------------- */
 
+FeaturesVector *Class::popBack() {
+    int lastIndex = _features.size() - 1;
+    FeaturesVector* fv = _features[lastIndex];
+    _features.pop_back();
+
+    return fv;
+}
+
 int Class::size() const {
     return this->_features.size();
 }

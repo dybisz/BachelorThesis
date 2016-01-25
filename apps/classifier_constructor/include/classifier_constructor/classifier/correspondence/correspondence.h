@@ -9,7 +9,7 @@
 #include <label.h>
 
 #include <vector>
-
+#include <iostream>
 /**
  * Used to encapsulate state correspendence to specific pattern recognition
  * classes.
@@ -53,6 +53,8 @@ public:
 
     Correspondence();
 
+    Correspondence(const Correspondence& correspondence);
+
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
@@ -74,6 +76,15 @@ public:
      * Adds a label to the correspodence.
      */
     void addCorrespondence(Label label, State state);
+
+    //-----------------------------------------------------------//
+    //  OPERATORS
+    //-----------------------------------------------------------//
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const Correspondence& p);
+
+    Correspondence& operator=(const Correspondence& other);
 };
 
 

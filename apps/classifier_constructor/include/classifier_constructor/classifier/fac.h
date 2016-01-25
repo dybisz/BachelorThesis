@@ -23,7 +23,7 @@ private:
 
     DFA dfa;
 
-    std::vector<Correspondence> correspondenceVector;
+    Correspondence correspondence;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
@@ -34,23 +34,17 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    FAC(DFA dfa);
-
-    FAC(DFA dfa,
-        std::vector<Correspondence> stateCorrespondence);
-
+    FAC(DFA dfa, Correspondence correspondence);
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
 
-    void addCorrespondence(Correspondence stateCorrespondence);
-
     const DFA& getDFA() const;
 
-    const std::vector<Correspondence>& getCorrespondence() const;
+    const Correspondence& getCorrespondence() const;
 
-    const Label& classify(const Word& word) const;
+    const Label& classify(Word& word) const;
 };
 
 

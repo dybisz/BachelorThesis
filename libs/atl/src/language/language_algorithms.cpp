@@ -29,7 +29,7 @@ namespace language
             std::vector<State*>* states = new std::vector<State*>;
             int foreignStartStateKey = currentStateKey;
             for (int i = 0; i < statesPerForeign; i++) {
-                State *state = new State(foreignStartStateKey );
+                State *state = new State(foreignStartStateKey);
                 states->push_back(state);
 
                 foreignStartStateKey++;
