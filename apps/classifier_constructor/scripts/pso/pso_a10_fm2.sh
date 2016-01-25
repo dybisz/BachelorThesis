@@ -87,7 +87,7 @@ run_optimizer(){
 
 }
 
-for i in {1..5}; do
+for ((i=1; i <= ${REPEAT_TIMES}; i++)) do
 	for ((c=${CLASSES_COUNT_START}; c <= ${CLASSES_COUNT_END}; c++)) do
 		NATIVE_STATES_TOTAL_COUNT=$((${STATES_PER_NATIVE}*${c}))
 		STATES_PER_FOREIGN=$((${NATIVE_STATES_TOTAL_COUNT}*${STATES_PER_FOREIGN_MULTIPLIER}))
