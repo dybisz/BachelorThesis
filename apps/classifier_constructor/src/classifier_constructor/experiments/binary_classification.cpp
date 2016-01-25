@@ -9,48 +9,47 @@
 #include <classifier_constructor/settings/thread_settings.h>
 
 #include <sstream>
-#include <transformation/transformation.h>
-#include <classifier_quality.h>
 #include <logger/log.h>
 #include <transformation/sets_disassociation.h>
-#include <classifier_constructor/experiments/classification/classification_exp.h>
+#include <classifier_constructor/experiments/common.h>
 
+using namespace experiments;
+using namespace transformation;
 
-void experiments::runBinaryClassification() {
+void binary_experiment::runBinaryClassification() {
     PSOFactory psoFactory = getPSOFactory();
     XlsLoader nativeXLSLoader = getNativeXLSLoader();
     XlsLoader foreignXLSLoader = getForeignXLSLoader();
-    vector<Language*>* nativeLanguages = getNativeLanguages(nativeXLSLoader);
-    vector<Language*>* foreignLanguages = getForeignLanguages(foreignXLSLoader);
-
+    TransformedLanguages languages = getLanguages(nativeXLSLoader,
+                                                  foreignXLSLoader);
     std::vector<Language*>* nativeTestLanguages
             = set_disassociation::detachWords(settings::TESTING_SET_RATIO,
-                                              nativeLanguages);
+                                              languages.native);
     std::vector<Language*>* foreignTestLanguages
             = set_disassociation::detachWords(settings::TESTING_SET_RATIO,
-                                              foreignLanguages);
+                                              languages.foreign);
 
-    CFACBuilder cfacBuilder(nativeLanguages, foreignLanguages,
+    CFACBuilder cfacBuilder(languages.native, languages.foreign,
                             settings::STATES_PER_NATIVE,
                             settings::STATES_PER_FOREIGN,
                             &psoFactory);
     cfacBuilder.build(settings::ALPHABET_SIZE);
+    CFAC cfac = cfacBuilder.getClassifier();
 
-    ConfusionMatrix qualityResults = runQualityCheck(cfacBuilder.getClassifier(),
+    ConfusionMatrix qualityResults = runQualityCheck(cfac,
                                                      nativeTestLanguages,
                                                      foreignTestLanguages,
                                                      cfacBuilder.FOREIGN_LABEL);
     string plotStr = confusionMatrixLatexTable(qualityResults);
     logger::log(File("QualityCheck.txt", false), plotStr);
 
-    transformation::deleteLanguages(nativeLanguages);
+    transformation::deleteLanguages(languages.native);
     transformation::deleteLanguages(nativeTestLanguages);
-    transformation::deleteLanguages(foreignLanguages);
+    transformation::deleteLanguages(languages.foreign);
     transformation::deleteLanguages(foreignTestLanguages);
 }
 
-
-PSOFactory experiments::getPSOFactory() {
+PSOFactory binary_experiment::getPSOFactory() {
     PSOFactory psoFactory(
             settings::SWARM_SIZE, settings::MAX_ITER,
             settings::TRUE_THREAD_COUNT, settings::MAX_VELOCITY,
@@ -60,41 +59,7 @@ PSOFactory experiments::getPSOFactory() {
     return psoFactory;
 }
 
-XlsLoader experiments::getNativeXLSLoader() {
-    XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH,
-                              settings::NUMBER_OF_CLASSES,
-                              settings::PATTERNS_PER_CLASS);
-    return nativeXLSLoader;
-}
-
-XlsLoader experiments::getForeignXLSLoader() {
-    XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH,
-                               settings::NUMBER_OF_CLASSES,
-                               settings::PATTERNS_PER_CLASS);
-    return foreignXLSLoader;
-}
-
-vector<Language *>* experiments::getNativeLanguages(XlsLoader &nativeLoader) {
-    std::vector<Class *>* nativeClasses = nativeLoader.getClasses();
-    vector<Language*>* nativeLanguages
-            = transformation::transform(nativeClasses, settings::ALPHABET_SIZE);
-    quality::_convertWords(nativeLanguages);
-
-    return nativeLanguages;
-}
-
-vector<Language *>* experiments::getForeignLanguages(XlsLoader &foreignLoader) {
-    std::vector<Class *>* foreignClasses = foreignLoader.getClasses();
-    vector<Language*>* foreignLanguages
-            = transformation::transform(foreignClasses,
-                                        settings::ALPHABET_SIZE);
-    quality::_convertWords(foreignLanguages);
-
-    return foreignLanguages;
-}
-
-
-experiments::ConfusionMatrix experiments::runQualityCheck(
+binary_experiment::ConfusionMatrix binary_experiment::runQualityCheck(
         const CFAC &cfac,
         std::vector<Language*>* nativeLanguages,
         std::vector<Language*>* foreignLanguages,
@@ -121,8 +86,8 @@ experiments::ConfusionMatrix experiments::runQualityCheck(
     return qualityResults;
 }
 
-string experiments::confusionMatrixLatexTable(
-        const experiments::ConfusionMatrix &qualityResults) {
+string binary_experiment::confusionMatrixLatexTable(
+        const binary_experiment::ConfusionMatrix &qualityResults) {
     vector<vector<double>> results = qualityResults.results;
 
     string SYMBOL_SEPERATOR = "&";
@@ -146,9 +111,9 @@ string experiments::confusionMatrixLatexTable(
     return ss.str();
 }
 
-double experiments::classifiedToNativeRatio(const Language &language,
-                                            const FAC &fac,
-                                            const Label &foreignLabel) {
+double binary_experiment::classifiedToNativeRatio(const Language &language,
+                                                  const FAC &fac,
+                                                  const Label &foreignLabel) {
     unsigned int classifiedToNativeCount = 0;
     unsigned int size = language.size();
 

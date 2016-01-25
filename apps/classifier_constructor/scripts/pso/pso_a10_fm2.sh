@@ -4,27 +4,37 @@
 # GLOBAL CONFIG
 #############################################################
 
-APP_EXEC_PATH="../bin/cc"
+# Assume we start from root of app
+CONFIG_ROOT_PATH=../scripts
 
-NATIVE_XLS_PATH="../../../resources/digits/Natives.xls"
-FOREIGN_XLS_PATH="../../../resources/digits/Foreign_90ccl.xls"
+for i in "$@"
+do
+case $i in
+    -c=*|--config-root=*)
+    CONFIG_ROOT_PATH="${i#*=}"
+    ;;
+    *)
+            # unknown option
+    ;;
+esac
+done
+
+source ${CONFIG_ROOT_PATH}/pso/config.cfg
+source ${CONFIG_ROOT_PATH}/pso/common.cfg
+
 
 #############################################################
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/PSO__A30__STATES_PER-NATIVE_2__STATES_MULTIP_FOREIGN_2"
+MAIN_DIR_LOG="logs/PSO/FM2/ALPHABET_10"
 DIR_LOG="PSO"
 mkdir -p ${MAIN_DIR_LOG}
 
-MAX_ITER=1000
-SWARM_SIZE=100
-MAX_VEL=10
-
-ALPHABET_SIZE=30
+ALPHABET_SIZE=10
 
 STATES_PER_NATIVE=2
-STATES_PER_FOREIGN_MULTIPLIER=0.5
+STATES_PER_FOREIGN_MULTIPLIER=2
 
 CLASSES_COUNT_START=1
 CLASSES_COUNT_END=10
@@ -56,6 +66,8 @@ run_optimizer(){
     echo "Number of Classes :       " $6
     echo "Object per Class :        " $7
     echo "DIR Path :                " $8
+    echo "Swarm Size :              " ${SWARM_SIZE}
+    echo "Max Iter :                " ${MAX_ITER}
     echo "---------------------"
 
     $APP_EXEC_PATH -E 0 \
@@ -75,17 +87,18 @@ run_optimizer(){
 
 }
 
+for i in {1..5}; do
+	for ((c=${CLASSES_COUNT_START}; c <= ${CLASSES_COUNT_END}; c++)) do
+		NATIVE_STATES_TOTAL_COUNT=$((${STATES_PER_NATIVE}*${c}))
+		STATES_PER_FOREIGN=$((${NATIVE_STATES_TOTAL_COUNT}*${STATES_PER_FOREIGN_MULTIPLIER}))
 
-for ((c=${CLASSES_COUNT_START}; c <= ${CLASSES_COUNT_END}; c++)) do
-    NATIVE_STATES_TOTAL_COUNT=$((${STATES_PER_NATIVE}*${c}))
-    STATES_PER_FOREIGN=$((${NATIVE_STATES_TOTAL_COUNT}*${STATES_PER_FOREIGN_MULTIPLIER}))
-
-    run_optimizer   ${STATES_PER_NATIVE} \
-                    ${STATES_PER_FOREIGN} \
-                    ${ALPHABET_SIZE} \
-                    ${NATIVE_XLS_PATH} \
-                    ${FOREIGN_XLS_PATH} \
-                    ${c} \
-                    ${OBJECTS_PER_CLASS} \
-                    "${DIR_LOG}__CLASSES_${c}"
+		run_optimizer   ${STATES_PER_NATIVE} \
+						${STATES_PER_FOREIGN} \
+						${ALPHABET_SIZE} \
+						${NATIVE_XLS_PATH} \
+						${FOREIGN_XLS_PATH} \
+						${c} \
+						${OBJECTS_PER_CLASS} \
+						"${DIR_LOG}__CLASSES_${c}"
+	done;
 done

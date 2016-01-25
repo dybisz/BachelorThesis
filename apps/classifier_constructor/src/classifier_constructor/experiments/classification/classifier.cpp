@@ -99,8 +99,8 @@ Classifier::Classifier(pso::PSO * pso,
                                          this->_statesPerForeign);
 
     // TODO integers -> states
-    quality::_convertWords(_nativeLanguages);
-    quality::_convertWords(_foreignLanguages);
+    //quality::_convertWords(_nativeLanguages);
+    //quality::_convertWords(_foreignLanguages);
 
     this->_nativeTestingSet =
             set_disassociation::detachWords(testingSetRatio,

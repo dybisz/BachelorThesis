@@ -3,7 +3,7 @@
 //
 
 #include <vector>
-#include "classifier_constructor/experiments/classification/pso_factory.h"
+#include <classifier_constructor/pso_classifier/pso_factory.h>
 #include <pso/pso.h>
 
 using namespace pso;
@@ -68,7 +68,6 @@ PSOFactory::~PSOFactory() {
 PSO* PSOFactory::createPSO(){
     int numberOfStates = calculateNumberOfStates();
     int particleDimension = calculateParticleDimension();
-
     double posIntervalMin = calculatePosIntervalMin();
     double posIntervalMax = calculatePosIntervalMax();
 
@@ -80,7 +79,6 @@ PSO* PSOFactory::createPSO(){
 
     ParticleShPtr_ConstVectorShPtr particles =
             particleFactory.createUnifromParticles();
-
     ParticleDecoder * particleDecoder
             = createParticleDecoder(numberOfStates, alphabetSize,
                                     encodingDelta);
@@ -92,7 +90,6 @@ PSO* PSOFactory::createPSO(){
             = createNeighbourhoodUpdater(particles, numberOfInformants);
 
     int numberOfTries = 1;
-
     ParticleUpdater* particleUpdater
             = createPaticleUpdater(particles, learningFactor,
                                    particleVelocityWeight, numberOfTries);

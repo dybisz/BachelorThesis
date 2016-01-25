@@ -8,7 +8,7 @@
 #include <classifier_constructor/classifier/cfac.h>
 #include <class.h>
 #include <language/language.h>
-#include <classifier_constructor/experiments/classification/pso_factory.h>
+#include <classifier_constructor/pso_classifier/pso_factory.h>
 #include <xls_loader.h>
 #include <classifier_constructor/cfac_construction/cfac_builder.h>
 
@@ -20,7 +20,7 @@
  *
  * The experiments are based on the settings from the application.
  */
-namespace experiments {
+namespace binary_experiment {
 
     struct ConfusionMatrix {
         vector<vector<double>> results;
@@ -36,12 +36,6 @@ namespace experiments {
     void runBinaryClassification();
 
     PSOFactory getPSOFactory();
-
-    XlsLoader getNativeXLSLoader();
-    XlsLoader getForeignXLSLoader();
-
-    vector<Language*>* getNativeLanguages(XlsLoader& nativeLoader);
-    vector<Language*>* getForeignLanguages(XlsLoader& foreignLoader);
 
     /*
      * Runs quality check of the constructed classifier.

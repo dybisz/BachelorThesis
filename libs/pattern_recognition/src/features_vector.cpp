@@ -41,7 +41,7 @@ string FeaturesVector::toString() const {
     string out = "";
     for (auto it = _entries.begin() ; it != _entries.end(); ++it)
     {
-        out += to_string(*it);
+        out += to_string(*it) + ", ";
     }
     return out;
 }

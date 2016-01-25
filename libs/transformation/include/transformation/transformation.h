@@ -24,9 +24,39 @@ using namespace std;
  */
 namespace transformation {
 
+    /*
+     * Classes to be transformed
+     */
+    struct TransformationClasses{
+        vector<Class*>* native;
+        vector<Class*>* foreign;
+
+        TransformationClasses(vector<Class*>* native,vector<Class*>* foreign){
+            this->native = native;
+            this->foreign = foreign;
+        }
+    };
+
+    /*
+     * Languages after transformation
+     */
+    struct TransformedLanguages{
+        vector<Language*>* native;
+        vector<Language*>* foreign;
+
+        TransformedLanguages(vector<Language*>* native,
+                             vector<Language*>* foreign){
+            this->native = native;
+            this->foreign = foreign;
+        }
+    };
+
     /* ----------------------- */
     /* -----MAIN METHODS ----- */
     /* ----------------------- */
+
+    TransformedLanguages transform(TransformationClasses classes,
+                                   int precision);
 
     // Converts patterns to languages. Second argument represents number of
     // accepting states per language. For now, we assume that this number is
@@ -93,6 +123,9 @@ namespace transformation {
                           vector<Class *> *patterns);
 
     void deleteLanguages(std::vector<Language*>* languages);
+
+    vector<Class*> combineClasses(vector<Class*>* classes1,
+                                  vector<Class*>* classes2);
 
 }
 

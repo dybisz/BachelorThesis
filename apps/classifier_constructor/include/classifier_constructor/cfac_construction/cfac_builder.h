@@ -9,7 +9,7 @@
 #include <classifier_constructor/classifier/cfac.h>
 #include <class.h>
 #include <language/language.h>
-#include <classifier_constructor/experiments/classification/pso_factory.h>
+#include <classifier_constructor/pso_classifier/pso_factory.h>
 
 /**
  *  CFACBuilder is used to build the CFAC classifier.

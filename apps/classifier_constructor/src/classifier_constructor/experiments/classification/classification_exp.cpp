@@ -16,45 +16,34 @@
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
 
-#include <classifier_constructor/experiments/classification/pso_factory.h>
+#include <classifier_constructor/experiments/binary_classification.h>
+#include <classifier_constructor/experiments/common.h>
 
 using namespace pso;
+using namespace transformation;
+using namespace experiments;
 
-namespace experiments {
-
+namespace classification_experiment {
     void runClassification(){
-        logger::log("Starting PSO Experiment");
+        XlsLoader nativeXLSLoader = getNativeXLSLoader();
+        XlsLoader foreignXLSLoader = getForeignXLSLoader();
+        TransformedLanguages languages = getLanguages(nativeXLSLoader,
+                                                      foreignXLSLoader);
 
-        logger::log("Loading Patterns");
+        PSOFactory psoFactory = getPSOFactory(languages.native,
+                                              languages.foreign);
+        PSO* pso = psoFactory.createPSO();
 
-        // Note: if xlsLoader goes out of scope, patterns are deleted.
-        XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH,
-                                  settings::NUMBER_OF_CLASSES,
-                                  settings::PATTERNS_PER_CLASS);
+        Classifier *classifier = getClassifier(pso, languages);
 
-        XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH,
-                                   settings::NUMBER_OF_CLASSES,
-                                   settings::PATTERNS_PER_CLASS);
+        classifier->runClassification();
+        delete classifier;
+    }
 
-        std::vector<Class *> *nativePatterns
-                = nativeXLSLoader.getClasses();
-        std::vector<Class *> *foreignPatterns
-                = foreignXLSLoader.getClasses();
-
-        printLoadedClassesInfo(nativePatterns, "NATIVE PATTERNS");
-        printLoadedClassesInfo(foreignPatterns, "FOREIGN PATTERNS");
-
-        logger::log("Transforming Patterns to Languages");
-
-        std::vector<Language *> *nativeLanguages
-                = transformation::transform(nativePatterns,
-                                            settings::ALPHABET_SIZE);
-        std::vector<Language *> *foreignLanguages
-                = transformation::transform(foreignPatterns,
-                                            settings::ALPHABET_SIZE);
-
+    PSOFactory getPSOFactory(vector<Language*>* native,
+                             vector<Language*>* foreign) {
         PSOFactory psoFactory(
-                nativeLanguages, foreignLanguages,
+                native, foreign,
                 settings::STATES_PER_NATIVE, settings::STATES_PER_FOREIGN,
                 settings::ALPHABET_SIZE,
                 settings::SWARM_SIZE, settings::MAX_ITER,
@@ -63,20 +52,17 @@ namespace experiments {
                 settings::ENCODING_DELTA, settings::UPPER_BOUND_ERR,
                 settings::LEARNING_FACTOR, settings::PARTICLE_VEL_WEIGHT
         );
-        PSO* pso = psoFactory.createPSO();
+        return psoFactory;
+    }
 
-        Classifier *classifier
-                = new Classifier(pso,
-                                 nativeLanguages,
-                                 foreignLanguages,
-                                 settings::STATES_PER_NATIVE,
-                                 settings::STATES_PER_FOREIGN,
-                                 settings::ALPHABET_SIZE,
-                                 settings::TESTING_SET_RATIO);
-
-        logger::log("Starting Classification");
-
-        classifier->runClassification();
+    Classifier* getClassifier(PSO* pso, TransformedLanguages& languages){
+        Classifier *classifier  = new Classifier(pso, languages.native,
+                                                 languages .foreign,
+                                                 settings::STATES_PER_NATIVE,
+                                                 settings::STATES_PER_FOREIGN,
+                                                 settings::ALPHABET_SIZE,
+                                                 settings::TESTING_SET_RATIO);
+        return classifier;
     }
 
     void printLoadedClassesInfo(std::vector<Class *> *patterns,

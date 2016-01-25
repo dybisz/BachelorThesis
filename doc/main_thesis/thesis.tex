@@ -1303,9 +1303,10 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
 
 
 
+
 %%%
 %
-% Mutual Similarities. Alphabet 24
+% Mutual Similarities. Alphabet 30
 %
 %%%
 \begin{figure}[H]
@@ -1319,84 +1320,32 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
             \renewcommand{\arraystretch}{1.5}
             \begin{tabular}{|P{1.0cm} || P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm}|}
                 \hline
-                $Sim$ & L0 & L1 & L2 & L3 & L4 & L5 & L6 & L7 & L8 & L9\\
+                $Sim$ & $L_{0}$ & $L_{1}$ & $L_{2}$ & $L_{3}$ & $L_{4}$ & $L_{5}$ & $L_{6}$ & $L_{7}$ & $L_{8}$ & $L_{9}$ \\
                 \hline
                 \hline
-                L0 &1&0.38&0.37&0.34&0.33&0.33&0.45&0.34&0.45&0.38\\
-                \hline
-                L1 &0.38&1&0.35&0.34&0.33&0.36&0.39&0.38&0.4&0.36\\
-                \hline
-                L2 &0.34&0.31&1&0.36&0.33&0.34&0.35&0.36&0.33&0.34\\
-                \hline
-                L3 &0.33&0.33&0.38&1&0.35&0.4&0.34&0.36&0.34&0.35\\
-                \hline
-                L4 &0.31&0.33&0.33&0.34&1&0.34&0.35&0.38&0.32&0.38\\
-                \hline
-                L5 &0.31&0.34&0.35&0.4&0.35&1&0.34&0.35&0.35&0.35\\
-                \hline
-                L6 &0.45&0.37&0.36&0.34&0.37&0.33&1&0.35&0.41&0.39\\
-                \hline
-                L7 &0.32&0.36&0.37&0.37&0.37&0.35&0.35&1&0.36&0.4\\
-                \hline
-                L8 &0.44&0.39&0.36&0.36&0.34&0.35&0.41&0.37&1&0.4\\
-                \hline
-                L9 &0.36&0.33&0.35&0.35&0.39&0.33&0.38&0.41&0.39&1\\
-                \hline
+                $L_{0}$ &1&0.34&0.33&0.31&0.29&0.3&0.41&0.3&0.4&0.34\\ 
+                \hline 
+                $L_{1}$ &0.34&1&0.3&0.3&0.3&0.32&0.35&0.34&0.35&0.31\\ 
+                \hline 
+                $L_{2}$ &0.3&0.28&1&0.33&0.3&0.3&0.31&0.32&0.3&0.3\\ 
+                \hline 
+                $L_{3}$ &0.29&0.29&0.34&1&0.32&0.36&0.3&0.33&0.31&0.31\\ 
+                \hline 
+                $L_{4}$ &0.28&0.3&0.3&0.31&1&0.31&0.32&0.34&0.29&0.34\\ 
+                \hline 
+                $L_{5}$ &0.28&0.31&0.31&0.36&0.31&1&0.3&0.32&0.31&0.31\\ 
+                \hline 
+                $L_{6}$ &0.41&0.33&0.32&0.3&0.34&0.3&1&0.31&0.37&0.35\\ 
+                \hline 
+                $L_{7}$ &0.29&0.33&0.34&0.34&0.34&0.31&0.31&1&0.32&0.36\\ 
+                \hline 
+                $L_{8}$ &0.39&0.34&0.32&0.32&0.3&0.31&0.37&0.33&1&0.36\\ 
+                \hline 
+                $L_{9}$ &0.33&0.3&0.32&0.32&0.35&0.3&0.34&0.37&0.35&1\\ 
+                \hline 
             \end{tabular}
         }
-        {\caption{Mutual Similarity of languages. Alphabet size: 24}
-        \label{fig:tab_similarity}}
-        %\ffigbox
-        %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
-        %  {\caption{Example of Automaton %A}\label{fig:automaton_ex}}
-        %\killfloatstyle
-        
-    \end{floatrow}
-\end{figure}
-
-
-%%%
-%
-% Mutual Similarities. Alphabet 12
-%
-%%%
-\begin{figure}[H]
-    \CenterFloatBoxes
-    \begin{floatrow}
-        
-        \ttabbox
-        {
-            \centering
-            \setlength{\tabcolsep}{10pt}
-            \renewcommand{\arraystretch}{1.5}
-            \begin{tabular}{|P{1.0cm} || P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm}|}
-                \hline
-                $Sim$ & L0 & L1 & L2 & L3 & L4 & L5 & L6 & L7 & L8 & L9\\
-                \hline
-                \hline
-                L0 &1&0.51&0.48&0.45&0.44&0.45&0.57&0.45&0.58&0.5\\ 
-                \hline 
-                L1 &0.51&1&0.45&0.44&0.43&0.46&0.5&0.47&0.53&0.47\\ 
-                \hline 
-                L2 &0.44&0.41&1&0.47&0.43&0.44&0.45&0.47&0.44&0.44\\ 
-                \hline 
-                L3 &0.43&0.42&0.5&1&0.46&0.52&0.43&0.47&0.45&0.46\\ 
-                \hline 
-                L4 &0.41&0.41&0.43&0.45&1&0.45&0.45&0.49&0.43&0.5\\ 
-                \hline 
-                L5 &0.41&0.44&0.45&0.52&0.45&1&0.43&0.45&0.46&0.46\\ 
-                \hline 
-                L6 &0.57&0.48&0.47&0.43&0.48&0.44&1&0.45&0.53&0.5\\ 
-                \hline 
-                L7 &0.41&0.45&0.48&0.48&0.47&0.44&0.45&1&0.46&0.51\\ 
-                \hline 
-                L8 &0.56&0.52&0.47&0.48&0.45&0.47&0.53&0.48&1&0.52\\ 
-                \hline 
-                L9 &0.47&0.43&0.46&0.47&0.52&0.44&0.49&0.55&0.51&1 \\
-                \hline
-            \end{tabular}
-        }
-        {\caption{Mutual Similarity of languages. Alphabet size: 12}
+        {\caption{Mutual Similarity of languages. Alphabet size: 30}
             \label{fig:tab_similarity}}
         %\ffigbox
         %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
@@ -1407,57 +1356,6 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
 \end{figure}
 
 
-
-%%%
-%
-% Mutual Similarities. Alphabet 6
-%
-%%%
-\begin{figure}[H]
-    \CenterFloatBoxes
-    \begin{floatrow}
-        
-        \ttabbox
-        {
-            \centering
-            \setlength{\tabcolsep}{10pt}
-            \renewcommand{\arraystretch}{1.5}
-            \begin{tabular}{|P{1.0cm} || P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm}|}
-                \hline
-                $Sim$ & L0 & L1 & L2 & L3 & L4 & L5 & L6 & L7 & L8 & L9\\
-                \hline
-                \hline
-                L0 &1&0.67&0.65&0.61&0.62&0.63&0.75&0.61&0.79&0.68\\ 
-                \hline
-                L1 &0.68&1&0.59&0.58&0.58&0.6&0.65&0.62&0.69&0.62\\ 
-                \hline
-                L2 &0.59&0.57&1&0.64&0.57&0.58&0.6&0.62&0.61&0.59\\ 
-                \hline
-                L3 &0.58&0.56&0.67&1&0.61&0.7&0.56&0.63&0.62&0.64\\ 
-                \hline
-                L4 &0.56&0.55&0.58&0.6&1&0.59&0.59&0.64&0.6&0.67\\ 
-                \hline
-                L5 &0.54&0.57&0.59&0.68&0.59&1&0.58&0.6&0.63&0.62\\ 
-                \hline
-                L6 &0.75&0.64&0.64&0.57&0.65&0.62&1&0.59&0.72&0.67\\ 
-                \hline
-                L7 &0.57&0.58&0.64&0.65&0.62&0.58&0.59&1&0.63&0.68\\ 
-                \hline
-                L8 &0.75&0.68&0.65&0.64&0.65&0.65&0.7&0.66&1&0.72\\ 
-                \hline
-                L9 &0.65&0.58&0.63&0.63&0.72&0.61&0.63&0.72&0.7&1 \\
-                \hline
-            \end{tabular}
-        }
-        {\caption{Mutual Similarity of languages. Alphabet size: 6}
-            \label{fig:tab_similarity}}
-        %\ffigbox
-        %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
-        %  {\caption{Example of Automaton %A}\label{fig:automaton_ex}}
-        %\killfloatstyle
-        
-    \end{floatrow}
-\end{figure}
 
 
 \section{Object Transformation}
@@ -1466,7 +1364,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 24 symbols seems to be a good chose. coincidence ? I dont think so mate
 
 \begin{figure}[H]
-    \caption{Similarity of Transformed Languages. Features 24, 12 and 6}
+    \caption{Similarity of Transformed Languages}
     \label{fig:lang_sim}
     
     \setPlotStyle
@@ -1532,97 +1430,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
         (39, 0.307231)
         (40, 0.306493)
     };
-    
-    \addplot[color=bblue, thick] coordinates {
-        (1, 1)
-        (2, 0.946593)
-        (3, 0.875411)
-        (4, 0.793013)
-        (5, 0.750825)
-        (6, 0.707227)
-        (7, 0.661645)
-        (8, 0.633788)
-        (9, 0.608713)
-        (10, 0.579212)
-        (11, 0.563333)
-        (12, 0.548493)
-        (13, 0.525693)
-        (14, 0.515291)
-        (15, 0.49837)
-        (16, 0.487564)
-        (17, 0.481635)
-        (18, 0.474955)
-        (19, 0.466881)
-        (20, 0.456707)
-        (21, 0.451241)
-        (22, 0.443928)
-        (23, 0.437209)
-        (24, 0.426873)
-        (25, 0.417163)
-        (26, 0.409276)
-        (27, 0.40494)
-        (28, 0.400052)
-        (29, 0.396438)
-        (30, 0.384415)
-        (31, 0.381331)
-        (32, 0.378308)
-        (33, 0.376923)
-        (34, 0.375386)
-        (35, 0.374406)
-        (36, 0.373315)
-        (37, 0.371841)
-        (38, 0.370896)
-        (39, 0.369772)
-        (40, 0.369068)
-    };
-    
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1)
-        (2, 0.985716)
-        (3, 0.945022)
-        (4, 0.905648)
-        (5, 0.878641)
-        (6, 0.844539)
-        (7, 0.802885)
-        (8, 0.784123)
-        (9, 0.754583)
-        (10, 0.728829)
-        (11, 0.706925)
-        (12, 0.692846)
-        (13, 0.669685)
-        (14, 0.659658)
-        (15, 0.638983)
-        (16, 0.627259)
-        (17, 0.621248)
-        (18, 0.612334)
-        (19, 0.602844)
-        (20, 0.594297)
-        (21, 0.586517)
-        (22, 0.575423)
-        (23, 0.567364)
-        (24, 0.559515)
-        (25, 0.544873)
-        (26, 0.539592)
-        (27, 0.535175)
-        (28, 0.529889)
-        (29, 0.525394)
-        (30, 0.516758)
-        (31, 0.513072)
-        (32, 0.5099)
-        (33, 0.508012)
-        (34, 0.507009)
-        (35, 0.506436)
-        (36, 0.50542)
-        (37, 0.50464)
-        (38, 0.503842)
-        (39, 0.502863)
-        (40, 0.502346)
-    };
-    
-    \addlegendentry{F=24}
-    \addlegendentry{F=12}
-    \addlegendentry{F=6}
-    
+
     \end{groupplot}
     
     \end{tikzpicture}

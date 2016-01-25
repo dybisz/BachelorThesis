@@ -5,6 +5,36 @@
 #include <language/alphabet.h>
 #include "transformation/transformation.h"
 
+namespace transformation {
+
+   TransformedLanguages transform(TransformationClasses classes, int precision){
+       int nativeSize = classes.native->size();
+       int foreignSize = classes.foreign->size();
+       vector<Class*> allClasses = combineClasses(classes.native,
+                                                  classes.foreign);
+       vector<Language*>* allLanguages
+               = transformation::transform(&allClasses, precision);
+
+       vector<Language*>* nativeLanguages = new vector<Language*>;
+       vector<Language*>* foreignLanguages = new vector<Language*>;
+
+       for(unsigned int i = 0; i < allLanguages->size(); i++){
+           Language* language = (*allLanguages)[i];
+           if(i < nativeSize){
+               nativeLanguages->push_back(language);
+           }else{
+               foreignLanguages->push_back(language);
+           }
+       }
+       delete allLanguages;
+
+       TransformedLanguages transformedLanguages(nativeLanguages,
+                                                 foreignLanguages);
+
+       return transformedLanguages;
+   }
+}
+
 vector<Language *> *transformation::transform(
         vector<Class *> *classes,
         int numberOfStates,
@@ -51,8 +81,9 @@ vector<Language *> *transformation::transform(vector<Class *> *patterns,
     try {
         vector<Interval *> intervals = _calculateFeaturesIntervals(patterns);
         vector<Class *> *normalized = _normalizeClasses(patterns, intervals);
-        Alphabet *alphabet = new Alphabet(precision); // TODO memory leak
+        Alphabet *alphabet = new Alphabet(precision);
         languages = _createLanguages(normalized, alphabet);
+        delete alphabet;
     }
     catch (std::exception &e) {
         std::cout << e.what() << std::endl;
@@ -63,7 +94,6 @@ vector<Language *> *transformation::transform(vector<Class *> *patterns,
 
 vector<Interval *> transformation::_calculateFeaturesIntervals(
         vector<Class *> *pPatterns) {
-
     vector<Interval *> intervals;
     int numberOfFeatures = (*pPatterns)[0]->getVector(0)->size();
 
@@ -284,4 +314,19 @@ void transformation::deleteLanguages(std::vector<Language *> *languages) {
         delete (*languages)[i];
     }
     delete languages;
+}
+
+vector<Class*> transformation::combineClasses(vector<Class*>* classes1,
+                                              vector<Class*>* classes2){
+    vector<Class*> allClasses;
+    for(unsigned int i = 0; i < classes1->size(); i++){
+        Class* cls = (*classes1)[i];
+        allClasses.push_back(cls);
+    }
+    for(unsigned int i = 0; i < classes2->size(); i++){
+        Class* cls = (*classes2)[i];
+        allClasses.push_back(cls);
+    }
+
+    return allClasses;
 }

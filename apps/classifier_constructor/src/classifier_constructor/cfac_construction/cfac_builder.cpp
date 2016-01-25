@@ -65,7 +65,6 @@ std::vector<FAC> CFACBuilder::buildFACClassifiers(
         std::vector<Language *> *nativeLanguages,
         std::vector<Language *> *foreignLanguages,
         int alphabetSize) {
-
     vector<FAC> facClassifiers;
     for(unsigned int i = 0; i < nativeLanguages->size(); i++){
         Label nativeLabel(i);
@@ -84,16 +83,17 @@ FAC CFACBuilder::buildBinaryFAC(Language* nativeLanguage,
                                 Language* foreignLanguage,
                                 Label foreignLabel,
                                 int alphabetSize) {
-    vector<Language*> nativeLanguages{nativeLanguage};
-    vector<Language*> foreignLanguages{foreignLanguage};
-    language::selectStateCorrespondence(&nativeLanguages, &foreignLanguages,
+    vector<Language*> tmpNativeLanguages{nativeLanguage};
+    vector<Language*> tmpForeignLanguages{foreignLanguage};
+    language::selectStateCorrespondence(&tmpNativeLanguages,
+                                        &tmpForeignLanguages,
                                         statesPerNative, statesPerForeign);
 
     Correspondence correspondence
             = createCorrespondece(nativeLanguage, nativeLabel,
                                   foreignLanguage, foreignLabel);
 
-    PSO* pso = psoFactory->createPSO(&nativeLanguages, &foreignLanguages,
+    PSO* pso = psoFactory->createPSO(&tmpNativeLanguages, &tmpForeignLanguages,
                                      statesPerNative, statesPerForeign,
                                      alphabetSize);
 

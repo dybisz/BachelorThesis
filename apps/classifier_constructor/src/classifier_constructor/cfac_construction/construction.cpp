@@ -2,7 +2,7 @@
 // Created by jakub on 1/24/16.
 //
 
-#include <classifier_constructor/experiments/classification/pso_factory.h>
+#include <classifier_constructor/pso_classifier/pso_factory.h>
 
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/pso_settings.h>

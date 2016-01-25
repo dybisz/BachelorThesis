@@ -9,8 +9,8 @@ APP_EXEC_PATH="../bin/cc"
 NATIVE_XLS_PATH="../../../resources/digits/Natives.xls"
 FOREIGN_XLS_PATH="../../../resources/digits/Foreign_90ccl.xls"
 
-MIN_ALPHABET_SIZE=3
-MAX_ALPHABET_SIZE=3
+MIN_ALPHABET_SIZE=30
+MAX_ALPHABET_SIZE=30
 
 LOG_DIR="TRANSFORMATION"
 

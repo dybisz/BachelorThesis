@@ -49,13 +49,13 @@ int main(int argc, char *argv[]) {
     // Choose experiment
     switch (settings::EXPERIMENT_ID) {
         case 0:
-            experiments::runClassification();
+            classification_experiment::runClassification();
             break;
         case 1:
             experiments::runTransformationAnalysis();
             break;
         case 2:
-            experiments::runBinaryClassification();
+            binary_experiment::runBinaryClassification();
             break;
         default:
             std::string what = "Experiment ID: " +
