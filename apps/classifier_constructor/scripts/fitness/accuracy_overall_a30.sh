@@ -27,8 +27,8 @@ source ${CONFIG_ROOT_PATH}/fitness/common.cfg
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/FITNESS/"
-DIR_LOG="ACCURACY_OVERALL"
+MAIN_DIR_LOG="logs/FITNESS/ACCURACY_OVERALL"
+DIR_LOG="ALPHABET_30"
 FITNESS_TYPE=1
 
 mkdir -p ${MAIN_DIR_LOG}

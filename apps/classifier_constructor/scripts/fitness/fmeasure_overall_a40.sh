@@ -27,13 +27,13 @@ source ${CONFIG_ROOT_PATH}/fitness/common.cfg
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/FITNESS/"
-DIR_LOG="PRECISION_OVERALL"
-FITNESS_TYPE=2
+MAIN_DIR_LOG="logs/FITNESS/FMEASURE_OVERALL"
+DIR_LOG="ALPHABET_40"
+FITNESS_TYPE=4
 
 mkdir -p ${MAIN_DIR_LOG}
 
-ALPHABET_SIZE=30
+ALPHABET_SIZE=40
 
 STATES_PER_NATIVE=2
 STATES_PER_FOREIGN_MULTIPLIER=1
@@ -42,8 +42,6 @@ CLASSES_COUNT_START=10
 CLASSES_COUNT_END=10
 
 OBJECTS_PER_CLASS=900
-
-
 
 #############################################################
 # Run
