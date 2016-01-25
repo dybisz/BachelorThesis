@@ -2,15 +2,15 @@
 // Created by jakub on 1/7/16.
 //
 
-#include "pso_classifier_tests/dfa_fitness_updater.h"
 #include <pso_classifier_tests/pso_classifier_common_test.h>
 
 #include <gtest/gtest.h>
 
 #include <classifier_constructor/pso_classifier/dfa_particle_decoder.h>
-#include <classifier_constructor/pso_classifier/dfa_fitness_updater.h>
+
 #include <language/word.h>
 #include <language/language.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_accuracy_distinct.h>
 
 using namespace pso;
 
@@ -55,8 +55,8 @@ TEST(DFAFitnessUpdater,
     ParticleShPtr_ConstVectorShPtr particles_ShPtr(particles);
 
     FitnessUpdater* fitnessUpdater =
-            new DFAFitnessUpdater(particles_ShPtr,decoder,
-                                nativeLanguages,foreignLanguages);
+            new FitnessAccuracyDistinct(particles_ShPtr,decoder,
+                                        nativeLanguages,foreignLanguages);
 
     fitnessUpdater->update(0,0);
 
@@ -110,8 +110,8 @@ TEST(DFAFitnessUpdater,
     ParticleShPtr_ConstVectorShPtr particles_ShPtr(particles);
 
     FitnessUpdater* fitnessUpdater =
-            new DFAFitnessUpdater(particles_ShPtr,decoder,
-                                  nativeLanguages,foreignLanguages);
+            new FitnessAccuracyDistinct(particles_ShPtr,decoder,
+                                        nativeLanguages,foreignLanguages);
 
     fitnessUpdater->update(0,0);
 

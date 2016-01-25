@@ -316,7 +316,6 @@ vector<Word *> *quality::_gatherTrueDistinct(
     return TP;
 }
 
-
 vector<Word *> *quality::_gatherTrueOverall(vector<Language *> *pLanguages,
                                             DFA *dfa) {
     vector<Word *> *TP = new vector<Word *>();

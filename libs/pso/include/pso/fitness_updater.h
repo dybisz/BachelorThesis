@@ -58,7 +58,7 @@ public:
     /*
      * Updates the particles from startIndex to finishIndex
      */
-    virtual void update(int startIndex, int finishIndex) = 0;
+    void update(int startIndex, int finishIndex);
 };
 }
 

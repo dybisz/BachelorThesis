@@ -1,17 +1,16 @@
 //
-// Created by jakub on 1/7/16.
+// Created by jakub on 1/25/16.
 //
 
-#ifndef BACHELOR_THESIS_CLASSIFIER_FITNESS_UPDATER_H
-#define BACHELOR_THESIS_CLASSIFIER_FITNESS_UPDATER_H
+#ifndef BACHELOR_THESIS_FITNESS_ACCURACY_OVERALL_H
+#define BACHELOR_THESIS_FITNESS_ACCURACY_OVERALL_H
 
-#include <pso/pso_common.h>
 #include <pso/fitness_updater.h>
 #include <language/language.h>
 
 using namespace pso;
 
-class DFAFitnessUpdater : public FitnessUpdater{
+class FitnessAccuracyOverall : public FitnessUpdater {
 private:
     //-----------------------------------------------------------//
     //  PRIVATE FIELDS
@@ -36,19 +35,17 @@ public:
     //  CONSTRUCTORS
     //-----------------------------------------------------------//
 
-    DFAFitnessUpdater(ParticleShPtr_ConstVectorShPtr particles,
-                        const ParticleDecoder* particleDecoder,
-                        std::vector<Language*>* nativeLanguages,
-                        std::vector<Language*>* foreignLanguages);
+    FitnessAccuracyOverall(ParticleShPtr_ConstVectorShPtr particles,
+                           const ParticleDecoder* particleDecoder,
+                           std::vector<Language*>* nativeLanguages,
+                           std::vector<Language*>* foreignLanguages);
 
-    virtual ~DFAFitnessUpdater();
+    ~FitnessAccuracyOverall();
 
     //-----------------------------------------------------------//
     //  PUBLIC METHODS
     //-----------------------------------------------------------//
-
-    virtual void update(int startIndex, int finishIndex) override;
 };
 
 
-#endif //BACHELOR_THESIS_CLASSIFIER_FITNESS_UPDATER_H
+#endif //BACHELOR_THESIS_FITNESS_ACCURACY_OVERALL_H

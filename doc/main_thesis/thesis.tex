@@ -75,10 +75,10 @@
 % #4: Test
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\saveResultsFirst}[4]{
-    \def\TrainSmallFirst{#1}%
-    \def\TrainBigFirst{#2}%
-    \def\TrainAllFirst{#3}%
-    \def\TestFirst{#4}%
+    \def\AccuracyFirst{#1}%
+    \def\SensitivityFirst{#2}%
+    \def\PrecisionFirst{#3}%
+    \def\FmeasureFirst{#4}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -89,10 +89,17 @@
 % #4: Test
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand{\saveResultsSecond}[4]{
-    \def\TrainSmallSecond{#1}%
-    \def\TrainBigSecond{#2}%
-    \def\TrainAllSecond{#3}%
-    \def\TestSecond{#4}%
+    \def\AccuracySecond{#1}%
+    \def\SensitivitySecond{#2}%
+    \def\PrecisionSecond{#3}%
+    \def\FmeasureSecond{#4}%
+}
+
+\newcommand{\saveResultsThird}[4]{
+    \def\AccuracyThird{#1}%
+    \def\SensitivityThird{#2}%
+    \def\PrecisionThird{#3}%
+    \def\FmeasureThird{#4}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -102,37 +109,41 @@
 % Label #2 is used for saveResultsSecond
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\addBarPlotResults}[2]{
-    % TRAINING |w| < C    
+\newcommand{\addBarPlotResults}[3]{
+    % ACCURACY
     \addplot[style={bblue, fill=bblue, mark=none}]
     coordinates 
     {
-        (#1,  \TrainSmallFirst)
-        (#2,  \TrainSmallSecond)
+        (#1,  \AccuracyFirst)
+        (#2,  \AccuracySecond)
+        (#3,  \AccuracyThird)
     };
     
-    % TRAINING |w| > C
+    % SENSITIVITY
     \addplot[style={rred, fill=rred, mark=none}]
     coordinates 
     {
-        (#1,  \TrainBigFirst)
-        (#2,  \TrainBigSecond)
+        (#1,  \SensitivityFirst)
+        (#2,  \SensitivitySecond)
+        (#3,  \SensitivityThird)
     };
     
-    % TRAINING ALL
+    % PRECISION
     \addplot[style={ggreen, fill=ggreen, mark=none}]
     coordinates 
     {
-        (#1,  \TrainAllFirst)
-        (#2,  \TrainAllSecond)
+        (#1,  \PrecisionFirst)
+        (#2,  \PrecisionSecond)
+        (#3,  \PrecisionThird)
     };
     
-    % TESTING
+    % FMEASURE
     \addplot[style={ppurple, fill=ppurple, mark=none}]
     coordinates 
     {
-        (#1,  \TestFirst)
-        (#2,  \TestSecond)
+        (#1,  \FmeasureFirst)
+        (#2,  \FmeasureSecond)
+        (#3,  \FmeasureThird)
     };
 }
 
@@ -155,46 +166,24 @@
         ybar=4*\pgflinewidth, 
         ymin=0, 
         ymax=1,
-        width  = 0.37*\textwidth, 
+        width  = 0.50*\textwidth, 
         enlarge x limits={abs=0.85cm}, 
         major x tick style = transparent, 
         ymajorgrids = true, 
         symbolic x coords={
-            C=4,
-            C=4 Q=3,
-            C=4 Q=4,
-            C=4 Q=5,
-            C=4 Q=6,
-            C=4 Q=7,
-            C=4 Q=8,
-            C=4 Q=9,
-            C=4 Q=10,
-            C=4 Q=11,
-            C=4 Q=12,
-            C=4 Q=13,
-            C=4 Q=14,
-            C=4 Q=15,
-            C=5,
-            C=5 Q=3,
-            C=5 Q=4,
-            C=5 Q=5,
-            C=5 Q=6,
-            C=5 Q=7,
-            C=5 Q=8,
-            C=5 Q=9,
-            C=5 Q=10,
-            C=5 Q=11,
-            C=5 Q=12,
-            C=5 Q=13,
-            C=5 Q=14,
-            C=5 Q=15
+            A=10,
+            A=30,
+            A=40,
+            N=20 F=10,
+            N=20 F=20,
+            N=20 F=40
         },
         xtick = data, 
         scaled y ticks = false, 
         legend cell align=center, 
         legend columns=1,
         legend style={
-            at={(1.45, 0.45)}, 
+            at={(1.25, 0.45)}, 
             anchor=north,
         }
         ]
@@ -204,7 +193,7 @@
     % Sets legends for Bar plot
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     \newcommand{\setPlotLegend}[0]{
-        \legend{Training $|w|<C$,  Training $|w|>C$,  Training All,  Testing}
+        \legend{Accuracy, Sensitivity, Precision, F-Measure}
     }
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1372,8 +1361,8 @@ TODO Analysis: Alphabet size vs feature vector dimension.
     
     \begin{groupplot}[group style={group size= 1 by 1,
         vertical sep=50pt, horizontal sep=40pt}, 
-    height=5cm,
-    width=9cm,
+    height=6cm,
+    width=13cm,
     ylabel=Similarity,
     xlabel=Alphabet Size,
     legend cell align=left, 
@@ -1430,7 +1419,8 @@ TODO Analysis: Alphabet size vs feature vector dimension.
         (39, 0.307231)
         (40, 0.306493)
     };
-
+   
+    
     \end{groupplot}
     
     \end{tikzpicture}
@@ -1446,17 +1436,17 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 %
 %%%
 \begin{figure}[H]
-    \caption{TODO: Classifier Quality for 1, 2, .., 10 classes. Object count in each class: 900. States per native class: 2. States per foreign class: twice as less as all natives. Distinct-Testing}
+    \caption{TODO: Classifier Quality for 1, 2, .., 10 classes. Alphabet Size: 30. Fitness Accuracy Distinct. Classes considered as distinct}
     \label{fig:lang_sim}
     
     \setPlotStyle
     \begin{tikzpicture}
     
     \begin{groupplot}[group style={group size= 1 by 3,
-        vertical sep=50pt, horizontal sep=40pt}, 
-    height=5cm,
-    width=9cm,
-    ylabel=Quality,
+        vertical sep=70pt, horizontal sep=60pt}, 
+    height=6cm,
+    width=13cm,
+    ylabel=Measure,
     xtick={1,2,3,4,5,6,7,8,9,10},
     xlabel=Number of classes,
     legend cell align=left, 
@@ -1468,7 +1458,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
     }
     ]
     
-    \nextgroupplot[title=Alphabet size 5]
+    \nextgroupplot[title=Native States: 2 per Class. Foreign States: Twice as less than native]
     
     % ACCURACY
     \addplot[color=rred, thick] coordinates {
@@ -1524,7 +1514,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
         (10, 0.16)
     };
     
-    \nextgroupplot[title=Alphabet size 15]
+    \nextgroupplot[title=Native States: 2 per Class. Foreign States: as many as native]
     
     % ACCURACY
     \addplot[color=rred, thick] coordinates {
@@ -1580,7 +1570,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
         (10, 0.16)
     };
 
-    \nextgroupplot[title=Alphabet size 30]
+    \nextgroupplot[title=Native States: 2 per Class. Foreign States: Twice as many as native]
     
     % ACCURACY
     \addplot[color=rred, thick] coordinates {
@@ -1655,424 +1645,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 
 
 
-%%%
-%
-% PSO For different classes
-%
-%%%
-\begin{figure}[H]
-    \caption{TODO: Classifier Quality for 1, 2, .., 10 classes. Object count in each class: 900. States per native class: 2. States per foreign class: as many as all natives. Distinct-Testing}
-    \label{fig:lang_sim}
-    
-    \setPlotStyle
-    \begin{tikzpicture}
-    
-    \begin{groupplot}[group style={group size= 1 by 3,
-        vertical sep=50pt, horizontal sep=40pt}, 
-    height=5cm,
-    width=9cm,
-    ylabel=Quality,
-    xtick={1,2,3,4,5,6,7,8,9,10},
-    xlabel=Number of classes,
-    legend cell align=left, 
-    legend columns=1,
-    legend style={
-        at={(1.3, 0.7)}, 
-        anchor=south east, 
-        column sep=2ex
-    }
-    ]
-    
-    \nextgroupplot[title=Alphabet size 5]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \nextgroupplot[title=Alphabet size 15]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \nextgroupplot[title=Alphabet size 30]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \addlegendentry{Accuracy}
-    \addlegendentry{Sensitivity}
-    \addlegendentry{Precision}
-    \addlegendentry{F-Measure}
-    
-    \end{groupplot}
-    
-    \end{tikzpicture}
-    
-\end{figure}
 
-
-
-
-
-
-%%%
-%
-% PSO For different classes
-%
-%%%
-\begin{figure}[H]
-    \caption{TODO: Classifier Quality for 1, 2, .., 10 classes. Object count in each class: 900. States per native class: 2. States per foreign class: twice as many as all natives. Distinct-Testing}
-    \label{fig:lang_sim}
-    
-    \setPlotStyle
-    \begin{tikzpicture}
-    
-    \begin{groupplot}[group style={group size= 1 by 3,
-        vertical sep=50pt, horizontal sep=40pt}, 
-    height=5cm,
-    width=9cm,
-    ylabel=Quality,
-    xtick={1,2,3,4,5,6,7,8,9,10},
-    xlabel=Number of classes,
-    legend cell align=left, 
-    legend columns=1,
-    legend style={
-        at={(1.3, 0.7)}, 
-        anchor=south east, 
-        column sep=2ex
-    }
-    ]
-    
-    \nextgroupplot[title=Alphabet size 5]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \nextgroupplot[title=Alphabet size 15]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \nextgroupplot[title=Alphabet size 30]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \addlegendentry{Accuracy}
-    \addlegendentry{Sensitivity}
-    \addlegendentry{Precision}
-    \addlegendentry{F-Measure}
-    
-    \end{groupplot}
-    
-    \end{tikzpicture}
-    
-\end{figure}
 
 
 
@@ -2088,48 +1661,51 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 Native symbols used in the experiments were
 
 
-%\begin{figure}[H]
-%    \caption{Reconstruction. The average accuracy of 10 automata from each class: 4, 6, 10, 15}
-%    \label{fig:recons_results}
-%    
-%    \setPlotStyle
-%    \begin{tikzpicture}
-%    
-%    %%%%%%%%%%%%%%%%%%%%
-%    % GROUPPLOT
-%    %%%%%%%%%%%%%%%%%%%%
-%    
-%    \beginGroupPlot
-%    
-%    
-%    \nextgroupplot[title=Class 4,  ylabel=Accuracy]
-%    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
-%    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
-%    \addBarPlotResults  {C=4}{C=5}
-%    
-%    \nextgroupplot[title=Class 6]%
-%    \saveResultsFirst   {0.77}{0.77}{0.77}{0.77}
-%    \saveResultsSecond  {0.77} {0.77}{0.77}{0.77}
-%    \addBarPlotResults  {C=4}{C=5}
-%    
-%    \nextgroupplot[title=Class 10, ylabel=Accuracy]
-%    \saveResultsFirst   {0.83}{0.83}{0.83}{0.83}
-%    \saveResultsSecond  {0.83}{0.83}{0.83}{0.83}
-%    \addBarPlotResults  {C=4}{C=5}
-%    
-%    
-%    \nextgroupplot[title=Class 15]
-%    \saveResultsFirst   {0.86}{0.86}{0.86}{0.86}
-%    \saveResultsSecond  {0.86}{0.86}{0.86}{0.86}
-%    \addBarPlotResults  {C=4}{C=5}
-%    %%%%%%%%%%%%%%%%%%%%
-%    % LEGEND
-%    %%%%%%%%%%%%%%%%%%%%
-%    \setPlotLegend
-%    
-%    \end{groupplot}
-%    \end{tikzpicture}
-%\end{figure}
+\begin{figure}[H]
+    \caption{All native elements considered as one big class. Native states: 20. Foreign states: 20}
+    \label{fig:recons_results}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlot
+
+    \nextgroupplot[title=Fitness Accuracy Overall.,  ylabel=Measure]
+    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
+    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
+    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+        
+    \nextgroupplot[title=Fitness Precision Overall.]
+    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
+    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
+    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+        
+    \nextgroupplot[title=Fitness Sensitivity Overall.,  ylabel=Measure]
+    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
+    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
+    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness F-Measure Overall.]
+    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
+    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
+    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
 
 
 %---------------------------------------------------------------

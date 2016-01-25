@@ -10,7 +10,6 @@
 #include <language/language.h>
 #include <vector>
 #include <pso/particle_updater.h>
-#include <classifier_constructor/pso_classifier/dfa_fitness_updater.h>
 #include <classifier_constructor/pso_classifier/pso_factory.h>
 #include <transformation/transformation.h>
 

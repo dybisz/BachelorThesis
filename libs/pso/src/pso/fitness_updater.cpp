@@ -28,3 +28,15 @@ const ParticleDecoder & FitnessUpdater::getParticleDecoder() const {
 const ParticleShPtr_Vector& FitnessUpdater::getParticles() const {
     return *(particles.get());
 }
+
+void FitnessUpdater::update(int startIndex, int finishIndex) {
+    for(int i = startIndex; i <= finishIndex; i++){
+        Particle& p = *((*particles)[i]);
+        double fitnessValue = this->fitnessValue(p);
+        p.setFitness(fitnessValue);
+
+        if(fitnessValue > p.getBestFitness()){
+            p.saveCurrentConfigAsBest();
+        }
+    }
+}

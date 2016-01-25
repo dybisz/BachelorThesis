@@ -42,6 +42,9 @@ namespace classification_experiment {
 
     PSOFactory getPSOFactory(vector<Language*>* native,
                              vector<Language*>* foreign) {
+        FitnessType fitnessType
+                = static_cast<FitnessType>(settings::FITNESS_TYPE);
+        logger::log("Fitness Type: ", fitnessType);
         PSOFactory psoFactory(
                 native, foreign,
                 settings::STATES_PER_NATIVE, settings::STATES_PER_FOREIGN,
@@ -50,18 +53,19 @@ namespace classification_experiment {
                 settings::TRUE_THREAD_COUNT,
                 settings::MAX_VELOCITY,
                 settings::ENCODING_DELTA, settings::UPPER_BOUND_ERR,
-                settings::LEARNING_FACTOR, settings::PARTICLE_VEL_WEIGHT
+                settings::LEARNING_FACTOR, settings::PARTICLE_VEL_WEIGHT,
+                fitnessType
         );
         return psoFactory;
     }
 
     Classifier* getClassifier(PSO* pso, TransformedLanguages& languages){
-        Classifier *classifier  = new Classifier(pso, languages.native,
-                                                 languages .foreign,
-                                                 settings::STATES_PER_NATIVE,
-                                                 settings::STATES_PER_FOREIGN,
-                                                 settings::ALPHABET_SIZE,
-                                                 settings::TESTING_SET_RATIO);
+        Classifier *classifier
+                = new Classifier(pso, languages.native, languages .foreign,
+                                 settings::STATES_PER_NATIVE,
+                                 settings::STATES_PER_FOREIGN,
+                                 settings::ALPHABET_SIZE,
+                                 settings::TESTING_SET_RATIO);
         return classifier;
     }
 
