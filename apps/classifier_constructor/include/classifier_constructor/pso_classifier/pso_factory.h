@@ -17,11 +17,14 @@ using namespace pso;
  * Used to choose between different FitnessUpdaters
  */
 enum FitnessType{
-    FITNESS_ACCURACY_DISTINCT       = 0,
     FITNESS_ACCURACY_OVERALL        = 1,
     FITNESS_PRECISION_OVERALL       = 2,
     FITNESS_SENSITIVITY_OVERALL     = 3,
-    FITNESS_FMEASURE_OVERALL        = 4
+    FITNESS_FMEASURE_OVERALL        = 4,
+    FITNESS_ACCURACY_DISTINCT       = 5,
+    FITNESS_PRECISION_DISTINCT      = 6,
+    FITNESS_SENSITIVITY_DISTINCT    = 7,
+    FITNESS_FMEASURE_DISTINCT       = 8
 };
 
 /*
@@ -84,6 +87,18 @@ private:
             ParticleDecoder * particleDecoder);
 
     FitnessUpdater* createFitnessAccuracyDistinct(
+            ParticleShPtr_ConstVectorShPtr particles,
+            ParticleDecoder * particleDecoder);
+
+    FitnessUpdater* createFitnessPrecisionDistinct(
+            ParticleShPtr_ConstVectorShPtr particles,
+            ParticleDecoder * particleDecoder);
+
+    FitnessUpdater* createFitnessSensitivityDistinct(
+            ParticleShPtr_ConstVectorShPtr particles,
+            ParticleDecoder * particleDecoder);
+
+    FitnessUpdater* createFitnessFmeasureDistinct(
             ParticleShPtr_ConstVectorShPtr particles,
             ParticleDecoder * particleDecoder);
 

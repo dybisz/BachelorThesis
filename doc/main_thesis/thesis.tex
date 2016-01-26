@@ -102,6 +102,13 @@
     \def\FmeasureThird{#4}%
 }
 
+\newcommand{\saveResultsFourth}[4]{
+    \def\AccuracyFourth{#1}%
+    \def\SensitivityFourth{#2}%
+    \def\PrecisionFourth{#3}%
+    \def\FmeasureFourth{#4}%
+}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Adds Results to Bars labeled by #1, #2
 %
@@ -147,7 +154,47 @@
     };
 }
 
-
+\newcommand{\addBarPlotFourResults}[4]{
+    % ACCURACY
+    \addplot[style={bblue, fill=bblue, mark=none}]
+    coordinates 
+    {
+        (#1,  \AccuracyFirst)
+        (#2,  \AccuracySecond)
+        (#3,  \AccuracyThird)
+        (#4,  \AccuracyFourth)
+    };
+    
+    % SENSITIVITY
+    \addplot[style={rred, fill=rred, mark=none}]
+    coordinates 
+    {
+        (#1,  \SensitivityFirst)
+        (#2,  \SensitivitySecond)
+        (#3,  \SensitivityThird)
+        (#4,  \SensitivityFourth)
+    };
+    
+    % PRECISION
+    \addplot[style={ggreen, fill=ggreen, mark=none}]
+    coordinates 
+    {
+        (#1,  \PrecisionFirst)
+        (#2,  \PrecisionSecond)
+        (#3,  \PrecisionThird)
+        (#4,  \PrecisionFourth)
+    };
+    
+    % FMEASURE
+    \addplot[style={ppurple, fill=ppurple, mark=none}]
+    coordinates 
+    {
+        (#1,  \FmeasureFirst)
+        (#2,  \FmeasureSecond)
+        (#3,  \FmeasureThird)
+        (#4,  \FmeasureFourth)
+    };
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Adds needed style to pgfplot
@@ -176,7 +223,8 @@
             A=40,
             N=20 F=10,
             N=20 F=20,
-            N=20 F=40
+            N=20 F=40,
+            N=20 F=80
         },
         xtick = data, 
         scaled y ticks = false, 
@@ -189,6 +237,37 @@
         ]
     }%beginGroupPlot
     
+    \newcommand{\beginGroupPlotFour}[0]{
+        \begin{groupplot}[
+            group style={group size= 2 by 2,  vertical sep=50pt},
+            height = 5.5cm, 
+            ybar=4*\pgflinewidth, 
+            ymin=0, 
+            ymax=1,
+            width  = 0.65*\textwidth, 
+            enlarge x limits={abs=0.85cm}, 
+            major x tick style = transparent, 
+            ymajorgrids = true, 
+            symbolic x coords={
+                A=10,
+                A=30,
+                A=40,
+                N=20 F=10,
+                N=20 F=20,
+                N=20 F=40,
+                N=20 F=80
+            },
+            xtick = data, 
+            scaled y ticks = false, 
+            legend cell align=center, 
+            legend columns=1,
+            legend style={
+                at={(1.25, 0.45)}, 
+                anchor=north,
+            }
+            ]
+        }%beginGroupPlot
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % Sets legends for Bar plot
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -196,6 +275,8 @@
         \legend{Accuracy, Sensitivity, Precision, F-Measure}
     }
     
+    
+  
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %           END OF COMMANDS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -277,6 +358,13 @@
 %%%%%%%%%%%
 \newcommand{\featureNorm}[1]{
     ||#1||
+}
+
+\newcommand{\wordSim}[2]{
+    S_{w}(#1,#2)
+}
+\newcommand{\lanSim}[2]{
+    S_{L}(#1,#2)
 }
 
 % TITLE
@@ -959,22 +1047,35 @@ In the example~\ref{ex:transf_prec} two different feature vectors have been tran
     $L_{1} \cap L_{2} \cap L_{3} \cap \ldots \cap L_{m} \neq \emptyset$
 \end{center}
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Language Similarity}\label{sec:lan_theory_lan_sim}
+One could consider calculating Transformation Precision by determining how similar the languages are to each other.
 
-\begin{definition} {\bf Transformation Precision}\\
-    Let the languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ be obtained by transformation over alphabet $\Sigma$ of the non empty objects $O_{1},O_{2},\ldots,O_{m}$ respectively.
-    The Transformation Precision of the set of objects is defined by the equation:
-       \begin{equation}
-       \transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}
-           =
-            1 - \frac   {| L_{O_1} \cap L_{O_2} \cap L_{O_3} \cap \ldots \cap L_{O_m} |}
-                    {| L_{O_1} \cup L_{O_2} \cup L_{O_3} \cup \ldots \cup L_{O_m} |}
-               =
-            1 - \frac   {\Big| \bigcap\limits_{i=0}^{m} L_{O_i} \Big|}
-                    {\Big| \bigcup\limits_{i=0}^{m} L_{O_i} \Big|}
-       \end{equation}
+Firstly, we must define word similarity. Two words can be thought to be \textit{similar} if the ratio of the length and their Hamming distance is reasonably small. Formally the similarity function of two words is defined by the equation:
+
+\begin{definition} {\bf Word Similarity}
+    \begin{equation}
+    \wordSim{w}{v} = 1 - \frac{H_d(w,v)}{k}
+    \end{equation}
+    where $H_d$ is the Hamming distance and $k$ is the length of both words.
 \end{definition}
 
-Recall that the transformation over alphabet with one symbol yield the same word for all possible feature vectors of the same length. Thus, having the alphabet $|\Sigma|=1$ for any set of objects the transformation precision is equal to: $\transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}~=~0$. Clearly the ideal situation occurs when all the transformed languages are disjoint i.e. $\transformationPrecision{\Sigma}{O_{1},O_{2},\ldots,O_{m}}~=~1$
+Consider two words~$w~=~10101$~and~$v~=~00101$. The similarity $\wordSim{w}{v}$ is then equal to $0.8$.
+
+Similarity of language $L_{1}$ to language $L_{2}$ is defined as follows. For word $w \in L_{1}$ calculate the maximum value of word similarity between $w$ and all words from $L_{2}$. Repeat for all words in $L_{1}$, averaging the results from all such words.
+
+\begin{definition} {\bf Language Similarity\\}
+The similarity of language $L_{1}$ to language $L_{2}$ is defined by the following equation:
+    \begin{equation}
+    \lanSim{L_{1}}{L_{2}} = \frac{1}{|L_{1}|} \sum_{w \in L_{1}} \max_{\forall_{v \in L{2}}} \wordSim{w}{v}
+    \end{equation}
+
+\end{definition}
+
+The proposed Language Similarity is a asymmetric measure. Meaning that one language can be more similar to another than vice versa. It is an important feature when considering languages of different sizes. Consider two languages $L_{1}$ and $L_{2}$, where $L_{1} = \{w,v,u\}$ and $|L_{2}| = 50$.
+If the word $w$ is added to $L_{2}$ then the similarity $\lanSim{L_1}{L_2}$ will raise very rapidly. On the other hand, the similarity $\lanSim{L_2}{L_1}$ will not be affected as much due to the large size of $L_{2}$.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -985,15 +1086,6 @@ The method of object to language transformation has been introduced. The feature
 From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a language $L$.
 
 Additionally this section defined a way of describing objects in terms of languages. Languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ will commonly denote transformed languages representing their respective objects. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
-
-Finally the figure~\ref{fig:transf_state} summarizes the process of transformation.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\textwidth]{../uml/states/word_transformation.jpg}
-    \caption{State chart of Language Transformation}
-    \label{fig:transf_state}
-\end{figure}
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1007,7 +1099,7 @@ In the previous section it was mentioned that to properly classify a word to its
 %---------------------------------------------------------------
 \subsection{Optimum Partitioning}\label{sec:lan_theory_class_lan_opt_part}
 
-Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivvalence classes. In other words, equivalence classes are disjoint sets of words. Thus having an equivalence class which classifies a word to its respective language, could make for a very convenient classification tool.
+Recall from definition~\ref{def:myhill} that relation $R_L$ induced by the language $L$ partitions the set of all words $\Sigma^{*}$ into equivalence classes. In other words, equivalence classes are disjoint sets of words. Thus having an equivalence class which classifies a word to its respective language, could make for a very convenient classification tool.
 
 Let the languages $L_{1}, L_{2} \text{ and } L_{3}$ be obtained from the language transformation. The idea of optimum partitioning is to split all three languages so that they are included in three different equivalence classes. 
 
@@ -1015,7 +1107,7 @@ The initial, poor, partitioning is illustrated in figure~\ref{fig:eq_classes_sma
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_small_pt.jpg}
+    \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_small_pt.jpg}
     \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
     \label{fig:eq_classes_small_precision}
 \end{figure}
@@ -1024,7 +1116,7 @@ Figure~\ref{fig:eq_classes_high_precision} shows the same partitioning for highe
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_high_pt.jpg}
+    \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_high_pt.jpg}
     \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
     \label{fig:eq_classes_high_precision}
 \end{figure}
@@ -1033,7 +1125,7 @@ The next improvement of partitioning is presented in figure~\ref{fig:eq_classes}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes.jpg}
+    \includegraphics[width=0.5\textwidth]{./images/equivalence_classes.jpg}
     \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
     \label{fig:eq_classes}
 \end{figure}
@@ -1042,7 +1134,7 @@ Finally, the figure~\ref{fig:eq_classes_ideal} presents the example of ideal par
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./images/equivalence_classes_ideal.jpg}
+    \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_ideal.jpg}
     \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages equal to their respective equivalence classes}
     \label{fig:eq_classes_ideal}
 \end{figure}
@@ -1069,30 +1161,11 @@ The figure~\ref{fig:class_dfa} shows an example automaton which is used to class
 
 Finally, building a proper classifier will be equivalent to creating an Classification Automaton $M_{C}$ that minimizes the error of classifying objects in the learning phase. The problem of choosing an optimal number of states corresponding to a transformed languages is to be parametrized and tested empirically.
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Synthetic Word Generation} \label{sec:lan_theory_synth_word_gen}
- 
-Let's assume we want to randomly generate words of length $k$ corresponding to some objects. Having fixed number of classes, denoted by $n$ proceed to generate exactly $n$ words representing centres of each class. Then for each such class, start generating uniformly words that are similar to their corresponding centres. Two words can be thought to be \textit{similar} if the ratio of the length and their Hamming distance is reasonably small. Formally the similarity function of two words is defined by the equation:
-
-\begin{equation}
-Sr(w,v) = 1 - \frac{H_d(w,v)}{k}
-\end{equation}
-
-where $H_d$ is the Hamming distance and $k$ is the length of both words. It is also important to define a similarity threshold~$T_s$ after which we can conclude if two words are similar.
-
-For example, for two words~$w~=~10101$~and~$v~=~00101$ the similarity $Sr(w, v)$ is equal to $0.8$. Assuming a threshold $T_s = 0.7$, we can conclude that these two words are similar. Notice that two equal words are perfectly similar, $S(w,w) = 1$.
-
-The problem still exists in actually defining the threshold for values of $Sr$ for which we can say that two words are similar. For small thresholds, the generated clouds of words might be heavily spread. As a result a chance for any two clouds to be overlapping each other is big. In contrast, when the threshold is big, the clouds will become more clamped and the chance of overlapping is small. On the other hand, the classes constructed by these words, will be defined on a smaller intervals compared to the entire class space. In a result giving us less room to work with.
-
-The intuition can suggest that any two words are similar if their similarity is greater than $0.7$. Although the exact threshold should be experimented with and chosen empirically.
-
-% How about the upper bound of similarity, what if all words generated are the same -> Uniform distribution should cover that
-
-
 
 %---------------------------------------------------------------
 \chapter{Particle Swarm Optimization}\label{chap:pso}
+This chapter provides general knowledge about the stochastic optimization problem that is PSO.
+
 In the Particle Swarm Optimization (PSO), originated by Eberhart and Kennedy in~\cite{pso_origin}, we look for optimal solution of the problem in the solution space. 
 
 Each solution is called a particle and it consists of the following fields. First of all, the particle stores $fitness$ value which is evaluated by the fitness function, representing the quality of the solution and the best fitness value computed so far. It also stores the position $X_p$ and velocity vector $V_p$ which lets the particle travel through the solution space. Lastly two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
@@ -1107,7 +1180,7 @@ Firstly, the general flow of the PSO algorithm is given, then each module is dis
 \begin{center}
     
     \begin{enumerate}
-        \item For the input $n$ and $r$, initialize the group of particles.
+        \item For swarm size s, initialize the group of particles.
         
         \item For each particle: \label{itm:pso_iter}
         \begin{enumerate}
@@ -1129,12 +1202,6 @@ Firstly, the general flow of the PSO algorithm is given, then each module is dis
     
 \end{center}
 
-The figure~\ref{fig:pso_state} presents the flow of PSO computations.
-\begin{figure}
-    \includegraphics[width=1.0\textwidth]{../uml/states/pso.jpg}
-    \caption{State diagram of PSO computations}
-    \label{fig:pso_state}
-\end{figure}
 
 We now concentrate on describing in details each step of the PSO algorithm. The following part of this section is devoted to illustrating problems associated with the objective of this study and more importantly, methods of solving these problems.
 
@@ -1170,30 +1237,10 @@ In all cases uniform distribution is used for random number generation.
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Fitness Function}\label{sec:fitness}
-Recall that each state in the DFA will correspond to some transformed language and thus will classify a word accordingly. A language can correspond to many states. 
-
-The state correspondence is to be determined prior to starting PSO. The fitness function as an input will take a set of words. Each word belongs to some transformed language which representing an object. Such word will be computed by each encoded particle (i.e. DFA) and thus classified to some language. Fitness function for each particle will then determine the error rate between correctly and incorrectly classified words.
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Updating the particle}
-
-
-% Naive approach
-
-%The naive approach of updating the particles' positions was proposed in the original PSO %algorithm~\cite{pso_origin}.
-
-%\begin{equation}
-%		V_p(t+1) = V_p(t) + c_1 * \mu_1 *(pbest_p - X_p(t)) + c_2 * \mu_2 *(lbest_p - X_p(t))
-%	\end{equation}
-%
-%	\begin{equation}
-%		X_p(t+1) = X_p(t) + V_p(t)
-%	\end{equation}
-%	where:\\
-%	$c_1, c_2$ are the constant learning factors.\\
-%	$\mu_1, \mu_2$ are random numbers in the range [0,1]. {\color{red} TODO What %distribution function - uniform ?} \\
-
 
 
 The following method of updating the particles has its origins in the Standard Particle Swarm Optimization version 2011 presented in~\cite{pso_11}
@@ -1234,10 +1281,6 @@ Thus the position is updated by the equation
     X_p(t+1) = \omega * V_p(t) + X^{'}_p(t)
 \end{equation}
 
-% Exploitation vs Exploration
-
-%This method of updating the particles grants adequate definitions for $exploitation$ and $exploration$. Namely the exploitation occurs when $X_p(t+1)$ is inside atleast one hypersphere $\mathcal{H}_q$, otherwise we recognize exploration.
-
 
 % Interval confinement
 It may happen that the particle might leave the search space, in means that the particle lies outside the acceptable interval. If that happens we generally try to lead the particle back to its right course. For each dimension $x_{d} \in X_p$ that lies  outside the acceptable interval we apply the following:
@@ -1272,10 +1315,42 @@ The neighbourhood system is defined by grouping the swarm into clusters. Cluster
 \section{Ending criteria}
 The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
 
+The figure~\ref{fig:pso_state} presents the flow of PSO computations.
+\begin{figure}
+    \includegraphics[width=0.7\textwidth]{./images/pso_state.jpg}
+    \caption{State diagram of parallel PSO computations}
+    \label{fig:pso_state}
+\end{figure}
+
+
 %---------------------------------------------------------------
-\chapter{Classifier}\label{chap:classification}
+\chapter{Classifier Construction}\label{chap:classification}
 
 In this chapter, each step of building the classifier is summarized and explicitly described.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{PSO for Classification}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Fitness Function}
+Recall that each state in the DFA will correspond to some transformed language and thus will classify a word accordingly. A language can correspond to many states. 
+
+The state correspondence is to be determined prior to starting PSO. The fitness function as an input will take a set of words. Each word belongs to some transformed language which representing an object. Such word will be computed by each encoded particle (i.e. DFA) and thus classified to some language. Fitness function for each particle will then determine the error rate between correctly and incorrectly classified words.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Particle Decoding}
+
+As an input, the PSO algorithm takes number of states $n$ and number of symbols in the alphabet $r$.
+Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
+
+The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
+
+As we may learn further in the article, the method of updating the particle will make a good use of continuous interval. On the other hand, the method of rounding up real numbers, might be vulnerable to error.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1309,7 +1384,7 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
             \renewcommand{\arraystretch}{1.5}
             \begin{tabular}{|P{1.0cm} || P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm} |P{0.6cm} | P{0.6cm}|}
                 \hline
-                $Sim$ & $L_{0}$ & $L_{1}$ & $L_{2}$ & $L_{3}$ & $L_{4}$ & $L_{5}$ & $L_{6}$ & $L_{7}$ & $L_{8}$ & $L_{9}$ \\
+                $S_{L}$ & $L_{0}$ & $L_{1}$ & $L_{2}$ & $L_{3}$ & $L_{4}$ & $L_{5}$ & $L_{6}$ & $L_{7}$ & $L_{8}$ & $L_{9}$ \\
                 \hline
                 \hline
                 $L_{0}$ &1&0.34&0.33&0.31&0.29&0.3&0.41&0.3&0.4&0.34\\ 
@@ -1334,7 +1409,7 @@ Thus far, the alphabet and set of states have been chosen. Set of languages have
                 \hline 
             \end{tabular}
         }
-        {\caption{Mutual Similarity of languages. Alphabet size: 30}
+        {\caption{Similarity of Native Languages. Alphabet size: 30}
             \label{fig:tab_similarity}}
         %\ffigbox
         %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
@@ -1374,10 +1449,10 @@ TODO Analysis: Alphabet size vs feature vector dimension.
     }
     ]
     
-    \nextgroupplot[title=Similarity of Languages]
+    \nextgroupplot[title=Similarity of Languages. Distinct Native vs Native]
     
     % RECONS_C4_CL4
-    \addplot[color=rred, thick] coordinates {
+    \addplot[color=rred, very thick] coordinates {
         (1, 1.0)
         (2, 0.885624)
         (3, 0.820992)
@@ -1428,6 +1503,80 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 \end{figure}
 
 
+\begin{figure}[H]
+    \caption{Similarity of Transformed Languages}
+    \label{fig:lang_sim}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    \begin{groupplot}[group style={group size= 1 by 1,
+        vertical sep=50pt, horizontal sep=40pt}, 
+    height=6cm,
+    width=13cm,
+    ylabel=Similarity,
+    xlabel=Alphabet Size,
+    legend cell align=left, 
+    legend columns=1,
+    legend style={
+        at={(1.3, 0.7)}, 
+        anchor=south east, 
+        column sep=2ex
+    }
+    ]
+    
+    \nextgroupplot[title=Similarity of Languages. Indistinct Native vs Foreign]
+    
+    % RECONS_C4_CL4
+    \addplot[color=rred, very thick] coordinates {
+    (1, 1)
+    (2, 0.921519)
+    (3, 0.845819)
+    (4, 0.770206)
+    (5, 0.707979)
+    (6, 0.674419)
+    (7, 0.627442)
+    (8, 0.593737)
+    (9, 0.567073)
+    (10, 0.540638)
+    (11, 0.51516)
+    (12, 0.500617)
+    (13, 0.473994)
+    (14, 0.466706)
+    (15, 0.448025)
+    (16, 0.432535)
+    (17, 0.425823)
+    (18, 0.422446)
+    (19, 0.425875)
+    (20, 0.415787)
+    (21, 0.406265)
+    (22, 0.398181)
+    (23, 0.391427)
+    (24, 0.384067)
+    (25, 0.376077)
+    (26, 0.364594)
+    (27, 0.360883)
+    (28, 0.356398)
+    (29, 0.352073)
+    (30, 0.344083)
+    (31, 0.34219)
+    (32, 0.335838)
+    (33, 0.335206)
+    (34, 0.333765)
+    (35, 0.332225)
+    (36, 0.331335)
+    (37, 0.33046)
+    (38, 0.330175)
+    (39, 0.329163)
+    (40, 0.328463)
+    };
+    
+    
+    \end{groupplot}
+    
+    \end{tikzpicture}
+    
+\end{figure}
 
 
 %%%
@@ -1436,7 +1585,7 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 %
 %%%
 \begin{figure}[H]
-    \caption{TODO: Classifier Quality for 1, 2, .., 10 classes. Alphabet Size: 30. Fitness Accuracy Distinct. Classes considered as distinct}
+    \caption{Classifier Quality for 1, 2, .., 10 classes. Alphabet Size: 30. Fitness Accuracy Distinct. Classes considered as distinct}
     \label{fig:lang_sim}
     
     \setPlotStyle
@@ -1452,180 +1601,68 @@ TODO Analysis: Alphabet size vs feature vector dimension.
     legend cell align=left, 
     legend columns=1,
     legend style={
-        at={(1.3, 0.7)}, 
+        at={(1.3, 0.0)}, 
         anchor=south east, 
         column sep=2ex
     }
     ]
-    
-    \nextgroupplot[title=Native States: 2 per Class. Foreign States: Twice as less than native]
+
+    \nextgroupplot[title=Fitness Accuracy Distinct. Native States: 2 per Class. Foreign States: as many as native.]
     
     % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
+    \addplot[color=rred, very thick] coordinates {
+        (1, 0.94) % DONE
+        (2, 0.74) % DONE
+        (3, 0.61) % DONE
+        (4, 0.60) % DONE
+        (5, 0.54) % DONE
+        (6, 0.55) % DONE
+        (7, 0.54) % DONE
+        (8, 0.54) % DONE
+        (9, 0.52) % DONE
+        (10, 0.51) % DONE
     };
     
     % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
+    \addplot[color=bblue, very thick] coordinates {
+        (1, 0.98) % DONE
+        (2, 0.70) % DONE
+        (3, 0.25) % DONE
+        (4, 0.23) % DONE
+        (5, 0.09) % DONE
+        (6, 0.10) % DONE
+        (7, 0.09) % DONE
+        (8, 0.09) % DONE
+        (9, 0.04) % DONE
+        (10, 0.04) % DONE
     };
     % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
+    \addplot[color=ggreen, mark=X, very thick] coordinates {
+        (1, 0.91) % DONE
+        (2, 0.75) % DONE
+        (3, 0.85) % DONE
+        (4, 0.88) % DONE
+        (5, 0.88) % DONE
+        (6, 0.80) % DONE
+        (7, 0.83) % DONE
+        (8, 0.84) % DONE
+        (9, 0.72) % DONE
+        (10, 0.70) % DONE
     };
     % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
-    \nextgroupplot[title=Native States: 2 per Class. Foreign States: as many as native]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
+    \addplot[color=ppurple, mark=X, very thick] coordinates {
+        (1, 0.94) % DONE
+        (2, 0.73) % DONE
+        (3, 0.38) % DONE
+        (4, 0.36) % DONE
+        (5, 0.16) % DONE
+        (6, 0.20) % DONE
+        (7, 0.17) % DONE
+        (8, 0.18) % DONE
+        (9, 0.09) % DONE
+        (10, 0.08) % DONE
     };
 
-    \nextgroupplot[title=Native States: 2 per Class. Foreign States: Twice as many as native]
-    
-    % ACCURACY
-    \addplot[color=rred, thick] coordinates {
-        (1, 0.99)
-        (2, 0.68)
-        (3, 0.62)
-        (4, 0.59)
-        (5, 0.57)
-        (6, 0.55)
-        (7, 0.54)
-        (8, 0.51)
-        (9, 0.50)
-        (10, 0.51)
-    };
-    
-    % SENSITIVITY
-    \addplot[color=bblue, thick] coordinates {
-        (1, 0.99)
-        (2, 0.40)
-        (3, 0.26)
-        (4, 0.2)
-        (5, 0.17)
-        (6, 0.13)
-        (7, 0.12)
-        (8, 0.081)
-        (9, 0.081)
-        (10, 0.091)
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, thick] coordinates {
-        (1, 1.00)
-        (2, 0.89)
-        (3, 0.97)
-        (4, 0.89)
-        (5, 0.88)
-        (6, 0.85)
-        (7, 0.70)
-        (8, 0.59)
-        (9, 0.52)
-        (10, 0.57)
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, thick] coordinates {
-        (1, 0.99)
-        (2, 0.56)
-        (3, 0.40)
-        (4, 0.33)
-        (5, 0.28)
-        (6, 0.23)
-        (7, 0.21)
-        (8, 0.14)
-        (9, 0.14)
-        (10, 0.16)
-    };
-    
     \addlegendentry{Accuracy}
     \addlegendentry{Sensitivity}
     \addlegendentry{Precision}
@@ -1641,26 +1678,115 @@ TODO Analysis: Alphabet size vs feature vector dimension.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 \section{PSO}
 Native symbols used in the experiments were
 
 
+%%%%%%%%%
+%
+% FITNESS FUNCTIONS DISTINCT
+%
+%%%%%%%%
+\begin{figure}[H]
+    \caption{Native classes considered as distinct. Native states: 20. Foreign states: 20}
+    \label{fig:recons_results}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlot
+    
+    \nextgroupplot[title=Fitness Accuracy Distinct.,  ylabel=Measure]
+    \saveResultsFirst   {0.51}{0.06}{0.62}{0.08} % DONE 
+    \saveResultsSecond  {0.51}{0.05}{0.80}{0.08} % DONE
+    \saveResultsThird   {0.51}{0.04}{0.72}{0.08} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness Precision Distinct.]
+    \saveResultsFirst   {0.51}{0.04}{0.76}{0.07} % DONE
+    \saveResultsSecond  {0.51}{0.02}{0.78}{0.04} % DONE
+    \saveResultsThird   {0.50}{0.04}{0.46}{0.07} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness Sensitivity Distinct.,  ylabel=Measure]
+    \saveResultsFirst   {0.25}{0.21}{0.23}{0.23} % DONE
+    \saveResultsSecond  {0.17}{0.15}{0.15}{0.15} % DONE
+    \saveResultsThird   {0.33}{0.16}{0.24}{0.19} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness F-Measure Distinct.]
+    \saveResultsFirst   {0.36}{0.21}{0.30}{0.25} % DONE
+    \saveResultsSecond  {0.35}{0.15}{0.24}{0.18} % DONE
+    \saveResultsThird   {0.40}{0.13}{0.28}{0.17} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+
+
+
+%%%%%%%%%
+%
+% FITNESS FUNCTIONS DISTINCT
+%
+%%%%%%%%
+\begin{figure}[H]
+    \caption{Native classes considered as distinct. Alphabet Size 30}
+    \label{fig:recons_results}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlotFour
+    
+    \nextgroupplot[title=Fitness Accuracy Distinct. Alphabet Size:  30. Different State Configurations,  ylabel=Measure]
+    \saveResultsFirst   {0.51}{0.04}{0.79}{0.08} % DONE 0.5
+    \saveResultsSecond  {0.51}{0.05}{0.80}{0.08} % DONE 1
+    \saveResultsThird   {0.51}{0.04}{0.55}{0.08} % DONE 2.0
+    \saveResultsFourth  {0.55}{0.03}{0.46}{0.02} % DONE 4.0
+    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%
+%
+% FITNESS FUNCTIONS INDISTINCT
+%
+%%%%%%%%
 \begin{figure}[H]
     \caption{All native elements considered as one big class. Native states: 20. Foreign states: 20}
     \label{fig:recons_results}
@@ -1674,28 +1800,28 @@ Native symbols used in the experiments were
     
     \beginGroupPlot
 
-    \nextgroupplot[title=Fitness Accuracy Overall.,  ylabel=Measure]
-    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
-    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
-    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \nextgroupplot[title=Fitness Accuracy Indistinct.,  ylabel=Measure]
+    \saveResultsFirst   {0.79}{0.84}{0.76}{0.80} % DONE
+    \saveResultsSecond  {0.80}{0.84}{0.78}{0.80} % DONE
+    \saveResultsThird   {0.79}{0.86}{0.76}{0.82} % DONE
     \addBarPlotResults  {A=10}{A=30}{A=40}
         
-    \nextgroupplot[title=Fitness Precision Overall.]
-    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
-    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
-    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \nextgroupplot[title=Fitness Precision Indistinct.]
+    \saveResultsFirst   {0.52}{0.05}{0.99}{0.11} % DONE
+    \saveResultsSecond  {0.70}{0.44}{0.95}{0.59} % DONE
+    \saveResultsThird   {0.67}{0.38}{0.93}{0.53} % DONE
     \addBarPlotResults  {A=10}{A=30}{A=40}
         
-    \nextgroupplot[title=Fitness Sensitivity Overall.,  ylabel=Measure]
-    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
-    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
-    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \nextgroupplot[title=Fitness Sensitivity Indistinct.,  ylabel=Measure]
+    \saveResultsFirst   {0.53}{1.00}{0.51}{0.68} % DONE
+    \saveResultsSecond  {0.56}{0.99}{0.52}{0.69} % DONE
+    \saveResultsThird   {0.58}{0.99}{0.54}{0.70} % DONE
     \addBarPlotResults  {A=10}{A=30}{A=40}
     
-    \nextgroupplot[title=Fitness F-Measure Overall.]
-    \saveResultsFirst   {0.75}{0.76}{0.76}{0.76}
-    \saveResultsSecond  {0.76}{0.76}{0.76}{0.76}
-    \saveResultsThird   {0.76}{0.76}{0.76}{0.76}
+    \nextgroupplot[title=Fitness F-Measure Indistinct.]
+    \saveResultsFirst   {0.78}{0.88}{0.75}{0.81} % DONE
+    \saveResultsSecond  {0.78}{0.90}{0.72}{0.81} % DONE
+    \saveResultsThird   {0.77}{0.89}{0.74}{0.80} % DONE
     \addBarPlotResults  {A=10}{A=30}{A=40}
     
     %%%%%%%%%%%%%%%%%%%%
@@ -1706,6 +1832,46 @@ Native symbols used in the experiments were
     \end{groupplot}
     \end{tikzpicture}
 \end{figure}
+
+
+
+
+
+%%%%%%%%%
+%
+% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES
+%
+%%%%%%%%
+\begin{figure}[H]
+    \caption{All native elements considered as one big class. Alphabet Size: 30.}
+    \label{fig:recons_results}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlotFour
+    
+    \nextgroupplot[title=Fitness Accuracy Indistinct. Alphabet Size:  30. Different State Configurations,  ylabel=Measure]
+    \saveResultsFirst   {0.82}{0.78}{0.85}{0.81} % DONE
+    \saveResultsSecond  {0.79}{0.82}{0.77}{0.80} % DONE
+    \saveResultsThird   {0.75}{0.79}{0.73}{0.76} % DONE
+    \saveResultsFourth   {0.69}{0.57}{0.75}{0.65} % DONE
+    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+
+
 
 
 %---------------------------------------------------------------

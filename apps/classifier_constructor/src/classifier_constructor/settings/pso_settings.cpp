@@ -49,11 +49,14 @@ namespace settings {
 
         addFlag(Flag("P", "fit",
                      "Fitness Updater Type - "
-                             "ACCURACY_DISTINCT: 0, "
                              "ACCURACY_OVERALL: 1, "
                              "PRECISION_OVERALL: 2, "
                              "SENSITIVITY_OVERALL: 3, "
-                             "FMEASURE_OVERALL: 4",
+                             "FMEASURE_OVERALL: 4, "
+                             "ACCURACY_DISTINCT: 5, "
+                             "PRECISION_DISTINCT: 6, "
+                             "SENSITIVITY_DISTINCT: 7, "
+                             "FMEASURE_DISTINCT: 8",
                      INT,
                      &settings::FITNESS_TYPE));
     }

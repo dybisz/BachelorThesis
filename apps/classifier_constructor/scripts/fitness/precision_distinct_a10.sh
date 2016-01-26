@@ -27,13 +27,13 @@ source ${CONFIG_ROOT_PATH}/fitness/common.cfg
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/FITNESS/"
-DIR_LOG="ACCURACY_DISTINCT"
-FITNESS_TYPE=0
+MAIN_DIR_LOG="logs/FITNESS/PRECISION_DISTINCT"
+DIR_LOG="ALPHABET_10"
+FITNESS_TYPE=6
 
 mkdir -p ${MAIN_DIR_LOG}
 
-ALPHABET_SIZE=40
+ALPHABET_SIZE=10
 
 STATES_PER_NATIVE=2
 STATES_PER_FOREIGN_MULTIPLIER=1
@@ -42,6 +42,8 @@ CLASSES_COUNT_START=10
 CLASSES_COUNT_END=10
 
 OBJECTS_PER_CLASS=900
+
+
 
 #############################################################
 # Run

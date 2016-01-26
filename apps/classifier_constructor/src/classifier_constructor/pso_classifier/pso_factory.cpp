@@ -10,6 +10,9 @@
 #include <classifier_constructor/pso_classifier/fitness/fitness_precision_overall.h>
 #include <classifier_constructor/pso_classifier/fitness/fitness_sensitivity_overall.h>
 #include <classifier_constructor/pso_classifier/fitness/fitness_fmeasure_overall.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_precision_distinct.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_sensitivity_distinct.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_fmeasure_distinct.h>
 
 using namespace pso;
 
@@ -209,6 +212,18 @@ FitnessUpdater* PSOFactory::createFitnessUpdater(
             fitnessUpdater = createFitnessAccuracyDistinct(particles,
                                                            particleDecoder);
             break;
+        case FitnessType::FITNESS_PRECISION_DISTINCT:
+            fitnessUpdater = createFitnessPrecisionDistinct(particles,
+                                                           particleDecoder);
+            break;
+        case FitnessType::FITNESS_SENSITIVITY_DISTINCT:
+            fitnessUpdater = createFitnessSensitivityDistinct(particles,
+                                                              particleDecoder);
+            break;
+        case FitnessType::FITNESS_FMEASURE_DISTINCT:
+            fitnessUpdater = createFitnessFmeasureDistinct(particles,
+                                                           particleDecoder);
+            break;
         case FitnessType::FITNESS_ACCURACY_OVERALL:
             fitnessUpdater = createFitnessAccuracyOverall(particles,
                                                            particleDecoder);
@@ -290,6 +305,36 @@ FitnessUpdater *PSOFactory::createFitnessFmeasureOverall(
         ParticleShPtr_ConstVectorShPtr particles,
         ParticleDecoder *particleDecoder) {
     FitnessUpdater* fitnessUpdater = new FitnessFmeasureOverall(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessPrecisionDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessPrecisionDistinct(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessSensitivityDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessSensitivityDistinct(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessFmeasureDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessFmeasureDistinct(
             particles, particleDecoder,
             nativeLanguages, foreignLanguages
     );
