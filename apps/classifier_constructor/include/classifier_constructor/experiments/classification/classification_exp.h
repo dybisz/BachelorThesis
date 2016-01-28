@@ -17,6 +17,13 @@ namespace classification_experiment
 {
     void runClassification();
 
+    void runGroupedClassification();
+
+    vector<Language*>* groupSimilarNativeLangauges(vector<Language *> *native);
+    vector<Language*>* groupDisimilarNativeLangauges(
+            vector<Language *>* native);
+    void append(Language& dist, Language& source);
+
     PSOFactory getPSOFactory(vector<Language*>* native,
                              vector<Language*>* foreign);
 

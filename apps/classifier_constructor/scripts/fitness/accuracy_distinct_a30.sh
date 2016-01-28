@@ -27,7 +27,7 @@ source ${CONFIG_ROOT_PATH}/fitness/common.cfg
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/FITNESS/ACCURACY_DISTINCT_FM4"
+MAIN_DIR_LOG="logs/FITNESS/ACCURACY_DISTINCT_GROUPS"
 DIR_LOG="ALPHABET_30"
 FITNESS_TYPE=5
 
@@ -35,8 +35,9 @@ mkdir -p ${MAIN_DIR_LOG}
 
 ALPHABET_SIZE=30
 
-STATES_PER_NATIVE=2
-STATES_PER_FOREIGN_MULTIPLIER=4
+STATES_PER_NATIVE=5
+STATES_PER_FOREIGN_ALL=10
+STATES_PER_FOREIGN_MULTIPLIER=1
 
 CLASSES_COUNT_START=10
 CLASSES_COUNT_END=10
@@ -75,7 +76,7 @@ run_optimizer(){
     -S ${SWARM_SIZE} \
     --max-vel ${MAX_VEL} \
     --cl-states-native $1 \
-    --cl-states-foreign $2 \
+    --cl-states-foreign ${STATES_PER_FOREIGN_ALL} \
     --cl-alph-size $3 \
     -N $4 \
     -F $5 \
