@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
     switch (settings::EXPERIMENT_ID) {
         case 0:
             //classification_experiment::runClassification();
-            classification_experiment::runGroupedClassification();
+            classification_experiment::runClassification();
             break;
         case 1:
             experiments::runTransformationNativeVersusForeign();

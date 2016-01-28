@@ -673,7 +673,7 @@
 %%%%%%%%
 \newcommand{\makeFigureFitnessMulti}{
 \begin{figure}[H]
-    \caption{Native classes considered as distinct. Native states: 20. Foreign states: 20}
+    \caption{Native classes considered as distinct. Native states: 20. Foreign states: 20.}
     \label{fig:fitness_multi}
     
     \setPlotStyle
@@ -757,6 +757,94 @@
 }
 
 
+%%%%%%%%%
+%
+% FITNESS FUNCTIONS INDISTINCT
+%
+%%%%%%%%
+\newcommand{\makeFigureFitnessTwo}{
+\begin{figure}[H]
+    \caption{All native elements considered as one big class. Native states: 20. Foreign states: 20}
+    \label{fig:fitness_two}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlot
+    
+    \nextgroupplot[title=Fitness Accuracy Indistinct.,  ylabel=Measure]
+    \saveResultsFirst   {0.79}{0.84}{0.76}{0.80} % DONE
+    \saveResultsSecond  {0.80}{0.84}{0.78}{0.80} % DONE
+    \saveResultsThird   {0.79}{0.86}{0.76}{0.82} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness Precision Indistinct.]
+    \saveResultsFirst   {0.52}{0.05}{0.99}{0.11} % DONE
+    \saveResultsSecond  {0.70}{0.44}{0.95}{0.59} % DONE
+    \saveResultsThird   {0.67}{0.38}{0.93}{0.53} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness Sensitivity Indistinct.,  ylabel=Measure]
+    \saveResultsFirst   {0.53}{1.00}{0.51}{0.68} % DONE
+    \saveResultsSecond  {0.56}{0.99}{0.52}{0.69} % DONE
+    \saveResultsThird   {0.58}{0.99}{0.54}{0.70} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    \nextgroupplot[title=Fitness F-Measure Indistinct.]
+    \saveResultsFirst   {0.78}{0.88}{0.75}{0.81} % DONE
+    \saveResultsSecond  {0.78}{0.90}{0.72}{0.81} % DONE
+    \saveResultsThird   {0.77}{0.89}{0.74}{0.80} % DONE
+    \addBarPlotResults  {A=10}{A=30}{A=40}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+}
+
+%%%%%%%%%
+%
+% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES
+%
+%%%%%%%%
+\newcommand{\makeFigureStatesTwo}{
+\begin{figure}[H]
+    \caption{All native elements considered as one big class. Alphabet Size: 30.}
+    \label{fig:states_two}
+    
+    \setPlotStyle
+    \begin{tikzpicture}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % GROUPPLOT
+    %%%%%%%%%%%%%%%%%%%%
+    
+    \beginGroupPlotFour
+    
+    \nextgroupplot[title=Fitness Accuracy Indistinct. Alphabet Size:  30. Different State Configurations,  ylabel=Measure]
+    \saveResultsFirst   {0.82}{0.78}{0.85}{0.81} % DONE
+    \saveResultsSecond  {0.79}{0.82}{0.77}{0.80} % DONE
+    \saveResultsThird   {0.75}{0.79}{0.73}{0.76} % DONE
+    \saveResultsFourth   {0.69}{0.57}{0.75}{0.65} % DONE
+    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+    
+    %%%%%%%%%%%%%%%%%%%%
+    % LEGEND
+    %%%%%%%%%%%%%%%%%%%%
+    \setPlotLegend
+    
+    \end{groupplot}
+    \end{tikzpicture}
+\end{figure}
+}
 
 
 
@@ -1674,7 +1762,7 @@ Experiments were conducted on two sets of data, native and foreign. Native set c
 
 The experiments are divided into two main categories: multi class and two class problems. In the former one, all native classes are considered individually. In the latter, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Additionally, the multi class problem is tested for different number of classes.
 
-The four distinct fitness functions were used in the multi class problem. Similarly the two class problem was experimented using indistinct fitness functions.
+The four distinct fitness functions were used in the multi class problem. Similarly the two class problem was experimented using indistinct fitness functions. All experiments have been repeated $3$ and the results were averaged.
 
 Further, similarity of languages have been calculated to potentially determine a correspondence with classifier quality on different alphabet sizes. Finally, the state configurations have been tested.
 
@@ -1701,124 +1789,43 @@ Further, all similarities have been averaged and states as one value. The result
 \makeFigureAvgSimlarity
 
 
-
-
-
-
-
-
-
 \section{PSO}
 
 The results of PSO based classifier optimization are presented.
 
 \subsection{Multi Class}
 
-Figure~\ref{fig:pso_classes}
+The figure~\ref{fig:fitness_multi} shows results of the multi class classifier for four different fitness functions. In that case, the state configuration was not changed and included $20$ native states -- $2$ per class and $20$ foreign states. The computations were repeated for alphabet sizes: $10$, $30$ and $40$.
+
+In all four cases, the classifier did not manage to correctly recognize between native elements, hence the low sensitivity values. Moreover, the accuracy was bellow $0.5$ across all test cases. 
+
+In the case of Accuracy Fitness Function the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision Fitness Function, had very similar results. Finally, the Sensitivity and F-Measure Fitness Functions constructed extremely low quality classifier.
 
 \makeFigureFitnessMulti
 
+Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy Fitness was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
+
 \makeFigureStateConfigurationMulti
 
+Final experiment in the multi class problem, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
+
+The overall quality got worse very quickly by considering $3$ native classes. From that point, the classifier could not correctly classify native elements. However the precision remained relatively stable.
+
+In all cases, only the required classes were loaded from both native and foreign data sets, meaning that transformation did not include the entire spectrum of provided feature values. The test merely gives an idea of how many classes can be supported by using the proposed algorithms.
 
 \makeFigurePSOClasses
 
 
 
-
-
-%%%%%%%%%
-%
-% FITNESS FUNCTIONS INDISTINCT
-%
-%%%%%%%%
-\begin{figure}[H]
-    \caption{All native elements considered as one big class. Native states: 20. Foreign states: 20}
-    \label{fig:recons_results}
-    
-    \setPlotStyle
-    \begin{tikzpicture}
-    
-    %%%%%%%%%%%%%%%%%%%%
-    % GROUPPLOT
-    %%%%%%%%%%%%%%%%%%%%
-    
-    \beginGroupPlot
-
-    \nextgroupplot[title=Fitness Accuracy Indistinct.,  ylabel=Measure]
-    \saveResultsFirst   {0.79}{0.84}{0.76}{0.80} % DONE
-    \saveResultsSecond  {0.80}{0.84}{0.78}{0.80} % DONE
-    \saveResultsThird   {0.79}{0.86}{0.76}{0.82} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
-        
-    \nextgroupplot[title=Fitness Precision Indistinct.]
-    \saveResultsFirst   {0.52}{0.05}{0.99}{0.11} % DONE
-    \saveResultsSecond  {0.70}{0.44}{0.95}{0.59} % DONE
-    \saveResultsThird   {0.67}{0.38}{0.93}{0.53} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
-        
-    \nextgroupplot[title=Fitness Sensitivity Indistinct.,  ylabel=Measure]
-    \saveResultsFirst   {0.53}{1.00}{0.51}{0.68} % DONE
-    \saveResultsSecond  {0.56}{0.99}{0.52}{0.69} % DONE
-    \saveResultsThird   {0.58}{0.99}{0.54}{0.70} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
-    
-    \nextgroupplot[title=Fitness F-Measure Indistinct.]
-    \saveResultsFirst   {0.78}{0.88}{0.75}{0.81} % DONE
-    \saveResultsSecond  {0.78}{0.90}{0.72}{0.81} % DONE
-    \saveResultsThird   {0.77}{0.89}{0.74}{0.80} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
-    
-    %%%%%%%%%%%%%%%%%%%%
-    % LEGEND
-    %%%%%%%%%%%%%%%%%%%%
-    \setPlotLegend
-    
-    \end{groupplot}
-    \end{tikzpicture}
-\end{figure}
+\subsection{Two Class}
 
 
 
+\makeFigureFitnessTwo
+\ref{fig:fitness_two}
 
-
-%%%%%%%%%
-%
-% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES
-%
-%%%%%%%%
-\begin{figure}[H]
-    \caption{All native elements considered as one big class. Alphabet Size: 30.}
-    \label{fig:recons_results}
-    
-    \setPlotStyle
-    \begin{tikzpicture}
-    
-    %%%%%%%%%%%%%%%%%%%%
-    % GROUPPLOT
-    %%%%%%%%%%%%%%%%%%%%
-    
-    \beginGroupPlotFour
-    
-    \nextgroupplot[title=Fitness Accuracy Indistinct. Alphabet Size:  30. Different State Configurations,  ylabel=Measure]
-    \saveResultsFirst   {0.82}{0.78}{0.85}{0.81} % DONE
-    \saveResultsSecond  {0.79}{0.82}{0.77}{0.80} % DONE
-    \saveResultsThird   {0.75}{0.79}{0.73}{0.76} % DONE
-    \saveResultsFourth   {0.69}{0.57}{0.75}{0.65} % DONE
-    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % LEGEND
-    %%%%%%%%%%%%%%%%%%%%
-    \setPlotLegend
-    
-    \end{groupplot}
-    \end{tikzpicture}
-\end{figure}
-
-
-
-
+\makeFigureStatesTwo
+\ref{fig:states_two}
 
 
 %
