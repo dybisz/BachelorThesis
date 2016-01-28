@@ -1474,9 +1474,9 @@ If the word $w$ is added to $L_{2}$ then the similarity $\lanSim{L_1}{L_2}$ will
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Summary}\label{sec:lan_theory_transf_summary}
-The method of object to language transformation has been introduced. The features have been transformed into symbols, elements into words and finally objects into languages. Moreover, the transformation process is based on the chosen alphabet, which size defines the transformation precision. Low precision of transformation can lead to improper classification while higher increased the computational time of constructing the classifier.
+The method of object to language transformation has been introduced. The features have been transformed into alphabet symbols, elements into words and finally classes into languages. Moreover, the transformation process is based on the chosen alphabet, which size defines the transformation precision. Low precision of transformation can lead to improper classification while higher increased the computational time of constructing the classifier.
 
-From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a language $L$.
+From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a classes represented by $L$.
 
 Additionally this section defined a way of describing objects in terms of languages. Languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ will commonly denote transformed languages representing their respective objects. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
 
@@ -1815,18 +1815,25 @@ In all cases, only the required classes were loaded from both native and foreign
 
 \makeFigurePSOClasses
 
-
-
 \subsection{Two Class}
 
+We now turn into two class problem, where all native classes are considered one. Hence, all of the quality measures have been calculated accordingly.
+The figure~\ref{fig:fitness_two} presents results for different Fitness Functions. The state and alphabet configurations remains the same as previously. The alphabet size had impact only in the case of Precision Fitness, where again $30$ seemed to yield best result.
+
+Accuracy and F-Measure Fitness functions provided decent overall results. Ranging from approximately $0.8$ to $0.9$ for all of the measurements. The F-Measure Fitness provided slightly higher values of sensitivity.
+
+The Precision and Sensitivity Fitness functions resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision Fitness is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
 
 
 \makeFigureFitnessTwo
-\ref{fig:fitness_two}
+
+Finally, as in the case of multi class problem, results for different state configurations are presented in figure~\ref{fig:states_two}. It is clear that the best results were obtained when foreign class took less amount of states. Thus the conclusions is analogical to the previous one.
 
 \makeFigureStatesTwo
-\ref{fig:states_two}
 
+\subsection{Conclusion}
+
+The language similarity suggested
 
 %
 % HILL CLIMBER RESULTS
