@@ -1478,7 +1478,7 @@ The method of object to language transformation has been introduced. The feature
 
 From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a classes represented by $L$.
 
-Additionally this section defined a way of describing objects in terms of languages. Languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ will commonly denote transformed languages representing their respective objects. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
+Additionally this section defined a way of describing classes in terms of languages. Languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ will commonly denote transformed languages representing their respective classes. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1833,7 +1833,17 @@ Finally, as in the case of multi class problem, results for different state conf
 
 \subsection{Conclusion}
 
-The language similarity suggested
+Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size.
+
+The proposed methods did not succeed in identifying native elements in the multi class problem. Although, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class problem: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
+
+Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original elements.
+
+Since the classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
+
+Furthermore, the state configuration should be subjected to more experiments.
+It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
+
 
 %
 % HILL CLIMBER RESULTS
