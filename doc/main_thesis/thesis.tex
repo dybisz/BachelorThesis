@@ -342,7 +342,7 @@
 % Syntax of the feature transformation of a language
 %%%%%%%%%%%
 \newcommand{\featureTransformationLanguage}[1]{
-    \rightarrow^{#1^{**}}
+    \rightarrow^{#1^{*}}
 }
 
 %%%%%%%%%%
@@ -1131,7 +1131,7 @@ It is worth mentioning, that in such decoding the information about accepting st
 Chapter provides brief introduction to pattern recognition discipline . Via various examples, it tries to supply reader with general intuition about subject. 
 
 
-\subsection{Basics}
+\section{Basics}
 
 The field of pattern recognition is concerned with the automatic discovery of regularities in data through the use of computer algorithms and with the use of these regularities to take actions such as classifying the data into different categories \cite{bishop_book}.
 
@@ -1150,7 +1150,7 @@ Those pixels can be though of as a vector of length 400, where entries are value
 One of the most effective solutions would be to provide our algorithm with large amount of such digits images to tune parameters of adaptive model. Such a set of images is called training set and the stage is known as a training phase. In it also a common practice to preprocess images to reduce dimensionality. For example if we would assume that our algorithm must run in real-time, processing large amount of pixels would be computationally inefficient. One of the mostly used technique assumes that one should consider only some of the images features. Features should be quick to compute and represent information that varies between images, hence can be used to discriminate between them. It is worth stressing out that preprocessing stage is crucial for overall system accuracy.
 
 
-\subsection{Types of Learning}
+\section{Types of Learning}
 One can distinguish between 3 main approaches to the learning procedure: supervised, unsupervised and semi-supervised. Following paragraphs will discuss them briefly - just to grab the idea.
 
 \begin{wrapfigure}{l}{0.4\textwidth}
@@ -1249,27 +1249,24 @@ The following comments help to understand remaining of characteristics:
 It is worth to say that other measures characterizing rejection quality can be invented, cf.~\cite{Homenda_2014}, but they are derivations from defined above.  
 
 %---------------------------------------------------------------
-\chapter{Language Theory} \label{chap:lan_theory}
+\chapter{From Class to Language} \label{chap:lan_theory}
 
-The content discussed thus far, presented pattern recognition as a general problem. This chapter is considered to be a bridge between the pattern recognition world and the language and automata theory. We propose a set of procedures which help in reducing the classical problem of classification into a language theory problem. By doing so, we will be able to benefit from the prosperous theory of languages and automata.
+The content discussed thus far, presented pattern recognition as a general problem. This chapter is considered to be a bridge between the pattern recognition world and the automata and language theory. We propose a set of procedures which help in reducing the classical problem of classification into a language theory problem. By doing so, we will be able to benefit from the prosperous and established theory.
 
-
-
-The chapter begins with element and object transformations into words and languages, respectively.
+The chapter begins with elements and classes transformations into words and languages, respectively. Then, the theoretic idea of classification process is sketched and finally the classification automaton is proposed.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Transformation}\label{sec:lan_theory_transf}
-This section is devoted to explaining the process of transformation of abstract objects into languages. All feature vectors are assumed to be of the same dimensions.
+This section is devoted to explaining the process of transformation of abstract classes into languages. All feature vectors are assumed to be of the same dimensions.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Word Transformation}\label{sec:lan_theory_transf_word}
 
-
 Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$. Notice that $|\Sigma|=r$.
-The first step of transformation process will include transforming each feature into a symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. Let $\featureNorm{f}$, denote a normalized feature vector. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
+The first step of transformation process will include transforming each feature into an alphabet symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. Let $\featureNorm{f}$, denote a normalized feature vector. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
 
 Having the interval conveniently normalized, we can now easily define the transformation of a single feature to a symbol by partitioning the intervals into $r$ sub-intervals: $x_1, x_2,\ldots,x_r$. We can now easily translate feature $c_i \in x_{j}$ by assigning the corresponding symbol $a_{j}$.
 
@@ -1378,32 +1375,31 @@ one will convert all features vector to words over $\Sigma$.
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Language Transformation}\label{sec:lan_theory_transf_lan}
-Recall that object includes a set of elements each representing  a specific instance of that object. In turn, an element is defined by a feature vector. Analogously to feature transformation, we will transform an object into a language over alphabet $\Sigma$.
+Analogously to feature transformation, we will transform an entire class into a language over alphabet $\Sigma$.
 
-Having an object $O$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $O \featureTransformationLanguage{\Sigma} L_{O}$. The created language $L_{O} = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$. Thus language $L_{O}$ will look as follows:
+Having an class $C$ with $n$ feature vectors: $f_1, f_2,\ldots,f_n$ one can transform it into a language $L$ by applying following language transformation: $C \featureTransformationLanguage{\Sigma} L_{C}$. The created language $L_{C} = \{w_1, w_2,\ldots,w_n\}$, contains words $w_i$ which have been constructed by transformation of corresponding feature vector $f_i \featureTransformationWord{\Sigma} w_i$. Thus language $L_{C}$ will look as follows:
 \begin{center}
-    $L_{O} = \{w \in \Sigma^{*} : \forall_{i} (f_{i} \in O, f_{i} \featureTransformationWord{\Sigma} w_{i}) \}$
+    $L_{C} = \{w \in \Sigma^{*} : \forall_{i} (f_{i} \in C, f_{i} \featureTransformationWord{\Sigma} w_{i}) \}$
 \end{center}
 
-Having an input set of objects: $O_{1},O_{2},\ldots,O_{m}$, where $O_{j}$ contains the feature vectors: $f_{j,1},f_{j,2},\ldots,f_{j,n}$, one can transform them into a set of languages. We assume that all feature vectors are of the same dimensions. Moreover, for simplicity of notation all objects are assumed to have the same number of elements, but it can be easily generalized for objects of different sizes. Applying the language transformation of a given alphabet $\Sigma$ we get the following set of languages:
+Having an input set of classes: $C_{1},C_{2},\ldots,C_{m}$, where $C_{j}$ contains the feature vectors: $f_{j,1},f_{j,2},\ldots,f_{j,n}$, one can transform them into a set of languages. We assume that all feature vectors are of the same dimensions. Moreover, for simplicity of notation all classes are assumed to have the same number of elements, but it can be easily generalized for classes of different sizes. Applying the language transformation of a given alphabet $\Sigma$ we get the following set of languages:
 
 
 \begin{align*}
-&O_{1} \featureTransformationLanguage{\Sigma} L_{O_1} = \{w \in \Sigma^{*} : \forall_{i} (f_{1,i} \in O_{1}, f_{1,i} \featureTransformationWord{\Sigma} w_{1,i}) \} \\
-&O_{2} \featureTransformationLanguage{\Sigma} L_{O_2} = \{w \in \Sigma^{*} : \forall_{i} (f_{2,i} \in O_{2}, f_{2,i} \featureTransformationWord{\Sigma} w_{2,i}) \} \\
-&O_{3} \featureTransformationLanguage{\Sigma} L_{O_3} = \{w \in \Sigma^{*} : \forall_{i} (f_{3,i} \in O_{3}, f_{3,i} \featureTransformationWord{\Sigma} w_{3,i}) \} \\
-&\makebox[\widthof{${}O_{1}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{}$}][c]{\vdots} \\
-&O_{m} \featureTransformationLanguage{\Sigma} L_{O_m} = \{w \in \Sigma^{*} : \forall_{i} (f_{m,i} \in O_{m}, f_{m,i} \featureTransformationWord{\Sigma} w_{m,i}) \}
+&C_{1} \featureTransformationLanguage{\Sigma} L_{C_1} = \{w \in \Sigma^{*} : \forall_{i} (f_{1,i} \in C_{1}, f_{1,i} \featureTransformationWord{\Sigma} w_{1,i}) \} \\
+&C_{2} \featureTransformationLanguage{\Sigma} L_{C_2} = \{w \in \Sigma^{*} : \forall_{i} (f_{2,i} \in C_{2}, f_{2,i} \featureTransformationWord{\Sigma} w_{2,i}) \} \\
+&C_{3} \featureTransformationLanguage{\Sigma} L_{C_3} = \{w \in \Sigma^{*} : \forall_{i} (f_{3,i} \in C_{3}, f_{3,i} \featureTransformationWord{\Sigma} w_{3,i}) \} \\
+&\makebox[\widthof{${}C_{1}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx{}$}][c]{\vdots} \\
+&C_{m} \featureTransformationLanguage{\Sigma} L_{C_m} = \{w \in \Sigma^{*} : \forall_{i} (f_{m,i} \in C_{m}, f_{m,i} \featureTransformationWord{\Sigma} w_{m,i}) \}
 \end{align*}
 
-The above transformation allows us to establish classification of a given element to an object in terms of words and language. Namely, if for the element $f$ the following transformation holds place:
+The above transformation allows us to establish classification of a given element to a class in terms of words and language. Namely, if for the element $f$ the following transformation holds place:
 \begin{center}
-   $f \featureTransformationWord{\Sigma} w \in L_{O_3}$
+   $f \featureTransformationWord{\Sigma} w \in L_{C_3}$
 \end{center}
-then we can conclude that $f \in O_{3}$.
+then we can conclude that $f \in C_{3}$.
 
-It is important to consider words that do not fall into any of the transformed languages. Such words will be rejected and thus considered to be foreign. The language containing all such words will be called a Foreign Language $L_{F}$. The language $L_{F}$ can be thought of as a special transformed language which includes all the remaining words that have not been created from transforming native objects.
-
+It is important to consider words that do not fall into any of the transformed languages. Such words will be rejected and thus considered to be foreign. The language containing all such words will be called a Foreign Language $L_{F}$. The language $L_{F}$ can be thought of as a special transformed language which includes all the remaining words that have not been created from transforming native classes.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1434,7 +1430,6 @@ Notice that the length of constructed word is equal to the size of feature vecto
 The above transformation for the alphabet $\Sigma$ shows that for two seemingly distinct feature vectors we obtained two equal words. However, by applying transformation for bigger alphabet we managed to construct two distinguishable words.
 it clearly visible that alphabet with higher amount of symbols will transform feature vectors into more precise word representations. Although, by increasing the size of the alphabet one has to expect higher time complexity of constructing the classifier.
 
-
 In the example~\ref{ex:transf_prec} two different feature vectors have been transformed into the same word. This means that a word can belong simultaneously to more than one language. Thus in such a case:
 \begin{center}
     $L_{1} \cap L_{2} \cap L_{3} \cap \ldots \cap L_{m} \neq \emptyset$
@@ -1444,7 +1439,7 @@ In the example~\ref{ex:transf_prec} two different feature vectors have been tran
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Language Similarity}\label{sec:lan_theory_lan_sim}
-One could consider calculating Transformation Precision by determining how similar the languages are to each other.
+One could consider calculating transformation precision by determining how similar the languages are to each other.
 
 Firstly, we must define word similarity. Two words can be thought to be \textit{similar} if the ratio of the length and their Hamming distance is reasonably small. Formally the similarity function of two words is defined by the equation:
 
@@ -1474,11 +1469,11 @@ If the word $w$ is added to $L_{2}$ then the similarity $\lanSim{L_1}{L_2}$ will
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \subsection{Summary}\label{sec:lan_theory_transf_summary}
-The method of object to language transformation has been introduced. The features have been transformed into alphabet symbols, elements into words and finally classes into languages. Moreover, the transformation process is based on the chosen alphabet, which size defines the transformation precision. Low precision of transformation can lead to improper classification while higher increased the computational time of constructing the classifier.
+The method of class to language transformation has been introduced. The features have been transformed into alphabet symbols, elements into words and finally classes into languages. Moreover, the transformation process is based on the chosen alphabet, which size defines the transformation precision. Low precision of transformation can lead to improper classification while higher increased the computational time of constructing the classifier.
+
+Additionally this section defined a way of describing classes in terms of languages. Languages $L_{C_1},L_{C_2},\ldots,L_{C_m}$ will commonly denote transformed languages representing their respective classes. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
 
 From now on, the fact that a word $w$ belongs to a language $L$, $w\in L$ will be used interchangeable with the fact that $w$ has been classified to a classes represented by $L$.
-
-Additionally this section defined a way of describing classes in terms of languages. Languages $L_{O_1},L_{O_2},\ldots,L_{O_m}$ will commonly denote transformed languages representing their respective classes. The Foreign Language $L_{F}$ is the language of all other words which define elements that are considered to be foreign.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1748,17 +1743,14 @@ As we may learn further in the article, the method of updating the particle will
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Building the Classifier}\label{sec:classification_transf_step}
-Given the input set of objects, the first step is to transform each object into a language. Transformation step also included choosing a proper number of symbols in the alphabet. The transformation precision is to be selected empirically.
+Given the input set of classes, the first step is to transform each class into a language. Transformation step also included choosing a proper number of symbols in the alphabet, which was selected empirically with the help of language similarity.
 
-The next step includes selecting the correspondence between states and transformed languages. Together with input labeled data, the classifier will ask to select number of states that will correspond to a specific label. Notice that each label might take different number of states. Similarly, number of states for foreign elements will also be selected. The correspondence is also selected empirically.
-
-Thus far, the alphabet and set of states have been chosen. Set of languages have been transformed and the correspondence between them and states have been established. The process now turns to the stochastic algorithm of PSO. It will look for the most optimal automaton which minimizes the error of incorrectly classified words.
 
 
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
 
-Experiments were conducted on two sets of data, native and foreign. Native set consisted of 10 classes with 900 objects in each class. Foreign contained 9000 objects and all have been considered as one big class. The example of data set is pictured in the figure~\ref{fig:native_foreign_png}. Finally, each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing to calculate quality of the classifier.
+Experiments were conducted on two sets of data, native and foreign. Native set consisted of 10 classes with 900 elements in each class. Foreign contained 9000 elements and all have been considered as one big class. The example of data set is pictured in the figure~\ref{fig:native_foreign_png}. Finally, each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing to calculate quality of the classifier.
 
 The experiments are divided into two main categories: multi class and two class problems. In the former one, all native classes are considered individually. In the latter, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Additionally, the multi class problem is tested for different number of classes.
 
@@ -1791,7 +1783,6 @@ Further, all similarities have been averaged and states as one value. The result
 
 \section{PSO}
 
-The results of PSO based classifier optimization are presented.
 
 \subsection{Multi Class}
 
