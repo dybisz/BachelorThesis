@@ -37,6 +37,12 @@ namespace settings {
 
     extern int SWARM_SIZE;
 
+    // Which Fitness Updater to use:
+    // FITNESS_ACCURACY_DISTINCT:   0
+    // FITNESS_ACCURACY_OVERALL:    1
+    // FITNESS_PRECISION_OVERALL:   2
+    // FITNESS_SENSITIVITY_OVERALL: 3
+    extern int FITNESS_TYPE;
 
 //------------------------------------------------------------------------------
 

@@ -23,11 +23,6 @@ public:
             FitnessUpdater(particles, particleDecoder){
 
     }
-
-    virtual void update(int startIndex, int finishIndex) override {
-
-    }
-
 };
 
 

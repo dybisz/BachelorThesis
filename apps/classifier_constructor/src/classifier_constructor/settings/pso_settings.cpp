@@ -22,7 +22,7 @@ namespace settings {
     double UPPER_BOUND_ERR      = 0.001f;
     double MAX_VELOCITY         = 0.3f;
     int SWARM_SIZE              = 100;
-
+    int FITNESS_TYPE            = 0;
 
 //------------------------------------------------------------------------------
 
@@ -47,6 +47,18 @@ namespace settings {
                      INT,
                      &settings::SWARM_SIZE));
 
+        addFlag(Flag("P", "fit",
+                     "Fitness Updater Type - "
+                             "ACCURACY_OVERALL: 1, "
+                             "PRECISION_OVERALL: 2, "
+                             "SENSITIVITY_OVERALL: 3, "
+                             "FMEASURE_OVERALL: 4, "
+                             "ACCURACY_DISTINCT: 5, "
+                             "PRECISION_DISTINCT: 6, "
+                             "SENSITIVITY_DISTINCT: 7, "
+                             "FMEASURE_DISTINCT: 8",
+                     INT,
+                     &settings::FITNESS_TYPE));
     }
 
     /*
@@ -88,6 +100,13 @@ namespace settings {
             ss << PATH_TO_VALUE;
         ss << " ";
         ss << SWARM_SIZE << std::endl;
+
+        s = "FITNESS_TYPE";
+        ss << s;
+        for(unsigned int i = 0;i < startColumn-s.length(); i++)
+            ss << PATH_TO_VALUE;
+        ss << " ";
+        ss << FITNESS_TYPE << std::endl;
 
         logger::log(File(LOGS_SETTINGS_FILE_NAME), ss.str());
     }

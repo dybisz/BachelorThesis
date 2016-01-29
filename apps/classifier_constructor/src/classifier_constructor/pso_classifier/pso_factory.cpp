@@ -5,6 +5,14 @@
 #include <vector>
 #include <classifier_constructor/pso_classifier/pso_factory.h>
 #include <pso/pso.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_accuracy_distinct.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_accuracy_overall.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_precision_overall.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_sensitivity_overall.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_fmeasure_overall.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_precision_distinct.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_sensitivity_distinct.h>
+#include <classifier_constructor/pso_classifier/fitness/fitness_fmeasure_distinct.h>
 
 using namespace pso;
 
@@ -19,8 +27,8 @@ PSOFactory::PSOFactory(std::vector<Language *> *nativeLanguages,
                        int swarmSize, int maximumIterations, int threadCount,
                        double maxVelocity,
                        double encodingDelta, double uppderBoundError,
-                       double learningFactor, double particleVelocityWeight) {
-
+                       double learningFactor, double particleVelocityWeight,
+                       FitnessType fitnessType) {
     this->nativeLanguages = nativeLanguages;
     this->foreignLanguages = foreignLanguages;
 
@@ -39,6 +47,8 @@ PSOFactory::PSOFactory(std::vector<Language *> *nativeLanguages,
     this->uppderBoundError = uppderBoundError;
     this->learningFactor = learningFactor;
     this->particleVelocityWeight = particleVelocityWeight;
+
+    this->fitnessType = fitnessType;
 }
 
 PSOFactory::PSOFactory(int swarmSize, int maximumIterations, int threadCount,
@@ -195,11 +205,44 @@ NeighbourhoodUpdater* PSOFactory::createNeighbourhoodUpdater(
 FitnessUpdater* PSOFactory::createFitnessUpdater(
         ParticleShPtr_ConstVectorShPtr particles,
         ParticleDecoder * particleDecoder){
-    FitnessUpdater* fitnessUpdater = new DFAFitnessUpdater(
-            particles, particleDecoder,
-            nativeLanguages, foreignLanguages
-    );
 
+    FitnessUpdater* fitnessUpdater;
+    switch(fitnessType){
+        case FitnessType::FITNESS_ACCURACY_DISTINCT:
+            fitnessUpdater = createFitnessAccuracyDistinct(particles,
+                                                           particleDecoder);
+            break;
+        case FitnessType::FITNESS_PRECISION_DISTINCT:
+            fitnessUpdater = createFitnessPrecisionDistinct(particles,
+                                                           particleDecoder);
+            break;
+        case FitnessType::FITNESS_SENSITIVITY_DISTINCT:
+            fitnessUpdater = createFitnessSensitivityDistinct(particles,
+                                                              particleDecoder);
+            break;
+        case FitnessType::FITNESS_FMEASURE_DISTINCT:
+            fitnessUpdater = createFitnessFmeasureDistinct(particles,
+                                                           particleDecoder);
+            break;
+        case FitnessType::FITNESS_ACCURACY_OVERALL:
+            fitnessUpdater = createFitnessAccuracyOverall(particles,
+                                                           particleDecoder);
+            break;
+        case FitnessType::FITNESS_PRECISION_OVERALL:
+            fitnessUpdater = createFitnessPrecisionOverall(particles,
+                                                           particleDecoder);
+            break;
+        case FitnessType::FITNESS_SENSITIVITY_OVERALL:
+            fitnessUpdater = createFitnessSensitivityOverall(particles,
+                                                             particleDecoder);
+            break;
+        case FitnessType::FITNESS_FMEASURE_OVERALL:
+            fitnessUpdater = createFitnessFmeasureOverall(particles,
+                                                          particleDecoder);
+            break;
+        default:
+            throw invalid_argument("No such FitnessType");
+    }
     return fitnessUpdater;
 }
 
@@ -215,4 +258,85 @@ ParticleUpdater* PSOFactory::createPaticleUpdater(
     );
 
     return particleUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessAccuracyDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessAccuracyDistinct(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessAccuracyOverall(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessAccuracyOverall(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessPrecisionOverall(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessPrecisionOverall(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessSensitivityOverall(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessSensitivityOverall(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessFmeasureOverall(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessFmeasureOverall(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessPrecisionDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessPrecisionDistinct(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessSensitivityDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessSensitivityDistinct(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
+}
+
+FitnessUpdater *PSOFactory::createFitnessFmeasureDistinct(
+        ParticleShPtr_ConstVectorShPtr particles,
+        ParticleDecoder *particleDecoder) {
+    FitnessUpdater* fitnessUpdater = new FitnessFmeasureDistinct(
+            particles, particleDecoder,
+            nativeLanguages, foreignLanguages
+    );
+    return fitnessUpdater;
 }

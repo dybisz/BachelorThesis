@@ -10,13 +10,19 @@
 #include <language/language.h>
 #include <vector>
 #include <pso/particle_updater.h>
-#include <classifier_constructor/pso_classifier/dfa_fitness_updater.h>
 #include <classifier_constructor/pso_classifier/pso_factory.h>
 #include <transformation/transformation.h>
 
 namespace classification_experiment
 {
     void runClassification();
+
+    void runGroupedClassification();
+
+    vector<Language*>* groupSimilarNativeLangauges(vector<Language *> *native);
+    vector<Language*>* groupDisimilarNativeLangauges(
+            vector<Language *>* native);
+    void append(Language& dist, Language& source);
 
     PSOFactory getPSOFactory(vector<Language*>* native,
                              vector<Language*>* foreign);
