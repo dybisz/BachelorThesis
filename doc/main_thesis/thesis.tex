@@ -126,9 +126,9 @@ Let $w = John$ and $v = Jhon$. Notice that the symbols at positions two and thre
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\section{Automaton} \label{sec:autom}
+\section{Deterministic Finite Automaton} \label{sec:autom}
 %\begin{definition}
-Automaton is a system of five fields:
+Deterministic Finite Automaton is a system of five fields:
 \begin{center}
     $A = (Q, \Sigma, \delta, q_0, F)$
 \end{center}
@@ -761,7 +761,7 @@ Finally, building a proper classifier will be equivalent to creating an Classifi
 
 The Particle Swarm Optimization (PSO) is population based stochastic optimization algorithm, originated by Eberhart and Kennedy~\cite{pso_origin}. Swarm of particles fly through the search space in order to find the most optimal solution of a given problem. The particles remember the best found solution and the further search is affected by it.
 
-Each particle consists of the several fields. The position $X_p$ and velocity vector $V_p$ lets the particle travel through the search space. $Fitness$ value which is evaluated by the fitness function, represents the quality of the solution. The particle also remembers the best fitness value computed so far. Finally, two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
+Each particle consists of the several fields. The position $X_p$ and velocity vector $V_p$ lets the particle travel through the search space. $Fitness$ value which is evaluated by the fitness function, represents the quality of the solution. The particle also remembers the best fitness value computed so far. Finally, two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this chapter.
 
 PSO is initialized with random group of particles. It then searches for the optimal solution by updating positions of the particles.
 In each iteration $t$, the particles are updated by calculating potentially new $pbest_p$ and $lbest_p$ positions which affect the change in current velocity of the particle. $X_p(t)$ will denote the position of particle $p$ at time $t$, i.e. the $t$-th iteration. Similarly, the velocity vector is denoted by $V_p(t)$.
@@ -801,7 +801,7 @@ In order to initialize the PSO algorithm, one must first decide on the size of t
 
 The interval for position of all particles must also be chosen. The interval along with the size of the position will essentially define the search space for the swarm.
 
-Additionally, it is convenient to define a constant $v_{max}$ which prevents the particle from traveling in any dimension, further than $v_{max}$ distance in a single iteration. If the velocity is not limited, the jumps in position between iterations might be quite big. This can lead particles to avoid a big chunk of the search space.
+Additionally, it is convenient to define a constant $v_{max}$ which prevents the particle from traveling in any dimension, further than $v_{max}$ distance in a single iteration. If the velocity was not limited, the jumps in position between iterations could be quite big. This could lead the particles to avoid a big chunk of the search space.
 
 
 %---------------------------------------------------------------------
@@ -827,10 +827,10 @@ Let $G_p(t)$ be the centre of gravity of the three points:
     $X_p(t)$
     
     \item Point a bit beyond $pbest_p$. \\
-    $Y_{p1}(t) = c*(pbest_p-X_p(t))$
+    $Y_{p1}(t) = c(pbest_p-X_p(t))$
     
     \item Point a bit beyond $lbest_p$. \\
-    $Y_{p2}(t) = c*(lbest_p-X_p(t))$
+    $Y_{p2}(t) = c(lbest_p-X_p(t))$
     
 \end{enumerate}
 
@@ -849,14 +849,21 @@ of centre $G_p$ and of radius $d(G_p, X_p)$ where the function $d$ is an euclide
 
 The velocity update is computed by
 \begin{equation}
-    V_p(t+1) = \omega * V_p(t) + X^{'}_p(t) - X_p(t)
+    V_p(t+1) = \omega  V_p(t) + X^{'}_p(t) - X_p(t)
 \end{equation}
 Thus the position is updated by the equation
 
 \begin{equation}
-    X_p(t+1) = \omega * V_p(t) + X^{'}_p(t)
+    X_p(t+1) = \omega  V_p(t) + X^{'}_p(t)
 \end{equation}
 
+Figure~\ref{fig:pso_sphere} illustrates the idea of updating the position.
+
+\begin{figure}[H]
+    \includegraphics[width=0.7\textwidth]{./images/pso_sphere.png}
+    \caption{Example of sphere  $\mathcal{H}_p(G_p, d(G_p, X_p))$. Point $x^{'}_{i}$ is chosen randomly within the sphere}
+    \label{fig:pso_sphere}
+\end{figure}
 
 % Interval confinement
 It may happen that the particle might leave the search space, in means that the particle lies outside the acceptable interval. If that happens we generally try to lead the particle back to its right course. For each dimension $x_{d} \in X_p$ that lies  outside the acceptable interval we apply the following:
@@ -1110,15 +1117,15 @@ The figure~\ref{fig:fitness_multi} shows results of the multi class classifier f
 
 In all four cases, the classifier did not manage to correctly recognize between native elements, hence the low sensitivity values. Moreover, the accuracy was bellow $0.5$ across all test cases. 
 
-In the case of Accuracy Fitness based optimization the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision Fitness, had very similar results. Finally, the Sensitivity and F-Measure Fitness optimizations constructed extremely low quality classifier.
+In the case of Accuracy Fitness based optimization the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision based optimization, had very similar results. Finally, the Sensitivity and F-Measure optimizations constructed extremely low quality classifier.
 
 \makeFigureFitnessMulti
 
-Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy Fitness was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
+Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy based optimization was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
 
 \makeFigureStateConfigurationMulti
 
-Final experiment in the multi class problem, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
+Final experiment in the multi class optimization, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
 
 The overall quality got worse very quickly by considering $3$ native classes. From that point, the classifier could not correctly classify native elements. However the precision remained relatively stable.
 

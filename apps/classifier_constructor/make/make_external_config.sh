@@ -30,5 +30,5 @@ MAKE_EXTERNAL_RULE[6]='install'
 MAKE_EXTERNAL[7]='../../../libs/strings/make/'
 MAKE_EXTERNAL_RULE[7]='install'
 
-MAKE_EXTERNAL[7]='../../../libs/classifier/make/'
-MAKE_EXTERNAL_RULE[7]='install'
+MAKE_EXTERNAL[8]='../../../libs/classifier/make/'
+MAKE_EXTERNAL_RULE[8]='install'
