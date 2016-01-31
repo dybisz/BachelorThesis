@@ -66,7 +66,27 @@
 \maketitle
 \tableofcontents
 
+
+
 \chapter*{Work Devision}
+
+{\bf Jakub Ciecierski}
+\begin{itemize}
+    \item Particle Swarm Optimization.
+    \item Automaton implementation.
+    \item Language Similarity.
+    \item Language Transformation Analysis.
+    \item Project structure and compilation.
+\end{itemize}
+
+{\bf Bartlomiej Dybisz}
+\begin{itemize}
+    \item Hill-Climber.
+    \item Language implementation.
+    \item Classifier Quality measurements.
+    \item Language Transformation functionality.
+    \item Graphical User Interface.
+\end{itemize}
 
 
 \abstract
@@ -80,17 +100,22 @@ POLAKI ROBAKI
 Recognizing faces, discriminating between apple and oranges or understand spoken words are tasks, which are remarkably easy to processes for most of us, but happens to be astoundingly complex processes for machines. Although lately, we develop vast amount of techniques and algorithms to cope with pattern searching problem, it was implicitly used over centuries. For instance, the extensive astronomical observations of Tycho Brahe in the 16th century allowed Johannes Kepler to discover the empirical laws of
 planetary motion, which in turn provided a springboard for the development of classical mechanics \cite{bishop_book}.
 
-Automatic pattern recognition is usually considered as an engineering area which focusses on the development and evaluation of systems that imitate or assist humans in their ability of recognizing patterns \cite{duch_uuu}. Normally system, which recognizes patterns, consists of many intermediate elements, among which one can find a classifier. Following paper introduce a novel approach for building classifier based on  Deterministic Finite Automaton (further referred as DFA). Such an automaton will be able to distinguish between input objects and classify them correctly. The paper copes only with problem of classifier construction, hence it may be useful for various input data types like e.g. hand written letters or gesture patterns. 
+Automatic pattern recognition is usually considered as an engineering area which focusses on the development and evaluation of systems that imitate or assist humans in their ability of recognizing patterns \cite{duch_uuu}. Normally system, which recognizes patterns, consists of many intermediate elements, among which one can find a classifier. Following thesis introduces a novel approach for building classifier based on  Deterministic Finite Automaton (further referred as DFA). Such an automaton will be able to distinguish between input elements and classify them correctly. The research copes only with problem of classifier construction, hence it may be useful for various input data types like e.g. hand written letters or gesture patterns.
 
-Authors provide step-by-step explanation of each part along with mathematical background needed to understand theory behind the project.
+Authors provide step-by-step explanation of each part along with mathematical background needed to understand theory behind the project. The study begins in chapter~\ref{chap:prelim} where preliminary mathematical knowledge is presented.
+After chapter~\ref{chap:patt_rec} the reader should become familiar with the concept of pattern recognition and classification methods. Chapter~\ref{chap:lan_theory} provides detailed mathematical foundations behind automata and languages used in this study. It introduces the concept of transformation between classes and languages, as well as the idea of constructing a classifier based on an automaton.
 
-To start with, in chapter~\ref{ch:prelim} preliminary mathematical knowledge is presented. In chapter~\ref{ch:lan_theory} we explain the first step of classifier construction which is the the process of word generation.
+In chapter~\ref{chap:pso}, the heuristic optimization method called Particle Swarm Optimization (PSO) is defined. This state of the art algorithm can be applied to a wide range of problems. The
+general algorithm behind PSO is explained in details. Moreover, it provides a guide which helps the reader in applying PSO to solve any problem of choice. In contrast, a simpler search algorithm called Hill Climber is presented in chapter~\ref{chap:hill_climbing}. Similarly, it provides the reader with general knowledge of the algorithm and means of applying it to solve specific problems.
 
-Finally the architecture side of the project is introduced in chapter~\ref{ch:domain}.
+Chapter~\ref{chap:classifier} gathers all of the concepts defined thus far and provides a step-by-step explanation behind classifier construction which includes application of previously defined optimization algorithms. The final part of the thesis is devoted to experiments and results.  Chapter~\ref{chap:experiments} defines all of the conducted experiments and the results together with conclusions are presented in chapter~\ref{chap:results}.
+
+The implementation details can be found in the appendix~\ref{chap:domain}. The structure of the project and dependencies of all of the modules are explained.
+
 
 \chapter{Preliminaries}\label{chap:prelim}
 %---------------------------------------------------------------------
-Following chapter provides summary of mathematical background needed to proceed with the paper. We assume that reader is familiar with basic concepts of language theory such as: what is a language and what does it mean that it is regular. In addition, it is crucial for reader to understand the idea of equivalence classes, because they comprise a very essence and motivation of this work. Finally, we are trying to (as quickly as possible) dive into theorems and definitions which are useful from the point of view of further application, rather than spending time on deriving knowledge from beginning.
+Following chapter provides summary of mathematical background needed to proceed with the paper. We assume that reader is familiar with basic concepts of language theory such as: what is a language and what does it mean that it is regular. In addition, it is crucial for reader to understand the idea of equivalence relation and equivalence classes, because they comprise a very essence and motivation of this work. Finally, we are trying to (as quickly as possible) dive into theorems and definitions which are useful from the point of view of further application, rather than spending time on deriving knowledge from beginning.
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Myhill-Nerode}
@@ -128,9 +153,9 @@ Let $w = John$ and $v = Jhon$. Notice that the symbols at positions two and thre
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\section{Automaton} \label{sec:autom}
+\section{Deterministic Finite Automaton} \label{sec:autom}
 %\begin{definition}
-Automaton is a system of five fields:
+Deterministic Finite Automaton is a system of five fields:
 \begin{center}
     $A = (Q, \Sigma, \delta, q_0, F)$
 \end{center}
@@ -164,7 +189,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
                 $\delta$ & a & b \\
                 \hline
                 \hline
-                $q^-$ 		& $q_0$ & $q_1$ \\
+                $\rightarrow$$q^-$ 		& $q_0$ & $q_1$ \\
                 \hline
                 $q_0 $ 		& $q_R$ & $q_R$ \\
                 \hline
@@ -174,7 +199,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
                 \hline
             \end{tabular}
         }
-        {\caption{Transition table for A with $\delta: Q \times \Sigma \rightarrow Q$}\label{fig:ttable_std}}
+        {\caption{Transition table for A with $\delta: Q \times \Sigma \rightarrow Q$. The initial state: $q^-$}\label{fig:ttable_std}}
         
         %\ffigbox
         %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
@@ -205,10 +230,10 @@ The binary representation of automaton might perhaps provide more adequate solut
             \begin{tabular}{|P{1.0cm} || P{0.8cm} | P{0.8cm} | P{0.8cm} | P{0.8cm}|}
                 
                 \hline
-                a & $q^-$ & $q_0$ & $q_1$ & $q_R$ \\
+                a & $\rightarrow$$q^-$ & $q_0$ & $q_1$ & $q_R$ \\
                 \hline
                 \hline
-                $q^-$ 		& $0$ & $1$ & $0$ & $0$ \\
+                $\rightarrow$$q^-$ 		& $0$ & $1$ & $0$ & $0$ \\
                 \hline
                 $q_0$ 		& $0$ & $0$ & $0$ & $1$ \\
                 \hline
@@ -229,10 +254,10 @@ The binary representation of automaton might perhaps provide more adequate solut
             \begin{tabular}{|P{1.0cm} || P{0.8cm} | P{0.8cm} | P{0.8cm} | P{0.8cm}|}
                 
                 \hline
-                b & $q^-$ & $q_0$ & $q_1$ & $q_R$ \\
+                b & $\rightarrow$$q^-$ & $q_0$ & $q_1$ & $q_R$ \\
                 \hline
                 \hline
-                $q^-$ 		& $0$ & $0$ & $1$ & $0$ \\
+                $\rightarrow$$q^-$ 		& $0$ & $0$ & $1$ & $0$ \\
                 \hline
                 $q_0$ 		& $0$ & $0$ & $0$ & $1$ \\
                 \hline
@@ -249,7 +274,7 @@ The binary representation of automaton might perhaps provide more adequate solut
         \end{subfigure}%
         
         
-        \caption{Transition tables for symbols $a$ and $b$, making up the entire transition function $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$}
+        \caption{Transition tables for symbols $a$ and $b$, making up the entire transition function $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$. The initial state: $q^-$}
         
         \label{fig:ttable_bin}
     \end{center}
@@ -262,7 +287,7 @@ It is important to note that to preserve determinism, there must exist exactly o
 %---------------------------------------------------------------------
 \subsection{Natural Decoding} \label{sec:auto_dec}
 
-Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{x_1, x_2, \ldots, x_r\}$. We will also define the size of automaton $s(A) = n*r$.
+Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{a_1, a_2, \ldots, a_r\}$. We will also define the size of automaton $s(A) = n*r$.
 
 We now turn to the binary approach of transition function $\delta^{'}$ described in the figure~\ref{fig:ttable_bin}. Notice that each table for symbol $x_l$ for $l = 1,2, \dots, r$ has exactly $n$ rows. Furthermore, we can easily decode each $row_{x_l, i}$ into a natural number. Let $j$ be the index of occurrence of digit $1$ in the $row_{x_l, i}$. The natural number $j$ will then be a decoding of $row_{x_l, i}$. Decoding of a single table will be a vector of $n$ natural numbers. Notice that the first element of such vector will correspond to the transition of initial state. Now the last objective of representing the automaton is to combine all vectors, each corresponding to transition table for symbol $x_{l}$. We simply append all vectors in order of the symbols' enumeration. The entire proceeder is illustrated in figure~\ref{fig:encoding}. Firstly, in figures~\ref{fig:encoding_a} and~\ref{fig:encoding_b} we see decoding of transition tables for symbols $a$ and $b$ respectively. Finally the figure~\ref{fig:encoding_both} shows entire decoding of automaton $A$. We will call such decoding a direct or natural decoding of automaton with binary transition function.
 
@@ -336,7 +361,7 @@ It is worth mentioning, that in such decoding the information about accepting st
 %---------------------------------------------------------------
 \chapter{Pattern Recognition} \label{chap:patt_rec}
 
-Chapter provides brief introduction to pattern recognition discipline . Via various examples, it tries to supply reader with general intuition about subject. 
+Chapter provides brief introduction to pattern recognition discipline. Via various examples, it tries to supply reader with general intuition about subject.
 
 
 \section{Basics}
@@ -478,7 +503,7 @@ The first step of transformation process will include transforming each feature 
 
 Having the interval conveniently normalized, we can now easily define the transformation of a single feature to a symbol by partitioning the intervals into $r$ sub-intervals: $x_1, x_2,\ldots,x_r$. We can now easily translate feature $c_i \in x_{j}$ by assigning the corresponding symbol $a_{j}$.
 
-Formally the transformation of a single feature is defined by the follow equation:
+Formally the transformation of a single feature is defined as follows:
 
 \begin{equation*}
 c_i \featureTransformationSymbol{\Sigma}
@@ -763,7 +788,7 @@ Finally, building a proper classifier will be equivalent to creating an Classifi
 
 The Particle Swarm Optimization (PSO) is population based stochastic optimization algorithm, originated by Eberhart and Kennedy~\cite{pso_origin}. Swarm of particles fly through the search space in order to find the most optimal solution of a given problem. The particles remember the best found solution and the further search is affected by it.
 
-Each particle consists of the several fields. The position $X_p$ and velocity vector $V_p$ lets the particle travel through the search space. $Fitness$ value which is evaluated by the fitness function, represents the quality of the solution. The particle also remembers the best fitness value computed so far. Finally, two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
+Each particle consists of the several fields. The position $X_p$ and velocity vector $V_p$ lets the particle travel through the search space. $Fitness$ value which is evaluated by the fitness function, represents the quality of the solution. The particle also remembers the best fitness value computed so far. Finally, two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this chapter.
 
 PSO is initialized with random group of particles. It then searches for the optimal solution by updating positions of the particles.
 In each iteration $t$, the particles are updated by calculating potentially new $pbest_p$ and $lbest_p$ positions which affect the change in current velocity of the particle. $X_p(t)$ will denote the position of particle $p$ at time $t$, i.e. the $t$-th iteration. Similarly, the velocity vector is denoted by $V_p(t)$.
@@ -803,7 +828,7 @@ In order to initialize the PSO algorithm, one must first decide on the size of t
 
 The interval for position of all particles must also be chosen. The interval along with the size of the position will essentially define the search space for the swarm.
 
-Additionally, it is convenient to define a constant $v_{max}$ which prevents the particle from traveling in any dimension, further than $v_{max}$ distance in a single iteration. If the velocity is not limited, the jumps in position between iterations might be quite big. This can lead particles to avoid a big chunk of the search space.
+Additionally, it is convenient to define a constant $v_{max}$ which prevents the particle from traveling in any dimension, further than $v_{max}$ distance in a single iteration. If the velocity was not limited, the jumps in position between iterations could be quite big. This could lead the particles to avoid a big chunk of the search space.
 
 
 %---------------------------------------------------------------------
@@ -829,10 +854,10 @@ Let $G_p(t)$ be the centre of gravity of the three points:
     $X_p(t)$
     
     \item Point a bit beyond $pbest_p$. \\
-    $Y_{p1}(t) = c*(pbest_p-X_p(t))$
+    $Y_{p1}(t) = c(pbest_p-X_p(t))$
     
     \item Point a bit beyond $lbest_p$. \\
-    $Y_{p2}(t) = c*(lbest_p-X_p(t))$
+    $Y_{p2}(t) = c(lbest_p-X_p(t))$
     
 \end{enumerate}
 
@@ -851,14 +876,21 @@ of centre $G_p$ and of radius $d(G_p, X_p)$ where the function $d$ is an euclide
 
 The velocity update is computed by
 \begin{equation}
-    V_p(t+1) = \omega * V_p(t) + X^{'}_p(t) - X_p(t)
+    V_p(t+1) = \omega  V_p(t) + X^{'}_p(t) - X_p(t)
 \end{equation}
 Thus the position is updated by the equation
 
 \begin{equation}
-    X_p(t+1) = \omega * V_p(t) + X^{'}_p(t)
+    X_p(t+1) = \omega  V_p(t) + X^{'}_p(t)
 \end{equation}
 
+Figure~\ref{fig:pso_sphere} illustrates the idea of updating the position.
+
+\begin{figure}[H]
+    \includegraphics[width=0.7\textwidth]{./images/pso_sphere.png}
+    \caption{Example of sphere  $\mathcal{H}_p(G_p, d(G_p, X_p))$. Point $x^{'}_{i}$ is chosen randomly within the sphere}
+    \label{fig:pso_sphere}
+\end{figure}
 
 % Interval confinement
 It may happen that the particle might leave the search space, in means that the particle lies outside the acceptable interval. If that happens we generally try to lead the particle back to its right course. For each dimension $x_{d} \in X_p$ that lies  outside the acceptable interval we apply the following:
@@ -880,7 +912,7 @@ In order to implement PSO for problem of interest, one must provide specific imp
 
 
 %---------------------------------------------------------------
-\chapter{Hill Climbing}\label{chap:classification}
+\chapter{Hill Climbing}\label{chap:hill_climbing}
 
 % Funny quote 
 \epigraph{'' ... (Hill Climbing) resembles trying to find the top of Mount Everest in a thick fog while suffering from amnesia. ''}{\textit{Stuart Russell \\ Peter Norvig }}
@@ -1007,18 +1039,18 @@ Deterministic Finite Automata in case of hill climbing will be represented by tw
             \includegraphics[width=.5\linewidth]{./images/hc_state_corr.png}%
           }
     	\end{minipage}
-\end{itemize} 
+\end{itemize}
 \bigskip
 Combination of both, transition table and state correspondence array constitutes good candidate for a  hill climbing's state space. In this case number of possible combinations of these arrays with data is given by:
 \begin{equation}
 S = q^{q \sigma}c^{q}
 \end{equation}
-where $q$ represents number of states, $\sigma$ constitutes number of distinct symbols in the alphabet and $c$ is number of classes considered. 
+where $q$ represents number of states, $\sigma$ constitutes number of distinct symbols in the alphabet and $c$ is number of classes considered.
 
 As an example let us take above automaton. It has three different states, alphabet is based on two symbols and it deals with two class problem (\textsc{REJ} or \textsc{ACC}). Number of all possible combinations for such automaton equals $S = 3^{2 \cdot 3}\cdot2^{3} = 5832$. Not much.
 
 \subsection{Smart State Labeling} \label{subsec:smart_labeling}
-Introduced in \cite{hc_4}, Smart State Labeling resembles a way to decrease search space by the factor of $c^{q}$, which comes from all possible combinations of State Correspondence Array. Authors introduced simple, yet novel approach to automatically assign classes to states at each step of the algorithm. They realized that during hill climbing, there will certainly exist some epistasis or dependency between transition matrix and states labeling. 
+Introduced in \cite{hc_4}, Smart State Labeling resembles a way to decrease search space by the factor of $c^{q}$, which comes from all possible combinations of State Correspondence Array. Authors introduced simple, yet novel approach to automatically assign classes to states at each step of the algorithm. They realized that during hill climbing, there will certainly exist some epistasis or dependency between transition matrix and states labeling.
 
 Let $h[i][c]$ be an array denoting the number of times the DFA finished in state $i$ for pattern class $c$. We refer to set of training words as $T$ and all entries of $h$ are initialized to zero. In addition we say that $f(t)$ represents final state reached by element $t \in T$. Having all of that we can define the process of Smart State Labeling as a two step algorithm:
 \begin{enumerate}
@@ -1055,16 +1087,16 @@ To better understand the process let us present an example. Figure \ref{fig:smar
 \end{figure}
 
 \subsection{Objective Function} \label{subsec:obj_func}
-In standard approach one would deal with different procedure for evaluating DFAs quality in consecutive steps of the algorithm, but in our case we will use $h$ for that purpose. 
+In standard approach one would deal with different procedure for evaluating DFAs quality in consecutive steps of the algorithm, but in our case we will use $h$ for that purpose.
 
 To directly compute objective function $F$, one should sum up biggest values of $c's$ for all states and divide it by a number of elements in set $T$ i.e.
 \begin{equation}
 F = \frac{\Sigma_{i=1}^{n} max_c h[i][c]}{|T|}
 \end{equation}
-In this way, ratio between number of correctly classified elements of training set and number of all elements of $T$ will be obtained. Obviously $F \in \langle 0 ; 1 \rangle$, and our goal is to obtain $F=1$. 
+In this way, ratio between number of correctly classified elements of training set and number of all elements of $T$ will be obtained. Obviously $F \in \langle 0 ; 1 \rangle$, and our goal is to obtain $F=1$.
 
 \subsection{Algorithm}
-At this stage we would like to gather previously presented ideas to forge the algorithm itself. Algorithm \ref{algo:hc_finial} represents final scheme of hill climbing with Smart States implementation. 
+At this stage we would like to gather previously presented ideas to forge the algorithm itself. Algorithm \ref{algo:hc_finial} represents final scheme of hill climbing with Smart States implementation.
 
 \begin{algorithm}[H]
     \SetKwInOut{Input}{Input}
@@ -1072,23 +1104,23 @@ At this stage we would like to gather previously presented ideas to forge the al
     \Input{Number of states $q$, number of symbols $\sigma$, number of classes $c$, training set $T$, number of steps $n$}
     \Output{Transition table of optimal DFA.}
     \underline{function DFA-HILL-CLIMBING} $(q, \sigma, c, T, n)$\;
-    
+
     \bigskip
 	$transitionTable[q][\sigma]$ $\gets$ randomize entries \\
-	$states[c]$ $\gets$ randomize entries \\  
+	$states[c]$ $\gets$ randomize entries \\
     \bigskip
-    
+
     \While{$i < n$}
     {
     	$valuePrev$ $\gets$ OBJ-FUNCTION($tranitionTable$, $states$) \\
 		$temp$ $\gets$ one entry from transition table (value and position) that will be updated \\
 		\bigskip
-		
+
 		$transitionTable[temp.position]$ $\gets$  random integer from interval $\langle 0 ; q \rangle$\\
 		$statesCurrent$	$\gets$  SMART-STATES[$tranitionTable$, $T$]\\
 		$valueCurrent$ $\gets$ OBJ-FUNCTION($tranitionTable$, $statesCurrent$) \\
-		\bigskip		
-		
+		\bigskip
+
     	\eIf{$valueCurrent$ $\geq$ $valuePrev$}
     	{
 			$states$ $\gets$ $statesCurrent$ \\
@@ -1096,17 +1128,17 @@ At this stage we would like to gather previously presented ideas to forge the al
    		{
    			Restore value saved in $temp$ to $transitionTable$ \\
    		}
-    	\bigskip  		  
+    	\bigskip
    		\If{$valuePrev$ $ = 1$ or $valueCurrent$ $ = 1$}
     	{
 			\Return $transitionTable$ \\
-   		}  	
-   		$i \gets i + 1$	
+   		}
+   		$i \gets i + 1$
     }
-    
+
     \bigskip
     \Return $transitionTable$ \\
-    
+
     \caption{Hill Climbing Algorithm for learning a DFA.}
     \label{algo:hc_finial}
 \end{algorithm}
@@ -1122,7 +1154,7 @@ At this point comparison of both, current and newly generated DFA happens. If in
 Additional conditional statement is called at line 15, checking if any of calculated value has reached maximum (value of 1). If this happens Algorithm \ref{algo:hc_finial} ends its computations.
 
 %---------------------------------------------------------------
-\chapter{Classifier Construction}\label{chap:classification}
+\chapter{Classifier Construction}\label{chap:classifier}
 
 In this chapter, each step of building the classifier is summarized and explicitly described.
 
@@ -1147,7 +1179,7 @@ The position of our particles will be represented by the natural decoding vector
 %---------------------------------------------------------------
 \subsection{Fitness Function}
 
-Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class problem). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class problem: native against foreign.
+Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The optimization functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class classification). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class classification: native against foreign.
 
 In each of the two categories, 4 functions based on the common classifier quality measures defined in section~\ref{evaluation} are proposed:
 \begin{itemize}
@@ -1157,7 +1189,7 @@ In each of the two categories, 4 functions based on the common classifier qualit
     \item F-Measure Fitness
 \end{itemize}
 
-The Fitness function must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to automaton, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
+The fitness function must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to automaton, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1168,22 +1200,46 @@ Given the input set of classes, the first step is to transform each class into a
 
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
+%%%%%%%%%%%
+% WH
 
-Experiments were conducted on two sets of data, native and foreign. Native set consisted of 10 classes with 900 elements in each class. Foreign contained 9000 elements and all have been considered as one big class. The example of data set is pictured in the figure~\ref{fig:native_foreign_png}. Finally, each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing to calculate quality of the classifier.
+%Experiment is done on vectors of features, vectors represent images.
+%Mapping from the set of images to the space of features to be described.
 
-The experiments are divided into two main categories: multi class and two class problems. In the former one, all native classes are considered individually. In the latter, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Additionally, the multi class problem is tested for different number of classes.
+% WH/
+%%%%%%%%%%
 
-The four distinct fitness functions were used in the multi class problem. Similarly the two class problem was experimented using indistinct fitness functions. All experiments have been repeated $3$ and the results were averaged.
+%%%%%%%%%%%
+% WH
 
-Further, similarity of languages have been calculated to potentially determine a correspondence with classifier quality on different alphabet sizes. Finally, the state configurations have been tested.
+%- features vectors: are given by supervisor and cannot be used without written permission for any aim other than this thesis, put this information in footer
 
-\begin{figure}
+% WH/
+%%%%%%%%%%
+
+The datasets of vectors of features were constructed based on the MNIST database of handwritten digits~\cite{digits_db}. Sample of the original images is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out. The vector of features were constructed by extracting features from these images. All vectors contained $24$ features.
+
+The native dataset contained $10$ classes, each representing different handwritten digits. Every class had $900$ vectors of features, totaling $9000$ across all native classes. The foreign data was considered as one class and contained $9000$ vectors of features. Finally each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing set to calculate quality of the classifier.
+
+\begin{figure}[H]
     \includegraphics[width=0.7\textwidth]{./images/native.png}
     \includegraphics[width=0.7\textwidth]{./images/crossedout.png}
     \caption{From the top: Native and Foreign - crossed out digits.}
     \label{fig:native_foreign_png}
 \end{figure}
 
+The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements.
+
+\section{Transformation}
+
+Calculating the similarity of languages can potentially determine a correlation between alphabet size and the quality of constructed classifier. The similarity experiment will be done for both multi class and two class classifications. In the former one, the similarity will be computed between all native languages. In the two class classification, all native languages are to be combined into one big and its similarity will be checked against the foreign language. In each case the similarity computation will be ran for alphabet size in the interval: $[1,40]$.
+
+
+\section{PSO}
+
+
+
+The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
 
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
@@ -1195,7 +1251,7 @@ The similarity between all native languages is shown in table~\ref{fig:tab_simil
 
 \makeTableMutualSimilarites
 
-Further, all similarities have been averaged and states as one value. The result is shown in figure~\ref{fig:lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In Multi Class the similarity have been computed between all 10 native languages. In Two Class, presented similarity is computed between big native language and the foreign. Both scenarios have nearly exact results. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly. The growth rate stabilizes at alphabet size equal to approximately $30$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $30$ in order to keep a good balance between computational complexity and language similarities.
+All of the similarities have been averaged and shown in figure~\ref{fig:lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In multi class the similarity have been computed between all 10 native languages. In two class, presented similarity is computed between one combined native language and the foreign one. Both scenarios have resulted with almost the same values. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly and stabilizes at alphabet size equal to approximately $30$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $30$ in order to keep a good balance between computational complexity and language similarities.
 
 \makeFigureAvgSimlarity
 
@@ -1209,17 +1265,17 @@ The figure~\ref{fig:fitness_multi} shows results of the multi class classifier f
 
 In all four cases, the classifier did not manage to correctly recognize between native elements, hence the low sensitivity values. Moreover, the accuracy was bellow $0.5$ across all test cases. 
 
-In the case of Accuracy Fitness Function the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision Fitness Function, had very similar results. Finally, the Sensitivity and F-Measure Fitness Functions constructed extremely low quality classifier.
+In the case of Accuracy Fitness based optimization the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision based optimization, had very similar results. Finally, the Sensitivity and F-Measure optimizations constructed extremely low quality classifier.
 
 \makeFigureFitnessMulti
 
-Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy Fitness was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
+Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy based optimization was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
 
 \makeFigureStateConfigurationMulti
 
-Final experiment in the multi class problem, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
+Final experiment in the multi class optimization, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
 
-The overall quality got worse very quickly by considering $3$ native classes. From that point, the classifier could not correctly classify native elements. However the precision remained relatively stable.
+The overall quality got worse very quickly between $2$ and $3$ native classes. From that point, the classifier could not correctly classify native elements. However the precision remained relatively stable.
 
 In all cases, only the required classes were loaded from both native and foreign data sets, meaning that transformation did not include the entire spectrum of provided feature values. The test merely gives an idea of how many classes can be supported by using the proposed algorithms.
 
@@ -1227,32 +1283,34 @@ In all cases, only the required classes were loaded from both native and foreign
 
 \subsection{Two Class}
 
-We now turn into two class problem, where all native classes are considered one. Hence, all of the quality measures have been calculated accordingly.
-The figure~\ref{fig:fitness_two} presents results for different Fitness Functions. The state and alphabet configurations remains the same as previously. The alphabet size had impact only in the case of Precision Fitness, where again $30$ seemed to yield best result.
+The discussion now turns into two class optimization, where all native classes are considered as one. Hence, all of the quality measures have been calculated accordingly.
+The figure~\ref{fig:fitness_two} presents results for different optimization functions. The state and alphabet configurations remains the same as previously. The alphabet size had impact only in the case of Precision Fitness, where again $30$ seemed to yield the best result.
 
-Accuracy and F-Measure Fitness functions provided decent overall results. Ranging from approximately $0.8$ to $0.9$ for all of the measurements. The F-Measure Fitness provided slightly higher values of sensitivity.
+Accuracy and F-Measure optimizations provided decent overall results. Ranging from approximately $0.8$ to $0.9$ for all of the quality measurements. The F-Measure optimization provided slightly higher values of sensitivity.
 
-The Precision and Sensitivity Fitness functions resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision Fitness is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
+The Precision and Sensitivity optimizations resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision optimization is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
 
 
 \makeFigureFitnessTwo
 
-Finally, as in the case of multi class problem, results for different state configurations are presented in figure~\ref{fig:states_two}. It is clear that the best results were obtained when foreign class took less amount of states. Thus the conclusions is analogical to the previous one.
+Finally, as in the case of multi class optimization, results for different state configurations are presented in figure~\ref{fig:states_two}. Similarly to the case of multi class, the results were best when number of foreign states were equal or smaller than number of native states. Thus the conclusions are analogical to the previous ones.
 
 \makeFigureStatesTwo
 
 \subsection{Conclusion}
 
-Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size.
+Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
 
-The proposed methods did not succeed in identifying native elements in the multi class problem. Although, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class problem: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
+The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
 
-Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original elements.
+Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original feature vectors.
 
 Since the classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
 
 Furthermore, the state configuration should be subjected to more experiments.
 It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
+
+%It was observed that by increasing number of corresponding foreign states, the precision value would become lower.
 
 
 %
@@ -1460,9 +1518,7 @@ The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAPa
 %---------------------------------------------------------------
 \subsection{Classifier Constructor}
 
-The {\bf Classifier Constructor} uses all the libraries in order to conduct experiments. All of the settings can be provided by the user in a form of flags when starting the application.
-
-The application is split into two experiments: Classification based on PSO heuristics and Transformation Analysis. The Transformation Analysis experiment is an encapsulation of the {\bf Transformation} library.
+The {\bf Classifier Constructor} uses all the libraries in order to conduct experiments. All of the settings can be provided by the user in a form of flags when starting the application. The application is split into two experiments: Classification based on PSO heuristics and Transformation Analysis. The Transformation Analysis experiment is an encapsulation of the {\bf Transformation} library.
 
 The simplified process of Classification experiment is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started.
 
@@ -1506,16 +1562,14 @@ As one could image, because of simplicity of the interface, there is nothing fan
 
 
 
-
-
 %---------------------------------------------------------------
 \begin{thebibliography}{1}
     
     \bibitem{pso_origin} 
     Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.
     
-    %\bibitem{pso_anal}
-    %Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
+    \bibitem{pso_anal}
+    Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
 
     \bibitem{pso_bias} 
     William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.
@@ -1545,8 +1599,18 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     \bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
     
+    \bibitem{digits_db}LeCun, Y., Cortes, C., Burges, C.: The MNIST database of handwritten digits (1996). http://yann.lecun.com/exdb/mnist/
     \bibitem{hc_4}S.M. Lucas and T.J. Reynolds, “Learning DFA: Evolution versus Evidence Driven State Merging,” Proc. Congress Evolutionary Computation, pp. 351-358, 2003.
-    
+
 \end{thebibliography}
+
+
+
+\newpage
+\chapter*{Footer}
+{\bf Legal:} The vectors of features used in this thesis are given by the supervisor and cannot be used without written permission for any aim other than this thesis.
+\newpage
+
+
 \makestatement
 \end{document}
