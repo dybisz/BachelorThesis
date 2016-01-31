@@ -471,8 +471,8 @@ This section is devoted to explaining the process of transformation of abstract 
 %---------------------------------------------------------------
 \subsection{Word Transformation}\label{sec:lan_theory_transf_word}
 
-Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$. Notice that $|\Sigma|=r$.
-The first step of transformation process will include transforming each feature into an alphabet symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. Let $\featureNorm{f}$, denote a normalized feature vector. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
+Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$, where $|\Sigma|=r$.
+The first step of transformation process will include transforming each feature into an alphabet symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
 
 Having the interval conveniently normalized, we can now easily define the transformation of a single feature to a symbol by partitioning the intervals into $r$ sub-intervals: $x_1, x_2,\ldots,x_r$. We can now easily translate feature $c_i \in x_{j}$ by assigning the corresponding symbol $a_{j}$.
 
@@ -702,7 +702,7 @@ The initial, poor, partitioning is illustrated in figure~\ref{fig:eq_classes_sma
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_small_pt.jpg}
-    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages overlapping and spread among multiple Equivalence classes}
     \label{fig:eq_classes_small_precision}
 \end{figure}
 
@@ -711,7 +711,7 @@ Figure~\ref{fig:eq_classes_high_precision} shows the same partitioning for highe
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_high_pt.jpg}
-    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages are spread among multiple Equivalence classes}
     \label{fig:eq_classes_high_precision}
 \end{figure}
 
