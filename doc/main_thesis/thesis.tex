@@ -1249,7 +1249,7 @@ The following comments help to understand remaining of characteristics:
 It is worth to say that other measures characterizing rejection quality can be invented, cf.~\cite{Homenda_2014}, but they are derivations from defined above.  
 
 %---------------------------------------------------------------
-\chapter{From Class to Language} \label{chap:lan_theory}
+\chapter{Automata and Languages Introduction} \label{chap:lan_theory}
 
 The content discussed thus far, presented pattern recognition as a general problem. This chapter is considered to be a bridge between the pattern recognition world and the automata and language theory. We propose a set of procedures which help in reducing the classical problem of classification into a language theory problem. By doing so, we will be able to benefit from the prosperous and established theory.
 
@@ -1708,13 +1708,6 @@ The neighbourhoods are updated only when there was no change in global best (amo
 \section{Ending criteria}
 The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
 
-The figure~\ref{fig:pso_state} presents the flow of PSO computations.
-\begin{figure}
-    \includegraphics[width=0.7\textwidth]{./images/pso_state.jpg}
-    \caption{State diagram of parallel PSO computations}
-    \label{fig:pso_state}
-\end{figure}
-
 
 %---------------------------------------------------------------
 \chapter{Classifier Construction}\label{chap:classification}
@@ -1880,124 +1873,125 @@ On the other hand, second set fixes number of symbol in alphabet to 6 and presen
 \appendix\label{appendix_a}
 
 %---------------------------------------------------------------
-\chapter{Domain} \label{chap:domain}
+\chapter{Implementation} \label{chap:domain}
+The more detailed implementation information is presented in this appendix.
+The entire project has been built by dividing each module into a separate shared library which are loaded dynamically to the executable application during run time. The libraries can be considered as two groups: libraries essential to the thesis research and utility libraries which are used across multiple modules.
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Libraries}
 
+All of the libraries has been made by the authors of the thesis with exception to one, namely the Excel Format. This library has been presented in \cite{excel_format}. It is worth mentioning that this library outputs warnings during compilation process. Although the usage of this library has been thoroughly tested.
 
-
-
-
-
-
-
-
-
-
-
-
-
-In this chapter the domain of the application is discussed. 
-
-\textbf{Remark:} What should be stress out is that class diagrams presented in this section may not cover all methods needed to implement full functionality. For sure presented methods are necessary, but not always sufficient. Although we were trying to be as precise as we can, they constitutes only a sketch of solution.
-
-The main modules of the application are now presented and briefly explained.
+All of the libraries are listed and briefly explained. Then, the dependencies graph between them is presented. Lastly, the implementation details of essential modules are given in a form of class and state diagrams.
 
 \begin{itemize}
-    
-    \item 
-    {{Classification}} - All the classes responsible for classifying objects.
-    \item 
-    {{Clustering}} - Method of grouping and cluster evaluation are to be held in this module.
-    \item
-    {{Word Processing}} - Takes care of word creation.
-    \item 
-    {{Automaton}} - Describes the Deterministic Finite Automaton, the transition tables and methods of automaton decoding 
-    \item 
-    {{Math}} - All the mathematical functions related to the application.
-    \item 
-    {{Utility}} - Functionality which helps to run the project. Logging, system settings, time measurement are examples of what can be included that module.
-    \item 
-    {{GUI}} - The Graphical User Interface, defines all the classes that construct the interface.
-    
+    \item Essential
+    \begin{itemize}
+        \item {\bf Automata and Languages (ATL).} Provides data structures and algorithms related to automata, languages and words.
+        \item {\bf Pattern Recognition.} Data structures for pattern recognition objects: Class, Feature Vector. Provides implementation for loading raw feature vector data.
+        \item {\bf Transformation.} Used in the process of transformation between Pattern Recognition Classes and Languages.
+        \item {\bf Classifier.} Provides Classifier construction algorithm and derived PSO classes needed for optimizing the Classifier.
+        \item {\bf Classifier Quality.} Provides functions for classifier quality measures: accuracy, precision, sensitivity and f--measure
+        \item {\bf Particle Swarm Optimization (PSO).} Data structures, interfaces and algorithm for the general PSO. Does not provide the specific optimization for automata implementation.
+    \end{itemize}
+
+    \item Utility
+    \begin{itemize}
+        \item {\bf Math.} Includes data structures for multi dimensional point, spheres etc. Moreover, provides random number generation.
+        \item {\bf Time.} Small library for measuring time of computations.
+        \item {\bf Logger.} Functionality for printing logs to the console and files.
+        \item {\bf Error.} Small library to define error messages in case of crash
+        \item {\bf Flagger.} Provides interface for defining custom flags for application settings.
+        \item {\bf Excel Format.} Loads raw data from excel files.
+        \item {\bf Parallel.} Provides interface for thread creation and functionality for thread synchronization.
+        \item {\bf Strings.} Small library for string manipulation.
+    \end{itemize}
 \end{itemize}
 
-The remainder of this section will describe these modules in details.
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Automata}
+All the libraries and their dependencies are presented in figure~\ref{fig:lib_dependencies}.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/automata.jpg}
-    \caption{Class diagrams of clustering module}
-    \label{fig:automata_class}
+    \includegraphics[width=1.0\textwidth]{../uml/dependencies.png}
+    \caption{Dependencies of libraries}
+    \label{fig:lib_dependencies}
 \end{figure}
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\section{Clustering}
+%---------------------------------------------------------------
+\subsection{PSO}
 
-The clustering module contains all necessary functionality for analysis of clusters. Figure~\ref{fig:clustering_class} presents few basic classes. \textit{KMeans} constructor takes the maximum iterations and tolerance of convergence. Calling \textit{compute} will start the computation of kmeans algorithm with $k$ clusters for input data set. The private methods of KMeans are responsible for computing the corresponding sections of kmeans algorithm. It is important to note that \textit{initCentroids()} method could be implemented using many different algorithms, which might change the time complexity of kmeans algorithm and a whole.
+The PSO library provides interface for implementing optimizations for any problem of interest. The class overview is presented in figure~\ref{fig:lib_pso_classes}. The {\bf PSO} class is responsible for gathering all modules and running computations. {\bf FitnessUpdater, ParticleUpdater and NeighbourhoodUpdater} are pure abstracted classes providing interface for respective part of the algorithm. {\bf FitnessUpdater} calculates and updates fitness values of each particle. {\bf ParticleUpdater} is responsible for updating particle's position and velocity. Finally, {\bf NeighbourhoodUpdater} updates the neighbourhoods and finds lbest value for each particle. {\bf ParticleDecoder} is responsible for decoding the {\bf PSOObject} which is later used in {\bf FitnessUpdater} to evaluate the fitness value. In order to optimize a specific object, one must derive it from {\bf PSOObject} and the decoding method must be implemented in derived {\bf ParticleDecoder}. Finally {\bf ParticleUpdaterSpherical} and {\bf NBStarTopology} provide implementations of algorithms explained in chapter~\ref{chap:pso}.
 
-Further, in figure~\ref{fig:clustering_class} sub module \textit{Evaluation} is presented. The class \textit{ClusterEvaluator} is a base class for all cluster evaluation algorithms. It consists of \textit{clustering tool} which shall be used to compute the optimal number of clusters for given data set. The \textit{compute} method will start looking for optimal $k$ from the interval $[start_k, end_k]$. At this stage of research, only McClain-Rao algorithm is proposed. In the future, if the need arises, further cluster evaluators should be derived from the base class \textit{ClusterEvaluator}.
-
-%
-% CLUSTERING CLASS DIAGRAM
-%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/clustering.jpg}
-    \caption{Class diagrams of clustering module}
-    \label{fig:clustering_class}
+    \includegraphics[width=0.7\textwidth]{../uml/pso_classes.png}
+    \caption{Particle Swarm Optimization Library. Classes Association}
+    \label{fig:lib_pso_classes}
+\end{figure}
+
+The PSO has been implemented using parallel CPU algorithm. The state diagram showing details of computations process is shown in figure~\ref{fig:lib_pso_states}. Since each particle can be computed independently, PSO can be easily parallelized. Each thread is assigned interval of particle indices for which it is responsible for. Simply thread synchronization between each step of the iteration is executed. The {\bf Parallel } library is used for the multi threaded functionality.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../uml/pso_state.jpg}
+    \caption{Particle Swarm Optimization Library. State diagram of the algorithm }
+    \label{fig:lib_pso_states}
 \end{figure}
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{ATL}
 
-\section{Classification}
+{\bf DFA} or Deterministic Finite Automaton, takes a {\bf Word} as an input and computes which {\bf State} it finishes in. {\bf TransitionFunction} allows for setting and getting transition for specific configurations. {\bf Language} class, contains also corresponding states which are used in the classification process. In that case {\bf Language} is considered to be a label and states are checked against all languages in order to classify a word to one of the languages. The classes are shown in figure~\ref{fig:lib_atl}.
 
-%
-% CLASSIFICATION CLASS DIAGRAM
-%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/optimizationMain.jpg}
-    \caption{Class diagrams of classification module}
-    \label{fig:classification_main_class}
-\end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/optimizationAlg.jpg}
-    \caption{Class diagrams of classification module}
-    \label{fig:classification_alg_class}
+    \includegraphics[width=1.0\textwidth]{../uml/atl.png}
+    \caption{Automata and Languages Library. Classes Association}
+    \label{fig:lib_atl}
 \end{figure}
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\section{Utility}
+%---------------------------------------------------------------
+\subsection{Pattern Recognition}
 
-The utility module is presented in figure~\ref{fig:utility_class}. \textit{Logger} class is responsible for printing and saving logs of the computations. It contains path to log directory and a path to specific file in which the logs should be saved. The one parameter method \textit{log}, prints the message to default file. The two parameter \textit{log} is used when the message should be saved in a different file.
+The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a single {\bf Label} and possibly many {\bf FeatureVectors}. {\bf XLSLoader} is used to load Classes from excel files.
 
-The \textit{Console} class is responsible for loading flag parameters from the console, and updating the global settings. The global settings, containing all parameters of the computations are stored in \textit{Settings} class.
-
-Finally a simple clock mechanism is proposed in \textit{Clock} class. The \textit{startClock} method starts measuring time until \textit{stopClock} is called which returns the time taken between both methods' calls. The time is encapsulated in \textit{TimeStamp} class.
-
-
-%
-% UTILITY CLASS DIAGRAM
-%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{images/utility_class.jpg}
-    \caption{Class diagrams of utility module}
-    \label{fig:utility_class}
+    \includegraphics[width=0.7\textwidth]{../uml/pt.png}
+    \caption{Pattern Recognition Library. Classes Association}
+    \label{fig:lib_pt}
 \end{figure}
+ 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Classifier}
 
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{../uml/classifier_pso_classes.png}
+    \caption{Classifier Library.}
+    \label{fig:classifier_pso_classes}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1.0\textwidth]{../uml/classification_state.png}
+    \caption{Classification process.}
+    \label{fig:classification_states}
+\end{figure}
 
 
 
@@ -2041,15 +2035,10 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     %\bibitem{pso_anal}
     %Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
-    
-    
-    
+
     \bibitem{pso_bias} 
     William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.
-    
-    
-    
-    
+
     \bibitem{pso_11}
     M. Clerc. (2011). Standard Particle Swarm Optimisation Available: http://hal.archives-ouvertes.fr/hal-00764996 
     
@@ -2063,7 +2052,10 @@ As one could image, because of simplicity of the interface, there is nothing fan
 
 	
 	\bibitem{images_learning_types} Anuj R. Shah1, Christopher S. Oehmen, Bobbie-Jo Webb-Robertson, SVM-Hustle - An iterative semi-supervised machine learning approach for pairwise protein remote homology detection 
+    
 	\bibitem{duch_uuu} Robert P.W. Duin, Elzbieta Pekalska, The Science of Pattern Recognition. Achievements and Perspectives, Studies in Computational Intelligence, chapter Challenges for Computational Intelligence, page 63 , 2007
+    
+    \bibitem{excel_format} http://www.codeproject.com/Articles/42504/ExcelFormat-Library
 	
 \end{thebibliography}
 \makestatement

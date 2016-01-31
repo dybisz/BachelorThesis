@@ -1,4 +1,3 @@
-Particle Swarm Optimization
-C++ Library implementing the PSO heuristic algorithm
+Automata and Languages Library.
 
-Refer to INSTALL.txt to install the library
+Library used for all needed implementation including automata and langauges.

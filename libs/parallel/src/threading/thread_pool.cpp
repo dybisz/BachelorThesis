@@ -3,7 +3,7 @@
 //
 
 #include "threading/thread_pool.h"
-#include <error/error.h>
+#include <error.h>
 #include <stdexcept>
 #include <thread>
 

@@ -16,6 +16,16 @@ namespace str_util
      */
     std::vector<std::string> splitString(std::string s,
                                          std::string delimiter);
+
+    /*
+     * Creates a correct string defining a PATH
+     */
+    std::string makePath(std::string dir, std::string appendToDir);
+
+    /*
+     * Creates a correct string defining a PATH
+     */
+    std::string makePath(const std::vector<std::string>& toPath);
 }
 
 

@@ -24,10 +24,6 @@ namespace logger
 
     void makeDir(std::string dir);
 
-    std::string makePath(std::string dir, std::string appendToDir);
-
-    std::string makePath(const std::vector<std::string>& toPath);
-
     // -------------------------------------------------------------------------
 
     /*

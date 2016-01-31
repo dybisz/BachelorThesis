@@ -22,7 +22,7 @@ namespace settings {
     double UPPER_BOUND_ERR      = 0.001f;
     double MAX_VELOCITY         = 0.3f;
     int SWARM_SIZE              = 100;
-    int FITNESS_TYPE            = 0;
+    int FITNESS_TYPE            = 2;
 
 //------------------------------------------------------------------------------
 

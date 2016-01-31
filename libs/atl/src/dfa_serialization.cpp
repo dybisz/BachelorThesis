@@ -43,7 +43,7 @@ namespace dfa_serialization
         name += DFA_EXTENSION;
 
         std::ofstream dfaFile;
-        std::string fullPath = logger::makePath(filepath, name);
+        std::string fullPath = str_util::makePath(filepath, name);
         dfaFile.open(fullPath);
 
         dfaFile << dfaString;

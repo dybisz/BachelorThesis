@@ -1,4 +1,4 @@
-Particle Swarm Optimization
-C++ Library implementing the PSO heuristic algorithm
+Transformation is a library which transforms Pattern Recognition Classes
+into Languages.
 
-Refer to INSTALL.txt to install the library
+It also provides tools for analysis of such transformations.

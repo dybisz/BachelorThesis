@@ -9,22 +9,11 @@
 #include <pso/pso_common.h>
 
 #include <threading/thread_pool.h>
+#include <pso/console/info_printer.h>
 
 namespace pso{
+
     extern void* startParallelPSO(void* argv);
-
-    struct thread_argv{
-        unsigned int tid;
-        PSO * pso;
-        int* curr_iter;
-        bool* do_work;
-
-        int startIndex;
-        int finishIndex;
-
-        threading::ThreadPool* threadPool;
-    };
-
 
 /*
  * Encapsulates all the parts of PSO algorithm.
@@ -47,23 +36,45 @@ private:
     NeighbourhoodUpdater* neighUpdater;
     ParticleUpdater* particleUpdater;
 
-    ParticleShPtr bestParticle;
+    ParticleShPtr currentGenerationBestParticle;
 
     Particle globalBestParticle;
 
     int maxIterations;
 
+    unsigned int swarmSize;
+
     unsigned int threadCount;
 
-    unsigned int swarmSize;
+    InfoPrinter* infoPrinter;
+
+    const int noFitnessUpdateInARowCountBeforeReset = 100;
 
     //-----------------------------------------------------------//
     //  PRIVATE METHODS
     //-----------------------------------------------------------//
 
-    void compute();
+    void initThreadVariables(thread_argv *targs);
 
-    void resetParticles();
+    void compute(thread_argv *targs);
+
+    void computeIteration(thread_argv *targs);
+
+    void computeFitness(thread_argv *targs);
+
+    void computeGlobalBest(thread_argv *targs);
+
+    void computeNeighbourhood(thread_argv *targs);
+
+    void computeParticleUpdate(thread_argv *targs);
+
+    void printIterationInfo(thread_argv *targs);
+
+    void measureTime(thread_argv *targs);
+
+    void runEndingCriteria(thread_argv *targs);
+
+    void resetCurrentGenerationParticles();
 
     /*
      * Checks whether the PSO should converge
@@ -75,15 +86,6 @@ private:
      * Returns true if new particle has became best
      */
     bool updateBestParticle();
-
-    void printInfo(double fitnessUpdateTime,
-                    double neighbourhoodUpdateTime,
-                    double particleUpdateTime,
-                    double overallTime,
-                    double averageTimeOfIteration,
-                    double ETA,
-                    int currentIteration,
-                    int& numberOfLinesToReset);
 
 public:
     //-----------------------------------------------------------//
@@ -111,7 +113,7 @@ public:
     /*
      * Returns the best particle found by the computations
      */
-    const Particle * getBestParticle() const;
+    const Particle* getBestParticle() const;
 
     /*
      * Decodes best particle and returns the PSOObject

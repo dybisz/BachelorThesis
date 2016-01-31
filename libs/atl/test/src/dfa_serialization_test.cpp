@@ -45,8 +45,6 @@ TEST(DFASerialization_DFASaver,
 
     std::string dfaString = dfa_serialization::saveDFAToString(dfa);
 
-    dfa_serialization::saveDFAToFile(dfa, ".", "fac");
-
     DFA* loadedDFA = dfa_serialization::loadDFAFromString(dfaString);
     const TransitionFunction* loadedTF = loadedDFA->getTransitionFunction();
 

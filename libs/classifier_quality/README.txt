@@ -1,4 +1,5 @@
-Particle Swarm Optimization
-C++ Library implementing the PSO heuristic algorithm
+Classifier Quality Library
+
+Functionality for testing the quality of classifier.
 
 Refer to INSTALL.txt to install the library

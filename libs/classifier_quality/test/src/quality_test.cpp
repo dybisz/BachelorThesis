@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 #include <automata/transition/transition_function.h>
-#include <vector>
+
 #include <automata/dfa.h>
 #include <xls_loader.h>
 #include <language/language.h>
@@ -316,7 +316,7 @@ void initGlobals() {
                     ALPHABET_SIZE,
                     STATES_PER_NATIVE);
 
-    // CONVERT WORDS - WILL BE CHANGED // TODO TODO !!!
+    // CONVERT WORDS - WILL BE CHANGED //
     quality::_convertWords(nativeLanguages);
     quality::_convertWords(foreignLanguages);
 }

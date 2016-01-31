@@ -1,4 +1,4 @@
-Particle Swarm Optimization
-C++ Library implementing the PSO heuristic algorithm
+ExcelFormat allows reading, writing, and editing of XLS (BIFF8 format) files using C++.
 
-Refer to INSTALL.txt to install the library
+Credit goes to:
+http://www.codeproject.com/Articles/42504/ExcelFormat-Library
