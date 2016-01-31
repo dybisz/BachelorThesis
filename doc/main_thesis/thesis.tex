@@ -12,8 +12,10 @@
 \usepackage{amsmath}
 \usepackage{epigraph}
 \usepackage[linesnumbered,ruled]{algorithm2e}
+\usepackage{adjustbox}
 
 \DeclareMathOperator*{\argmin}{arg\,min} %argmin
+\DeclareMathOperator*{\argmax}{arg\,max} %argmax
 
 \usepackage{floatrow}
 % Table float box with bottom caption, box width adjusted to content
@@ -972,55 +974,152 @@ At the end I would like to devote one paragraph to completeness of described met
 
 \section{Hill Climbing and Automata}
 
-Following work is greatly based on [??], where authors present how to adapt hill climbing to work in Deterministic Finite Automata space and introduce some novel way for states labeling. This section will present general idea of a HC model in DFA space, skipping some unimportant (at this stage) details. What is more, we will use (presented in section \ref{sec:improving basic model}) Improved Basic Model, for the sake of simplicity of the implementation.
-
-\begin{wrapfigure}{l}{0.25\textwidth}
+\begin{wrapfigure}[9]{l}[0pt]{0.3\textwidth}
   \begin{center}
-    \includegraphics[width=0.9\textwidth]{./images/hc_auto_1.png}
+    \includegraphics[width=0.7\textwidth]{./images/hc_auto_1.png}
+  \end{center}
+\end{wrapfigure}
+This section will present general idea of adapting Improved Hill Climbing model to work with Deterministic Finite Automata. Step by step approach has been assumed, allowing reader to understand consecutive elements of the implementation. Work is a partial implementation of ideas from ??.
+
+To start with, we would like to present a general overview of the process to give reader some insight about each part described further. Hill Climbing starts with some randomly generated automaton. At each step current automaton is compared with another one, built by randomly changing one of the transitions. If objective function for the new one is at least the same as for the current one - new become current. Objective function will be based on some training set of words and will check number of correct computations for each of them. Hill climbing will work until individual that perfectly fits the training set is found or number of step is exceeded.
+
+\subsection{DFA Search Space}
+
+\begin{wrapfigure}[9]{l}{0.4\textwidth}
+  \begin{center}
+    \includegraphics[width=0.7\textwidth]{./images/hc_automata.png}
   \end{center}
 \end{wrapfigure}
 
 Deterministic Finite Automata in case of hill climbing will be represented by two arrays:
 \begin{itemize}
-  \item Transition Table - classic one: state versus symbols; figure ??.
-  \item State Correspondence - which represents states labeling, needed for further classification process. For simple two class problem, it would mark each state as either accepting or rejecting one. 
-\end{itemize}
+  \item Transition Table - states versus symbols:\\
+  		\begin{minipage}[t]{\linewidth}
+          \raggedright
+          \adjustbox{valign=t}{%
+            \includegraphics[width=.4\linewidth]{./images/hc_tt_normal.png}%
+          }
+    	\end{minipage}
+  \item State Correspondence Array - represents states labeling, needed for further classification process. For simple two class problem, it marks states as either accepting or rejecting ones:\\
+  \begin{minipage}[t]{\linewidth}
+          \raggedright
+          \adjustbox{valign=t}{%
+            \includegraphics[width=.5\linewidth]{./images/hc_state_corr.png}%
+          }
+    	\end{minipage}
+\end{itemize} 
+\bigskip
+Combination of both, transition table and state correspondence array constitutes good candidate for a  hill climbing's state space. In this case number of possible combinations of these arrays with data is given by:
+\begin{equation}
+S = q^{q \sigma}c^{q}
+\end{equation}
+where $q$ represents number of states, $\sigma$ constitutes number of distinct symbols in the alphabet and $c$ is number of classes considered. 
 
-For the quick reminder let me present an example of automata with accompanying data structures.On Figure \ref{wrap:DFA_EXAMPLE} one can see simple DFA with one accepting state. After short investigation, it becomes obvious that it accepts only words which are either starting from letter $a$ or it as a second letter. Example of such words could be: $a$, $aa$, $aba$ or $babb$. Corresponding transition table can be seen on figure ??. As mentioned before, each entry defines a next state for two input values: current state (row) and input symbol (column). In this way all transitions of the machine can be coded. Last but not least one can observe state correspondence array (figure ??). It defines $Q3$ as a accepting state, and rest as a rejecting ones. It of course follows the original automaton. 
+As an example let us take above automaton. It has three different states, alphabet is based on two symbols and it deals with two class problem (\textsc{REJ} or \textsc{ACC}). Number of all possible combinations for such automaton equals $S = 3^{2 \cdot 3}\cdot2^{3} = 5832$. Not much.
+
+\subsection{Smart State Labeling} \label{subsec:smart_labeling}
+Introduced in \cite{hc_4}, Smart State Labeling resembles a way to decrease search space by the factor of $c^{q}$, which comes from all possible combinations of State Correspondence Array. Authors introduced simple, yet novel approach to automatically assign classes to states at each step of the algorithm. They realized that during hill climbing, there will certainly exist some epistasis or dependency between transition matrix and states labeling. 
+
+Let $h[i][c]$ be an array denoting the number of times the DFA finished in state $i$ for pattern class $c$. We refer to set of training words as $T$ and all entries of $h$ are initialized to zero. In addition we say that $f(t)$ represents final state reached by element $t \in T$. Having all of that we can define the process of Smart State Labeling as a two step algorithm:
+\begin{enumerate}
+\item For all $t \in T$, representing class $c$, increment $h[f(t)][c]$.
+\item For each state $i$, assign $\argmax_c h[i][c]$.
+\end{enumerate}
+In this way, the search space got reduced to $S = q^{q \sigma}$
+
+To better understand the process let us present an example. Figure \ref{fig:smart_state_example} represents 3 consecutive steps of hill climbing with Smart States Labeling. Considered automaton has three states, two symbols and we are dealing with two class problem. In addition, set $T$ has ten elements. Figure \ref{fig:smart_state_example_1} represents initial step. Array $h$ has its entries set to zero and state correspondence has been chosen randomly. In the second step (Figure \ref{fig:smart_state_example_2}), one can observe that transition of the DFA has been randomly changed - now from state $Q2$ via symbol $b$ machine will lead to $Q1$. In addition $h$'s entries are set to values according to above algorithm. Because of that $Q3$ stopped, and $Q1$, $Q2$ started, being accepting states. Figure \ref{fig:smart_state_example_3} constitutes another example of an artificial step. Again we can observe change in a DFA's transitions along with states correspondence.
 
 \begin{figure}[H]
 \RawFloats
 \centering
-\begin{minipage}{.4\textwidth}
+\begin{minipage}{.3\textwidth}
 \centering
-  \includegraphics[width=0.8\textwidth]{./images/hc_automata.png}
-\caption{Caption for figure 1}
-\label{fig:test1}
+  \includegraphics[width=0.8\textwidth]{./images/hc_example_1.png}
+\caption{}
+\label{fig:smart_state_example_1}
 \end{minipage}\hfill
-\begin{minipage}{.25\textwidth}
+\begin{minipage}{.3\textwidth}
 \centering
-  \includegraphics[width=0.8\textwidth]{./images/hc_tt_normal.png}
-\caption{Caption for figure 2}
-\label{fig:test2}
+  \includegraphics[width=0.8\textwidth]{./images/hc_example_2.png}
+\caption{}
+\label{fig:smart_state_example_2}
 \end{minipage}\hfill
-\begin{minipage}{.25\textwidth}
+\begin{minipage}{.3\textwidth}
 \centering
-  \includegraphics[width=0.8\textwidth]{./images/hc_state_corr.png}
-\caption{Caption for figure 3}
-\label{fig:test3}
+  \includegraphics[width=0.8\textwidth]{./images/hc_example_3.png}
+\caption{}
+\label{fig:smart_state_example_3}
 \end{minipage}
+\label{fig:smart_state_example}
+\caption{Example of 3 different steps of HC with Smart States Labeling. First image represents initial configuration, where next two are some steps from the algorithm computations.}
 \end{figure}
 
-Combination of both, transition table and state correspondence array constitutes good candidate for a  hill climbing's state space. In this case each of possible combination is a single state in a search problem.  bla bla bla  
+\subsection{Objective Function} \label{subsec:obj_func}
+In standard approach one would deal with different procedure for evaluating DFAs quality in consecutive steps of the algorithm, but in our case we will use $h$ for that purpose. 
 
-As states in section ??, state space must represent searching space of considered problem. Since we are dealing with Deterministic Finite Automata, natural choice is using combination of transition table and state correspondence array.
+To directly compute objective function $F$, one should sum up biggest values of $c's$ for all states and divide it by a number of elements in set $T$ i.e.
+\begin{equation}
+F = \frac{\Sigma_{i=1}^{n} max_c h[i][c]}{|T|}
+\end{equation}
+In this way, ratio between number of correctly classified elements of training set and number of all elements of $T$ will be obtained. Obviously $F \in \langle 0 ; 1 \rangle$, and our goal is to obtain $F=1$. 
 
-% Representing DFA  hc_tt_normal
-% Representing mutator operator 
-% Representing Fitness Function
-% Smart States
-% Implemented steps
+\subsection{Algorithm}
+At this stage we would like to gather previously presented ideas to forge the algorithm itself. Algorithm \ref{algo:hc_finial} represents final scheme of hill climbing with Smart States implementation. 
 
+\begin{algorithm}[H]
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output}
+    \Input{Number of states $q$, number of symbols $\sigma$, number of classes $c$, training set $T$, number of steps $n$}
+    \Output{Transition table of optimal DFA.}
+    \underline{function DFA-HILL-CLIMBING} $(q, \sigma, c, T, n)$\;
+    
+    \bigskip
+	$transitionTable[q][\sigma]$ $\gets$ randomize entries \\
+	$states[c]$ $\gets$ randomize entries \\  
+    \bigskip
+    
+    \While{$i < n$}
+    {
+    	$valuePrev$ $\gets$ OBJ-FUNCTION($tranitionTable$, $states$) \\
+		$temp$ $\gets$ one entry from transition table (value and position) that will be updated \\
+		\bigskip
+		
+		$transitionTable[temp.position]$ $\gets$  random integer from interval $\langle 0 ; q \rangle$\\
+		$statesCurrent$	$\gets$  SMART-STATES[$tranitionTable$, $T$]\\
+		$valueCurrent$ $\gets$ OBJ-FUNCTION($tranitionTable$, $statesCurrent$) \\
+		\bigskip		
+		
+    	\eIf{$valueCurrent$ $\geq$ $valuePrev$}
+    	{
+			$states$ $\gets$ $statesCurrent$ \\
+   		}
+   		{
+   			Restore value saved in $temp$ to $transitionTable$ \\
+   		}
+    	\bigskip  		  
+   		\If{$valuePrev$ $ = 1$ or $valueCurrent$ $ = 1$}
+    	{
+			\Return $transitionTable$ \\
+   		}  	
+   		$i \gets i + 1$	
+    }
+    
+    \bigskip
+    \Return $transitionTable$ \\
+    
+    \caption{Hill Climbing Algorithm for learning a DFA.}
+    \label{algo:hc_finial}
+\end{algorithm}
+\pagebreak
+Following values are assumed as an input: number of states $q$, number of symbols $\sigma$, number of classes $c$, training set $T$, number of steps $n$. At the beginning initialization of $transitionTable$ and $states$ (States Correspondance Array) takes place. Both of them have randomized input. All random operations assumes uniform distribution.
+
+Next the procedure start its main \textsc{WHILE} loop, with condition checking number of steps. At lines 5 and 6 we record the index of the transition that was mutated and the previous value of the transition and use this information to revert the change if a deterioration in objective function occurred. Such approach saves both time and space of the algorithm. During this procedure already known \textsc{OBJ-FUNCTION} is used. In our case its implementation is consistent with function $F$ described in details in section \ref{subsec:obj_func}. What is more variable $temp$ may be understand as a data structure, which saves three values: row index, column index and value.
+
+When previous value has been saved, the algorithm continues to randomly modifies \\ $transitionTable$ (line 7) and calculating new value of objective function. \textsc{SMART-STATES} procedure assumes as an input transition table and training set. It returns new states correspondence array calculated using arguments and algorithm described in section \ref{subsec:smart_labeling}. Hence $statesCurrent$ represents DFA with transitions described by modified $transitionTable$. Finally \textsc{OBJ-FUNCTION} can be called and its value is saved for further comparison in variable $valueCurrent$ (line 9).
+
+At this point comparison of both, current and newly generated DFA happens. If in line 10 occurs that fresh DFA works better, only thing that we need to do is save $statesCurrent$ in $states$ variable. Otherwise we need to restart $transitionTable$ to its original form. We do it by recalling values saved in $temp$.
+
+Additional conditional statement is called at line 15, checking if any of calculated value has reached maximum (value of 1). If this happens Algorithm \ref{algo:hc_finial} ends its computations.
 
 %---------------------------------------------------------------
 \chapter{Classifier Construction}\label{chap:classification}
@@ -1445,6 +1544,8 @@ As one could image, because of simplicity of the interface, there is nothing fan
     eds., pp. 51-58, San Mateo, Calif.: Morgan Kaufman, 1994.
     
     \bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
+    
+    \bibitem{hc_4}S.M. Lucas and T.J. Reynolds, “Learning DFA: Evolution versus Evidence Driven State Merging,” Proc. Congress Evolutionary Computation, pp. 351-358, 2003.
     
 \end{thebibliography}
 \makestatement
