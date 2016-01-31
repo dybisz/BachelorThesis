@@ -8,8 +8,10 @@
 #include <logger/log.h>
 #include "transformation/transformation.h"
 #include <classification/alternative_classifier.h>
+//#include </home/dybisz/Repositories/BachelorThesis/apps/classifier_constructor/include/classifier_constructor/experiments/common.h>
 
 using namespace pso;
+using namespace transformation;
 
 namespace experiments {
     void runHillClimberBasedClassification() {
@@ -32,19 +34,28 @@ namespace experiments {
         classification::printLoadedPatternsInfo(foreignPatterns, "FOREIGN");
 
         /* Transformation */
-        logger::log("Language Transformation");
+//        logger::log("Language Transformation");
+//        std::vector<Language *> *nativeLanguages =
+//                transformation::transform(nativePatterns,
+//                                          settings::ALPHABET_SIZE);
+//
+//        std::vector<Language *> *foreignLanguages =
+//                transformation::transform(foreignPatterns,
+//                                          settings::ALPHABET_SIZE);
 
-        std::vector<Language *> *nativeLanguages =
-                transformation::transform(nativePatterns,
-                                          settings::ALPHABET_SIZE);
+//        TransformedLanguages languages = getLanguages(nativeXLSLoader,
+//                                                      foreignXLSLoader);
 
-        std::vector<Language *> *foreignLanguages =
-                transformation::transform(foreignPatterns,
-                                          settings::ALPHABET_SIZE);
+        std::vector<Class *> *nativeClasses = nativeXLSLoader.getClasses();
+        std::vector<Class *> *foreignClasses = foreignXLSLoader.getClasses();
+
+        TransformationClasses classes(nativeClasses, foreignClasses);
+        TransformedLanguages languages = transform(classes,
+                                                   settings::ALPHABET_SIZE);
 
         AlternativeClassifier *classifier = new AlternativeClassifier(
-                nativeLanguages,
-                foreignLanguages,
+                languages.native,
+                languages.foreign,
                 settings::HILL_CLIMBER_STATES,
                 settings::ALPHABET_SIZE,
                 settings::TESTING_SET_RATIO);
