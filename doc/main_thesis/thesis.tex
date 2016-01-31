@@ -78,13 +78,18 @@ POLAKI ROBAKI
 Recognizing faces, discriminating between apple and oranges or understand spoken words are tasks, which are remarkably easy to processes for most of us, but happens to be astoundingly complex processes for machines. Although lately, we develop vast amount of techniques and algorithms to cope with pattern searching problem, it was implicitly used over centuries. For instance, the extensive astronomical observations of Tycho Brahe in the 16th century allowed Johannes Kepler to discover the empirical laws of
 planetary motion, which in turn provided a springboard for the development of classical mechanics \cite{bishop_book}.
 
-Automatic pattern recognition is usually considered as an engineering area which focusses on the development and evaluation of systems that imitate or assist humans in their ability of recognizing patterns \cite{duch_uuu}. Normally system, which recognizes patterns, consists of many intermediate elements, among which one can find a classifier. Following paper introduce a novel approach for building classifier based on  Deterministic Finite Automaton (further referred as DFA). Such an automaton will be able to distinguish between input objects and classify them correctly. The paper copes only with problem of classifier construction, hence it may be useful for various input data types like e.g. hand written letters or gesture patterns. 
+Automatic pattern recognition is usually considered as an engineering area which focusses on the development and evaluation of systems that imitate or assist humans in their ability of recognizing patterns \cite{duch_uuu}. Normally system, which recognizes patterns, consists of many intermediate elements, among which one can find a classifier. Following thesis introduces a novel approach for building classifier based on  Deterministic Finite Automaton (further referred as DFA). Such an automaton will be able to distinguish between input elements and classify them correctly. The research copes only with problem of classifier construction, hence it may be useful for various input data types like e.g. hand written letters or gesture patterns. 
 
-Authors provide step-by-step explanation of each part along with mathematical background needed to understand theory behind the project.
+Authors provide step-by-step explanation of each part along with mathematical background needed to understand theory behind the project. The study begins in chapter~\ref{chap:prelim} where preliminary mathematical knowledge is presented. 
+After chapter~\ref{chap:patt_rec} the reader should become familiar with the concept of pattern recognition and classification methods. Chapter~\ref{chap:lan_theory} provides detailed mathematical foundations behind automata and languages used in this study. It introduces the concept of transformation between classes and languages, as well as the idea of constructing a classifier based on an automaton.
 
-To start with, in chapter~\ref{ch:prelim} preliminary mathematical knowledge is presented. In chapter~\ref{ch:lan_theory} we explain the first step of classifier construction which is the the process of word generation.
+In chapter~\ref{chap:pso}, the heuristic optimization method called Particle Swarm Optimization (PSO) is defined. This state of the art algorithm can be applied to a wide range of problems. The 
+general algorithm behind PSO is explained in details. Moreover, it provides a guide which helps the reader in applying PSO to solve any problem of choice. In contrast, a simpler search algorithm called Hill Climber is presented in chapter~\ref{chap:hill_climbing}. Similarly, it provides the reader with general knowledge of the algorithm and means of applying it to solve specific problems. 
 
-Finally the architecture side of the project is introduced in chapter~\ref{ch:domain}.
+Chapter~\ref{chap:classifier} gathers all of the concepts defined thus far and provides a step-by-step explanation behind classifier construction which includes application of previously defined optimization algorithms. The final part of the thesis is devoted to experiments and results.  Chapter~\ref{chap:experiments} defines all of the conducted experiments and the results together with conclusions are presented in chapter~\ref{chap:results}.
+
+The implementation details can be found in the appendix~\ref{chap:domain}. The structure of the project and dependencies of all of the modules are explained.
+
 
 \chapter{Preliminaries}\label{chap:prelim}
 %---------------------------------------------------------------------
@@ -162,7 +167,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
                 $\delta$ & a & b \\
                 \hline
                 \hline
-                $\rightarrow q^-$ 		& $q_0$ & $q_1$ \\
+                $\rightarrow$$q^-$ 		& $q_0$ & $q_1$ \\
                 \hline
                 $q_0 $ 		& $q_R$ & $q_R$ \\
                 \hline
@@ -203,10 +208,10 @@ The binary representation of automaton might perhaps provide more adequate solut
             \begin{tabular}{|P{1.0cm} || P{0.8cm} | P{0.8cm} | P{0.8cm} | P{0.8cm}|}
                 
                 \hline
-                a & $q^-$ & $q_0$ & $q_1$ & $q_R$ \\
+                a & $\rightarrow$$q^-$ & $q_0$ & $q_1$ & $q_R$ \\
                 \hline
                 \hline
-                $\rightarrow q^-$ 		& $0$ & $1$ & $0$ & $0$ \\
+                $\rightarrow$$q^-$ 		& $0$ & $1$ & $0$ & $0$ \\
                 \hline
                 $q_0$ 		& $0$ & $0$ & $0$ & $1$ \\
                 \hline
@@ -227,10 +232,10 @@ The binary representation of automaton might perhaps provide more adequate solut
             \begin{tabular}{|P{1.0cm} || P{0.8cm} | P{0.8cm} | P{0.8cm} | P{0.8cm}|}
                 
                 \hline
-                b & $q^-$ & $q_0$ & $q_1$ & $q_R$ \\
+                b & $\rightarrow$$q^-$ & $q_0$ & $q_1$ & $q_R$ \\
                 \hline
                 \hline
-                $\rightarrow q^-$ 		& $0$ & $0$ & $1$ & $0$ \\
+                $\rightarrow$$q^-$ 		& $0$ & $0$ & $1$ & $0$ \\
                 \hline
                 $q_0$ 		& $0$ & $0$ & $0$ & $1$ \\
                 \hline
@@ -334,7 +339,7 @@ It is worth mentioning, that in such decoding the information about accepting st
 %---------------------------------------------------------------
 \chapter{Pattern Recognition} \label{chap:patt_rec}
 
-Chapter provides brief introduction to pattern recognition discipline . Via various examples, it tries to supply reader with general intuition about subject. 
+Chapter provides brief introduction to pattern recognition discipline. Via various examples, it tries to supply reader with general intuition about subject. 
 
 
 \section{Basics}
@@ -885,7 +890,7 @@ In order to implement PSO for problem of interest, one must provide specific imp
 
 
 %---------------------------------------------------------------
-\chapter{Hill Climbing}\label{chap:classification}
+\chapter{Hill Climbing}\label{chap:hill_climbing}
 
 % Funny quote 
 \epigraph{'' ... (Hill Climbing) resembles trying to find the top of Mount Everest in a thick fog while suffering from amnesia. ''}{\textit{Stuart Russell \\ Peter Norvig }}
@@ -1030,7 +1035,7 @@ As states in section ??, state space must represent searching space of considere
 
 
 %---------------------------------------------------------------
-\chapter{Classifier Construction}\label{chap:classification}
+\chapter{Classifier Construction}\label{chap:classifier}
 
 In this chapter, each step of building the classifier is summarized and explicitly described.
 
@@ -1055,7 +1060,7 @@ The position of our particles will be represented by the natural decoding vector
 %---------------------------------------------------------------
 \subsection{Fitness Function}
 
-Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class problem). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class problem: native against foreign.
+Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The optimization functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class classification). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class classification: native against foreign.
 
 In each of the two categories, 4 functions based on the common classifier quality measures defined in section~\ref{evaluation} are proposed:
 \begin{itemize}
@@ -1104,16 +1109,18 @@ The native dataset contained $10$ classes, each representing different handwritt
     \label{fig:native_foreign_png}
 \end{figure}
 
+The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements.
+
 \section{Transformation}
+
+Calculating the similarity of languages can potentially determine a correlation between alphabet size and the quality of constructed classifier. The similarity experiment will be done for both multi class and two class classifications. In the former one, the similarity will be computed between all native languages. In the two class classification, all native languages are to be combined into one big and its similarity will be checked against the foreign language. In each case the similarity computation will be ran for alphabet size in the interval: $[1,40]$.
+
 
 \section{PSO}
 
-The experiments are divided into two main categories: multi class and two class optimizations. In the former one, all native classes are considered individually. In the two class optimization, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Additionally, the multi class optimization is tested for different number of classes.
 
-The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged.
 
-Further, similarity of languages have been calculated to potentially determine a correspondence with classifier quality on different alphabet sizes. Finally, the state configurations have been tested.
-
+The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
 
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
