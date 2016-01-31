@@ -1007,7 +1007,7 @@ The similarity between all native languages is shown in table~\ref{fig:tab_simil
 
 \makeTableMutualSimilarites
 
-Further, all similarities have been averaged and states as one value. The result is shown in figure~\ref{fig:lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In Multi Class the similarity have been computed between all 10 native languages. In Two Class, presented similarity is computed between big native language and the foreign. Both scenarios have nearly exact results. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly. The growth rate stabilizes at alphabet size equal to approximately $30$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $30$ in order to keep a good balance between computational complexity and language similarities.
+All of the similarities have been averaged and shown in figure~\ref{fig:lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In multi class the similarity have been computed between all 10 native languages. In two class, presented similarity is computed between one combined native language and the foreign one. Both scenarios have resulted with almost the same values. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly and stabilizes at alphabet size equal to approximately $30$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $30$ in order to keep a good balance between computational complexity and language similarities.
 
 \makeFigureAvgSimlarity
 
@@ -1021,7 +1021,7 @@ The figure~\ref{fig:fitness_multi} shows results of the multi class classifier f
 
 In all four cases, the classifier did not manage to correctly recognize between native elements, hence the low sensitivity values. Moreover, the accuracy was bellow $0.5$ across all test cases. 
 
-In the case of Accuracy Fitness Function the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision Fitness Function, had very similar results. Finally, the Sensitivity and F-Measure Fitness Functions constructed extremely low quality classifier.
+In the case of Accuracy Fitness based optimization the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision Fitness, had very similar results. Finally, the Sensitivity and F-Measure Fitness optimizations constructed extremely low quality classifier.
 
 \makeFigureFitnessMulti
 
@@ -1272,9 +1272,7 @@ The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAPa
 %---------------------------------------------------------------
 \subsection{Classifier Constructor}
 
-The {\bf Classifier Constructor} uses all the libraries in order to conduct experiments. All of the settings can be provided by the user in a form of flags when starting the application.
-
-The application is split into two experiments: Classification based on PSO heuristics and Transformation Analysis. The Transformation Analysis experiment is an encapsulation of the {\bf Transformation} library.
+The {\bf Classifier Constructor} uses all the libraries in order to conduct experiments. All of the settings can be provided by the user in a form of flags when starting the application. The application is split into two experiments: Classification based on PSO heuristics and Transformation Analysis. The Transformation Analysis experiment is an encapsulation of the {\bf Transformation} library.
 
 The simplified process of Classification experiment is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started.
 
@@ -1326,8 +1324,8 @@ As one could image, because of simplicity of the interface, there is nothing fan
     \bibitem{pso_origin} 
     Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.
     
-    %\bibitem{pso_anal}
-    %Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
+    \bibitem{pso_anal}
+    Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
 
     \bibitem{pso_bias} 
     William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.

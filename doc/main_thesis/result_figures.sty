@@ -180,6 +180,9 @@
         major x tick style = transparent, 
         ymajorgrids = true, 
         symbolic x coords={
+            r=10,
+            r=30,
+            r=40,
             A=10,
             A=30,
             A=40,
@@ -211,6 +214,9 @@
             major x tick style = transparent, 
             ymajorgrids = true, 
             symbolic x coords={
+                r=10,
+                r=30,
+                r=40,
                 A=10,
                 A=30,
                 A=40,
@@ -398,7 +404,7 @@
 %%%%%%%%%
 \newcommand{\makeFigureAvgSimlarity}{
 \begin{figure}[H]
-    \caption{Average Similarity of Transformed Languages. Multi Class: the similarities between native languages. Two Class: similarities between native and foreign.}
+    \caption{Average Similarity of Transformed Languages. multi class: the similarities between native languages. two class: similarities between combined native and foreign.}
     \label{fig:lang_sim}
     
     \setPlotStyle
@@ -419,7 +425,7 @@
     }
     ]
     
-    \nextgroupplot[title=Similarity of Languages with different Alphabet sizes. Multi Class and Two Class problems.]
+    \nextgroupplot[]
     
     % NATIVE VS NATIVE
     \addplot[color=rred, very thick] coordinates {
@@ -634,7 +640,7 @@
 %%%%%%%%
 \newcommand{\makeFigureFitnessMulti}{
 \begin{figure}[H]
-    \caption{Native classes considered as distinct. Native states: 20. Foreign states: 20.}
+    \caption{Multi class optimization. $r$ stands for alphabet size. Native states: 20 (2 per class). Foreign states: 20. Optimization Based on four different fitness functions. }
     \label{fig:fitness_multi}
     
     \setPlotStyle
@@ -646,29 +652,29 @@
     
     \beginGroupPlot
     
-    \nextgroupplot[title=Fitness Accuracy Distinct.,  ylabel=Measure]
+    \nextgroupplot[title=Accuracy Distinct Optimization,  ylabel=Measure]
     \saveResultsFirst   {0.51}{0.06}{0.62}{0.08} % DONE 
     \saveResultsSecond  {0.51}{0.05}{0.80}{0.08} % DONE
     \saveResultsThird   {0.51}{0.04}{0.72}{0.08} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
-    \nextgroupplot[title=Fitness Precision Distinct.]
+    \nextgroupplot[title=Precision Distinct Optimization.]
     \saveResultsFirst   {0.51}{0.04}{0.76}{0.07} % DONE
     \saveResultsSecond  {0.51}{0.02}{0.78}{0.04} % DONE
     \saveResultsThird   {0.50}{0.04}{0.46}{0.07} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
-    \nextgroupplot[title=Fitness Sensitivity Distinct.,  ylabel=Measure]
+    \nextgroupplot[title=Sensitivity Distinct Optimization.,  ylabel=Measure]
     \saveResultsFirst   {0.25}{0.21}{0.23}{0.23} % DONE
     \saveResultsSecond  {0.17}{0.15}{0.15}{0.15} % DONE
     \saveResultsThird   {0.33}{0.16}{0.24}{0.19} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
-    \nextgroupplot[title=Fitness F-Measure Distinct.]
+    \nextgroupplot[title=F-Measure Distinct Optimization.]
     \saveResultsFirst   {0.36}{0.21}{0.30}{0.25} % DONE
     \saveResultsSecond  {0.35}{0.15}{0.24}{0.18} % DONE
     \saveResultsThird   {0.40}{0.13}{0.28}{0.17} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
     %%%%%%%%%%%%%%%%%%%%
     % LEGEND
@@ -688,7 +694,7 @@
 %%%%%%%%
 \newcommand{\makeFigureStateConfigurationMulti}{
 \begin{figure}[H]
-    \caption{Native classes considered as distinct. Alphabet Size 30}
+    \caption{Multi class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
     \label{fig:states_multi}
     
     \setPlotStyle
@@ -700,7 +706,7 @@
     
     \beginGroupPlotFour
     
-    \nextgroupplot[title=Fitness Accuracy Distinct. Alphabet Size:  30. Different State Configurations,  ylabel=Measure]
+    \nextgroupplot[title=Accuracy Distinct Optimization,  ylabel=Measure]
     \saveResultsFirst   {0.51}{0.04}{0.79}{0.08} % DONE 0.5
     \saveResultsSecond  {0.51}{0.05}{0.80}{0.08} % DONE 1
     \saveResultsThird   {0.51}{0.04}{0.55}{0.08} % DONE 2.0
@@ -725,7 +731,7 @@
 %%%%%%%%
 \newcommand{\makeFigureFitnessTwo}{
 \begin{figure}[H]
-    \caption{All native elements considered as one big class. Native states: 20. Foreign states: 20}
+    \caption{Two class optimization. $r$ stands for alphabet size. Native states: 20. Foreign states: 20. Optimization Based on four different fitness functions}
     \label{fig:fitness_two}
     
     \setPlotStyle
@@ -737,29 +743,29 @@
     
     \beginGroupPlot
     
-    \nextgroupplot[title=Fitness Accuracy Indistinct.,  ylabel=Measure]
+    \nextgroupplot[title=Accuracy Indistinct Optimization.,  ylabel=Measure]
     \saveResultsFirst   {0.79}{0.84}{0.76}{0.80} % DONE
     \saveResultsSecond  {0.80}{0.84}{0.78}{0.80} % DONE
     \saveResultsThird   {0.79}{0.86}{0.76}{0.82} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
-    \nextgroupplot[title=Fitness Precision Indistinct.]
+    \nextgroupplot[title=Precision Indistinct Optimization.]
     \saveResultsFirst   {0.52}{0.05}{0.99}{0.11} % DONE
     \saveResultsSecond  {0.70}{0.44}{0.95}{0.59} % DONE
     \saveResultsThird   {0.67}{0.38}{0.93}{0.53} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
-    \nextgroupplot[title=Fitness Sensitivity Indistinct.,  ylabel=Measure]
+    \nextgroupplot[title=Sensitivity Indistinct Optimization.,  ylabel=Measure]
     \saveResultsFirst   {0.53}{1.00}{0.51}{0.68} % DONE
     \saveResultsSecond  {0.56}{0.99}{0.52}{0.69} % DONE
     \saveResultsThird   {0.58}{0.99}{0.54}{0.70} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
-    \nextgroupplot[title=Fitness F-Measure Indistinct.]
+    \nextgroupplot[title=F-Measure Indistinct Optimization.]
     \saveResultsFirst   {0.78}{0.88}{0.75}{0.81} % DONE
     \saveResultsSecond  {0.78}{0.90}{0.72}{0.81} % DONE
     \saveResultsThird   {0.77}{0.89}{0.74}{0.80} % DONE
-    \addBarPlotResults  {A=10}{A=30}{A=40}
+    \addBarPlotResults  {r=10}{r=30}{r=40}
     
     %%%%%%%%%%%%%%%%%%%%
     % LEGEND
@@ -778,7 +784,7 @@
 %%%%%%%%
 \newcommand{\makeFigureStatesTwo}{
 \begin{figure}[H]
-    \caption{All native elements considered as one big class. Alphabet Size: 30.}
+    \caption{Two class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
     \label{fig:states_two}
     
     \setPlotStyle
@@ -790,7 +796,7 @@
     
     \beginGroupPlotFour
     
-    \nextgroupplot[title=Fitness Accuracy Indistinct. Alphabet Size:  30. Different State Configurations,  ylabel=Measure]
+    \nextgroupplot[title=Accuracy Indistinct Optimization. ,ylabel=Measure]
     \saveResultsFirst   {0.82}{0.78}{0.85}{0.81} % DONE
     \saveResultsSecond  {0.79}{0.82}{0.77}{0.80} % DONE
     \saveResultsThird   {0.75}{0.79}{0.73}{0.76} % DONE
