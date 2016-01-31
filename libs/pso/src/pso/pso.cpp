@@ -11,7 +11,6 @@
 #include <math/random.h>
 #include <clock.h>
 
-
 using namespace std;
 
 namespace pso {
@@ -34,12 +33,15 @@ PSO::PSO(ParticleShPtr_ConstVectorShPtr particles,
         globalBestParticle(*((*particles)[0])){
     this->particles = particles;
     swarmSize = particles->size();
+
+    infoPrinter = new InfoPrinter();
 }
 
 PSO::~PSO() {
     delete fitnessUpdater;
     delete neighUpdater;
     delete particleUpdater;
+    delete infoPrinter;
 }
 
 //-----------------------------------------------------------//
@@ -105,6 +107,143 @@ const ParticleDecoder &PSO::getDecoder() const {
 //  PRIVATE METHODS
 //-----------------------------------------------------------//
 
+void PSO::initThreadVariables(thread_argv *targs){
+    if (targs->tid == threading::T_BOSS) {
+        *(targs->do_work) = true;
+        *(targs->curr_iter) = 0;
+        targs->noFitnessUpdateInARowCount = 0;
+        targs->noFitnessUpdateInARowCountBeforeReset =
+                this->noFitnessUpdateInARowCountBeforeReset;
+        targs->newBestParticleUpdated = false;
+
+        targs->timeMeasures.lastFitnessTime = 0;
+        targs->timeMeasures.lastNeighbourTime = 0;
+        targs->timeMeasures.lastParticleUpdateTime = 0;
+        targs->timeMeasures.overallTime = 0;
+        targs->timeMeasures.ETA = 0;
+    }
+}
+
+void PSO::compute(thread_argv *targs) {
+    targs->threadPool->synchronizeAll();
+
+    initThreadVariables(targs);
+
+    while(*(targs->do_work)){
+        printIterationInfo(targs);
+
+        computeIteration(targs);
+
+        runEndingCriteria(targs);
+
+        targs->threadPool->synchronizeAll();
+    }
+}
+
+void PSO::computeIteration(thread_argv *targs){
+    computeFitness(targs);
+
+    computeGlobalBest(targs);
+
+    computeNeighbourhood(targs);
+
+    computeParticleUpdate(targs);
+}
+
+
+void PSO::computeFitness(thread_argv *targs){
+    targs->threadPool->synchronizeAll();
+
+    if(targs->tid == threading::T_BOSS)
+        clk::startClock();
+
+    this->fitnessUpdater->update(targs->startIndex,
+                                 targs->finishIndex);
+
+    if(targs->tid == threading::T_BOSS)
+        targs->timeMeasures.lastFitnessTime = clk::stopClock();
+
+}
+
+void PSO::computeGlobalBest(thread_argv *targs){
+    targs->threadPool->synchronizeAll();
+
+    if(targs->tid == threading::T_BOSS) {
+        targs->newBestParticleUpdated = this->updateBestParticle();
+        if(!(targs->newBestParticleUpdated))
+            targs->noFitnessUpdateInARowCount++;
+        else
+            targs->noFitnessUpdateInARowCount = 0;
+    }
+}
+
+void PSO::computeNeighbourhood(thread_argv *targs){
+    targs->threadPool->synchronizeAll();
+
+    if (targs->tid == threading::T_BOSS) {
+        clk::startClock();
+
+        if(!(targs->newBestParticleUpdated))
+            this->neighUpdater->update();
+
+        targs->timeMeasures.lastNeighbourTime = clk::stopClock();
+    }
+}
+
+void PSO::computeParticleUpdate(thread_argv *targs){
+    targs->threadPool->synchronizeAll();
+
+    if(targs->tid == threading::T_BOSS)
+        clk::startClock();
+
+    this->particleUpdater->update(targs->startIndex,
+                                  targs->finishIndex);
+
+    if(targs->tid == threading::T_BOSS)
+        targs->timeMeasures.lastParticleUpdateTime = clk::stopClock();
+}
+
+void PSO::printIterationInfo(thread_argv *targs){
+    if (targs->tid == threading::T_BOSS) {
+        this->measureTime(targs);
+        infoPrinter->printInfo(targs->timeMeasures,
+                               *(targs->curr_iter),
+                               this->maxIterations, this->swarmSize,
+                               this->currentGenerationBestParticle.get(),
+                               &(this->globalBestParticle));
+    }
+}
+
+void PSO::measureTime(thread_argv *targs){
+    if (targs->tid == threading::T_BOSS) {
+        targs->timeMeasures.overallTime
+                += targs->timeMeasures.lastFitnessTime
+                   + targs->timeMeasures.lastNeighbourTime
+                   + targs->timeMeasures.lastParticleUpdateTime;
+        double averageTimeOfIteration;
+        if(*(targs->curr_iter) != 0) {
+            averageTimeOfIteration =
+                    targs->timeMeasures.overallTime / *(targs->curr_iter);
+        }
+        targs->timeMeasures.ETA
+                = averageTimeOfIteration *
+                  (this->maxIterations - (*(targs->curr_iter)));
+    }
+}
+
+void PSO::runEndingCriteria(thread_argv *targs){
+    if (targs->tid == threading::T_BOSS) {
+        *(targs->do_work) = !hasConvereged((targs->curr_iter));
+        *(targs->curr_iter) += 1;
+
+        if(targs->noFitnessUpdateInARowCount >=
+           targs->noFitnessUpdateInARowCountBeforeReset) {
+            resetCurrentGenerationParticles();
+            targs->noFitnessUpdateInARowCount = 0;
+        }
+    }
+}
+
 bool PSO::hasConvereged(const int* iter){
     return (*iter >= this->maxIterations);
 }
@@ -112,26 +251,28 @@ bool PSO::hasConvereged(const int* iter){
 bool PSO::updateBestParticle(){
     bool hasChanged = false;
 
-    if(bestParticle == NULL) {
-        bestParticle = (*particles)[0];
+    if(currentGenerationBestParticle == NULL) {
+        currentGenerationBestParticle = (*particles)[0];
     }
 
     for(unsigned int i = 0; i < swarmSize; i++){
-        if((*particles)[i]->getBestFitness() > bestParticle->getBestFitness()){
-            bestParticle = (*particles)[i];
+        if((*particles)[i]->getBestFitness()
+           > currentGenerationBestParticle->getBestFitness()){
+            currentGenerationBestParticle = (*particles)[i];
             hasChanged = true;
         }
     }
 
-    if(bestParticle->getBestFitness() >= globalBestParticle.getBestFitness()) {
-        globalBestParticle = *bestParticle;
+    if(currentGenerationBestParticle->getBestFitness()
+       >= globalBestParticle.getBestFitness()) {
+        globalBestParticle = *currentGenerationBestParticle;
     }
 
     return hasChanged;
 }
 
 
-void PSO::resetParticles() {
+void PSO::resetCurrentGenerationParticles() {
     for(unsigned int i = 0; i < particles->size(); i++){
         ParticleShPtr particle = (*particles)[i];
 
@@ -148,9 +289,9 @@ void PSO::resetParticles() {
 
         for(unsigned int j = 0; j < particleDimension; j++){
             position[j] = rnd::generateRandomNumber(posIntervalMin,
-                                                      posIntervalMax);
+                                                    posIntervalMax);
             velocity[j] = rnd::generateRandomNumber(velIntervalMin,
-                                                      velIntervalMax);
+                                                    velIntervalMax);
         }
 
         particle->setPosition(position);
@@ -164,116 +305,6 @@ void PSO::resetParticles() {
     }
 }
 
-void PSO::printInfo(double fitnessUpdateTime,
-                      double neighbourhoodUpdateTime,
-                      double particleUpdateTime,
-                      double overallTime,
-                      double averageTimeOfIteration,
-                      double ETA,
-                      int currentIteration,
-                      int& numberOfLinesToReset) {
-    // Clean previous entry
-    for (int i = 0; i < numberOfLinesToReset; i++) {
-        cout << "\e[A\r";
-    }
-
-    numberOfLinesToReset = 0;
-    string prefix = "          ";
-    string prefixIcons = "               ";
-    cout << endl;
-    numberOfLinesToReset++;
-
-    cout << prefixIcons << " ___  ___  ___" << endl;
-    cout << prefixIcons << "| _ \\/ __|/ _ \\" << endl;
-    cout << prefixIcons << "|  _/\\__ \\ (_) |" << endl;
-    cout << prefixIcons << "|_|  |___/\\___/" << endl;
-    cout << prefixIcons << "                    " << endl;
-    numberOfLinesToReset += 5;
-
-    cout << prefix << "[Iteration              ]: "
-        << currentIteration << "/" << this->maxIterations << endl;
-    numberOfLinesToReset++;
-
-    cout << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Swarm Size             ]: "
-    << this->swarmSize << endl;
-    numberOfLinesToReset++;
-
-    cout << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Overall Time           ]: "
-    << overallTime << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[ETA Time               ]: "
-    << ETA << endl;
-    numberOfLinesToReset++;
-
-    cout << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Avg Iter Time          ]: "
-    << averageTimeOfIteration << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Last Fitness Time      ]: "
-        << fitnessUpdateTime << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Last Neigh Time        ]: "
-    << neighbourhoodUpdateTime << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Last Particle Time     ]: "
-    << particleUpdateTime << endl;
-    numberOfLinesToReset++;
-
-    cout << endl;
-    numberOfLinesToReset++;
-
-    double bestFitness = 0;
-    if (bestParticle != NULL) {
-        bestFitness = bestParticle->getBestFitness();
-    }
-    cout << prefix << "[Best Fitness Cur Gen   ]: "
-        << bestFitness << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "[Best Fitness All Gen   ]: "
-    << globalBestParticle.getBestFitness() << endl;
-    numberOfLinesToReset++;
-
-    cout << prefix << "" << endl;
-    cout << prefix << "            .-. " << endl;
-    cout << prefix << "           o   \\     .-." << endl;
-    cout << prefix << "               .----.\'   \\" << endl;
-    cout << prefix << "              .\'o)  / `.   o" << endl;
-    cout << prefix << "             /         |" << endl;
-    cout << prefix << "             \\_)       /-." << endl;
-    cout << prefix << "              \'_.`    \\  \\" << endl;
-    cout << prefix << "               `.      |  \\" << endl;
-    cout << prefix << "               |       \\ |" << endl;
-    cout << prefix << "           .--/`-.     / /" << endl;
-    cout << prefix << "          .'.-/`-. `.  .\\|" << endl;
-    cout << prefix << "         /.' /`._ `-    '-." << endl;
-    cout << prefix << "    ____(|__/`-..`-   '-._ \\" << endl;
-    cout << prefix << "   |`------.'-._ `      ||\\ \\" << endl;
-    cout << prefix << "   || #   /-.   `   /   || \\|" << endl;
-    cout << prefix << "   ||   #/   `--'  /  /_::_|)__" << endl;
-    cout << prefix << "   `|____|-._.-`  /  ||`--------`" << endl;
-    cout << prefix << "         \\-.___.` | / || #      |" << endl;
-    cout << prefix << "          \\       | | ||   #  # |" << endl;
-    cout << prefix << "          /`.___.'\\ |.`|________|" << endl;
-    cout << prefix << "          | /`.__.'|'.`" << endl;
-    cout << prefix << "        __/ \\    __/ \\" << endl;
-    cout << prefix << "       /__.-.)  /__.-.)" << endl;
-    cout << prefix << endl << endl;
-    numberOfLinesToReset += 26;
-}
-
 //-----------------------------------------------------------//
 //  FRIEND METHODS
 //-----------------------------------------------------------//
@@ -281,105 +312,7 @@ void PSO::printInfo(double fitnessUpdateTime,
 void *startParallelPSO(void *argv) {
     thread_argv *targs = (thread_argv *) argv;
 
-    PSO * pso = targs->pso;
-    bool* do_work = targs->do_work;
-    int* curr_iter = targs->curr_iter;
-    unsigned int tid = targs->tid;
-    threading::ThreadPool *threadPool = targs->threadPool;
-
-    threadPool->lockAll();
-
-    threadPool->unlockAll();
-
-    threadPool->synchronizeAll();
-
-    if (tid == threading::T_BOSS) {
-        *do_work = true;
-        *curr_iter = 0;
-    }
-
-    threadPool->synchronizeAll();
-
-    int numberOfLines = 0;
-
-    double fitnessTime = 0;
-    double neighTime = 0;
-    double updateTime = 0;
-    double overallTime = 0;
-    double averageTimeOfIteration = 0;
-    double ETA = 0;
-
-    int noFitnessUpdateInARowCount = 0;
-    int noFitnessUpdateInARowCountBeforeReset = 100;
-
-    while (*do_work) {
-        if (tid == threading::T_BOSS) {
-            overallTime += fitnessTime + neighTime + updateTime;
-            if(*curr_iter != 0)
-                averageTimeOfIteration = overallTime / *curr_iter;
-            ETA = averageTimeOfIteration * (pso->maxIterations - (*curr_iter));
-            pso->printInfo(fitnessTime,
-                           neighTime,
-                           updateTime,
-                           overallTime,
-                           averageTimeOfIteration,
-                           ETA,
-                           *curr_iter, numberOfLines);
-        }
-
-        threadPool->synchronizeAll();
-
-        if(tid == threading::T_BOSS)
-            clk::startClock();
-        pso->fitnessUpdater->update(targs->startIndex,
-                                    targs->finishIndex);
-        if(tid == threading::T_BOSS)
-            fitnessTime = clk::stopClock();
-
-        threadPool->synchronizeAll();
-
-        bool newBestParticleUpdated = true;
-        if(tid == threading::T_BOSS) {
-            newBestParticleUpdated = pso->updateBestParticle();
-            if(!newBestParticleUpdated)
-                noFitnessUpdateInARowCount++;
-            else
-                noFitnessUpdateInARowCount = 0;
-        }
-
-        threadPool->synchronizeAll();
-
-        if (tid == threading::T_BOSS) {
-            clk::startClock();
-            if(!newBestParticleUpdated)
-                pso->neighUpdater->update();
-            neighTime = clk::stopClock();
-        }
-
-        threadPool->synchronizeAll();
-
-        if(tid == threading::T_BOSS)
-            clk::startClock();
-        pso->particleUpdater->update(targs->startIndex,
-                                     targs->finishIndex);
-        if(tid == threading::T_BOSS)
-            updateTime = clk::stopClock();
-
-        threadPool->synchronizeAll();
-
-        if (tid == threading::T_BOSS) {
-            *do_work = !pso->hasConvereged(curr_iter);
-            *curr_iter += 1;
-
-            if(noFitnessUpdateInARowCount >=
-                    noFitnessUpdateInARowCountBeforeReset) {
-                pso->resetParticles();
-                noFitnessUpdateInARowCount = 0;
-            }
-        }
-
-        threadPool->synchronizeAll();
-    }
+    targs->pso->compute(targs);
     return NULL;
 }
 }

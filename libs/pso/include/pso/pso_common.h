@@ -7,6 +7,7 @@
 
 #include <math/point.h>
 #include <memory>
+#include <threading/thread_pool.h>
 
 /*
  * Header used to store common typedefs and forward declaration of PSO module
@@ -21,6 +22,36 @@ namespace pso
     class Particle;
     class PSOObject;
     class PSO;
+    class InfoPrinter;
+
+    struct TimeMeasures{
+        double lastFitnessTime;
+        double lastNeighbourTime;
+        double lastParticleUpdateTime;
+
+        double overallTime;
+
+        double ETA;
+    };
+
+    struct thread_argv{
+        unsigned int tid;
+        PSO * pso;
+        int* curr_iter;
+        bool* do_work;
+
+        int startIndex;
+        int finishIndex;
+
+        TimeMeasures timeMeasures;
+
+        int noFitnessUpdateInARowCount;
+        int noFitnessUpdateInARowCountBeforeReset;
+        bool newBestParticleUpdated;
+
+        threading::ThreadPool* threadPool;
+    };
+
 
     // ---------------------------------------------------
     typedef std::shared_ptr<PSO>

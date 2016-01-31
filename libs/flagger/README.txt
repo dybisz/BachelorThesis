@@ -1,4 +1,3 @@
-Particle Swarm Optimization
-C++ Library implementing the PSO heuristic algorithm
-
-Refer to INSTALL.txt to install the library
+Flagger sets up flags for Your application.
+Supports console input and overwriting values of your setting variables
+if a flag has been provided as an input.

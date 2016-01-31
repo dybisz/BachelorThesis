@@ -1,7 +1,7 @@
 #ifndef AC_MAIN_H
 #define AC_MAIN_H
 
-#include <classifier_constructor/experiments/classification/classification_exp.h>
+#include <classifier_constructor/experiments/classification_exp.h>
 #include <classifier_constructor/experiments/transformation_exp.h>
 
 #include <math/random.h>
@@ -15,8 +15,7 @@
 #include <classifier_constructor/settings/classifier_settings.h>
 #include <classifier_constructor/settings/app_settings.h>
 #include <classifier_constructor/settings/settings.h>
-#include <classifier_constructor/cfac_construction/construction.h>
-#include <classifier_constructor/experiments/binary_classification.h>
+
 
 using namespace std;
 
@@ -53,10 +52,7 @@ int main(int argc, char *argv[]) {
             classification_experiment::runClassification();
             break;
         case 1:
-            experiments::runTransformationNativeVersusForeign();
-            break;
-        case 2:
-            binary_experiment::runBinaryClassification();
+            experiments::runTransformationAnalysis();
             break;
         default:
             std::string what = "Experiment ID: " +

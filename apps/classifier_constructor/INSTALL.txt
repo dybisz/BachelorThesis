@@ -8,6 +8,8 @@ patterns
 logger
 pso
 classifier_quality
+strings
+classifier
 
 ###############################################
 #                INSTALL                      #

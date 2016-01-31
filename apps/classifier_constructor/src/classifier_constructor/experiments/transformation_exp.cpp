@@ -42,7 +42,7 @@ namespace experiments {
         transformationAnalyzer.printResults();
     }
 
-    void runTransformationNativeVersusForeign(){
+    void runTransformationAnalysisNativeVersusForeign(){
         XlsLoader nativeXLSLoader(settings::NATIVE_XLS_PATH);
         XlsLoader foreignXLSLoader(settings::FOREIGN_XLS_PATH);
 

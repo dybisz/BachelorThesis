@@ -1,18 +1,17 @@
 \documentclass{mini}
-\ProvidesPackage{func_ciecier}[2011/02/23 v1.0 My own macros]
+\ProvidesPackage{result_figures}[2011/02/23 v1.0 My own macros]
 
 % PACKAGES
-% ------------------------------------------------------------------------------ %
+%------------------------------------------------------------------------------%
 \usepackage[utf8]{inputenc}
 \usepackage{tikz}
 \usepackage{pgfplots}
 \usepackage{wrapfig}
+
 \usepackage{csquotes}
 \usepackage{amsmath}
 \usepackage{epigraph}
 \usepackage[linesnumbered,ruled]{algorithm2e}
-
-
 
 \DeclareMathOperator*{\argmin}{arg\,min} %argmin
 
@@ -28,6 +27,8 @@
 \usepackage{array}
 % For tabulars
 \newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
+
 \usepackage{pdfpages}
 \usepackage{graphicx}
 \usepackage{longtable}
@@ -41,12 +42,12 @@
 \usepackage{amsfonts}
 
 % LOAD CUSTOM COMMANDS FROM A FILE
-% ------------------------------------------------------------------------------- %
-\usepackage{func_ciecier}
+%------------------------------------------------------------------------------
+\usepackage{result_figures}
+
 
 % TITLE
-% ------------------------------------------------------------------------------- %
-
+%------------------------------------------------------------------------------%
 \title{Finite automata for pattern recognition}
 \titleaux{Automaty skończone w problemie rozpoznawania wzorców}
 \author{Jakub Ciecierski, Bartlomiej Dybisz}
@@ -57,11 +58,20 @@
 \date{\today}
 \album{123456}
 
-% ------------------------------------------------------------------------------- %
+%------------------------------------------------------------------------------%
 
 \begin{document}
 \maketitle
 \tableofcontents
+
+\chapter*{Work Devision}
+
+
+\abstract
+YOLO english
+
+\abstract
+POLAKI ROBAKI
 
 \chapter*{Introduction}
 %---------------------------------------------------------------
@@ -173,7 +183,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
 \end{figure}
 
 
-The binary representation of automaton might perhaps provide more adequate solution for a computer. Thus a new transition function is defined, $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$. It simply provides an answer whether there exists a transition between two states for a given symbol. For example, by looking at figure~\ref{fig:ttable_std} we can define value for $\delta^{'}(q^-,a,q^0) = 1$, since there exists a transition from $q^-$ to $q^0$ through symbol $a$. The entire automaton is presented in figure~\ref{fig:ttable_bin}.
+The binary representation of automaton might perhaps provide more adequate solution for a computer. Thus a new transition function is defined, $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$. It simply provides an answer whether there exists a transition between two states for a given symbol. For example, by looking at figure~\ref{fig:ttable_std} we can define value for $\delta^{'}(q^-,a,q_0) = 1$, since there exists a transition from $q^-$ to $q_0$ through symbol $a$. The entire automaton is presented in figure~\ref{fig:ttable_bin}.
 
 
 %%%
@@ -248,7 +258,7 @@ It is important to note that to preserve determinism, there must exist exactly o
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\subsection{Decoding} \label{sec:auto_dec}
+\subsection{Natural Decoding} \label{sec:auto_dec}
 
 Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{x_1, x_2, \ldots, x_r\}$. We will also define the size of automaton $s(A) = n*r$.
 
@@ -445,7 +455,7 @@ The following comments help to understand remaining of characteristics:
 It is worth to say that other measures characterizing rejection quality can be invented, cf.~\cite{Homenda_2014}, but they are derivations from defined above.  
 
 %---------------------------------------------------------------
-\chapter{From Class to Language} \label{chap:lan_theory}
+\chapter{Automata and Languages Introduction} \label{chap:lan_theory}
 
 The content discussed thus far, presented pattern recognition as a general problem. This chapter is considered to be a bridge between the pattern recognition world and the automata and language theory. We propose a set of procedures which help in reducing the classical problem of classification into a language theory problem. By doing so, we will be able to benefit from the prosperous and established theory.
 
@@ -461,8 +471,8 @@ This section is devoted to explaining the process of transformation of abstract 
 %---------------------------------------------------------------
 \subsection{Word Transformation}\label{sec:lan_theory_transf_word}
 
-Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$. Notice that $|\Sigma|=r$.
-The first step of transformation process will include transforming each feature into an alphabet symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. Let $\featureNorm{f}$, denote a normalized feature vector. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
+Let us consider a feature vector~$f = [c_{1},c_{2},\ldots,c_{m}]$ and an alphabet $\Sigma=\{a_{1}, a_{2}, \ldots, a_{r} \}$, where $|\Sigma|=r$.
+The first step of transformation process will include transforming each feature into an alphabet symbol. Recall that different features may belong to different intervals. For that reason, all features need to be normalized to a common interval. For convenience, the normalized interval will be defined by the size of the alphabet, namely $c_{i} \in \langle 0 , r \rangle$. The details of normalization are presented later in this section.
 
 Having the interval conveniently normalized, we can now easily define the transformation of a single feature to a symbol by partitioning the intervals into $r$ sub-intervals: $x_1, x_2,\ldots,x_r$. We can now easily translate feature $c_i \in x_{j}$ by assigning the corresponding symbol $a_{j}$.
 
@@ -692,7 +702,7 @@ The initial, poor, partitioning is illustrated in figure~\ref{fig:eq_classes_sma
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_small_pt.jpg}
-    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages overlapping and spread among multiple Equivalence classes}
     \label{fig:eq_classes_small_precision}
 \end{figure}
 
@@ -701,7 +711,7 @@ Figure~\ref{fig:eq_classes_high_precision} shows the same partitioning for highe
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.5\textwidth]{./images/equivalence_classes_high_pt.jpg}
-    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages included in their respective equivalence classes}
+    \caption{Example of three equivalence classes of Relation Induced by the Classification Language. Languages are spread among multiple Equivalence classes}
     \label{fig:eq_classes_high_precision}
 \end{figure}
 
@@ -749,16 +759,14 @@ Finally, building a proper classifier will be equivalent to creating an Classifi
 %---------------------------------------------------------------
 \chapter{Particle Swarm Optimization}\label{chap:pso}
 
-In the Particle Swarm Optimization (PSO), originated by Eberhart and Kennedy in~\cite{pso_origin}, we look for optimal solution of the problem in the solution space. 
+The Particle Swarm Optimization (PSO) is population based stochastic optimization algorithm, originated by Eberhart and Kennedy~\cite{pso_origin}. Swarm of particles fly through the search space in order to find the most optimal solution of a given problem. The particles remember the best found solution and the further search is affected by it.
 
-Each solution is called a particle and it consists of the following fields. First of all, the particle stores $fitness$ value which is evaluated by the fitness function, representing the quality of the solution and the best fitness value computed so far. It also stores the position $X_p$ and velocity vector $V_p$ which lets the particle travel through the solution space. Lastly two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
+Each particle consists of the several fields. The position $X_p$ and velocity vector $V_p$ lets the particle travel through the search space. $Fitness$ value which is evaluated by the fitness function, represents the quality of the solution. The particle also remembers the best fitness value computed so far. Finally, two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
 
-PSO is initialized with random group of particles. It then searches for the optimal solution by updating generations.
-In each iteration $t$, the particles are updated by calculating new fitness and velocity which in turn is applied to update new position of the particle. $X_p(t)$ will denote the position of particle $p$ at time $t$, i.e. the $t$-th iteration. Similarly, the velocity vector is denoted by $V_p(t)$.
+PSO is initialized with random group of particles. It then searches for the optimal solution by updating positions of the particles.
+In each iteration $t$, the particles are updated by calculating potentially new $pbest_p$ and $lbest_p$ positions which affect the change in current velocity of the particle. $X_p(t)$ will denote the position of particle $p$ at time $t$, i.e. the $t$-th iteration. Similarly, the velocity vector is denoted by $V_p(t)$.
 
-The PSO will take as input number of states $n$ and number of symbols in alphabet $r$.
-
-Firstly, the general flow of the PSO algorithm is given, then each module is discussed and defined in details.
+Firstly, the general flow of the PSO algorithm is given, then each functionality is discussed and defined in details.
 
 \begin{center}
     
@@ -770,65 +778,40 @@ Firstly, the general flow of the PSO algorithm is given, then each module is dis
             \item Calculate the fitness value, using the fitness function.
             \item Compare the fitness to its best obtained so far, the better value is stored together with $pbest_p$	
             
-            \item Update velocity and position.	
-            
             \item Update neighbourhoods and find $lbest_p$ position.
-        \end{enumerate}		
+            
+            \item Update velocity and position.	
+        \end{enumerate}
         
-        \item Repeat~\ref{itm:pso_iter}. until an ending criterion is met.
-        
+        \item Repeat~\ref{itm:pso_iter}. until maximum number of iterations has been reached.
         
     \end{enumerate}
     
 \end{center}
 
 
-In order to implement PSO for problem of interest, one must provide specific implementation for two major components of the algorithm. The first one is fitness function which optimizes the solution to a certain goal. Moreover, the particle needs to represent an object which can be evaluated in the optimization process. Thus, in each step of the algorithm, particles have to be decoded.
 
-The remaining part of this chapter is devoted to illustrating problems associated with the objective of this study and more importantly, methods of solving these problems.
+%The remaining part of this chapter is devoted to illustrating problems associated with the objective of this study and more importantly, methods of solving these problems.
 
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\section{Initialization}
-In order to initialize the PSO algorithm, we must first decide on the size of the swarm (i.e. the number of particles). The swarm will be a static group, meaning that the size will not change through out the computations of a single PSO instance. The size should then be a constant value, in terms of an automaton given at the time. We propose that the size of the swarm should be proportional to the size of the automaton. To be precise, the swarm size is equal to the size of the automaton times a constant $c_P$ called a $population$ factor.
+\section{Swarm Initialization}
+In order to initialize the PSO algorithm, one must first decide on the size of the swarm (i.e. the number of particles). The swarm will be a static group, meaning that the size will not change through out the computations of a single PSO instance.
 
-Further, we must initialize particle's position. Let us recall that the dimension of the search space is defined by the size of an automaton, namely $(n*r)$, where $n$ is the number of states and $r$ is the number of symbols in the alphabet. Each dimension is taking a real value in the range $[0.5, (n+0.5)]$. Thus, we proceed to generate random position in the given range.
+The interval for position of all particles must also be chosen. The interval along with the size of the position will essentially define the search space for the swarm.
 
-The initial velocities will be generated from the range $[-n,n]$. It is also crucial to define a maximum change in position that one particle can take during a single iteration. For this purpose the constant $v_{max}$ is defined that prevents the particle from travelling in any dimension further than $v_{max}$ units. The maximum change is defined by the equation 
-
-\begin{equation}
-    v_{max} = (\frac{n}{2})c_{v}
-\end{equation}
-where $c_{v}$ is a constant $speed$ factor and $v_{max} \leq n$.
-
-In all cases uniform distribution is used for random number generation.
-
-\section{Particle Decoding}
-
-Particle decoding algorithm as an input takes number of states $n$ and number of symbols in the alphabet $r$.
-Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
-
-The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
+Additionally, it is convenient to define a constant $v_{max}$ which prevents the particle from traveling in any dimension, further than $v_{max}$ distance in a single iteration. If the velocity is not limited, the jumps in position between iterations might be quite big. This can lead particles to avoid a big chunk of the search space.
 
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsection{Fitness Function}
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+\section{Neighbourhood}
 
-Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class problem). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class problem: native against foreign.
+The neighbourhoods are updated using a simply algorithm based on star topology.
+For each particle, neighbourhood is created containing itself and $K$ other random particles. Among that neighbourhood the best particle is found which defines the $lbest$ of the particle in interest.
 
-In each of the two categories, 4 functions based on the common classifier quality measures defined in section~\ref{evaluation} are proposed:
-\begin{itemize}
-    \item Accuracy Fitness
-    \item Precision Fitness
-    \item Sensitivity Fitness
-    \item F-Measure Fitness
-\end{itemize}
-
-The PSO must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to DFA, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
-
+The neighbourhoods are updated only when there was no change in global best (among all particles in the swarm) since the last iteration.
 
 
 %---------------------------------------------------------------------
@@ -890,26 +873,9 @@ x_d > x_{max} \Rightarrow x_d = x_{max}
 
 This means that the corresponding dimension of velocity vector $v_d \in V_p$ is zeroed and the position is bound to the edge of the interval.
 
+\section{Applying PSO}
+In order to implement PSO for problem of interest, one must provide specific implementation for two major components of the algorithm. The first one is fitness function which optimizes the solution to a certain goal. The second one is particle representation method allowing to decode the particle into a specific object which can then be used in the fitness function.
 
-%---------------------------------------------------------------------
-%---------------------------------------------------------------------
-\section{Neighbourhood}
-The neighbourhoods are updated using a simply algorithm based on star topology.
-For each particle, neighbourhood is created containing itself and $K$ other random particles. Among that neighbourhood the best particle is found which defines the $lbest$ of the particle in interest.
-
-The neighbourhoods are updated only when there was no change in global best (among all particles in the swarm) since the last iteration.
-
-%---------------------------------------------------------------------
-%---------------------------------------------------------------------
-\section{Ending criteria}
-The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
-
-The figure~\ref{fig:pso_state} presents the flow of PSO computations.
-\begin{figure}
-    \includegraphics[width=0.7\textwidth]{./images/pso_state.jpg}
-    \caption{State diagram of parallel PSO computations}
-    \label{fig:pso_state}
-\end{figure}
 
 %---------------------------------------------------------------
 \chapter{Hill Climbing}\label{chap:classification}
@@ -923,9 +889,9 @@ The figure~\ref{fig:pso_state} presents the flow of PSO computations.
 The hill-climbing search algorithms, also known as 1+1 evolutionary strategies \cite{hc_1}, are the simplest form of evolutionary algorithm, but often perform competitively with more complex evolutionary algorithms \cite{hc_2}. It is simply a loop that continually moves in the direction of increasing value-that is, uphill. It terminates when it reaches a "peak" where no neighbor has a higher value. The algorithm does not maintain a search tree, so the current node data structure need only record the state and its objective function value. Hill-climbing does not look ahead beyond the immediate neighbors of the current state \cite{hc_3}.
 
 \begin{wrapfigure}{l}{0.25\textwidth}
-  \begin{center}
-    \includegraphics[width=0.8\textwidth]{./images/hc_1.png}
-  \end{center}
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{./images/hc_1.png}
+    \end{center}
 \end{wrapfigure}
 
 % Motivation - WHY ?!
@@ -945,14 +911,14 @@ Pseudo code listed as Algorithm \ref{algo:hc_general}, presents general process 
     $current = s$ \\
     \While{$i < n$}
     {
-    	$neighbor$ $\gets$ a highest-valued neighbor of $current$ (in terms of objective function) \\
-    	
-    	\If{OBJ-FUNCTION[current] $\geq$ OBJ-FUNCTION[neighbor]}
-    	{
-			\Return{current}
-   		}
-   		
-   		$current$ $\gets$ $neighbor$
+        $neighbor$ $\gets$ a highest-valued neighbor of $current$ (in terms of objective function) \\
+        
+        \If{OBJ-FUNCTION[current] $\geq$ OBJ-FUNCTION[neighbor]}
+        {
+            \Return{current}
+        }
+        
+        $current$ $\gets$ $neighbor$
     }
     \caption{General Hill Climbing Algorithm}
     \label{algo:hc_general}
@@ -1055,6 +1021,7 @@ As states in section ??, state space must represent searching space of considere
 % Smart States
 % Implemented steps
 
+
 %---------------------------------------------------------------
 \chapter{Classifier Construction}\label{chap:classification}
 
@@ -1064,7 +1031,34 @@ In this chapter, each step of building the classifier is summarized and explicit
 %---------------------------------------------------------------
 \section{PSO for Classification}
 
+Once, the states have been assigned to corresponding languages the process of optimizing the classification automaton can start. Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization.
 
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+\subsection{Particle Decoding}
+
+
+Particle decoding algorithm takes as an input number of states $n$ and number of symbols in the alphabet $r$.
+Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
+
+The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Fitness Function}
+
+Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class problem). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class problem: native against foreign.
+
+In each of the two categories, 4 functions based on the common classifier quality measures defined in section~\ref{evaluation} are proposed:
+\begin{itemize}
+    \item Accuracy Fitness
+    \item Precision Fitness
+    \item Sensitivity Fitness
+    \item F-Measure Fitness
+\end{itemize}
+
+The Fitness function must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to automaton, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1219,129 +1213,172 @@ On the other hand, second set fixes number of symbol in alphabet to 6 and presen
 \appendix\label{appendix_a}
 
 %---------------------------------------------------------------
-\chapter{Domain} \label{chap:domain}
+\chapter{Implementation} \label{chap:domain}
+The structure of the entire project is presented here.
+The project has been built by dividing each module into a separate shared library which is loaded dynamically to the executable application during run time. The libraries can be considered to be divided into two groups: essential to the thesis research and utility libraries which are used across multiple modules. The executable application encapsulates all libraries in order to run experiments defined throughout the thesis.
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Libraries}
 
+All of the libraries has been made by the authors of the thesis with exception to one, namely the Excel Format~\cite{excel_format}. It is worth mentioning that this library outputs warnings during compilation process. Although the usage of this library has been thoroughly tested.
 
-
-
-
-
-
-
-
-
-
-
-
-
-In this chapter the domain of the application is discussed. 
-
-\textbf{Remark:} What should be stress out is that class diagrams presented in this section may not cover all methods needed to implement full functionality. For sure presented methods are necessary, but not always sufficient. Although we were trying to be as precise as we can, they constitutes only a sketch of solution.
-
-The main modules of the application are now presented and briefly explained.
+All of the libraries are listed and briefly explained. Then, the dependencies graph between them is presented. Lastly, the essential modules overview is given in a form of class and state diagrams.
 
 \begin{itemize}
-    
-    \item 
-    {{Classification}} - All the classes responsible for classifying objects.
-    \item 
-    {{Clustering}} - Method of grouping and cluster evaluation are to be held in this module.
-    \item
-    {{Word Processing}} - Takes care of word creation.
-    \item 
-    {{Automaton}} - Describes the Deterministic Finite Automaton, the transition tables and methods of automaton decoding 
-    \item 
-    {{Math}} - All the mathematical functions related to the application.
-    \item 
-    {{Utility}} - Functionality which helps to run the project. Logging, system settings, time measurement are examples of what can be included that module.
-    \item 
-    {{GUI}} - The Graphical User Interface, defines all the classes that construct the interface.
-    
+    \item Essential
+    \begin{itemize}
+        \item {\bf Automata and Languages (ATL).} Provides data structures and algorithms related to automata, languages and words.
+        \item {\bf Pattern Recognition.} Data structures for pattern recognition objects: Class, Feature Vector. Provides implementation for loading raw feature vector data.
+        \item {\bf Transformation.} Used in the process of transformation between Pattern Recognition Classes and Languages. Provides tools for transformation analysis.
+        \item {\bf Classifier.} Provides Classifier construction algorithm and derived PSO classes needed for optimizing the Classifier.
+        \item {\bf Classifier Quality.} Provides functions for classifier quality measures: accuracy, precision, sensitivity and f--measure
+        \item {\bf Particle Swarm Optimization (PSO).} Data structures, interfaces and algorithm for the general PSO. Does not provide the specific optimization for automata implementation.
+    \end{itemize}
+
+    \item Utility
+    \begin{itemize}
+        \item {\bf Math.} Includes data structures for multi dimensional point, spheres etc. Moreover, provides random number generation.
+        \item {\bf Time.} Small library for measuring time of computations.
+        \item {\bf Logger.} Functionality for printing logs to the console and files.
+        \item {\bf Error.} Small library to define error messages in case of crash
+        \item {\bf Flagger.} Provides interface for defining custom flags for application settings.
+        \item {\bf Excel Format.} Loads raw data from excel files.
+        \item {\bf Parallel.} Provides interface for thread creation and functionality for thread synchronization.
+        \item {\bf Strings.} Small library for string manipulation.
+    \end{itemize}
 \end{itemize}
 
-The remainder of this section will describe these modules in details.
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Automata}
+All the libraries and their dependencies are presented in figure~\ref{fig:lib_dependencies}.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/automata.jpg}
-    \caption{Class diagrams of clustering module}
-    \label{fig:automata_class}
+    \includegraphics[width=0.9\textwidth]{../uml/dependencies.png}
+    \caption{Dependencies of libraries}
+    \label{fig:lib_dependencies}
 \end{figure}
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\section{Clustering}
+%---------------------------------------------------------------
+\subsection{PSO}
 
-The clustering module contains all necessary functionality for analysis of clusters. Figure~\ref{fig:clustering_class} presents few basic classes. \textit{KMeans} constructor takes the maximum iterations and tolerance of convergence. Calling \textit{compute} will start the computation of kmeans algorithm with $k$ clusters for input data set. The private methods of KMeans are responsible for computing the corresponding sections of kmeans algorithm. It is important to note that \textit{initCentroids()} method could be implemented using many different algorithms, which might change the time complexity of kmeans algorithm and a whole.
+The PSO library provides interface for implementing optimizations for any problem of interest. The class overview is presented in figure~\ref{fig:lib_pso_classes}. The {\bf PSO} class is responsible for gathering all modules and running computations. {\bf FitnessUpdater, ParticleUpdater and NeighbourhoodUpdater} are pure abstracted classes providing interface for respective part of the algorithm. {\bf FitnessUpdater} calculates and updates fitness values of each particle. {\bf ParticleUpdater} is responsible for updating particle's position and velocity. Finally, {\bf NeighbourhoodUpdater} updates the neighbourhoods and finds lbest value for each particle. {\bf ParticleDecoder} is responsible for decoding the {\bf PSOObject} which is later used in {\bf FitnessUpdater} to evaluate the fitness value. In order to optimize a specific object, one must derive it from {\bf PSOObject} and the decoding method must be implemented in derived {\bf ParticleDecoder}. Finally {\bf ParticleUpdaterSpherical} and {\bf NBStarTopology} provide implementations of algorithms explained in chapter~\ref{chap:pso}.
 
-Further, in figure~\ref{fig:clustering_class} sub module \textit{Evaluation} is presented. The class \textit{ClusterEvaluator} is a base class for all cluster evaluation algorithms. It consists of \textit{clustering tool} which shall be used to compute the optimal number of clusters for given data set. The \textit{compute} method will start looking for optimal $k$ from the interval $[start_k, end_k]$. At this stage of research, only McClain-Rao algorithm is proposed. In the future, if the need arises, further cluster evaluators should be derived from the base class \textit{ClusterEvaluator}.
-
-%
-% CLUSTERING CLASS DIAGRAM
-%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/clustering.jpg}
-    \caption{Class diagrams of clustering module}
-    \label{fig:clustering_class}
+    \includegraphics[width=0.7\textwidth]{../uml/pso_classes.png}
+    \caption{Particle Swarm Optimization Library. Classes Association}
+    \label{fig:lib_pso_classes}
+\end{figure}
+
+The PSO has been implemented using parallel CPU algorithm. The state diagram showing details of computations process is shown in figure~\ref{fig:lib_pso_states}. Since each particle can be computed independently, PSO can be easily parallelized. Each thread is assigned interval of particle indices for which it is responsible for. Simply thread synchronization between each step of the iteration is executed. The {\bf Parallel } library is used for the multi threaded functionality.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../uml/pso_state.jpg}
+    \caption{Particle Swarm Optimization Library. State diagram of the algorithm }
+    \label{fig:lib_pso_states}
 \end{figure}
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{ATL}
 
-\section{Classification}
+{\bf DFA} or Deterministic Finite Automaton, takes a {\bf Word} as an input and computes which {\bf State} it finishes in. {\bf TransitionFunction} allows for setting and getting transition for specific configurations. {\bf Language} class, contains also corresponding states which are used in the classification process. In that case {\bf Language} is considered to be a label and states are checked against all languages in order to classify a word to one of the languages. The classes are shown in figure~\ref{fig:lib_atl}.
 
-%
-% CLASSIFICATION CLASS DIAGRAM
-%
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/optimizationMain.jpg}
-    \caption{Class diagrams of classification module}
-    \label{fig:classification_main_class}
-\end{figure}
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classes/optimizationAlg.jpg}
-    \caption{Class diagrams of classification module}
-    \label{fig:classification_alg_class}
+    \includegraphics[width=1.0\textwidth]{../uml/atl.png}
+    \caption{Automata and Languages Library. Classes Association}
+    \label{fig:lib_atl}
 \end{figure}
 
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\section{Utility}
+%---------------------------------------------------------------
+\subsection{Pattern Recognition}
 
-The utility module is presented in figure~\ref{fig:utility_class}. \textit{Logger} class is responsible for printing and saving logs of the computations. It contains path to log directory and a path to specific file in which the logs should be saved. The one parameter method \textit{log}, prints the message to default file. The two parameter \textit{log} is used when the message should be saved in a different file.
+The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a single {\bf Label} and possibly many {\bf FeatureVectors}. {\bf XLSLoader} is used to load Classes from excel files.
 
-The \textit{Console} class is responsible for loading flag parameters from the console, and updating the global settings. The global settings, containing all parameters of the computations are stored in \textit{Settings} class.
-
-Finally a simple clock mechanism is proposed in \textit{Clock} class. The \textit{startClock} method starts measuring time until \textit{stopClock} is called which returns the time taken between both methods' calls. The time is encapsulated in \textit{TimeStamp} class.
-
-
-%
-% UTILITY CLASS DIAGRAM
-%
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{images/utility_class.jpg}
-    \caption{Class diagrams of utility module}
-    \label{fig:utility_class}
+    \includegraphics[width=0.7\textwidth]{../uml/pt.png}
+    \caption{Pattern Recognition Library. Classes Association}
+    \label{fig:lib_pt}
+\end{figure}
+ 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Transformation}
+Transformation library contains two modules: {\bf Transformation} and {\bf Transformation Analysis}. State diagram of transformation is shown in figure~\ref{fig:transform_state}. For input classes, interval of each feature must be calculated. Then the features are normalized and corresponding symbols are assigned to make up a word. All transformed words from respective class make up a language.
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../uml/transformation_state.png}
+    \caption{Transformation state diagram}
+    \label{fig:transform_state}
+\end{figure}
+
+The {\bf Transformation Analysis} process is illustrated in figure~\ref{fig:transform_analysis_state}. The classes are transformed to languages and similarity is computed for each pair. Then all the similarities are averaged and output as result. This process is to be repeated for different alphabet sizes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../uml/transform_analysis_state.png}
+    \caption{Transformation Analysis state diagram.}
+    \label{fig:transform_analysis_state}
 \end{figure}
 
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Classifier}
+
+The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAParticleDecoder} derives from the PSO interface and implements the solution for DFA decoding. Similarly, all 8 fitness functions are implemented in derived {\bf FitnessUpdaters}. For simplicity, only two of the fitness functions are illustrated in the graph.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../uml/classifier_pso_classes.png}
+    \caption{Classifier Library.}
+    \label{fig:classifier_pso_classes}
+\end{figure}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Applications}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Classifier Constructor}
+
+The {\bf Classifier Constructor} uses all the libraries in order to conduct experiments. All of the settings can be provided by the user in a form of flags when starting the application.
+
+The application is split into two experiments: Classification based on PSO heuristics and Transformation Analysis. The Transformation Analysis experiment is an encapsulation of the {\bf Transformation} library.
+
+The simplified process of Classification experiment is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../uml/classification_state.png}
+    \caption{Constructing Classifier state diagram.}
+    \label{fig:classification_states}
+\end{figure}
 
 
-
-
-
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Hill Climber}
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Graphical User Interface}
@@ -1380,15 +1417,10 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     %\bibitem{pso_anal}
     %Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
-    
-    
-    
+
     \bibitem{pso_bias} 
     William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.
-    
-    
-    
-    
+
     \bibitem{pso_11}
     M. Clerc. (2011). Standard Particle Swarm Optimisation Available: http://hal.archives-ouvertes.fr/hal-00764996 
     
@@ -1402,16 +1434,18 @@ As one could image, because of simplicity of the interface, there is nothing fan
 
 	
 	\bibitem{images_learning_types} Anuj R. Shah1, Christopher S. Oehmen, Bobbie-Jo Webb-Robertson, SVM-Hustle - An iterative semi-supervised machine learning approach for pairwise protein remote homology detection 
-	
+    
 	\bibitem{duch_uuu} Robert P.W. Duin, Elzbieta Pekalska, The Science of Pattern Recognition. Achievements and Perspectives, Studies in Computational Intelligence, chapter Challenges for Computational Intelligence, page 63 , 2007
-
-	\bibitem{hc_1} H.-G. Beyer, “Toward a Theory of Evolution Strategies: The (mu, lambda)-Theory,” Evolutionary Computation, vol. 2, no. 4, pp. 381-407, 1994.
+    
+    \bibitem{excel_format} http://www.codeproject.com/Articles/42504/ExcelFormat-Library
 	
-	\bibitem{hc_2} M. Mitchell, J. Holland, and S. Forrest, “When Will a Genetic Algorithm Outperform Hill Climbing?” Advances in Neural Information Processing Systems 6, J. Cowan, G. Tesauro, and J. Alspector,
-eds., pp. 51-58, San Mateo, Calif.: Morgan Kaufman, 1994.
-		
-	\bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
-	
+    \bibitem{hc_1} H.-G. Beyer, “Toward a Theory of Evolution Strategies: The (mu, lambda)-Theory,” Evolutionary Computation, vol. 2, no. 4, pp. 381-407, 1994.
+    
+    \bibitem{hc_2} M. Mitchell, J. Holland, and S. Forrest, “When Will a Genetic Algorithm Outperform Hill Climbing?” Advances in Neural Information Processing Systems 6, J. Cowan, G. Tesauro, and J. Alspector,
+    eds., pp. 51-58, San Mateo, Calif.: Morgan Kaufman, 1994.
+    
+    \bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
+    
 \end{thebibliography}
 \makestatement
 \end{document}
