@@ -88,7 +88,7 @@ Finally the architecture side of the project is introduced in chapter~\ref{ch:do
 
 \chapter{Preliminaries}\label{chap:prelim}
 %---------------------------------------------------------------------
-Following chapter provides summary of mathematical background needed to proceed with the paper. We assume that reader is familiar with basic concepts of language theory such as: what is a language and what does it mean that it is regular. In addition, it is crucial for reader to understand the idea of equivalence classes, because they comprise a very essence and motivation of this work. Finally, we are trying to (as quickly as possible) dive into theorems and definitions which are useful from the point of view of further application, rather than spending time on deriving knowledge from beginning.
+Following chapter provides summary of mathematical background needed to proceed with the paper. We assume that reader is familiar with basic concepts of language theory such as: what is a language and what does it mean that it is regular. In addition, it is crucial for reader to understand the idea of equivalence relation and equivalence classes, because they comprise a very essence and motivation of this work. Finally, we are trying to (as quickly as possible) dive into theorems and definitions which are useful from the point of view of further application, rather than spending time on deriving knowledge from beginning.
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 \section{Myhill-Nerode}
@@ -162,7 +162,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
                 $\delta$ & a & b \\
                 \hline
                 \hline
-                $q^-$ 		& $q_0$ & $q_1$ \\
+                $\rightarrow q^-$ 		& $q_0$ & $q_1$ \\
                 \hline
                 $q_0 $ 		& $q_R$ & $q_R$ \\
                 \hline
@@ -172,7 +172,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
                 \hline
             \end{tabular}
         }
-        {\caption{Transition table for A with $\delta: Q \times \Sigma \rightarrow Q$}\label{fig:ttable_std}}
+        {\caption{Transition table for A with $\delta: Q \times \Sigma \rightarrow Q$. The initial state: $q^-$}\label{fig:ttable_std}}
         
         %\ffigbox
         %  {\includegraphics[width=0.35\textwidth]%{images/automaton_example.jpg}}
@@ -206,7 +206,7 @@ The binary representation of automaton might perhaps provide more adequate solut
                 a & $q^-$ & $q_0$ & $q_1$ & $q_R$ \\
                 \hline
                 \hline
-                $q^-$ 		& $0$ & $1$ & $0$ & $0$ \\
+                $\rightarrow q^-$ 		& $0$ & $1$ & $0$ & $0$ \\
                 \hline
                 $q_0$ 		& $0$ & $0$ & $0$ & $1$ \\
                 \hline
@@ -230,7 +230,7 @@ The binary representation of automaton might perhaps provide more adequate solut
                 b & $q^-$ & $q_0$ & $q_1$ & $q_R$ \\
                 \hline
                 \hline
-                $q^-$ 		& $0$ & $0$ & $1$ & $0$ \\
+                $\rightarrow q^-$ 		& $0$ & $0$ & $1$ & $0$ \\
                 \hline
                 $q_0$ 		& $0$ & $0$ & $0$ & $1$ \\
                 \hline
@@ -247,7 +247,7 @@ The binary representation of automaton might perhaps provide more adequate solut
         \end{subfigure}%
         
         
-        \caption{Transition tables for symbols $a$ and $b$, making up the entire transition function $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$}
+        \caption{Transition tables for symbols $a$ and $b$, making up the entire transition function $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$. The initial state: $q^-$}
         
         \label{fig:ttable_bin}
     \end{center}
@@ -260,7 +260,7 @@ It is important to note that to preserve determinism, there must exist exactly o
 %---------------------------------------------------------------------
 \subsection{Natural Decoding} \label{sec:auto_dec}
 
-Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{x_1, x_2, \ldots, x_r\}$. We will also define the size of automaton $s(A) = n*r$.
+Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{a_1, a_2, \ldots, a_r\}$. We will also define the size of automaton $s(A) = n*r$.
 
 We now turn to the binary approach of transition function $\delta^{'}$ described in the figure~\ref{fig:ttable_bin}. Notice that each table for symbol $x_l$ for $l = 1,2, \dots, r$ has exactly $n$ rows. Furthermore, we can easily decode each $row_{x_l, i}$ into a natural number. Let $j$ be the index of occurrence of digit $1$ in the $row_{x_l, i}$. The natural number $j$ will then be a decoding of $row_{x_l, i}$. Decoding of a single table will be a vector of $n$ natural numbers. Notice that the first element of such vector will correspond to the transition of initial state. Now the last objective of representing the automaton is to combine all vectors, each corresponding to transition table for symbol $x_{l}$. We simply append all vectors in order of the symbols' enumeration. The entire proceeder is illustrated in figure~\ref{fig:encoding}. Firstly, in figures~\ref{fig:encoding_a} and~\ref{fig:encoding_b} we see decoding of transition tables for symbols $a$ and $b$ respectively. Finally the figure~\ref{fig:encoding_both} shows entire decoding of automaton $A$. We will call such decoding a direct or natural decoding of automaton with binary transition function.
 
@@ -476,7 +476,7 @@ The first step of transformation process will include transforming each feature 
 
 Having the interval conveniently normalized, we can now easily define the transformation of a single feature to a symbol by partitioning the intervals into $r$ sub-intervals: $x_1, x_2,\ldots,x_r$. We can now easily translate feature $c_i \in x_{j}$ by assigning the corresponding symbol $a_{j}$.
 
-Formally the transformation of a single feature is defined by the follow equation:
+Formally the transformation of a single feature is defined as follows:
 
 \begin{equation*}
 c_i \featureTransformationSymbol{\Sigma}
@@ -1065,7 +1065,7 @@ In each of the two categories, 4 functions based on the common classifier qualit
     \item F-Measure Fitness
 \end{itemize}
 
-The Fitness function must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to automaton, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
+The fitness function must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to automaton, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1076,21 +1076,43 @@ Given the input set of classes, the first step is to transform each class into a
 
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
+%%%%%%%%%%%
+% WH
 
-Experiments were conducted on two sets of data, native and foreign. Native set consisted of 10 classes with 900 elements in each class. Foreign contained 9000 elements and all have been considered as one big class. The example of data set is pictured in the figure~\ref{fig:native_foreign_png}. Finally, each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing to calculate quality of the classifier.
+%Experiment is done on vectors of features, vectors represent images.
+%Mapping from the set of images to the space of features to be described.
 
-The experiments are divided into two main categories: multi class and two class problems. In the former one, all native classes are considered individually. In the latter, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Additionally, the multi class problem is tested for different number of classes.
+% WH/
+%%%%%%%%%%
 
-The four distinct fitness functions were used in the multi class problem. Similarly the two class problem was experimented using indistinct fitness functions. All experiments have been repeated $3$ and the results were averaged.
+%%%%%%%%%%%
+% WH
 
-Further, similarity of languages have been calculated to potentially determine a correspondence with classifier quality on different alphabet sizes. Finally, the state configurations have been tested.
+%- features vectors: are given by supervisor and cannot be used without written permission for any aim other than this thesis, put this information in footer
 
-\begin{figure}
+% WH/
+%%%%%%%%%%
+
+The datasets of vectors of features were constructed based on the MNIST database of handwritten digits~\cite{digits_db}. Sample of the original images is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out. The vector of features were constructed by extracting features from these images. All vectors contained $24$ features.
+
+The native dataset contained $10$ classes, each representing different handwritten digits. Every class had $900$ vectors of features, totaling $9000$ across all native classes. The foreign data was considered as one class and contained $9000$ vectors of features. Finally each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing set to calculate quality of the classifier.
+
+\begin{figure}[H]
     \includegraphics[width=0.7\textwidth]{./images/native.png}
     \includegraphics[width=0.7\textwidth]{./images/crossedout.png}
     \caption{From the top: Native and Foreign - crossed out digits.}
     \label{fig:native_foreign_png}
 \end{figure}
+
+\section{Transformation}
+
+\section{PSO}
+
+The experiments are divided into two main categories: multi class and two class optimizations. In the former one, all native classes are considered individually. In the two class optimization, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Additionally, the multi class optimization is tested for different number of classes.
+
+The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged.
+
+Further, similarity of languages have been calculated to potentially determine a correspondence with classifier quality on different alphabet sizes. Finally, the state configurations have been tested.
 
 
 %---------------------------------------------------------------
@@ -1127,7 +1149,7 @@ Next experiment included tests with different state configuration. The results a
 
 Final experiment in the multi class optimization, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
 
-The overall quality got worse very quickly by considering $3$ native classes. From that point, the classifier could not correctly classify native elements. However the precision remained relatively stable.
+The overall quality got worse very quickly between $2$ and $3$ native classes. From that point, the classifier could not correctly classify native elements. However the precision remained relatively stable.
 
 In all cases, only the required classes were loaded from both native and foreign data sets, meaning that transformation did not include the entire spectrum of provided feature values. The test merely gives an idea of how many classes can be supported by using the proposed algorithms.
 
@@ -1135,32 +1157,34 @@ In all cases, only the required classes were loaded from both native and foreign
 
 \subsection{Two Class}
 
-We now turn into two class problem, where all native classes are considered one. Hence, all of the quality measures have been calculated accordingly.
-The figure~\ref{fig:fitness_two} presents results for different Fitness Functions. The state and alphabet configurations remains the same as previously. The alphabet size had impact only in the case of Precision Fitness, where again $30$ seemed to yield best result.
+The discussion now turns into two class optimization, where all native classes are considered as one. Hence, all of the quality measures have been calculated accordingly.
+The figure~\ref{fig:fitness_two} presents results for different optimization functions. The state and alphabet configurations remains the same as previously. The alphabet size had impact only in the case of Precision Fitness, where again $30$ seemed to yield the best result.
 
-Accuracy and F-Measure Fitness functions provided decent overall results. Ranging from approximately $0.8$ to $0.9$ for all of the measurements. The F-Measure Fitness provided slightly higher values of sensitivity.
+Accuracy and F-Measure optimizations provided decent overall results. Ranging from approximately $0.8$ to $0.9$ for all of the quality measurements. The F-Measure optimization provided slightly higher values of sensitivity.
 
-The Precision and Sensitivity Fitness functions resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision Fitness is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
+The Precision and Sensitivity optimizations resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision optimization is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
 
 
 \makeFigureFitnessTwo
 
-Finally, as in the case of multi class problem, results for different state configurations are presented in figure~\ref{fig:states_two}. It is clear that the best results were obtained when foreign class took less amount of states. Thus the conclusions is analogical to the previous one.
+Finally, as in the case of multi class optimization, results for different state configurations are presented in figure~\ref{fig:states_two}. Similarly to the case of multi class, the results were best when number of foreign states were equal or smaller than number of native states. Thus the conclusions are analogical to the previous ones.
 
 \makeFigureStatesTwo
 
 \subsection{Conclusion}
 
-Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size.
+Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
 
-The proposed methods did not succeed in identifying native elements in the multi class problem. Although, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class problem: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
+The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
 
-Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original elements.
+Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original feature vectors.
 
 Since the classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
 
 Furthermore, the state configuration should be subjected to more experiments.
 It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
+
+%It was observed that by increasing number of corresponding foreign states, the precision value would become lower.
 
 
 %
@@ -1412,8 +1436,6 @@ As one could image, because of simplicity of the interface, there is nothing fan
 
 
 
-
-
 %---------------------------------------------------------------
 \begin{thebibliography}{1}
     
@@ -1451,6 +1473,16 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     \bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
     
+    \bibitem{digits_db}LeCun, Y., Cortes, C., Burges, C.: The MNIST database of handwritten digits (1996). http://yann.lecun.com/exdb/mnist/
 \end{thebibliography}
+
+
+
+\newpage
+\chapter*{Footer}
+{\bf Legal:} The vectors of features used in this thesis are given by the supervisor and cannot be used without written permission for any aim other than this thesis.
+\newpage
+
+
 \makestatement
 \end{document}
