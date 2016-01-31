@@ -66,6 +66,7 @@
 
 \chapter*{Work Devision}
 
+
 \abstract
 YOLO english
 
@@ -1132,7 +1133,7 @@ On the other hand, second set fixes number of symbol in alphabet to 6 and presen
 
 %---------------------------------------------------------------
 \chapter{Implementation} \label{chap:domain}
-The more detailed implementation of the entire project is presented here.
+The structure of the entire project is presented here.
 The project has been built by dividing each module into a separate shared library which is loaded dynamically to the executable application during run time. The libraries can be considered to be divided into two groups: essential to the thesis research and utility libraries which are used across multiple modules. The executable application encapsulates all libraries in order to run experiments defined throughout the thesis.
 
 %---------------------------------------------------------------
@@ -1172,7 +1173,7 @@ All the libraries and their dependencies are presented in figure~\ref{fig:lib_de
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/dependencies.png}
+    \includegraphics[width=0.9\textwidth]{../uml/dependencies.png}
     \caption{Dependencies of libraries}
     \label{fig:lib_dependencies}
 \end{figure}
@@ -1279,7 +1280,11 @@ The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAPa
 %---------------------------------------------------------------
 \subsection{Classifier Constructor}
 
-The Classifier Constructor encapsulates libraries to create a classifier. The simplified process is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started for the chosen optimization algorithm. User can provide values for all the settings in the application.
+The {\bf Classifier Constructor} uses all the libraries in order to conduct experiments. All of the settings can be provided by the user in a form of flags when starting the application.
+
+The application is split into two experiments: Classification based on PSO heuristics and Transformation Analysis. The Transformation Analysis experiment is an encapsulation of the {\bf Transformation} library.
+
+The simplified process of Classification experiment is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started.
 
 \begin{figure}[H]
     \centering
@@ -1289,6 +1294,10 @@ The Classifier Constructor encapsulates libraries to create a classifier. The si
 \end{figure}
 
 
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Hill Climber}
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Graphical User Interface}
