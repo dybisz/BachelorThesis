@@ -18,13 +18,16 @@ using namespace transformation;
 
 namespace classification_experiment
 {
+    /*
+     * Starts classification experiments.
+     * All of the settings are taken from application settings.
+     */
     void runClassification();
 
     PSOFactory getPSOFactory(vector<Language*>* native,
                              vector<Language*>* foreign);
 
-    Classifier* getClassifier(PSO* pso,
-                              transformation::TransformedLanguages& languages);
+    Classifier* getClassifier(PSO* pso, TransformedLanguages& languages);
 
     void setUpStateCorrespondence(TransformedLanguages& languages);
 

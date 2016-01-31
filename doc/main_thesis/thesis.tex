@@ -1132,23 +1132,23 @@ On the other hand, second set fixes number of symbol in alphabet to 6 and presen
 
 %---------------------------------------------------------------
 \chapter{Implementation} \label{chap:domain}
-The more detailed implementation information is presented in this appendix.
-The entire project has been built by dividing each module into a separate shared library which are loaded dynamically to the executable application during run time. The libraries can be considered as two groups: libraries essential to the thesis research and utility libraries which are used across multiple modules.
+The more detailed implementation of the entire project is presented here.
+The project has been built by dividing each module into a separate shared library which is loaded dynamically to the executable application during run time. The libraries can be considered to be divided into two groups: essential to the thesis research and utility libraries which are used across multiple modules. The executable application encapsulates all libraries in order to run experiments defined throughout the thesis.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Libraries}
 
-All of the libraries has been made by the authors of the thesis with exception to one, namely the Excel Format. This library has been presented in \cite{excel_format}. It is worth mentioning that this library outputs warnings during compilation process. Although the usage of this library has been thoroughly tested.
+All of the libraries has been made by the authors of the thesis with exception to one, namely the Excel Format~\cite{excel_format}. It is worth mentioning that this library outputs warnings during compilation process. Although the usage of this library has been thoroughly tested.
 
-All of the libraries are listed and briefly explained. Then, the dependencies graph between them is presented. Lastly, the implementation details of essential modules are given in a form of class and state diagrams.
+All of the libraries are listed and briefly explained. Then, the dependencies graph between them is presented. Lastly, the essential modules overview is given in a form of class and state diagrams.
 
 \begin{itemize}
     \item Essential
     \begin{itemize}
         \item {\bf Automata and Languages (ATL).} Provides data structures and algorithms related to automata, languages and words.
         \item {\bf Pattern Recognition.} Data structures for pattern recognition objects: Class, Feature Vector. Provides implementation for loading raw feature vector data.
-        \item {\bf Transformation.} Used in the process of transformation between Pattern Recognition Classes and Languages.
+        \item {\bf Transformation.} Used in the process of transformation between Pattern Recognition Classes and Languages. Provides tools for transformation analysis.
         \item {\bf Classifier.} Provides Classifier construction algorithm and derived PSO classes needed for optimizing the Classifier.
         \item {\bf Classifier Quality.} Provides functions for classifier quality measures: accuracy, precision, sensitivity and f--measure
         \item {\bf Particle Swarm Optimization (PSO).} Data structures, interfaces and algorithm for the general PSO. Does not provide the specific optimization for automata implementation.
@@ -1235,25 +1235,58 @@ The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a sin
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\subsection{Classifier}
-
+\subsection{Transformation}
+Transformation library contains two modules: {\bf Transformation} and {\bf Transformation Analysis}. State diagram of transformation is shown in figure~\ref{fig:transform_state}. For input classes, interval of each feature must be calculated. Then the features are normalized and corresponding symbols are assigned to make up a word. All transformed words from respective class make up a language.
 
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classifier_pso_classes.png}
+    \includegraphics[width=0.8\textwidth]{../uml/transformation_state.png}
+    \caption{Transformation state diagram}
+    \label{fig:transform_state}
+\end{figure}
+
+The {\bf Transformation Analysis} process is illustrated in figure~\ref{fig:transform_analysis_state}. The classes are transformed to languages and similarity is computed for each pair. Then all the similarities are averaged and output as result. This process is to be repeated for different alphabet sizes.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../uml/transform_analysis_state.png}
+    \caption{Transformation Analysis state diagram.}
+    \label{fig:transform_analysis_state}
+\end{figure}
+
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Classifier}
+
+The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAParticleDecoder} derives from the PSO interface and implements the solution for DFA decoding. Similarly, all 8 fitness functions are implemented in derived {\bf FitnessUpdaters}. For simplicity, only two of the fitness functions are illustrated in the graph.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../uml/classifier_pso_classes.png}
     \caption{Classifier Library.}
     \label{fig:classifier_pso_classes}
 \end{figure}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\section{Applications}
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Classifier Constructor}
+
+The Classifier Constructor encapsulates libraries to create a classifier. The simplified process is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started for the chosen optimization algorithm. User can provide values for all the settings in the application.
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1.0\textwidth]{../uml/classification_state.png}
-    \caption{Classification process.}
+    \includegraphics[width=0.8\textwidth]{../uml/classification_state.png}
+    \caption{Constructing Classifier state diagram.}
     \label{fig:classification_states}
 \end{figure}
-
-
-
 
 
 %---------------------------------------------------------------

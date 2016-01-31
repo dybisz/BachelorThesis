@@ -8,9 +8,17 @@
 #include <class.h>
 
 namespace experiments {
+
+    /*
+     * All native languages are considered individually.
+     */
     void runTransformationAnalysis();
 
-    void runTransformationNativeVersusForeign();
+    /*
+     * All native languages are considered to be one big langauges.
+     * The transformation analysis is then run against Native vs Foreign
+     */
+    void runTransformationAnalysisNativeVersusForeign();
 
     Class combineClasses(vector<Class*>* classes, int label);
 }
