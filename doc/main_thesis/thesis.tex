@@ -183,7 +183,7 @@ Table~\ref{fig:ttable_std} shows an exmaple transition table for the standard tr
 \end{figure}
 
 
-The binary representation of automaton might perhaps provide more adequate solution for a computer. Thus a new transition function is defined, $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$. It simply provides an answer whether there exists a transition between two states for a given symbol. For example, by looking at figure~\ref{fig:ttable_std} we can define value for $\delta^{'}(q^-,a,q^0) = 1$, since there exists a transition from $q^-$ to $q^0$ through symbol $a$. The entire automaton is presented in figure~\ref{fig:ttable_bin}.
+The binary representation of automaton might perhaps provide more adequate solution for a computer. Thus a new transition function is defined, $\delta^{'}: Q \times \Sigma \times Q \rightarrow \{0,1\}$. It simply provides an answer whether there exists a transition between two states for a given symbol. For example, by looking at figure~\ref{fig:ttable_std} we can define value for $\delta^{'}(q^-,a,q_0) = 1$, since there exists a transition from $q^-$ to $q_0$ through symbol $a$. The entire automaton is presented in figure~\ref{fig:ttable_bin}.
 
 
 %%%
@@ -258,7 +258,7 @@ It is important to note that to preserve determinism, there must exist exactly o
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\subsection{Decoding} \label{sec:auto_dec}
+\subsection{Natural Decoding} \label{sec:auto_dec}
 
 Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{x_1, x_2, \ldots, x_r\}$. We will also define the size of automaton $s(A) = n*r$.
 
@@ -759,14 +759,14 @@ Finally, building a proper classifier will be equivalent to creating an Classifi
 %---------------------------------------------------------------
 \chapter{Particle Swarm Optimization}\label{chap:pso}
 
-In the Particle Swarm Optimization (PSO), originated by Eberhart and Kennedy in~\cite{pso_origin}, we look for optimal solution of the problem in the solution space. 
+The Particle Swarm Optimization (PSO) is population based stochastic optimization algorithm, originated by Eberhart and Kennedy~\cite{pso_origin}. Swarm of particles fly through the search space in order to find the most optimal solution of a given problem. The particles remember the best found solution and the further search is affected by it.
 
-Each solution is called a particle and it consists of the following fields. First of all, the particle stores $fitness$ value which is evaluated by the fitness function, representing the quality of the solution and the best fitness value computed so far. It also stores the position $X_p$ and velocity vector $V_p$ which lets the particle travel through the solution space. Lastly two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
+Each particle consists of the several fields. The position $X_p$ and velocity vector $V_p$ lets the particle travel through the search space. $Fitness$ value which is evaluated by the fitness function, represents the quality of the solution. The particle also remembers the best fitness value computed so far. Finally, two additional positions called $pbest_p$ and $lbest_p$ are stored. The position in which the particle $p$ reached its best fitness value so far is called $pbest_p$. However, the $lbest_p$ is the position of the best fitness value obtained so far by any other particle in the neighbourhood of particle $p$. The concept of neighbourhood is defined later in this section.
 
-PSO is initialized with random group of particles. It then searches for the optimal solution by updating generations.
-In each iteration $t$, the particles are updated by calculating new fitness and velocity which in turn is applied to update new position of the particle. $X_p(t)$ will denote the position of particle $p$ at time $t$, i.e. the $t$-th iteration. Similarly, the velocity vector is denoted by $V_p(t)$.
+PSO is initialized with random group of particles. It then searches for the optimal solution by updating positions of the particles.
+In each iteration $t$, the particles are updated by calculating potentially new $pbest_p$ and $lbest_p$ positions which affect the change in current velocity of the particle. $X_p(t)$ will denote the position of particle $p$ at time $t$, i.e. the $t$-th iteration. Similarly, the velocity vector is denoted by $V_p(t)$.
 
-Firstly, the general flow of the PSO algorithm is given, then each module is discussed and defined in details.
+Firstly, the general flow of the PSO algorithm is given, then each functionality is discussed and defined in details.
 
 \begin{center}
     
@@ -778,65 +778,40 @@ Firstly, the general flow of the PSO algorithm is given, then each module is dis
             \item Calculate the fitness value, using the fitness function.
             \item Compare the fitness to its best obtained so far, the better value is stored together with $pbest_p$	
             
-            \item Update velocity and position.	
-            
             \item Update neighbourhoods and find $lbest_p$ position.
-        \end{enumerate}		
+            
+            \item Update velocity and position.	
+        \end{enumerate}
         
-        \item Repeat~\ref{itm:pso_iter}. until an ending criterion is met.
-        
+        \item Repeat~\ref{itm:pso_iter}. until maximum number of iterations has been reached.
         
     \end{enumerate}
     
 \end{center}
 
 
-In order to implement PSO for problem of interest, one must provide specific implementation for two major components of the algorithm. The first one is fitness function which optimizes the solution to a certain goal. Moreover, the particle needs to represent an object which can be evaluated in the optimization process. Thus, in each step of the algorithm, particles have to be decoded.
 
-The remaining part of this chapter is devoted to illustrating problems associated with the objective of this study and more importantly, methods of solving these problems.
+%The remaining part of this chapter is devoted to illustrating problems associated with the objective of this study and more importantly, methods of solving these problems.
 
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
-\section{Initialization}
-In order to initialize the PSO algorithm, we must first decide on the size of the swarm (i.e. the number of particles). The swarm will be a static group, meaning that the size will not change through out the computations of a single PSO instance. The size should then be a constant value, in terms of an automaton given at the time. We propose that the size of the swarm should be proportional to the size of the automaton. To be precise, the swarm size is equal to the size of the automaton times a constant $c_P$ called a $population$ factor.
+\section{Swarm Initialization}
+In order to initialize the PSO algorithm, one must first decide on the size of the swarm (i.e. the number of particles). The swarm will be a static group, meaning that the size will not change through out the computations of a single PSO instance.
 
-Further, we must initialize particle's position. Let us recall that the dimension of the search space is defined by the size of an automaton, namely $(n*r)$, where $n$ is the number of states and $r$ is the number of symbols in the alphabet. Each dimension is taking a real value in the range $[0.5, (n+0.5)]$. Thus, we proceed to generate random position in the given range.
+The interval for position of all particles must also be chosen. The interval along with the size of the position will essentially define the search space for the swarm.
 
-The initial velocities will be generated from the range $[-n,n]$. It is also crucial to define a maximum change in position that one particle can take during a single iteration. For this purpose the constant $v_{max}$ is defined that prevents the particle from travelling in any dimension further than $v_{max}$ units. The maximum change is defined by the equation 
-
-\begin{equation}
-    v_{max} = (\frac{n}{2})c_{v}
-\end{equation}
-where $c_{v}$ is a constant $speed$ factor and $v_{max} \leq n$.
-
-In all cases uniform distribution is used for random number generation.
-
-\section{Particle Decoding}
-
-Particle decoding algorithm as an input takes number of states $n$ and number of symbols in the alphabet $r$.
-Solution that the PSO is trying to find is an automaton. Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
-
-The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
+Additionally, it is convenient to define a constant $v_{max}$ which prevents the particle from traveling in any dimension, further than $v_{max}$ distance in a single iteration. If the velocity is not limited, the jumps in position between iterations might be quite big. This can lead particles to avoid a big chunk of the search space.
 
 
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsection{Fitness Function}
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+\section{Neighbourhood}
 
-Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class problem). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class problem: native against foreign.
+The neighbourhoods are updated using a simply algorithm based on star topology.
+For each particle, neighbourhood is created containing itself and $K$ other random particles. Among that neighbourhood the best particle is found which defines the $lbest$ of the particle in interest.
 
-In each of the two categories, 4 functions based on the common classifier quality measures defined in section~\ref{evaluation} are proposed:
-\begin{itemize}
-    \item Accuracy Fitness
-    \item Precision Fitness
-    \item Sensitivity Fitness
-    \item F-Measure Fitness
-\end{itemize}
-
-The PSO must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to DFA, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
-
+The neighbourhoods are updated only when there was no change in global best (among all particles in the swarm) since the last iteration.
 
 
 %---------------------------------------------------------------------
@@ -898,19 +873,9 @@ x_d > x_{max} \Rightarrow x_d = x_{max}
 
 This means that the corresponding dimension of velocity vector $v_d \in V_p$ is zeroed and the position is bound to the edge of the interval.
 
+\section{Applying PSO}
+In order to implement PSO for problem of interest, one must provide specific implementation for two major components of the algorithm. The first one is fitness function which optimizes the solution to a certain goal. The second one is particle representation method allowing to decode the particle into a specific object which can then be used in the fitness function.
 
-%---------------------------------------------------------------------
-%---------------------------------------------------------------------
-\section{Neighbourhood}
-The neighbourhoods are updated using a simply algorithm based on star topology.
-For each particle, neighbourhood is created containing itself and $K$ other random particles. Among that neighbourhood the best particle is found which defines the $lbest$ of the particle in interest.
-
-The neighbourhoods are updated only when there was no change in global best (among all particles in the swarm) since the last iteration.
-
-%---------------------------------------------------------------------
-%---------------------------------------------------------------------
-\section{Ending criteria}
-The computation finishes after $t_{max}$ iterations or after finding a satisfactory solution which is bounded by $F_{max} \in [0,1]$, where value 1 corresponds to trying to find the best automaton.
 
 %---------------------------------------------------------------
 \chapter{Hill Climbing}\label{chap:classification}
@@ -977,7 +942,34 @@ In this chapter, each step of building the classifier is summarized and explicit
 %---------------------------------------------------------------
 \section{PSO for Classification}
 
+Once, the states have been assigned to corresponding languages the process of optimizing the classification automaton can start. Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization.
 
+%---------------------------------------------------------------------
+%---------------------------------------------------------------------
+\subsection{Particle Decoding}
+
+
+Particle decoding algorithm takes as an input number of states $n$ and number of symbols in the alphabet $r$.
+Let us recall that automaton is a system: $A = (Q, \Sigma, \delta, q_0, F)$. In a single PSO instance we assume that a set of states $Q$ and alphabet $\Sigma$ is invariant. 
+
+The position of our particles will be represented by the natural decoding vector of size $n*r$ of an automaton described in section~\ref{sec:auto_dec} with more freedom allowed. Namely, all of the dimensions of the position will take real values in the interval $[0.5, (n+0.5)]$. Whenever we need to encode the automaton back, we simply round up the values, taking the closest integer value. The real number $3.4$ becomes $3$ and $3.5$ becomes 4. Notice that the interval is expanded by the value $0.5$. Such procedure is needed to allow for equal distribution of the first and last states. Namely, the first state will be encoded for values: $[0.5, 1.5]$ and the last state: $[(n-0.5), (n+0.5)]$.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+%---------------------------------------------------------------
+\subsection{Fitness Function}
+
+Fitness function is responsible for optimizing the classification automaton. In order to experiment with different optimization methods, 8 fitness functions have been proposed. The functions are split into two categories: distinct and indistinct. The former one optimizes the classifier to identify between native classes individually (i.e. multi class problem). The indistinct one, considers native classes as one big class, and thus it treats the optimization as two class problem: native against foreign.
+
+In each of the two categories, 4 functions based on the common classifier quality measures defined in section~\ref{evaluation} are proposed:
+\begin{itemize}
+    \item Accuracy Fitness
+    \item Precision Fitness
+    \item Sensitivity Fitness
+    \item F-Measure Fitness
+\end{itemize}
+
+The Fitness function must also be provided with the transformed languages and state correspondence. That is, it must know which state must correspond to a specific language. Then at each iteration, after the particle is decoded to automaton, all words are to be computed by the automaton and checked against the state correspondence. then the above measures will calculate the fitness value based on the classification quality. The higher the value of these measures, the better is the solution defined by the particle.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1337,14 +1329,9 @@ As one could image, because of simplicity of the interface, there is nothing fan
     %\bibitem{pso_anal}
     %Maurice Clerc. Stagnation analysis in particle swarm optimization or what happens when nothing happens, http://hal.archives-ouvertes.fr/hal-00122031. Technical report, 2006.
 
-    
-    
     \bibitem{pso_bias} 
     William M. Spears, Derek T. Green and Diana F. Spears. Biases in particle swarm optimization. International Journal of Swarm Intelligence Research, 1(2):34-57, 2010.
-    
-    
-    
-    
+
     \bibitem{pso_11}
     M. Clerc. (2011). Standard Particle Swarm Optimisation Available: http://hal.archives-ouvertes.fr/hal-00764996 
     
