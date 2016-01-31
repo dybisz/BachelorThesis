@@ -898,6 +898,7 @@ The hill-climbing search algorithms, also known as 1+1 evolutionary strategies \
 Choosing Hill Climber (HC) as an alternative to previously described Particle Swarm Optimization (PSO), was mainly driven by a desire of comparison between sophisticated heuristic and something more straight forward. Previous optimization method assumed rather convoluted process of finding solution, whereas HC is based on small and easy steps which gradually leads to (hopefully) optimal solution. As an evidence, one could consider lack of crossover operators. When in PSO constant change between real valued and DFA spaces was mandatory, Hill Climber performs all computations in the latter one. By few operations and data structures one can find fairly good (in terms of classifying) solutions in reasonable time. 
 
 % General steps of hill climbers
+\section{Basic Model}
 Pseudo code listed as Algorithm \ref{algo:hc_general}, presents general process of Hill Climbing. Notation includes generic names to depicts the idea itself, rather than dive into some specific implementation. User is asked to specify two values: starting state $s$ and number of steps $n$. When the latter one is obvious, $s$ constitutes problem-related, starting configuration e.g. it can be opening positions of queens on chessboard in 8-queens problem or matrix representation of a graph for Traveling Salesman Problem. Then in lines 2 and 3, one can observe initialization process of two variables: $i$ (step counter) and $current$ (present state holder). Of course $current$ takes value of $s$ to force the procedure to start from a desired state. Core part of the algorithm is based on $while$ loop, which ends either when number of steps has been passed (line 4) or there is no neighbor with higher objective function around (line 6,7). \textsc{OBJ-FUNCTION} (objective function) resembles another abstract and problem-related procedure, which measures quality of a given state. As an example one can take beforementioned Traveling Salesman Problem, where objective function could result in specifying a route length for its input. 
 
 \begin{algorithm}[H]
@@ -905,7 +906,7 @@ Pseudo code listed as Algorithm \ref{algo:hc_general}, presents general process 
     \SetKwInOut{Output}{Output}
     \Input{Starting state $s$, number of steps $n$}
     \Output{Local optimum state.}
-    \underline{function HILL-CLIMBING} $(s, n)$\;
+    \underline{function HILL-CLIMBING-BASIC} $(s, n)$\;
     $i = 0$ \\
     $current = s$ \\
     \While{$i < n$}
@@ -924,9 +925,97 @@ Pseudo code listed as Algorithm \ref{algo:hc_general}, presents general process 
 \end{algorithm}
 
 % Problems in state vs objective function space
-It can be easily seen, that general model of HC is rather a basic one due to process of "giving up" when there is no better solution around. One can distinguish common topographic features in a searching space, which via they shapes, prevent general Hill Climbing procedure to achieve global optimum. To preserve transparent and abstract approach, figure ?? treats state space as a one dimensional one. In addition any fluctuation of the graph correspond to values of objective function for a given state.
+It can be easily seen, that general model of HC is rather a basic one due to process of "giving up" when there is no better solution around. One can distinguish common topographic features in a searching space, which via they shapes, prevent general Hill Climbing procedure to achieve global optimum. To preserve transparent and abstract approach, figure \ref{fig:state_space} treats state space as a one dimensional. In addition any fluctuation of the graph correspond to values of objective function for a given state. 
 
-% Representing DFA 
+\begin{wrapfigure}{l}{0.5\textwidth}
+  \begin{flushleft}
+     \includegraphics[width=1\textwidth]{./images/hp_landscape.png} 
+  \end{flushleft}
+  \label{fig:state_space}
+  \caption{Landscape of state space.}
+\end{wrapfigure}
+
+Obviously, considering landscape presented on the image, global maximum is the place we want our travel to finish. One can easily spot that reaching the highest summit is simply impossible from various points on the landscape. As an example let us assume we are starting our journey from the origin. After short climbing HC would reach local maxima and stuck there due to lack of neighbors with higher values of objective function. Another example would be visiting the shoulder. At the very beginning of the ledge, algorithm would assume that there is no better neighbor (only ones with the same values) and would prevent further climbing to the global maxima. It is worth to notice that both, shoulder and flat local maximum, are often called plateaux, which corresponds to an area of the state space landscape where the evaluation function is flat \cite{hc_3}.
+
+\section{Improving Basic Model} \label{sec:improving basic model}
+% Improved HC
+Most of the problems presented in the previous section can be easily omitted. Algorithm \ref{algo:hc_improved}, although at first glance similar to Algorithm \ref{algo:hc_general}, tackles the issues very effectively. 
+
+First difference that can be easily spotted are randomly generated neighbors. They are normally drawn from the states space with uniform probability distribution and constitutes efficient way to escape from local optima. Let us consider figure \ref{fig:state_space} once again. As mentioned before, assuming that HC reached local maximum, algorithm in basic model would end. But this is not a case in the improved version, where HC could pick up random neighbor (e.g. from the slope of global maximum) with higher value of objective function and continue the computations. In this way we are only limited to a number of steps i.e. there is no way to get out of the \textsc{while} loop different than using up all steps. Such approach actually introduces new problem - when one is dealing with large multidimensional states space, there might be a lot of steps needed to even a little bit elevate objective function. 
+
+Second improvement deals with plateaux. It simply assumes that when considered neighbor has the same (or higher) value as a current state, then we mark the neighbor as a current state and continue. In this way, Hill Climbing would travel across e.g. shoulder or flat local maximum. Such movement is often called sideways move. It may be interesting that applying only this improvement (without randomly generated neighbors) to the basic model, could result in infinite loop at flat local maxima. This is because algorithm would travel from one end of the ledge to the other, being limited only by a specified number of steps.
+
+\begin{algorithm}[H]
+    \SetKwInOut{Input}{Input}
+    \SetKwInOut{Output}{Output}
+    \Input{Starting state $s$, number of steps $n$}
+    \Output{Local optimum state.}
+    \underline{function HILL-CLIMBING-IMPROVED} $(s, n)$\;
+    $i = 0$ \\
+    $current = s$ \\
+    \While{$i < n$}
+    {
+    	$neighbor$ $\gets$ randomly generated state, different than $current$ \\
+    	
+    	\If{OBJ-FUNCTION[neighbor] $\geq$ OBJ-FUNCTION[current]}
+    	{
+			$current$ $\gets$ $neighbor$
+   		}
+   		  		
+    }
+    \caption{Improved Hill Climbing Algorithm}
+    \label{algo:hc_improved}
+\end{algorithm}
+
+At the end I would like to devote one paragraph to completeness of described methods. Basic and improved Hill Climbers, in literature called Steepest Ascent and First-Choice, respectively, often fail to find global optima. They usually stuck on local ones or do not have enough steps to find random neighbors with higher values of objective functions. Both of them along with Stochastic Hill Climbing (where uphill move is chosen at random from among all neighbors moves) constitute widely known and used approaches, which are not complete. For HC to become complete, one must consider Random-Restart Hill Climbing. This model conducts series of searches from randomly generates starting states. Obviously it is complete with probability reaching 1, due to the fact that eventually goal state would be generated as an initial one. It is also worth stressing out rather evident observation that success of HC models mostly rely on shape of the states space. In case of few local optima and/or plateaux all of them should find satisfiable solutions very quickly. 
+
+
+\section{Hill Climbing and Automata}
+
+Following work is greatly based on [??], where authors present how to adapt hill climbing to work in Deterministic Finite Automata space and introduce some novel way for states labeling. This section will present general idea of a HC model in DFA space, skipping some unimportant (at this stage) details. What is more, we will use (presented in section \ref{sec:improving basic model}) Improved Basic Model, for the sake of simplicity of the implementation.
+
+\begin{wrapfigure}{l}{0.25\textwidth}
+  \begin{center}
+    \includegraphics[width=0.9\textwidth]{./images/hc_auto_1.png}
+  \end{center}
+\end{wrapfigure}
+
+Deterministic Finite Automata in case of hill climbing will be represented by two arrays:
+\begin{itemize}
+  \item Transition Table - classic one: state versus symbols; figure ??.
+  \item State Correspondence - which represents states labeling, needed for further classification process. For simple two class problem, it would mark each state as either accepting or rejecting one. 
+\end{itemize}
+
+For the quick reminder let me present an example of automata with accompanying data structures.On Figure \ref{wrap:DFA_EXAMPLE} one can see simple DFA with one accepting state. After short investigation, it becomes obvious that it accepts only words which are either starting from letter $a$ or it as a second letter. Example of such words could be: $a$, $aa$, $aba$ or $babb$. Corresponding transition table can be seen on figure ??. As mentioned before, each entry defines a next state for two input values: current state (row) and input symbol (column). In this way all transitions of the machine can be coded. Last but not least one can observe state correspondence array (figure ??). It defines $Q3$ as a accepting state, and rest as a rejecting ones. It of course follows the original automaton. 
+
+\begin{figure}[H]
+\RawFloats
+\centering
+\begin{minipage}{.4\textwidth}
+\centering
+  \includegraphics[width=0.8\textwidth]{./images/hc_automata.png}
+\caption{Caption for figure 1}
+\label{fig:test1}
+\end{minipage}\hfill
+\begin{minipage}{.25\textwidth}
+\centering
+  \includegraphics[width=0.8\textwidth]{./images/hc_tt_normal.png}
+\caption{Caption for figure 2}
+\label{fig:test2}
+\end{minipage}\hfill
+\begin{minipage}{.25\textwidth}
+\centering
+  \includegraphics[width=0.8\textwidth]{./images/hc_state_corr.png}
+\caption{Caption for figure 3}
+\label{fig:test3}
+\end{minipage}
+\end{figure}
+
+Combination of both, transition table and state correspondence array constitutes good candidate for a  hill climbing's state space. In this case each of possible combination is a single state in a search problem.  bla bla bla  
+
+As states in section ??, state space must represent searching space of considered problem. Since we are dealing with Deterministic Finite Automata, natural choice is using combination of transition table and state correspondence array.
+
+% Representing DFA  hc_tt_normal
 % Representing mutator operator 
 % Representing Fitness Function
 % Smart States
