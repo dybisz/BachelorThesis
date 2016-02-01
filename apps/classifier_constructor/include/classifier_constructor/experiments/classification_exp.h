@@ -16,6 +16,10 @@
 
 using namespace transformation;
 
+/*
+ * Provides functionality for classification experiments.
+ * All the settings used come from the application settings
+ */
 namespace classification_experiment
 {
     /*

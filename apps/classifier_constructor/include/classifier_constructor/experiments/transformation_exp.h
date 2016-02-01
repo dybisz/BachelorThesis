@@ -7,6 +7,9 @@
 
 #include <class.h>
 
+/*
+ * Provides functionality for Transformation Analysis
+ */
 namespace experiments {
 
     /*

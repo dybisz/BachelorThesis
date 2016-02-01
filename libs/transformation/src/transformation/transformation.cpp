@@ -212,7 +212,6 @@ vector<Word*> transformation::_produceWordsFromPattern(Class *pPattern,
     vector<Word*> words;
     // Get features
     vector<FeaturesVector *> *features = pPattern->getFeatures();
-    // TODO create method for getting number of features
     int numberOfFeatures = pPattern->getVector(0)->size();
 
     // Convert each features vector to word

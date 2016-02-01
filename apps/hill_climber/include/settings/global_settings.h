@@ -71,9 +71,7 @@ namespace settings {
     extern std::string WORDS_PATH;
     // Maximum iterations of PSO algorithm
     extern int MAX_ITER;
-    // TODO comment
     extern double LEARNING_FACTOR;
-    // TODO comment
     extern double PARTICLE_VEL_WEIGHT;
 
     // When encoding particle back to automaton

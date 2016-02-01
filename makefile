@@ -2,7 +2,9 @@
 # SETTINGS
 #--------------------------------------------
 
-INSTALL_ROOT_PATH=$(shell pwd)
+PROJECT_NAME=fapr
+
+INSTALL_ROOT_PATH=$(shell pwd)/${PROJECT_NAME}
 INSTALL_LIB_ROOT_PATH := ${INSTALL_ROOT_PATH}/dependencies
 
 #--------------------------------------------

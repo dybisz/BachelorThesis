@@ -48,7 +48,6 @@ int main(int argc, char *argv[]) {
     // Choose experiment
     switch (settings::EXPERIMENT_ID) {
         case 0:
-            //classification_experiment::runClassification();
             classification_experiment::runClassification();
             break;
         case 1:

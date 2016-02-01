@@ -33,7 +33,6 @@ namespace settings {
 
     /*
      * Prints all the settings.
-     * TODO Do it automatically.
      */
     void printClassifierSettings();
 }

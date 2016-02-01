@@ -47,7 +47,7 @@ FeaturesVector *Class::getVector(unsigned int i) {
 double Class::getFeatureMin(int i) {
     double min = INT32_MAX;
     for (auto iter = _features.begin(); iter != _features.end(); ++iter) {
-        double value = (*(*iter))[i]; // TODO check if correct
+        double value = (*(*iter))[i];
         if (value < min) min = value;
     }
     return min;
@@ -56,7 +56,7 @@ double Class::getFeatureMin(int i) {
 double Class::getFeatureMax(int i) {
     double max = INT32_MIN;
     for (auto iter = _features.begin(); iter != _features.end(); ++iter) {
-        double value = (*(*iter))[i]; // TODO check if correct
+        double value = (*(*iter))[i];
         if (value > max) max = value;
     }
     return max;
