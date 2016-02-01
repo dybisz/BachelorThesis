@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 
-MAIN_DIR_LOG="./logs/KUBA_3_ALT"
-DIR_LOG="KUBA_3_ALT"
+MAIN_DIR_LOG="./logs/ALPHABET_TEST"
+DIR_LOG="ALPHABET_TEST"
 
 mkdir -p ${MAIN_DIR_LOG}
 
@@ -18,27 +18,33 @@ MAX_ITER=5000
 #################
 ##### WORDS #####
 #################
-ENTRY_WORDS_COUNT=3
-WORDS[0]=250
-WORDS[1]=500
-WORDS[2]=750
+WORDS=250
 
 ###################
 ##### CLASSES #####
 ###################
-CLASSES=10
+CLASSES=4
 
 ###################
 ##### STATES ######
 ###################
 ENTRY_COUNT_STATES=1
-STATES[0]=40
+STATES[0]=30
 
 ####################
 ##### ALPHABET #####
 ####################
-ENTRY_COUNT_ALPHABET=1
-ALPHABET[0]=30
+ENTRY_COUNT_ALPHABET=10
+ALPHABET[0]=2
+ALPHABET[1]=3
+ALPHABET[2]=4
+ALPHABET[3]=8
+ALPHABET[4]=12
+ALPHABET[5]=16
+ALPHABET[6]=20
+ALPHABET[7]=24
+ALPHABET[8]=30
+ALPHABET[9]=40
 
 ###################
 ##### NATIVES #####
@@ -62,8 +68,7 @@ FOREIGN_XLS_PATH[0]="../../../../resources/digits/Foreigns_CrossedOut.xls"
 # |- $2: Alphabet Size
 # |- $3: Foreign Xls
 # |- $4: Directory Name
-# |- $5: Words
-# |- $6: Classes
+# |- $5: Number of classes
 #
 run_optimizer(){
     echo "---------------------"
@@ -74,8 +79,6 @@ run_optimizer(){
     echo "Native Path : " ${NATIVE_XLS_PATH}
     echo "Foreign Path : " $3
     echo "DIR Path : " $4
-    echo "WORDS : " $5
-    echo "CLASSES : " $6
     echo "---------------------"
 
     ../../bin/hcc -E 1 \
@@ -85,8 +88,8 @@ run_optimizer(){
         -N ${NATIVE_XLS_PATH} \
         -F $3 \
         -H $1 \
-        -U $6 \
-        -u $5 \
+        -U $5 \
+        -u ${WORDS} \
         -A $2
 
 }
@@ -94,10 +97,8 @@ run_optimizer(){
 for (( p=0; p<${ENTRY_COUNT_FOREIGN_XLS_PATH}; p++ )) do
     for (( states=0; states<${ENTRY_COUNT_STATES}; states++ )) do
             for ((a=0; a < ${ENTRY_COUNT_ALPHABET}; a++)) do
-                for ((w=0; w < ${ENTRY_WORDS_COUNT}; w++)) do
-                    for ((c=1; c <= ${CLASSES}; c++)) do
-                        run_optimizer ${STATES[$states]} ${ALPHABET[$a]} ${FOREIGN_XLS_PATH[$p]} "${DIR_LOG}_${DIR_SUB_NAME[fpath]}_w${WORDS[$w]}_a${ALPHABET[$a]}_s${STATES[$s]}" $WORDS[$w] $c
-                    done
+                for((c=1; c <= ${CLASSES}; c++)) do
+                    run_optimizer ${STATES[$states]} ${ALPHABET[$a]} ${FOREIGN_XLS_PATH[$p]} "${DIR_LOG}_${DIR_SUB_NAME[fpath]}_w${WORDS}_a${ALPHATBET[$a]}_c${c}" ${c}
                 done
             done
     done
