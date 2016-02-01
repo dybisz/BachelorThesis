@@ -560,7 +560,7 @@ f_2 = [ c_{21} \; c_{22} \; \cdots \; c_{2m}] \\
 f_n = [ c_{n1} \; c_{n2} \; \cdots \; c_{nm}] 
 \end{align*}
 
-where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$ 
+where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$
 
 Since each feature from $C$ can take values from different intervals we decided to normalize all of them. There are two functions which will be useful in this process:
 \begin{align*}
@@ -593,7 +593,7 @@ a_{|\Sigma|} , \; c_{ij} \in \langle |\Sigma| -1, |\Sigma|  \rangle\;
 \end{cases})
 \end{equation}
 
-for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $Code : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. 
+for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $Code : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$.
 
 Now by performing:
 \begin{equation}
@@ -1164,6 +1164,11 @@ The process of building classifier
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
+\section{Transformation Analysis}
+Even before choosing heuristic method, one must choose 
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
 \section{PSO for Classification}
 
 Once, the states have been assigned to corresponding languages the process of optimizing the classification automaton can start. Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization.
@@ -1203,7 +1208,7 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Building the Classifier}\label{sec:classification_transf_step}
-Given the input set of classes, the first step is to transform each class into a language. Transformation step also includes choosing number of symbols in the alphabet, which in the case of this study, was selected empirically. The transformation analysis was the tool 
+Given the input set of classes, the first step is to transform each class into a language. Transformation step also includes choosing number of symbols in the alphabet, which in the case of this study, was selected empirically. The transformation analysis was the tool
 
 
 
@@ -1306,20 +1311,6 @@ Finally, as in the case of multi class optimization, results for different state
 
 \makeFigureStatesTwo
 
-\subsection{Conclusion}
-
-Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
-
-The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
-
-Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original feature vectors.
-
-Since the classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
-
-Furthermore, the state configuration should be subjected to more experiments.
-It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
-
-%It was observed that by increasing number of corresponding foreign states, the precision value would become lower.
 
 \pagebreak
 %
@@ -1359,6 +1350,22 @@ First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed
 
 Second test (figure \ref{fig:states_two_hc}) is a two class version of one presented on figure~\ref{fig:states_multiHC} and constitutes test for HC with fixed alphabet and different number of states. The results are again no match for PSO in two class version. As in the previous one all measures were significantly elevated but not to the extent of being good classifier.
 \makeFigureStatesTwoHC
+
+
+\section{Conclusion}
+
+Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
+
+The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
+
+Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original feature vectors.
+
+Since the classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
+
+Furthermore, the state configuration should be subjected to more experiments.
+It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
+
+%It was observed that by increasing number of corresponding foreign states, the precision value would become lower.
 
 \appendix\label{appendix_a}
 
@@ -1589,8 +1596,6 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     \bibitem{digits_db}LeCun, Y., Cortes, C., Burges, C.: The MNIST database of handwritten digits (1996). http://yann.lecun.com/exdb/mnist/
     \bibitem{hc_4}S.M. Lucas and T.J. Reynolds, “Learning DFA: Evolution versus Evidence Driven State Merging,” Proc. Congress Evolutionary Computation, pp. 351-358, 2003.
-    
-    \bibitem{handwritten_digits_intro} Subset of the MNIST Database, found on http://sujitpal.blogspot.com/2014/07/handwritten-digit-recognition-with.html
 
 \end{thebibliography}
 
