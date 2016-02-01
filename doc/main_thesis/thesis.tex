@@ -297,7 +297,7 @@ It is important to note that to preserve determinism, there must exist exactly o
 
 Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{a_1, a_2, \ldots, a_r\}$. We will also define the size of automaton $s(A) = n*r$.
 
-We now turn to the binary approach of transition function $\delta^{'}$ described in the figure~\ref{fig:ttable_bin}. Notice that each table for symbol $x_l$ for $l = 1,2, \dots, r$ has exactly $n$ rows. Furthermore, we can easily decode each $row_{x_l, i}$ into a natural number. Let $j$ be the index of occurrence of digit $1$ in the $row_{x_l, i}$. The natural number $j$ will then be a decoding of $row_{x_l, i}$. Decoding of a single table will be a vector of $n$ natural numbers. Notice that the first element of such vector will correspond to the transition of initial state. Now the last objective of representing the automaton is to combine all vectors, each corresponding to transition table for symbol $x_{l}$. We simply append all vectors in order of the symbols' enumeration. The entire proceeder is illustrated in figure~\ref{fig:encoding}. Firstly, in figures~\ref{fig:encoding_a} and~\ref{fig:encoding_b} we see decoding of transition tables for symbols $a$ and $b$ respectively. Finally the figure~\ref{fig:encoding_both} shows entire decoding of automaton $A$. We will call such decoding a direct or natural decoding of automaton with binary transition function.
+We now turn to the binary approach of transition function $\delta^{'}$ described in the figure~\ref{fig:ttable_bin}. Notice that each table for symbol $a_l$ for $l = 1,2, \dots, r$ has exactly $n$ rows. Furthermore, we can easily decode each $row_{a_l, i}$ into a natural number. Let $j$ be the index of occurrence of digit $1$ in the $row_{a_l, i}$. The natural number $j$ will then be a decoding of $row_{a_l, i}$. Decoding of a single table will be a vector of $n$ natural numbers. Notice that the first element of such vector will correspond to the transition of initial state. Now the last objective of representing the automaton is to combine all vectors, each corresponding to transition table for symbol $a_{l}$. We simply append all vectors in order of the symbols' enumeration. The entire proceeder is illustrated in figure~\ref{fig:encoding}. Firstly, in figures~\ref{fig:encoding_a} and~\ref{fig:encoding_b} we see decoding of transition tables for symbols $a$ and $b$ respectively. Finally the figure~\ref{fig:encoding_both} shows entire decoding of automaton $A$. We will call such decoding a direct or natural decoding of automaton with binary transition function.
 
 %%%
 %
@@ -645,7 +645,7 @@ It is important to consider words that do not fall into any of the transformed l
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\subsection{Transformation Precision}\label{sec:lan_theory_transf_prec}
+\subsection{Transformation Analysis}\label{sec:lan_theory_transf_prec}
 
 Notice that the length of constructed word is equal to the size of feature vector. However, more importantly, the size of alphabet contributes in the accuracy of how well the word actually defines its corresponding feature vector. Consider the worst case scenario in which the alphabet contains only one symbol, $\Sigma=\{a\}$. Thus, transforming any feature vector $f$ of length $n$ will create the same word: $f \featureTransformationWord{\Sigma} w = a^{n}$
 
@@ -1166,18 +1166,16 @@ Additional conditional statement is called at line 15, checking if any of calcul
 
 In this chapter, each step of building the classifier is summarized and explicitly described.
 
-The process of building classifier 
-
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Transformation Analysis}
-Even before choosing heuristic method, one must choose 
+Even before selecting heuristic method, one must choose the alphabet size for transformation process. The transformation analysis will help in determining the optimal alphabet size. In this thesis the analysis was conducted separately from classifier construction and thus the alphabet was chosen empirically.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{PSO for Classification}
-
-Once, the states have been assigned to corresponding languages the process of optimizing the classification automaton can start. Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization.
+ 
+Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization. Finally, PSO requires the selection of states which will correspond to languages. The correspondence is to be selected empirically. 
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -1210,12 +1208,6 @@ The fitness function must also be provided with the transformed languages and st
 %---------------------------------------------------------------
 \section{HC for Classification}
 There is no further work needed - Hill Climber, as described in section \ref{sec:hc_automata__} can be ad hoc used as a classifier. It accepts as its input set of training words and via algorithm, described in details in subsection \ref{subsec:algo_hc__}, builds and returns proper representation of a Deterministic Finite Automata. Such a DFA constitutes a classifier.
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Building the Classifier}\label{sec:classification_transf_step}
-Given the input set of classes, the first step is to transform each class into a language. Transformation step also includes choosing number of symbols in the alphabet, which in the case of this study, was selected empirically. The transformation analysis was the tool
-
 
 
 %---------------------------------------------------------------
@@ -1277,7 +1269,7 @@ All of the similarities have been averaged and shown in figure~\ref{fig:lang_sim
 
 \section{PSO}
 
-Results of classifier construction based on PSO is presented in this section.
+Results of classifier construction based on PSO is presented in this section. The results for multi class optimization is shown first, then the discussion turns to two class.
 
 \subsection{Multi Class}
 
@@ -1285,13 +1277,17 @@ The figure~\ref{fig:fitness_multi} shows results of the multi class classifier f
 
 In all four cases, the classifier did not manage to correctly recognize between native elements, hence the low sensitivity values. Moreover, the accuracy was bellow $0.5$ across all test cases. 
 
+\makeFigureFitnessMulti
+
 In the case of Accuracy Fitness based optimization the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision based optimization, had very similar results. Finally, the Sensitivity and F-Measure optimizations constructed extremely low quality classifier.
 
-\makeFigureFitnessMulti
 
 Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy based optimization was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
 
+
 \makeFigureStateConfigurationMulti
+
+\makeFigurePSOClasses
 
 Final experiment in the multi class optimization, tested the behavior of the classifier on different number of classes. In figure~\ref{fig:pso_classes} shows results of constructing classifiers with different number of included classes. In all cases, native classes corresponded to $2$ states and foreign had always as many as all natives combined. The alphabet size was fixed at $30$.
 
@@ -1299,7 +1295,7 @@ The overall quality got worse very quickly between $2$ and $3$ native classes. F
 
 In all cases, only the required classes were loaded from both native and foreign data sets, meaning that transformation did not include the entire spectrum of provided feature values. The test merely gives an idea of how many classes can be supported by using the proposed algorithms.
 
-\makeFigurePSOClasses
+
 
 \subsection{Two Class} \label{subsec:pso_two_class}
 
@@ -1311,10 +1307,9 @@ Accuracy and F-Measure optimizations provided decent overall results. Ranging fr
 The Precision and Sensitivity optimizations resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision optimization is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
 
 
-\makeFigureFitnessTwo
-
 Finally, as in the case of multi class optimization, results for different state configurations are presented in figure~\ref{fig:states_two}. Similarly to the case of multi class, the results were best when number of foreign states were equal or smaller than number of native states. Thus the conclusions are analogical to the previous ones.
 
+\makeFigureFitnessTwo
 \makeFigureStatesTwo
 
 
@@ -1357,7 +1352,6 @@ First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed
 
 Second test (figure \ref{fig:states_two_hc}) is a two class version of one presented on figure~\ref{fig:states_multiHC}. As before it assumes fixed alphabet and different number of states. The results are again no match for PSO in two class version. As in the previous one, all measures were significantly elevated but not to the extent of being good classifier.
 \makeFigureStatesTwoHC
-
 
 \section{Conclusion}
 
@@ -1425,6 +1419,7 @@ All the libraries and their dependencies are presented in figure~\ref{fig:lib_de
     \label{fig:lib_dependencies}
 \end{figure}
 
+\newpage
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1433,7 +1428,7 @@ All the libraries and their dependencies are presented in figure~\ref{fig:lib_de
 
 The PSO library provides interface for implementing optimizations for any problem of interest. The class overview is presented in figure~\ref{fig:lib_pso_classes}. The {\bf PSO} class is responsible for gathering all modules and running computations. {\bf FitnessUpdater, ParticleUpdater and NeighbourhoodUpdater} are pure abstracted classes providing interface for respective part of the algorithm. {\bf FitnessUpdater} calculates and updates fitness values of each particle. {\bf ParticleUpdater} is responsible for updating particle's position and velocity. Finally, {\bf NeighbourhoodUpdater} updates the neighbourhoods and finds lbest value for each particle. {\bf ParticleDecoder} is responsible for decoding the {\bf PSOObject} which is later used in {\bf FitnessUpdater} to evaluate the fitness value. In order to optimize a specific object, one must derive it from {\bf PSOObject} and the decoding method must be implemented in derived {\bf ParticleDecoder}. Finally {\bf ParticleUpdaterSpherical} and {\bf NBStarTopology} provide implementations of algorithms explained in chapter~\ref{chap:pso}.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{../uml/pso_classes.png}
     \caption{Particle Swarm Optimization Library. Classes Association}
@@ -1442,9 +1437,9 @@ The PSO library provides interface for implementing optimizations for any proble
 
 The PSO has been implemented using parallel CPU algorithm. The state diagram showing details of computations process is shown in figure~\ref{fig:lib_pso_states}. Since each particle can be computed independently, PSO can be easily parallelized. Each thread is assigned interval of particle indices for which it is responsible for. Simply thread synchronization between each step of the iteration is executed. The {\bf Parallel } library is used for the multi threaded functionality.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{../uml/pso_state.jpg}
+    \includegraphics[width=0.9\textwidth]{../uml/pso_state.jpg}
     \caption{Particle Swarm Optimization Library. State diagram of the algorithm }
     \label{fig:lib_pso_states}
 \end{figure}
@@ -1458,7 +1453,7 @@ The PSO has been implemented using parallel CPU algorithm. The state diagram sho
 {\bf DFA} or Deterministic Finite Automaton, takes a {\bf Word} as an input and computes which {\bf State} it finishes in. {\bf TransitionFunction} allows for setting and getting transition for specific configurations. {\bf Language} class, contains also corresponding states which are used in the classification process. In that case {\bf Language} is considered to be a label and states are checked against all languages in order to classify a word to one of the languages. The classes are shown in figure~\ref{fig:lib_atl}.
 
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=1.0\textwidth]{../uml/atl.png}
     \caption{Automata and Languages Library. Classes Association}
@@ -1473,7 +1468,7 @@ The PSO has been implemented using parallel CPU algorithm. The state diagram sho
 
 The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a single {\bf Label} and possibly many {\bf FeatureVectors}. {\bf XLSLoader} is used to load Classes from excel files.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{../uml/pt.png}
     \caption{Pattern Recognition Library. Classes Association}
@@ -1487,7 +1482,7 @@ The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a sin
 Transformation library contains two modules: {\bf Transformation} and {\bf Transformation Analysis}. State diagram of transformation is shown in figure~\ref{fig:transform_state}. For input classes, interval of each feature must be calculated. Then the features are normalized and corresponding symbols are assigned to make up a word. All transformed words from respective class make up a language.
 
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{../uml/transformation_state.png}
     \caption{Transformation state diagram}
@@ -1496,7 +1491,7 @@ Transformation library contains two modules: {\bf Transformation} and {\bf Trans
 
 The {\bf Transformation Analysis} process is illustrated in figure~\ref{fig:transform_analysis_state}. The classes are transformed to languages and similarity is computed for each pair. Then all the similarities are averaged and output as result. This process is to be repeated for different alphabet sizes.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{../uml/transform_analysis_state.png}
     \caption{Transformation Analysis state diagram.}
@@ -1511,7 +1506,7 @@ The {\bf Transformation Analysis} process is illustrated in figure~\ref{fig:tran
 
 The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAParticleDecoder} derives from the PSO interface and implements the solution for DFA decoding. Similarly, all 8 fitness functions are implemented in derived {\bf FitnessUpdaters}. For simplicity, only two of the fitness functions are illustrated in the graph.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{../uml/classifier_pso_classes.png}
     \caption{Classifier Library.}
@@ -1531,12 +1526,14 @@ The {\bf Classifier Constructor} uses all the libraries in order to conduct expe
 
 The simplified process of Classification experiment is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{../uml/classification_state.png}
+    \includegraphics[width=0.6\textwidth]{../uml/classification_state.png}
     \caption{Constructing Classifier state diagram.}
     \label{fig:classification_states}
 \end{figure}
+
+\newpage
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1604,7 +1601,10 @@ As one could image, because of simplicity of the interface, there is nothing fan
     \bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
     
     \bibitem{digits_db}LeCun, Y., Cortes, C., Burges, C.: The MNIST database of handwritten digits (1996). http://yann.lecun.com/exdb/mnist/
+    
     \bibitem{hc_4}S.M. Lucas and T.J. Reynolds, “Learning DFA: Evolution versus Evidence Driven State Merging,” Proc. Congress Evolutionary Computation, pp. 351-358, 2003.
+    
+    \bibitem{handwritten_digits_intro} Subset of the MNIST Database, found on http://sujitpal.blogspot.com/2014/07/handwritten-digit-recognition-with.html
 
 \end{thebibliography}
 
