@@ -46,7 +46,8 @@ namespace classification_experiment
                                          vector<Language *> *foreignLanguages,
                                          std::string info);
 
-    void printStateCorrespondence(std::vector<Language *>* langauges);
+    void printStateCorrespondence(std::vector<Language *>* langauges,
+                                  std::string info);
 
 
 }

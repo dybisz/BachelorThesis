@@ -186,7 +186,7 @@ INCLUDES +=
 # Use '-static' for static libraries
 # Use '-shared' for shared libraries
 L_FLAGS +=
-C_FLAGS += -g -Wall -std=c++11
+C_FLAGS += -g -std=c++11
 NVCC_FLAGS += -arch=sm_20
 
 #----------------- PRINT OUTS -----------------#
