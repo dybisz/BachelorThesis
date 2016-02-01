@@ -1,0 +1,5 @@
+The following commmand installs the entire project:
+
+    make install INSTALL_ROOT_PATH=/path/to/installation/
+
+INSTALL_ROOT_PATH can be omitted and default "./" directory will be used.

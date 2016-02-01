@@ -111,10 +111,21 @@ EXTERNALS_RULE_NAME=externals
 #--------------------------------------------------------------------#
 ######################################################################
 
-INSTALL_ROOT_PATH := $(shell pwd)
-
 PROJECT_ROOT = ..
 PATH_TO_CONFIGS = ${PROJECT_ROOT}/make
+
+INSTALL_ROOT_PATH := $(shell pwd)/${PROJECT_ROOT}/../..
+
+# Path to directory containing
+# common external libs in custom directory
+EXTERNAL_LIBS_PATH=${INSTALL_ROOT_PATH}/dependencies
+RELATIVE_EXTERNAL_LIBS_PATH=../dependencies
+
+EXTERNAL_LIBS_INCLUDE_PATH=${EXTERNAL_LIBS_PATH}/include
+EXTERNAL_LIBS_LIB_PATH=${EXTERNAL_LIBS_PATH}/lib
+
+RELATIVE_EXTERNAL_LIBS_INCLUDE_PATH=${RELATIVE_EXTERNAL_LIBS_PATH}/include
+RELATIVE_EXTERNAL_LIBS_LIB_PATH=${RELATIVE_EXTERNAL_LIBS_PATH}/lib
 
 # Include make configurations
 include ${PATH_TO_CONFIGS}/proj_config.sh
@@ -123,11 +134,11 @@ include ${PATH_TO_CONFIGS}/compiler_config.sh
 include ${PATH_TO_CONFIGS}/make_external_config.sh
 
 # Get runners scripts handles
-RUN_INSTALL_SCRIPT:=${PATH_TO_CONFIGS}/run_install.sh
+RUN_INSTALL_SCRIPT:=${PATH_TO_CONFIGS}/run_install.sh -i=${INSTALL_ROOT_PATH}
 RUN_RELEASE_SCRIPT:=${PATH_TO_CONFIGS}/run_release.sh
 LIB_NAME_SCRIPT:=${PATH_TO_CONFIGS}/lib_name.sh
 
-RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh
+RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh -i=${EXTERNAL_LIBS_PATH}
 
 ######################################################################
 #--------------------------------1-----------------------------------#
@@ -138,11 +149,6 @@ RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh
 ######################################################################
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
-
-# Path to directory containing
-# common external libs in custom directory
-EXTERNAL_LIBS_INCLUDE_PATH=${PROJECT_ROOT}/../../dependencies/include
-EXTERNAL_LIBS_LIB_PATH=${PROJECT_ROOT}/../../dependencies/lib
 
 #--------------- FILE EXTENSIONS --------------#
 
@@ -212,6 +218,9 @@ SRC_MODULES = $(shell find ${SRC} -type d 2>/dev/null)
 EXTERNAL_LIBS_INCLUDE_MODULES=$(addprefix -I ,\
 $(shell find ${EXTERNAL_LIBS_INCLUDE_PATH} -maxdepth 1 -type d 2>/dev/null))
 
+RELATVE_EXTERNAL_LIBS_INCLUDE_MODULES=$(addprefix -I ,\
+$(shell find ${RELATIVE_EXTERNAL_LIBS_INCLUDE_PATH} -maxdepth 1 -type d 2>/dev/null))
+
 # All Lib modules to include
 LIB_INC_MODULES = $(addprefix -I , $(shell find ${LIB} -type d 2>/dev/null))
 
@@ -239,22 +248,37 @@ LIB_LINK_RPATH = $(addprefix ${LD_SHARED_PATH_FLAG} , $(LIB_MODULES))
 
 # Adds each module in lib folder to search for libs
 EXTERNAL_LIB_MODULES = \
-$(shell find ${INSTALL_ROOT_PATH}/${EXTERNAL_LIBS_LIB_PATH} -type d 2>/dev/null)
+$(shell find ${EXTERNAL_LIBS_LIB_PATH} -type d 2>/dev/null)
+
+RELATIVE_EXTERNAL_LIB_MODULES = \
+$(shell find ${RELATIVE_EXTERNAL_LIBS_LIB_PATH} -type d 2>/dev/null)
 
 # Add link flag to all LIB_MODULES
 EXTERNAL_LIB_LINK_MODULES = \
 $(addprefix -L , $(EXTERNAL_LIB_MODULES))
 
+# Add link flag to all LIB_MODULES
+RELATIVE_EXTERNAL_LIB_LINK_MODULES = \
+$(addprefix -L , $(RELATIVE_EXTERNAL_LIB_MODULES))
+
 # The paths to all shared libraries
 EXTERNAL_LIB_LINK_RPATH = \
 $(addprefix ${LD_SHARED_PATH_FLAG} , $(EXTERNAL_LIB_MODULES))
 
+# The paths to all shared libraries
+RELATIVE_EXTERNAL_LIB_LINK_RPATH = \
+$(addprefix ${LD_SHARED_PATH_FLAG} , $(RELATIVE_EXTERNAL_LIB_MODULES))
+
 #----------------- LIBS / INCLUDES -----------------#
 
 LIBS += ${LIB_LINK_MODULES} ${LIB_LINK_RPATH} \
-		${EXTERNAL_LIB_LINK_MODULES} ${EXTERNAL_LIB_LINK_RPATH}
+		${EXTERNAL_LIB_LINK_MODULES} ${EXTERNAL_LIB_LINK_RPATH}\
+		${RELATIVE_EXTERNAL_LIB_LINK_MODULES} \
+		${RELATIVE_EXTERNAL_LIB_LINK_RPATH}
 
-INCLUDES += -I ${INC} ${LIB_INC_MODULES} ${EXTERNAL_LIBS_INCLUDE_MODULES}
+INCLUDES += -I ${INC} ${LIB_INC_MODULES} \
+		${EXTERNAL_LIBS_INCLUDE_MODULES} \
+		${RELATIVE_EXTERNAL_LIBS_INCLUDE_MODULES}
 
 #----------------- COMPILER FLAGS -----------------#
 
@@ -300,14 +324,15 @@ link: info_prefix init_project ${PROJ_CODE_NAME} info_suffix
 
 link_without_test: compile_objects link compile_test
 
-${INSTALL_RULE_NAME}:
+${INSTALL_RULE_NAME}: all
+	@$(RUN_INSTALL_SCRIPT)
 
 compile_test:
 	@$(MAKE) link -C $(TST)
 
 # Unit Test rule, assumes that $(TST) has a makefile inside
 run_test:
-	@$(MAKE) -C $(TST)
+	@$(MAKE) INSTALL_ROOT_PATH=${EXTERNAL_LIBS_PATH} -C $(TST)
 
 ################################################
 #--------------- LINKER / COMPILER ------------#
@@ -340,7 +365,7 @@ ${OBJ}/%.o: %${CUDA_EXT}
 ################################################
 
 ${EXTERNALS_RULE_NAME}:
-	@echo
+	@echo ${INSTALL_ROOT_PATH}
 	@echo "Starting Externals"
 	@echo
 	@$(RUN_MAKE_EXTERNAL_SCRIPT)
