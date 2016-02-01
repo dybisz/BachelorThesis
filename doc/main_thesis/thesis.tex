@@ -291,7 +291,7 @@ It is important to note that to preserve determinism, there must exist exactly o
 
 Let us denote the number of states by $n = |Q|$, and number of symbols in alphabet by $r = |\Sigma|$. Further, we shall enumerate all states 	$Q = \{q_1, q_2, \ldots, q_n\}$, and all the symbols in the alphabet 	$\Sigma = \{a_1, a_2, \ldots, a_r\}$. We will also define the size of automaton $s(A) = n*r$.
 
-We now turn to the binary approach of transition function $\delta^{'}$ described in the figure~\ref{fig:ttable_bin}. Notice that each table for symbol $x_l$ for $l = 1,2, \dots, r$ has exactly $n$ rows. Furthermore, we can easily decode each $row_{x_l, i}$ into a natural number. Let $j$ be the index of occurrence of digit $1$ in the $row_{x_l, i}$. The natural number $j$ will then be a decoding of $row_{x_l, i}$. Decoding of a single table will be a vector of $n$ natural numbers. Notice that the first element of such vector will correspond to the transition of initial state. Now the last objective of representing the automaton is to combine all vectors, each corresponding to transition table for symbol $x_{l}$. We simply append all vectors in order of the symbols' enumeration. The entire proceeder is illustrated in figure~\ref{fig:encoding}. Firstly, in figures~\ref{fig:encoding_a} and~\ref{fig:encoding_b} we see decoding of transition tables for symbols $a$ and $b$ respectively. Finally the figure~\ref{fig:encoding_both} shows entire decoding of automaton $A$. We will call such decoding a direct or natural decoding of automaton with binary transition function.
+We now turn to the binary approach of transition function $\delta^{'}$ described in the figure~\ref{fig:ttable_bin}. Notice that each table for symbol $a_l$ for $l = 1,2, \dots, r$ has exactly $n$ rows. Furthermore, we can easily decode each $row_{a_l, i}$ into a natural number. Let $j$ be the index of occurrence of digit $1$ in the $row_{a_l, i}$. The natural number $j$ will then be a decoding of $row_{a_l, i}$. Decoding of a single table will be a vector of $n$ natural numbers. Notice that the first element of such vector will correspond to the transition of initial state. Now the last objective of representing the automaton is to combine all vectors, each corresponding to transition table for symbol $a_{l}$. We simply append all vectors in order of the symbols' enumeration. The entire proceeder is illustrated in figure~\ref{fig:encoding}. Firstly, in figures~\ref{fig:encoding_a} and~\ref{fig:encoding_b} we see decoding of transition tables for symbols $a$ and $b$ respectively. Finally the figure~\ref{fig:encoding_both} shows entire decoding of automaton $A$. We will call such decoding a direct or natural decoding of automaton with binary transition function.
 
 %%%
 %
@@ -639,7 +639,7 @@ It is important to consider words that do not fall into any of the transformed l
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 %---------------------------------------------------------------
-\subsection{Transformation Precision}\label{sec:lan_theory_transf_prec}
+\subsection{Transformation Analysis}\label{sec:lan_theory_transf_prec}
 
 Notice that the length of constructed word is equal to the size of feature vector. However, more importantly, the size of alphabet contributes in the accuracy of how well the word actually defines its corresponding feature vector. Consider the worst case scenario in which the alphabet contains only one symbol, $\Sigma=\{a\}$. Thus, transforming any feature vector $f$ of length $n$ will create the same word: $f \featureTransformationWord{\Sigma} w = a^{n}$
 
@@ -1160,18 +1160,16 @@ Additional conditional statement is called at line 15, checking if any of calcul
 
 In this chapter, each step of building the classifier is summarized and explicitly described.
 
-The process of building classifier 
-
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Transformation Analysis}
-Even before choosing heuristic method, one must choose 
+Even before selecting heuristic method, one must choose the alphabet size for transformation process. The transformation analysis will help in determining the optimal alphabet size. In this thesis the analysis was conducted separately from classifier construction and thus the alphabet was chosen empirically.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{PSO for Classification}
-
-Once, the states have been assigned to corresponding languages the process of optimizing the classification automaton can start. Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization.
+ 
+Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization. Finally, PSO requires the selection of states which will correspond to languages. The correspondence is to be selected empirically. 
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -1204,12 +1202,6 @@ The fitness function must also be provided with the transformed languages and st
 %---------------------------------------------------------------
 \section{HC for Classification}
 There is no further work needed - Hill Climber, as described in section \ref{sec:hc_automata__} can be ad hoc used as a classifier. It accepts as its input set of training words and via algorithm, described in details in subsection \ref{subsec:algo_hc__}, builds and returns proper representation of a Deterministic Finite Automata. Such a DFA constitutes a classifier.
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\section{Building the Classifier}\label{sec:classification_transf_step}
-Given the input set of classes, the first step is to transform each class into a language. Transformation step also includes choosing number of symbols in the alphabet, which in the case of this study, was selected empirically. The transformation analysis was the tool
-
 
 
 %---------------------------------------------------------------
@@ -1350,7 +1342,6 @@ First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed
 
 Second test (figure \ref{fig:states_two_hc}) is a two class version of one presented on figure~\ref{fig:states_multiHC} and constitutes test for HC with fixed alphabet and different number of states. The results are again no match for PSO in two class version. As in the previous one all measures were significantly elevated but not to the extent of being good classifier.
 \makeFigureStatesTwoHC
-
 
 \section{Conclusion}
 
@@ -1595,7 +1586,10 @@ As one could image, because of simplicity of the interface, there is nothing fan
     \bibitem{hc_3} Russel, S. J., Norvig, P. (2003). Artificial intelligence: a modern approach. Upper Saddle River, N.J., Prentice Hall/Pearson Education.
     
     \bibitem{digits_db}LeCun, Y., Cortes, C., Burges, C.: The MNIST database of handwritten digits (1996). http://yann.lecun.com/exdb/mnist/
+    
     \bibitem{hc_4}S.M. Lucas and T.J. Reynolds, “Learning DFA: Evolution versus Evidence Driven State Merging,” Proc. Congress Evolutionary Computation, pp. 351-358, 2003.
+    
+    \bibitem{handwritten_digits_intro} Subset of the MNIST Database, found on http://sujitpal.blogspot.com/2014/07/handwritten-digit-recognition-with.html
 
 \end{thebibliography}
 
