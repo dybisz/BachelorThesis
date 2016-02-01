@@ -12,7 +12,6 @@
 
 using namespace std;
 
-
 struct Backup {
     int index;
     int state;
@@ -22,7 +21,6 @@ class AlternativeClassifier {
 public:
     static int FOREIGN_LABEL;
 
-    // Constructor compatible with PSO-based classifier
     AlternativeClassifier(vector<Language *> *nativePatterns,
                           vector<Language *> *foreignPatterns,
                           unsigned int states,
@@ -34,11 +32,6 @@ public:
     void compute();
 
 private:
-    //FRIEND_TEST(AlternativeClassifierTest, Loaded_Parameters_Check);
-    //FRIEND_TEST(AlternativeClassifierTest, Allocate_Transition_Table);
-    //FRIEND_TEST(AlternativeClassifierTest, Allocate_Smart_State_Table);
-    //FRIEND_TEST(AlternativeClassifierTest, Compute);
-
     vector<Language *> *_nativeTrainingSet;
     vector<Language *> *_foreignTrainingSet;
     vector<Language *> *_nativeTestingSet;
@@ -56,14 +49,12 @@ private:
     Backup _ttOrigin;
     DFA* _dfa;
     int numberOfLinesToReset = 0;
-    // MAP BUSINESS
+
     void _allocateLabeledWordsMap(vector<Language *> *pNativePatterns,
                                   vector<Language *> *pForeignPatterns,
                                   int &wordsNum, int &labelNum);
     double _totalCompuationalTime = 0;
     void _assignWordsToLabel(int label, vector<Word *> *pWords);
-
-    // TT BUSINESS
     void _allocateTransitionTable(int nStates, int nSymbols);
 
     void _allocateSmartStateTable(int wordsNum, int labelNum);
