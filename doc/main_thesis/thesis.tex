@@ -378,7 +378,7 @@ Those pixels can be though of as a vector of length 400, where entries are value
   \begin{center}
     \includegraphics[width=0.7\textwidth]{images/handwritten_digits_example.png}
   \end{center}
-  \caption{Example of $20 \times 20$ handwritten digits.}
+  \caption{Example of $20 \times 20$ handwritten digits \cite{handwritten_digits_intro}.}
   \label{fig:handwritten_ex}
 \end{wrapfigure}
 
@@ -546,7 +546,7 @@ First of all let us assume that file has been already loaded and we are provided
 
 \[ F = \{ f_1 , f_2, \cdots , f_n \} \]
 
-, where each $f_i \in \mathbb{R}^{1 \times m}$, for $i \in \langle 1,n \rangle$.
+where each $f_i \in \mathbb{R}^{1 \times m}$, for $i \in \langle 1,n \rangle$.
 Next we assume that set of $m$ features 
 
 \[ C = \{ c_1 , c_2, \cdots , c_m \}\] 
@@ -560,7 +560,7 @@ f_2 = [ c_{21} \; c_{22} \; \cdots \; c_{2m}] \\
 f_n = [ c_{n1} \; c_{n2} \; \cdots \; c_{nm}] 
 \end{align*}
 
-, where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$ 
+where entries of each vector represents values for consecutive features $c_1, c_2 \cdots , c_m$. We will use $c_{ij }\in f_i$ notation to refer to $j$th element of feature vector $f_i$ 
 
 Since each feature from $C$ can take values from different intervals we decided to normalize all of them. There are two functions which will be useful in this process:
 \begin{align*}
@@ -571,13 +571,13 @@ Given feature $c_j$ for $j \in \langle 1, m \rangle$, they specify upper and low
 
 Recall that $\Sigma$ represents an alphabet. Let us assume that $\Sigma = \{a_1 , a_2, \cdots, a_{|\Sigma|}\}$. Our goal is to hold all values of features vectors in $\langle 0 , |\Sigma| \rangle$ interval. To perform such conversion we will use following operation:
 \begin{equation}
-IntCnv(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} =  \frac{c_{ij} - min(c_{ij})}{max(c_{ij}) - min(c_{ij})} * |\Sigma|)
+Intervals(f_i) \Leftrightarrow (\forall{c_{ij} \in f_i})(c_{ij} =  \frac{c_{ij} - min(c_{ij})}{max(c_{ij}) - min(c_{ij})} * |\Sigma|)
 \end{equation}
 
-, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. Applied to each member of $F$, operation will force all feature vectors entries to be in $\langle 0 , |\Sigma| \rangle$ interval. Since we can easily split this interval to $|\Sigma|$ subintervals:
+for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $Intervals : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. Applied to each member of $F$, operation will force all feature vectors entries to be in $\langle 0 , |\Sigma| \rangle$ interval. Since we can easily split this interval to $|\Sigma|$ subintervals:
 
 \[
-\langle 0 , |\Sigma| \rangle = \overbrace{\langle 0 , 1) \cup \langle 1 , 2 ) \cup \langle 2 , 3 ) \cup \ldots \cup \langle |\Sigma| -2 , |\Sigma| -1 ) \cup \langle |\Sigma| -1, |\Sigma|  \rangle}^{|\Sigma|}
+\langle 0 , |\Sigma| \rangle = \langle 0 , 1) \cup \langle 1 , 2 ) \cup \langle 2 , 3 ) \cup \ldots \cup \langle |\Sigma| -2 , |\Sigma| -1 ) \cup \langle |\Sigma| -1, |\Sigma|  \rangle
 \] 
 
 following coding function can be defined:
@@ -593,11 +593,11 @@ a_{|\Sigma|} , \; c_{ij} \in \langle |\Sigma| -1, |\Sigma|  \rangle\;
 \end{cases})
 \end{equation}
 
-, for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $IntCnv : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. 
+for $i \in \langle 1, n \rangle$,$j \in \langle 1, m \rangle$ and $Code : \mathbb{R}^{1 \times m} \rightarrow \mathbb{R}^{1 \times m}$. 
 
 Now by performing:
 \begin{equation}
-(\forall{f_i \in F})(Code(IntCnv(f_i))
+(\forall{f_i \in F})(Code(Intervals(f_i))
 \end{equation}
 one will convert all features vector to words over $\Sigma$.
 
@@ -1589,6 +1589,8 @@ As one could image, because of simplicity of the interface, there is nothing fan
     
     \bibitem{digits_db}LeCun, Y., Cortes, C., Burges, C.: The MNIST database of handwritten digits (1996). http://yann.lecun.com/exdb/mnist/
     \bibitem{hc_4}S.M. Lucas and T.J. Reynolds, “Learning DFA: Evolution versus Evidence Driven State Merging,” Proc. Congress Evolutionary Computation, pp. 351-358, 2003.
+    
+    \bibitem{handwritten_digits_intro} Subset of the MNIST Database, found on http://sujitpal.blogspot.com/2014/07/handwritten-digit-recognition-with.html
 
 \end{thebibliography}
 
