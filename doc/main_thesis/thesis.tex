@@ -1006,7 +1006,7 @@ Second improvement deals with plateaux. It simply assumes that when considered n
 At the end I would like to devote one paragraph to completeness of described methods. Basic and improved Hill Climbers, in literature called Steepest Ascent and First-Choice, respectively, often fail to find global optima. They usually stuck on local ones or do not have enough steps to find random neighbors with higher values of objective functions. Both of them along with Stochastic Hill Climbing (where uphill move is chosen at random from among all neighbors moves) constitute widely known and used approaches, which are not complete. For HC to become complete, one must consider Random-Restart Hill Climbing. This model conducts series of searches from randomly generates starting states. Obviously it is complete with probability reaching 1, due to the fact that eventually goal state would be generated as an initial one. It is also worth stressing out rather evident observation that success of HC models mostly rely on shape of the states space. In case of few local optima and/or plateaux all of them should find satisfiable solutions very quickly. 
 
 
-\section{Hill Climbing and Automata}
+\section{Hill Climbing and Automata} \label{sec:hc_automata__}
 
 \begin{wrapfigure}[9]{l}[0pt]{0.3\textwidth}
   \begin{center}
@@ -1097,7 +1097,7 @@ F = \frac{\Sigma_{i=1}^{n} max_c h[i][c]}{|T|}
 \end{equation}
 In this way, ratio between number of correctly classified elements of training set and number of all elements of $T$ will be obtained. Obviously $F \in \langle 0 ; 1 \rangle$, and our goal is to obtain $F=1$.
 
-\subsection{Algorithm}
+\subsection{Algorithm} \label{subsec:algo_hc__}
 At this stage we would like to gather previously presented ideas to forge the algorithm itself. Algorithm \ref{algo:hc_finial} represents final scheme of hill climbing with Smart States implementation.
 
 \begin{algorithm}[H]
@@ -1195,6 +1195,11 @@ The fitness function must also be provided with the transformed languages and st
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
+\section{HC for Classification}
+There is no further work needed - Hill Climber, as described in section \ref{sec:hc_automata__} can be ad hoc used as a classifier. It accepts as its input set of training words and via algorithm, described in details in subsection \ref{subsec:algo_hc__}, builds and returns proper representation of a Deterministic Finite Automata. Such a DFA constitutes a classifier.
+
+%---------------------------------------------------------------
+%---------------------------------------------------------------
 \section{Building the Classifier}\label{sec:classification_transf_step}
 Given the input set of classes, the first step is to transform each class into a language. Transformation step also included choosing a proper number of symbols in the alphabet, which was selected empirically with the help of language similarity.
 
@@ -1238,10 +1243,10 @@ Calculating the similarity of languages can potentially determine a correlation 
 
 
 \section{PSO}
-
-
-
 The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
+
+\section{HC}
+Fitness function, described (and referred to as objective function) in section \ref{subsec:obj_func} has been used in both, multi and two class optimization. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
 
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
