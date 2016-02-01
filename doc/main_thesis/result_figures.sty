@@ -200,9 +200,43 @@
             anchor=north,
         }
         ]
-    }%beginGroupPlot
-    
-    \newcommand{\beginGroupPlotFour}[0]{
+}%beginGroupPlot
+
+\newcommand{\beginGroupPlotHC}[0]{
+    \begin{groupplot}[
+        group style={group size= 2 by 2,  vertical sep=50pt},
+        height = 5.5cm,
+        ybar=4*\pgflinewidth,
+        ymin=0,
+        ymax=1,
+        width  = 0.50*\textwidth,
+        enlarge x limits={abs=0.85cm},
+        major x tick style = transparent,
+        ymajorgrids = true,
+        symbolic x coords={
+            r=10,
+            r=30,
+            r=40,
+            A=10,
+            A=30,
+            A=40,
+            S=3p,
+            S=40,
+            S=60,
+            S=80
+        },
+        xtick = data,
+        scaled y ticks = false,
+        legend cell align=center,
+        legend columns=1,
+        legend style={
+            at={(1.25, 0.45)},
+            anchor=north,
+        }
+        ]
+}%beginGroupPlotHC
+
+\newcommand{\beginGroupPlotFour}[0]{
         \begin{groupplot}[
             group style={group size= 2 by 2,  vertical sep=50pt},
             height = 5.5cm, 
@@ -235,7 +269,42 @@
             }
             ]
         }%beginGroupPlot
-    
+
+\newcommand{\beginGroupPlotFourHC}[0]{
+        \begin{groupplot}[
+            group style={group size= 2 by 2,  vertical sep=50pt},
+            height = 5.5cm,
+            ybar=4*\pgflinewidth,
+            ymin=0,
+            ymax=1,
+            width  = 0.65*\textwidth,
+            enlarge x limits={abs=0.85cm},
+            major x tick style = transparent,
+            ymajorgrids = true,
+            symbolic x coords={
+                r=10,
+                r=30,
+                r=40,
+                A=10,
+                A=30,
+                A=40,
+                S=30,
+                S=40,
+                S=60,
+                S=100
+            },
+            xtick = data,
+            scaled y ticks = false,
+            legend cell align=center,
+            legend columns=1,
+            legend style={
+                at={(1.25, 0.45)},
+                anchor=north,
+            }
+            ]
+        }%beginGroupPlot
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Sets legends for Bar plot
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -657,7 +726,7 @@
     }
     ]
 
-    \nextgroupplot[title=Accuracy Distinct Optimization.]
+    \nextgroupplot[title=Fitness Distinct Optimization.]
 
     % ACCURACY
     \addplot[color=rred, very thick] coordinates {
@@ -989,7 +1058,7 @@
     % GROUPPLOT
     %%%%%%%%%%%%%%%%%%%%
 
-    \beginGroupPlot
+    \beginGroupPlotHC
 
     \nextgroupplot[title=Fitness Distinct Optimization,  ylabel=Measure]
     \saveResultsFirst   {0.54}{0.12}{0.73}{0.21} % DONE
@@ -1052,7 +1121,7 @@
 %%%%%%%%
 \newcommand{\makeFigureStateConfigurationMultiHC}{
 \begin{figure}[H]
-    \caption{Multi class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
+    \caption{Multi class optimization. $S$ represents number of states. Alphabet Size 30}
     \label{fig:states_multiHC}
 
     \setPlotStyle
@@ -1062,14 +1131,14 @@
     % GROUPPLOT
     %%%%%%%%%%%%%%%%%%%%
 
-    \beginGroupPlotFour
+    \beginGroupPlotFourHC
 
-    \nextgroupplot[title=Accuracy Distinct Optimization,  ylabel=Measure]
+    \nextgroupplot[title=Fitness Distinct Optimization,  ylabel=Measure]
     \saveResultsFirst   {0.53}{0.07}{0.82}{0.13} % DONE 0.5
     \saveResultsSecond  {0.52}{0.07}{0.76}{0.12} % DONE 1
     \saveResultsThird   {0.50}{0.03}{0.44}{0.06} % DONE 2.0
     \saveResultsFourth  {0.49}{0.06}{0.44}{0.10} % DONE 4.0
-    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+    \addBarPlotFourResults  {S=30}{S=40}{S=60}{S=100}
 
     %%%%%%%%%%%%%%%%%%%%
     % LEGEND
@@ -1153,7 +1222,7 @@
     % GROUPPLOT
     %%%%%%%%%%%%%%%%%%%%
 
-    \beginGroupPlot
+    \beginGroupPlotHC
 
     \nextgroupplot[title=Fitness Distinct Optimization,  ylabel=Measure]
     \saveResultsFirst   {0.69}{0.41}{0.90}{0.57} % DONE
@@ -1216,7 +1285,7 @@
 %%%%%%%%
 \newcommand{\makeFigureStatesTwoHC}{
 \begin{figure}[H]
-    \caption{Two class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
+    \caption{Two class optimization. $S$ represents number of states. Alphabet Size 30}
     \label{fig:states_two_hc}
 
     \setPlotStyle
@@ -1226,14 +1295,14 @@
     % GROUPPLOT
     %%%%%%%%%%%%%%%%%%%%
 
-    \beginGroupPlotFour
+    \beginGroupPlotFourHC
 
-    \nextgroupplot[title=Accuracy Indistinct Optimization. ,ylabel=Measure]
+    \nextgroupplot[title=Fitness Indistinct Optimization. ,ylabel=Measure]
     \saveResultsFirst   {0.62}{0.25}{0.94}{0.40} % DONE
     \saveResultsSecond  {0.66}{0.34}{0.94}{0.50} % DONE
     \saveResultsThird   {0.60}{0.25}{0.86}{0.39} % DONE
     \saveResultsFourth   {0.58}{0.23}{0.76}{0.36} % DONE
-    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
+    \addBarPlotFourResults  {S=30}{S=40}{S=60}{S=100}
 
     %%%%%%%%%%%%%%%%%%%%
     % LEGEND

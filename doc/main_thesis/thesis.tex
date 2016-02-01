@@ -1323,24 +1323,24 @@ Finally, as in the case of multi class optimization, results for different state
 % HILL CLIMBER RESULTS
 %
 \section{Hill Climber}
-This section presents results for building classifier based only on Hill Climber. We were trying to catch all pros and cons of building DFA, rather naively, based on one heuristic with no interference in states structure. 
+This section presents results for building classifier based only on Hill Climbing procedure. We were trying to catch all pros and cons of building DFA, rather naively, based on one heuristic with no interference in states structure. 
 
 \subsection{Multi Class} \label{subsec:multi_class_hc}
-Because we wanted to see how both heuristic works on parameters close to each other, first we will present results of tests similar to ones performed during PSO evaluation. Since Hill Climbing parameters are not significantly different in most cases we were able to succeed.
+Because the aim was to observe how both heuristic works on parameters close to each other, we will present results of tests similar to ones performed during PSO evaluation. Since Hill Climbing parameters are not significantly different - in most cases we were able to successfully designed such tests.
 
 Hill Climbing, in opposite to PSO,  uses only one fitness (objective) function, hence presenting results as e.g. on figure~\ref{fig:fitness_multi} is impossible. Instead we constrain ourselves to the fitness function described in section~\ref{subsec:obj_func}. What is more, in HC model there is no way of specifying number of states corresponding to native and foreign classes. As presented in section \ref{subsec:smart_labeling}, HC labels states dynamically. Only overall number of states can be set.  
 
-Figure~\ref{fig:fitness_multiHC} shows results of Hill Climbing procedure tested against different sizes of the alphabet. Beside first case (alphabet size equal to 10), where it slightly outperforms PSO test related to Accuracy (figure~\ref{fig:fitness_multi}), HC definitely works worse than PSO on alphabet sizes on the level of 30 and 40. Classifiers built using this configuration are not of best quality. Distinguishing between foreign elements is on low level, with rather ordinary Precision. In addition during increasing alphabet size Precision was not changed much. In fact only measures, which dramatically drop their values are F-Measure and Sensitivity.
+Figure~\ref{fig:fitness_multiHC} shows results of Hill Climbing procedure tested against different sizes of the alphabet. Beside first case (alphabet size equal to 10), where it slightly outperforms PSO's Accuracy test (figure~\ref{fig:fitness_multi}), HC definitely works worse than its opponent on alphabet sizes of sizes 30 and 40. Classifiers built using this configuration are not of best quality. Distinguishing between foreign elements is on low level, with rather ordinary Precision. In addition during alphabet size resizing, Precision was not changed much. In fact the only measures, which dramatically drop their values are F-Measure and Sensitivity.
 
 \makeFigureFitnessMultiHC
 
-Next tests were related to ones presented on figure~\ref{fig:states_multi} and concerned fixing alphabet size value equal to 30 and manipulating different ratio between states related to foreign and native elements along with they overall number. Since only last parametrization is possible figure~\ref{fig:states_multiHC} presents results for number of states equal to 30, 40, 60 and 80. Alike previous experiment, Hill Climbing acquired a little bit better results than PSO only in the first case. In general increasing number of states consecutively decreases quality of the classifier. At the level of 60 states, all measures are degraded to values below 0.5. It is worth to notice that in first two cases precision remains on rather high level, while all others present themselves poorly. In particular, sensitivity (hence distinguishing between different native symbols) is just tragic. Classifiers constructed using HC with alphabet of size 30 and many states are pretty useless.
+Next tests were related to ones presented on figure~\ref{fig:states_multi} and assumed: fixing alphabet size to 30, manipulating different ratio between states related to foreign and native elements, manipulating overall number of states. Since only last parametrization is possible, figure~\ref{fig:states_multiHC} presents results for number of states equal to 30, 40, 60 and 80. Alike previous experiment, Hill Climbing acquired a little bit better results than PSO only in the first case. In general increasing number of states consecutively decreases quality of the classifier. At the level of 60 states, all measures are degraded to values below 0.5. It is worth to notice that in first two cases precision remains on rather high level, while all others present themselves poorly. In particular, sensitivity (hence distinguishing between different native symbols) is just tragic. Classifiers constructed using HC with alphabet of size 30 and significantly high number of states are pretty useless.
 
 \makeFigureStateConfigurationMultiHC
 
-Last test in this subsection is closely related to the one from figure~\ref{fig:pso_classes}. It resembles a comparison of results of HC for fixed alphabet size (30), number of states (30) and varying number of classes - from 1 to 10. Figure~\ref{fig:hc_classes} presents obtained results, which are again quite similar to ones calculated during corresponding test for PSO.
+Last test in this subsection is closely related to the one from figure~\ref{fig:pso_classes}. It resembles a comparison of  Hill Climbing results for fixed alphabet size (30), number of states (30) and varying number of classes - from 1 to 10. Figure~\ref{fig:hc_classes} presents obtained results, which are again quite similar to ones calculated during corresponding test for PSO.
 
-First thing one may notice that in fact Hill Climbing never reaches value 1 for all measures. Second thing that is observable at the first glance is that although HC's Precision in the middle part of the diagram (roughly classes 3-7) seems on level lower than for PSO, at the end it tends to grow. This is not the case in the PSO test where it consecutively drops. All other measures are more or less the same as for PSO, with small difference in, although not satisfactory, yet stable Accuracy.
+First thing one may notice that in fact Hill Climbing never reaches value 1 for all measures. Second thing that is observable at the first glance is that although HC's Precision in the middle part of the diagram (roughly classes 3-7) seems lower than for PSO, but at the end it tends to grow. This is not the case in the PSO test, where it consecutively drops. All other measures are more or less the same for both heuristics, with small difference in, although not satisfactory, yet stable HC's Accuracy.
 
 \makeFigureHCClasses
 
@@ -1351,22 +1351,25 @@ First thing one may notice that in fact Hill Climbing never reaches value 1 for 
 \subsection{Two Class} \label{subsec:two_class_hc}
 In this section we will shortly discuss HC in terms of indistinct native symbols. Corresponding subsection \ref{subsec:pso_two_class}, which performed the same tests for PSO heuristic yield great results, whereas Hill Climbing presents average quality.
 
-First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed (40) and alphabet size has been set to: 10, 30 and 40. First of all for sure all measures comparing to the multi class problem are quite higher. One to be noticed in undoubtedly sensitivity, which is even 4 times higher than on figure~\ref{fig:fitness_multiHC}. Still overall results are far worse than in case of PSO.
+First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed (40) and alphabet size has been set to: 10, 30 and 40. First of all, all measures (comparing to the HC's multi class problem) are quite higher. One to be noticed is undoubtedly Sensitivity, which is even 4 times higher than the one presented on figure~\ref{fig:fitness_multiHC}. Still overall results are far worse than in case of Particle Swarm Optimization.
+
 \makeFigureIndistinctHC
 
-Second test (figure \ref{fig:states_two_hc}) is a two class version of one presented on figure~\ref{fig:states_multiHC} and constitutes test for HC with fixed alphabet and different number of states. The results are again no match for PSO in two class version. As in the previous one all measures were significantly elevated but not to the extent of being good classifier.
+Second test (figure \ref{fig:states_two_hc}) is a two class version of one presented on figure~\ref{fig:states_multiHC}. As before it assumes fixed alphabet and different number of states. The results are again no match for PSO in two class version. As in the previous one, all measures were significantly elevated but not to the extent of being good classifier.
 \makeFigureStatesTwoHC
 
 
 \section{Conclusion}
 
-Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of constructed classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
+Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
 
-The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier showed decent accuracy of distinguishing between the two classes.
+The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier based on Particle Swarm Optimization showed decent accuracy of distinguishing between the two classes.
 
 Since the weakest point of constructed classifier was the native elements identification, the further research could aim at improving it. The transformation process can be investigated to establish correspondence between constructed words and original feature vectors.
 
-Since the classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
+Since the PSO-based classifier worked well with fewer number of classes, one could try to group native classes into groups based on their mutual language similarities. Such class reduced model could be used as a preprocessing tool in the element classification process. 
+
+On the other hand, classifier built with Hill Climbing procedure, has similar results for both, multi and two class approaches. Because size of the alphabet was taken to match the one of Particle Swarm Optimization tests, future research could deal with smaller alphabets.
 
 Furthermore, the state configuration should be subjected to more experiments.
 It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
