@@ -86,8 +86,8 @@ namespace classification_experiment {
         language::selectStateCorrespondence(languages.native, languages.foreign,
                                             settings::STATES_PER_NATIVE,
                                             settings::STATES_PER_FOREIGN);
-        printStateCorrespondence(languages.native);
-        printStateCorrespondence(languages.foreign);
+        printStateCorrespondence(languages.native, "Native");
+        printStateCorrespondence(languages.foreign, "Foreign");
     }
 
     TransformedLanguages seperateTestingLanguages(
@@ -106,11 +106,13 @@ namespace classification_experiment {
         return testingLanguages;
     }
 
-    void printStateCorrespondence(std::vector<Language *>* langauges) {
+    void printStateCorrespondence(std::vector<Language *>* langauges,
+                                  std::string info) {
         std::stringstream ss;
         ss << "[STATE CORRESPONDENCE]";
         for (int i = 0; i < langauges->size(); i++) {
-            ss << "\nNative  Lan[" << i << "] ............................... ";
+            ss << "\n" << info <<"  Lan["
+                << i << "] ............................... ";
             ss << (*langauges)[i]->statesToString();
         }
         logger::log(ss.str());
