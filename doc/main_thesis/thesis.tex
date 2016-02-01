@@ -1413,6 +1413,7 @@ All the libraries and their dependencies are presented in figure~\ref{fig:lib_de
     \label{fig:lib_dependencies}
 \end{figure}
 
+\newpage
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
@@ -1421,7 +1422,7 @@ All the libraries and their dependencies are presented in figure~\ref{fig:lib_de
 
 The PSO library provides interface for implementing optimizations for any problem of interest. The class overview is presented in figure~\ref{fig:lib_pso_classes}. The {\bf PSO} class is responsible for gathering all modules and running computations. {\bf FitnessUpdater, ParticleUpdater and NeighbourhoodUpdater} are pure abstracted classes providing interface for respective part of the algorithm. {\bf FitnessUpdater} calculates and updates fitness values of each particle. {\bf ParticleUpdater} is responsible for updating particle's position and velocity. Finally, {\bf NeighbourhoodUpdater} updates the neighbourhoods and finds lbest value for each particle. {\bf ParticleDecoder} is responsible for decoding the {\bf PSOObject} which is later used in {\bf FitnessUpdater} to evaluate the fitness value. In order to optimize a specific object, one must derive it from {\bf PSOObject} and the decoding method must be implemented in derived {\bf ParticleDecoder}. Finally {\bf ParticleUpdaterSpherical} and {\bf NBStarTopology} provide implementations of algorithms explained in chapter~\ref{chap:pso}.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{../uml/pso_classes.png}
     \caption{Particle Swarm Optimization Library. Classes Association}
@@ -1430,9 +1431,9 @@ The PSO library provides interface for implementing optimizations for any proble
 
 The PSO has been implemented using parallel CPU algorithm. The state diagram showing details of computations process is shown in figure~\ref{fig:lib_pso_states}. Since each particle can be computed independently, PSO can be easily parallelized. Each thread is assigned interval of particle indices for which it is responsible for. Simply thread synchronization between each step of the iteration is executed. The {\bf Parallel } library is used for the multi threaded functionality.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=0.7\textwidth]{../uml/pso_state.jpg}
+    \includegraphics[width=0.9\textwidth]{../uml/pso_state.jpg}
     \caption{Particle Swarm Optimization Library. State diagram of the algorithm }
     \label{fig:lib_pso_states}
 \end{figure}
@@ -1446,7 +1447,7 @@ The PSO has been implemented using parallel CPU algorithm. The state diagram sho
 {\bf DFA} or Deterministic Finite Automaton, takes a {\bf Word} as an input and computes which {\bf State} it finishes in. {\bf TransitionFunction} allows for setting and getting transition for specific configurations. {\bf Language} class, contains also corresponding states which are used in the classification process. In that case {\bf Language} is considered to be a label and states are checked against all languages in order to classify a word to one of the languages. The classes are shown in figure~\ref{fig:lib_atl}.
 
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=1.0\textwidth]{../uml/atl.png}
     \caption{Automata and Languages Library. Classes Association}
@@ -1461,7 +1462,7 @@ The PSO has been implemented using parallel CPU algorithm. The state diagram sho
 
 The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a single {\bf Label} and possibly many {\bf FeatureVectors}. {\bf XLSLoader} is used to load Classes from excel files.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.7\textwidth]{../uml/pt.png}
     \caption{Pattern Recognition Library. Classes Association}
@@ -1475,7 +1476,7 @@ The classes are presented in figure~\ref{fig:lib_pt}. {\bf Class} contains a sin
 Transformation library contains two modules: {\bf Transformation} and {\bf Transformation Analysis}. State diagram of transformation is shown in figure~\ref{fig:transform_state}. For input classes, interval of each feature must be calculated. Then the features are normalized and corresponding symbols are assigned to make up a word. All transformed words from respective class make up a language.
 
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{../uml/transformation_state.png}
     \caption{Transformation state diagram}
@@ -1484,7 +1485,7 @@ Transformation library contains two modules: {\bf Transformation} and {\bf Trans
 
 The {\bf Transformation Analysis} process is illustrated in figure~\ref{fig:transform_analysis_state}. The classes are transformed to languages and similarity is computed for each pair. Then all the similarities are averaged and output as result. This process is to be repeated for different alphabet sizes.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{../uml/transform_analysis_state.png}
     \caption{Transformation Analysis state diagram.}
@@ -1499,7 +1500,7 @@ The {\bf Transformation Analysis} process is illustrated in figure~\ref{fig:tran
 
 The classes are shown in figure~\ref{fig:classifier_pso_classes}. The {\bf DFAParticleDecoder} derives from the PSO interface and implements the solution for DFA decoding. Similarly, all 8 fitness functions are implemented in derived {\bf FitnessUpdaters}. For simplicity, only two of the fitness functions are illustrated in the graph.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=0.8\textwidth]{../uml/classifier_pso_classes.png}
     \caption{Classifier Library.}
@@ -1519,12 +1520,14 @@ The {\bf Classifier Constructor} uses all the libraries in order to conduct expe
 
 The simplified process of Classification experiment is presented in figure~\ref{fig:classification_states}. The classes are loaded and transformed to languages. Languages are assigned states based on application settings and then the classifier constructor is started.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
-    \includegraphics[width=0.8\textwidth]{../uml/classification_state.png}
+    \includegraphics[width=0.6\textwidth]{../uml/classification_state.png}
     \caption{Constructing Classifier state diagram.}
     \label{fig:classification_states}
 \end{figure}
+
+\newpage
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
