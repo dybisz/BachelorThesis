@@ -628,300 +628,14 @@
 }
 
 
-%%%
-%
-% HC For different classes
-%
-%%%
-\newcommand{\makeFigureHCClasses}{
-\begin{figure}[H]
-    \caption{Multi class optimization for different number of classes: 1, 2, .., 10. Alphabet Size: 30.}
-    \label{fig:hc_classes}
 
-    \setPlotStyle
-    \begin{tikzpicture}
 
-    \begin{groupplot}[group style={group size= 1 by 3,
-        vertical sep=70pt, horizontal sep=60pt},
-    height=6cm,
-    width=13cm,
-    ylabel=Measure,
-    xtick={1,2,3,4,5,6,7,8,9,10},
-    xlabel=Number of classes,
-    legend cell align=left,
-    legend columns=1,
-    legend style={
-        at={(1.3, 0.0)},
-        anchor=south east,
-        column sep=2ex
-    }
-    ]
 
-    \nextgroupplot[title=Accuracy Distinct Optimization.]
 
-    % ACCURACY
-    \addplot[color=rred, very thick] coordinates {
-        (1, 0.83) % DONE
-        (2, 0.58) % DONE
-        (3, 0.53) % DONE
-        (4, 0.49) % DONE
-        (5, 0.51) % DONE
-        (6, 0.51) % DONE
-        (7, 0.51) % DONE
-        (8, 0.51) % DONE
-        (9, 0.51) % DONE
-        (10, 0.52) % DONE
-    };
-
-    % SENSITIVITY
-    \addplot[color=bblue, very thick] coordinates {
-        (1, 0.88) % DONE
-        (2, 0.48) % DONE
-        (3, 0.24) % DONE
-        (4, 0.22) % DONE
-        (5, 0.14) % DONE
-        (6, 0.11) % DONE
-        (7, 0.077) % DONE
-        (8, 0.07) % DONE
-        (9, 0.08) % DONE
-        (10, 0.07) % DONE
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, very thick] coordinates {
-        (1, 0.81) % DONE
-        (2, 0.6) % DONE
-        (3, 0.57) % DONE
-        (4, 0.48) % DONE
-        (5, 0.55) % DONE
-        (6, 0.53) % DONE
-        (7, 0.59) % DONE
-        (8, 0.56) % DONE
-        (9, 0.60) % DONE
-        (10, 0.74) % DONE
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, very thick] coordinates {
-        (1, 0.84) % DONE
-        (2, 0.53) % DONE
-        (3, 0.34) % DONE
-        (4, 0.30) % DONE
-        (5, 0.23) % DONE
-        (6, 0.18) % DONE
-        (7, 0.14) % DONE
-        (8, 0.12) % DONE
-        (9, 0.15) % DONE
-        (10, 0.13) % DONE
-    };
-
-    \addlegendentry{Accuracy}
-    \addlegendentry{Sensitivity}
-    \addlegendentry{Precision}
-    \addlegendentry{F-Measure}
-
-    \end{groupplot}
-
-    \end{tikzpicture}
-
-\end{figure}
-}
-
-%%%
-%
-% HC For 4 class and different alphabet
-%
-%%%
-\newcommand{\makeFigureHCFourClass}{
-\begin{figure}[H]
-    \caption{Number of native classes: 2; Alphabet size: 2,3,4,8,12,16,20,24,30,40; number of states: 30}
-    \label{fig:hc_four_class_diff_alphabet}
-
-    \setPlotStyle
-    \begin{tikzpicture}
-
-    \begin{groupplot}[group style={group size= 1 by 3,
-        vertical sep=70pt, horizontal sep=60pt},
-    height=6cm,
-    width=13cm,
-    ylabel=Measure,
-    xtick={2,3,4,8,12,16,20,24,30,40},
-    xlabel=Alphabet Size,
-    legend cell align=left,
-    legend columns=1,
-    legend style={
-        at={(1.3, 0.0)},
-        anchor=south east,
-        column sep=2ex
-    }
-    ]
-
-    \nextgroupplot[title=Resizing Alphabet for 2 native classes.]
-
-    % ACCURACY
-    \addplot[color=rred, very thick] coordinates {
-        (2, 0.73) % DONE
-        (3, 0.74) % DONE
-        (4, 0.72) % DONE
-        (8, 0.68) % DONE
-        (12, 0.59) % DONE
-        (16, 0.55) % DONE
-        (20, 0.56) % DONE
-        (24, 0.56) % DONE
-        (30, 0.57) % DONE
-        (40, 0.54) % DONE
-    };
-
-    % SENSITIVITY
-    \addplot[color=bblue, very thick] coordinates {
-        (2, 0.52) % DONE
-        (3, 0.56) % DONE
-        (4, 0.54) % DONE
-        (8, 0.46) % DONE
-        (12, 0.30) % DONE
-        (16, 0.28) % DONE
-        (20, 0.27) % DONE
-        (24, 0.23) % DONE
-        (30, 0.19) % DONE
-        (40, 0.16) % DONE
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, very thick] coordinates {
-        (2, 0.88) % DONE
-        (3, 0.87) % DONE
-        (4, 0.83) % DONE
-        (8, 0.83) % DONE
-        (12, 0.73) % DONE
-        (16, 0.61) % DONE
-        (20, 0.63) % DONE
-        (24, 0.68) % DONE
-        (30, 0.77) % DONE
-        (40, 0.65) % DONE
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, very thick] coordinates {
-        (2, 0.66) % DONE
-        (3, 0.68) % DONE
-        (4, 0.66) % DONE
-        (8, 0.59) % DONE
-        (12, 0.42) % DONE
-        (16, 0.38) % DONE
-        (20, 0.38) % DONE
-        (24, 0.34) % DONE
-        (30, 0.30) % DONE
-        (40, 0.26) % DONE
-    };
-
-    \addlegendentry{Accuracy}
-    \addlegendentry{Sensitivity}
-    \addlegendentry{Precision}
-    \addlegendentry{F-Measure}
-
-    \end{groupplot}
-
-    \end{tikzpicture}
-
-\end{figure}
-}
-
-%%%
-%
-% HC For 1 class and different alphabet
-%
-%%%
-\newcommand{\makeFigureHCOneClass}{
-\begin{figure}[H]
-    \caption{Number of native classes: 1; Alphabet size: 2,3,4,8,12,16,20,24,30,40; number of states: 30}
-    \label{fig:hc_one_class_diff_alphabet}
-
-    \setPlotStyle
-    \begin{tikzpicture}
-
-    \begin{groupplot}[group style={group size= 1 by 3,
-        vertical sep=70pt, horizontal sep=60pt},
-    height=6cm,
-    width=13cm,
-    ylabel=Measure,
-    xtick={2,3,4,8,12,16,20,24,30,40},
-    xlabel=Alphabet Size,
-    legend cell align=left,
-    legend columns=1,
-    legend style={
-        at={(1.3, 0.0)},
-        anchor=south east,
-        column sep=2ex
-    }
-    ]
-
-    \nextgroupplot[title=Resizing Alphabet for 1 native class.]
-
-    % ACCURACY
-    \addplot[color=rred, very thick] coordinates {
-        (2, 0.94) % DONE
-        (3, 0.96) % DONE
-        (4, 0.88) % DONE
-        (8, 0.83) % DONE
-        (12, 0.77) % DONE
-        (16, 0.78) % DONE
-        (20, 0.66) % DONE
-        (24, 0.79) % DONE
-        (30, 0.80) % DONE
-        (40, 0.71) % DONE
-    };
-
-    % SENSITIVITY
-    \addplot[color=bblue, very thick] coordinates {
-        (2, 0.98) % DONE
-        (3, 0.98) % DONE
-        (4, 0.93) % DONE
-        (8, 0.89) % DONE
-        (12, 0.74) % DONE
-        (16, 0.87) % DONE
-        (20, 0.71) % DONE
-        (24, 0.85) % DONE
-        (30, 0.83) % DONE
-        (40, 0.77) % DONE
-    };
-    % PRECISION
-    \addplot[color=ggreen, mark=X, very thick] coordinates {
-        (2, 0.92) % DONE
-        (3, 0.95) % DONE
-        (4, 0.84) % DONE
-        (8, 0.80) % DONE
-        (12, 0.79) % DONE
-        (16, 0.74) % DONE
-        (20, 0.64) % DONE
-        (24, 0.76) % DONE
-        (30, 0.78) % DONE
-        (40, 0.69) % DONE
-    };
-    % F-MEASURE
-    \addplot[color=ppurple, mark=X, very thick] coordinates {
-        (2, 0.95) % DONE
-        (3, 0.97) % DONE
-        (4, 0.88) % DONE
-        (8, 0.84) % DONE
-        (12, 0.76) % DONE
-        (16, 0.80) % DONE
-        (20, 0.67) % DONE
-        (24, 0.80) % DONE
-        (30, 0.81) % DONE
-        (40, 0.73) % DONE
-    };
-
-    \addlegendentry{Accuracy}
-    \addlegendentry{Sensitivity}
-    \addlegendentry{Precision}
-    \addlegendentry{F-Measure}
-
-    \end{groupplot}
-
-    \end{tikzpicture}
-
-\end{figure}
-}
 
 %%%%%%%%%
 %
-% FITNESS FUNCTIONS DISTINCT [PSO]
+% FITNESS FUNCTIONS DISTINCT
 %
 %%%%%%%%
 \newcommand{\makeFigureFitnessMulti}{
@@ -972,46 +686,10 @@
 \end{figure}
 }
 
-%%%%%%%%%
-%
-% FITNESS FUNCTIONS DISTINCT [HC]
-%
-%%%%%%%%
-\newcommand{\makeFigureFitnessMultiHC}{
-\begin{figure}[H]
-    \caption{Multi class optimization. $r$ stands for alphabet size. Number of states equal to 40. }
-    \label{fig:fitness_multiHC}
-
-    \setPlotStyle
-    \begin{tikzpicture}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % GROUPPLOT
-    %%%%%%%%%%%%%%%%%%%%
-
-    \beginGroupPlot
-
-    \nextgroupplot[title=Fitness Distinct Optimization,  ylabel=Measure]
-    \saveResultsFirst   {0.54}{0.12}{0.73}{0.21} % DONE
-    \saveResultsSecond  {0.52}{0.08}{0.72}{0.14} % DONE
-    \saveResultsThird   {0.51}{0.05}{0.66}{0.09} % DONE
-    \addBarPlotResults  {r=10}{r=30}{r=40}
-
-
-    %%%%%%%%%%%%%%%%%%%%
-    % LEGEND
-    %%%%%%%%%%%%%%%%%%%%
-    \setPlotLegend
-
-    \end{groupplot}
-    \end{tikzpicture}
-\end{figure}
-}
-
 
 %%%%%%%%%
 %
-% STATE CONFIGURATION MULTI [PSO]
+% STATE CONFIGURATION MULTI
 %
 %%%%%%%%
 \newcommand{\makeFigureStateConfigurationMulti}{
@@ -1045,47 +723,10 @@
 \end{figure}
 }
 
-%%%%%%%%%
-%
-% STATE CONFIGURATION MULTI [HC]
-%
-%%%%%%%%
-\newcommand{\makeFigureStateConfigurationMultiHC}{
-\begin{figure}[H]
-    \caption{Multi class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
-    \label{fig:states_multiHC}
-
-    \setPlotStyle
-    \begin{tikzpicture}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % GROUPPLOT
-    %%%%%%%%%%%%%%%%%%%%
-
-    \beginGroupPlotFour
-
-    \nextgroupplot[title=Accuracy Distinct Optimization,  ylabel=Measure]
-    \saveResultsFirst   {0.53}{0.07}{0.82}{0.13} % DONE 0.5
-    \saveResultsSecond  {0.52}{0.07}{0.76}{0.12} % DONE 1
-    \saveResultsThird   {0.50}{0.03}{0.44}{0.06} % DONE 2.0
-    \saveResultsFourth  {0.49}{0.06}{0.44}{0.10} % DONE 4.0
-    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % LEGEND
-    %%%%%%%%%%%%%%%%%%%%
-    \setPlotLegend
-
-    \end{groupplot}
-    \end{tikzpicture}
-\end{figure}
-}
-
-
 
 %%%%%%%%%
 %
-% FITNESS FUNCTIONS INDISTINCT [PSO]
+% FITNESS FUNCTIONS INDISTINCT
 %
 %%%%%%%%
 \newcommand{\makeFigureFitnessTwo}{
@@ -1138,44 +779,7 @@
 
 %%%%%%%%%
 %
-% FITNESS FUNCTIONS INDISTINCT [HC]
-%
-%%%%%%%%
-\newcommand{\makeFigureIndistinctHC}{
-\begin{figure}[H]
-    \caption{Two class optimization. $r$ stands for alphabet size. Number of states equal to 40. }
-    \label{fig:fitness_twoHC}
-
-    \setPlotStyle
-    \begin{tikzpicture}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % GROUPPLOT
-    %%%%%%%%%%%%%%%%%%%%
-
-    \beginGroupPlot
-
-    \nextgroupplot[title=Fitness Distinct Optimization,  ylabel=Measure]
-    \saveResultsFirst   {0.69}{0.41}{0.90}{0.57} % DONE
-    \saveResultsSecond  {0.66}{0.35}{0.92}{0.51} % DONE
-    \saveResultsThird   {0.57}{0.17}{0.87}{0.28} % DONE
-    \addBarPlotResults  {r=10}{r=30}{r=40}
-
-
-    %%%%%%%%%%%%%%%%%%%%
-    % LEGEND
-    %%%%%%%%%%%%%%%%%%%%
-    \setPlotLegend
-
-    \end{groupplot}
-    \end{tikzpicture}
-\end{figure}
-}
-
-
-%%%%%%%%%
-%
-% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES [PSO]
+% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES
 %
 %%%%%%%%
 \newcommand{\makeFigureStatesTwo}{
@@ -1204,42 +808,6 @@
     %%%%%%%%%%%%%%%%%%%%
     \setPlotLegend
     
-    \end{groupplot}
-    \end{tikzpicture}
-\end{figure}
-}
-
-%%%%%%%%%
-%
-% FITNESS ACCURACY INDISTINCT. CONFIGURATING STATES [HC]
-%
-%%%%%%%%
-\newcommand{\makeFigureStatesTwoHC}{
-\begin{figure}[H]
-    \caption{Two class optimization. $N$ represents number of native states, $F$ represents number of foreign states. Alphabet Size 30}
-    \label{fig:states_two_hc}
-
-    \setPlotStyle
-    \begin{tikzpicture}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % GROUPPLOT
-    %%%%%%%%%%%%%%%%%%%%
-
-    \beginGroupPlotFour
-
-    \nextgroupplot[title=Accuracy Indistinct Optimization. ,ylabel=Measure]
-    \saveResultsFirst   {0.62}{0.25}{0.94}{0.40} % DONE
-    \saveResultsSecond  {0.66}{0.34}{0.94}{0.50} % DONE
-    \saveResultsThird   {0.60}{0.25}{0.86}{0.39} % DONE
-    \saveResultsFourth   {0.58}{0.23}{0.76}{0.36} % DONE
-    \addBarPlotFourResults  {N=20 F=10}{N=20 F=20}{N=20 F=40}{N=20 F=80}
-
-    %%%%%%%%%%%%%%%%%%%%
-    % LEGEND
-    %%%%%%%%%%%%%%%%%%%%
-    \setPlotLegend
-
     \end{groupplot}
     \end{tikzpicture}
 \end{figure}
