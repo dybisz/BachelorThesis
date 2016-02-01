@@ -1160,6 +1160,8 @@ Additional conditional statement is called at line 15, checking if any of calcul
 
 In this chapter, each step of building the classifier is summarized and explicitly described.
 
+The process of building classifier 
+
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{PSO for Classification}
@@ -1201,7 +1203,7 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Building the Classifier}\label{sec:classification_transf_step}
-Given the input set of classes, the first step is to transform each class into a language. Transformation step also included choosing a proper number of symbols in the alphabet, which was selected empirically with the help of language similarity.
+Given the input set of classes, the first step is to transform each class into a language. Transformation step also includes choosing number of symbols in the alphabet, which in the case of this study, was selected empirically. The transformation analysis was the tool 
 
 
 
@@ -1237,14 +1239,13 @@ The native dataset contained $10$ classes, each representing different handwritt
 
 The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements.
 
-\section{Transformation}
+\section{Transformation Analysis}
 
 Calculating the similarity of languages can potentially determine a correlation between alphabet size and the quality of constructed classifier. The similarity experiment will be done for both multi class and two class classifications. In the former one, the similarity will be computed between all native languages. In the two class classification, all native languages are to be combined into one big and its similarity will be checked against the foreign language. In each case the similarity computation will be ran for alphabet size in the interval: $[1,40]$.
 
 
 \section{PSO}
-The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
-
+The motivation behind these tests is to study the quality of classifier on different alphabet sizes as well as different state configurations. The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes. 
 \section{HC}
 Fitness function, described (and referred to as objective function) in section \ref{subsec:obj_func} has been used in both, multi and two class optimization. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
 
@@ -1252,7 +1253,7 @@ Fitness function, described (and referred to as objective function) in section \
 \chapter{Results}\label{chap:results}
 
 
-\section{Transformation}
+\section{Transformation Analysis}
 
 The similarity between all native languages is shown in table~\ref{fig:tab_similarity}. Each row defines similarity of corresponding language to all other depicted in columns. For example, $\lanSim{L_0}{L_9} = 0.34$ and $\lanSim{L_9}{L_0} = 0.33$. Recall that introduced similarity measure is asymmetric. However, the similarities between transformed languages are nearly perfectly symmetric.
 
@@ -1265,6 +1266,7 @@ All of the similarities have been averaged and shown in figure~\ref{fig:lang_sim
 
 \section{PSO}
 
+Results of classifier construction based on PSO is presented in this section.
 
 \subsection{Multi Class}
 
@@ -1520,11 +1522,6 @@ The simplified process of Classification experiment is presented in figure~\ref{
     \label{fig:classification_states}
 \end{figure}
 
-
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-%---------------------------------------------------------------
-\subsection{Hill Climber}
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Graphical User Interface}
