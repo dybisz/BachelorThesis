@@ -104,6 +104,13 @@
 PROJECT_ROOT = ..
 PATH_TO_CONFIGS = ${PROJECT_ROOT}/make
 
+# Default value
+INSTALL_ROOT_PATH := $(shell pwd)/${PROJECT_ROOT}/../../dependencies
+
+# Path to directory containing
+# common external libs in custom directory
+EXTERNAL_LIBS_INCLUDE_PATH=${INSTALL_ROOT_PATH}/include
+
 # Include make configurations
 include ${PATH_TO_CONFIGS}/proj_config.sh
 include ${PATH_TO_CONFIGS}/lib_config.sh
@@ -112,11 +119,11 @@ include ${PATH_TO_CONFIGS}/compiler_config.sh
 include ${PATH_TO_CONFIGS}/make_external_config.sh
 
 # Get runners scripts handles
-RUN_INSTALL_SCRIPT:=${PATH_TO_CONFIGS}/run_install.sh
+RUN_INSTALL_SCRIPT:=${PATH_TO_CONFIGS}/run_install.sh -i=${INSTALL_ROOT_PATH}
 RUN_RELEASE_SCRIPT:=${PATH_TO_CONFIGS}/run_release.sh
 LIB_NAME_SCRIPT:=${PATH_TO_CONFIGS}/lib_name.sh
 
-RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh
+RUN_MAKE_EXTERNAL_SCRIPT:=${PATH_TO_CONFIGS}/run_make_external.sh -i=${INSTALL_ROOT_PATH}
 
 # Get a full name of the lib
 LIB_FULL_NAME=$(shell $(LIB_NAME_SCRIPT))
@@ -149,10 +156,6 @@ PROJ_CODE_NAME := $(PROJ_CODE_NAME)
 ######################################################################
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
-
-# Path to directory containing
-# common external libs in custom directory
-EXTERNAL_LIBS_INCLUDE_PATH=${PROJECT_ROOT}/../../dependencies/include
 
 #--------------- FILE EXTENSIONS --------------#
 
@@ -301,7 +304,7 @@ compile_test:
 
 # Unit Test rule, assumes that $(TST) has a makefile inside
 run_test:
-	@$(MAKE) -C $(TST)
+	@$(MAKE) INSTALL_ROOT_PATH=${INSTALL_ROOT_PATH}  -C $(TST)
 
 ################################################
 #--------------- LINKER / COMPILER ------------#

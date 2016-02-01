@@ -26,8 +26,6 @@ void InfoPrinter::printInfo(TimeMeasures& timeMeasures,
     printTimeInfo(timeMeasures);
     printFitnessInfo(bestParticle, globalBestParticle);
 
-    printBug();
-
 }
 
     void InfoPrinter::printBug(){

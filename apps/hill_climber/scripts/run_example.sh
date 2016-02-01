@@ -18,8 +18,8 @@ STATES=35
 ALPHABET=4
 CLASSES=3
 PATTERNS_PER_CLASS=100
-NATIVE_XLS_PATH="../../../resources/digits/Natives.xls"
-FOREIGN_XLS_PATH="../../../resources/digits/Foreigns_02_005_XOR.xls"
+NATIVE_XLS_PATH="../resources/digits/Natives.xls"
+FOREIGN_XLS_PATH="../resources/digits/Foreigns_02_005_XOR.xls"
 
 ################
 ##### RUN ######
@@ -32,7 +32,7 @@ run_optimizer(){
     echo "Foreign Path: " ${FOREIGN_XLS_PATH}
     echo "---------------------"
 
-    ../bin/hcc -E 1 \
+        ./hcc -E 1 \
         --log-dir "c${CLASSES}_a${ALPHABET}" \
         --log-main-dir ${MAIN_DIR_LOG} \
         -I ${MAX_ITER} \

@@ -1,4 +1,11 @@
 #--------------------------------------------
+# SETTINGS
+#--------------------------------------------
+
+INSTALL_ROOT_PATH=$(shell pwd)
+INSTALL_LIB_ROOT_PATH := ${INSTALL_ROOT_PATH}/dependencies
+
+#--------------------------------------------
 # RULE NAMES
 #--------------------------------------------
 
@@ -66,7 +73,7 @@ ifeq ($(MAKECMDGOALS),${CLEAN_LIBS})
 	RULE_NAME := clean
 endif
 
-ifeq ($(MAKECMDGOALS),${INSTALL_APPS})
+ifeq ($(MAKECMDGOALS),${INSTALL})
 	RULE_NAME := install
 endif
 
@@ -108,6 +115,9 @@ ${CLEAN_APPS}: ${APPS_MODULES}
 ${CLEAN_LIBS}: ${LIBS_MODULES}
 
 ${INSTALL}: ${INSTALL_APPS} ${INSTALL_LIBS}
+	@cp -rf resources ${INSTALL_ROOT_PATH}
+	@cp INSTALLED_README.txt ${INSTALL_ROOT_PATH}/README.txt
+
 
 ${INSTALL_APPS}: ${APPS_MODULES}
 
@@ -127,7 +137,7 @@ $(APPS_MODULES):
 	@echo ${INFO_SEPARATOR}
 	@echo 'Compiling External: $@'
 	@echo ${INFO_SEPARATOR}
-	@$(MAKE) ${RULE_NAME} -C $@
+	@$(MAKE) ${RULE_NAME} -C $@ INSTALL_ROOT_PATH=${INSTALL_ROOT_PATH}
 	@echo ${INFO_SEPARATOR}
 	@echo 'Compiling External $@ Finished'
 	@echo
@@ -137,10 +147,12 @@ $(LIBS_MODULES):
 	@echo ${INFO_SEPARATOR}
 	@echo 'Compiling External: $@'
 	@echo ${INFO_SEPARATOR}
-	@$(MAKE) ${RULE_NAME} -C $@
+	@$(MAKE) ${RULE_NAME} -C $@ INSTALL_ROOT_PATH=${INSTALL_LIB_ROOT_PATH}
 	@echo ${INFO_SEPARATOR}
 	@echo 'Compiling External $@ Finished'
 	@echo
+
+
 
 #--------------------------------------------
 

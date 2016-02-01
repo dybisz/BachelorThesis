@@ -8,12 +8,10 @@
 #------------------ DYNAMIC SUBSECTION - CAN MODIFY -----------------#
 ######################################################################
 
-INSTALL_ROOT_PATH := $(shell pwd)
+PROJECT_ROOT = ..
 
-PROJECT_ROOT=..
-
-EXTERNAL_LIBS_INCLUDE_PATH=${PROJECT_ROOT}/../../dependencies/include
-EXTERNAL_LIBS_LIB_PATH=${PROJECT_ROOT}/../../dependencies/lib
+EXTERNAL_LIBS_INCLUDE_PATH=${INSTALL_ROOT_PATH}/include
+EXTERNAL_LIBS_LIB_PATH=${INSTALL_ROOT_PATH}/lib
 
 #---------------- UNIT TESTS ------------------#
 
@@ -92,7 +90,7 @@ LD_SHARED_PATH_FLAG = -Wl$(COMMA)-rpath
 
 # Adds each module in lib folder to search for libs
 EXTERNAL_LIB_MODULES =\
- $(shell find ${INSTALL_ROOT_PATH}/${EXTERNAL_LIBS_LIB_PATH} \
+ $(shell find ${EXTERNAL_LIBS_LIB_PATH} \
  -type d 2>/dev/null)
 
 # Add link flag to all LIB_MODULES

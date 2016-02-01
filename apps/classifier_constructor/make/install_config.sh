@@ -5,7 +5,6 @@
 source ./struct_config.sh >/dev/null
 source ./version_config.sh >/dev/null
 source ./proj_config.sh >/dev/null
-source ./lib_name.sh >/dev/null
 
 ###############################################
 
