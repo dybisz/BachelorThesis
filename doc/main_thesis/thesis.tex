@@ -845,7 +845,7 @@ Additionally, it is convenient to define a constant $v_{max}$ which prevents the
 \section{Neighbourhood}
 
 The neighbourhoods are updated using a simply algorithm based on star topology.
-For each particle, neighbourhood is created containing itself and $K$ other random particles. Among that neighbourhood the best particle is found which defines the $lbest$ of the particle in interest.
+For each particle, neighbourhood is created containing itself and $K$ other random particles. Among that neighbourhood the best particle is found which defines the $lbest$ of the particle of interest.
 
 The neighbourhoods are updated only when there was no change in global best (among all particles in the swarm) since the last iteration.
 
@@ -1165,18 +1165,24 @@ Additional conditional statement is called at line 15, checking if any of calcul
 %---------------------------------------------------------------
 \chapter{Classifier Construction}\label{chap:classifier}
 
-In this chapter, each step of building the classifier is summarized and explicitly described.
+In order to construct our classifier, one must provide native and foreign elements in a form of vectors of features. In other words, the classifier construction process, uses data of both proper elements and elements describing garbage, i.e. foreign. Such vectors must be then transformed into the space of words. Appropriate alphabet size must be chosen for given input vectors. Finally, heuristic method is selected and the optimization process starts. In this process, we search for most optimal automaton based on certain classification quality measure.
+
+The detailed description of each part of the classifier construction is presented in the following sections.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{Transformation Analysis}
-Even before selecting heuristic method, one must choose the alphabet size for transformation process. The transformation analysis will help in determining the optimal alphabet size. In this thesis the analysis was conducted separately from classifier construction and thus the alphabet was chosen empirically.
+Ones the vectors of features have been provided, they must be transformed into languages. The transformation requires selection of alphabet size. Thus the transformation analysis is used in order to help determining the optimal alphabet size.
+
+The transformation analysis, goes through transformation between a fixed alphabet interval: $[r_{min}, r_{max}]$. For each such $r_{i}$, the vectors of features are transformed to languages. Then, language similarity is calculated for each pair of languages. All similarities are then averaged and such value is considered to be an output to the analysis for given alphabet size. The main idea behind such analysis is to find the most optimal alphabet size. The intuition behind the optimality is that after certain alphabet size, the decline in similarity is small enough and can be neglected in the cost of smaller computational complexity.
+
+In this thesis the analysis was conducted separately from classifier construction and thus the alphabet was chosen empirically.
 
 %---------------------------------------------------------------
 %---------------------------------------------------------------
 \section{PSO for Classification}
  
-Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the  automata optimization. Finally, PSO requires the selection of states which will correspond to languages. The correspondence is to be selected empirically. 
+Applying PSO to the problem of automata optimization, requires a tool of evaluating the quality of an automaton. The following sections introduce the reader to the methods of turning the abstract PSO algorithm to the automata optimization. Finally, PSO requires the selection of states which will correspond to languages. The correspondence is to be selected empirically. 
 
 %---------------------------------------------------------------------
 %---------------------------------------------------------------------
@@ -1210,7 +1216,6 @@ The fitness function must also be provided with the transformed languages and st
 \section{HC for Classification}
 There is no further work needed - Hill Climber, as described in section \ref{sec:hc_automata__} can be ad hoc used as a classifier. It accepts as its input set of training words and via algorithm, described in details in subsection \ref{subsec:algo_hc__}, builds and returns proper representation of a Deterministic Finite Automata. Such a DFA constitutes a classifier.
 
-
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
 %%%%%%%%%%%
@@ -1230,9 +1235,9 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 % WH/
 %%%%%%%%%%
 
-The datasets of vectors of features were constructed based on the MNIST database of handwritten digits~\cite{digits_db}. Sample of the original images is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out. The vector of features were constructed by extracting features from these images. All vectors contained $24$ features.
+\section{Dataset}
 
-The native dataset contained $10$ classes, each representing different handwritten digits. Every class had $900$ vectors of features, totaling $9000$ across all native classes. The foreign data was considered as one class and contained $9000$ vectors of features. Finally each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing set to calculate quality of the classifier.
+The experiments are conducted on handwritten digits which images have been collected from MNIST database~\cite{digits_db}. The database contains images of handwritten digits from 0 through 9. The images describing correctly written digits are considered to be native. Moreover, the database also contains foreign elements which have been constructed by modifying the original native ones in different ways. For example the foreign elements were constructed by adding a salt and pepper noise to native digits or by crossing them out with an $"x"$ shape. The experiments in this study were focused on one of the foreign sets, namely the cross out ones. The sample of the images used in this study is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out.
 
 \begin{figure}[H]
     \includegraphics[width=0.7\textwidth]{./images/native.png}
@@ -1240,6 +1245,11 @@ The native dataset contained $10$ classes, each representing different handwritt
     \caption{From the top: Native and Foreign - crossed out digits.}
     \label{fig:native_foreign_png}
 \end{figure}
+
+Vector of features have been constructed by extracting features from the images of handwritten digits. Each such vector contained $24$ features and represented one element. The datasets containing vector of features based on the images described above, have been provided by the supervisor of this thesis
+\footnote{The same vectors of features were used in the authors' previous research on pattern recognition in~\cite{rejector_geo} and~\cite{rejector_clusters}. All the data were provided by the supervisor of this thesis and can not be used without written permission for any aim other than this thesis.}.
+
+To summarize: the native dataset contained $10$ classes, each representing different handwritten digit. Every class had $900$ vectors of features, totaling $9000$ across all native classes. The foreign data was considered as one class and contained $9000$ vectors of features. Finally each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing set to calculate quality of the classifier.
 
 The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements.
 
@@ -1252,6 +1262,7 @@ Calculating the similarity of languages can potentially determine a correlation 
 The motivation behind these tests is to study the quality of classifier on different alphabet sizes as well as different state configurations. The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes. 
 \section{HC}
 Fitness function, described (and referred to as objective function) in section \ref{subsec:obj_func} has been used in both, multi and two class optimization. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
+
 
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
@@ -1354,7 +1365,7 @@ Second test (figure \ref{fig:states_two_hc}) is a two class version of one prese
 
 \section{Conclusions}
 
-Language similarity measure was proposed to select a appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
+Language similarity measure was proposed to select an appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
 
 The proposed methods did not succeed in identifying native elements in the multi class optimization. However, separating them from foreign elements gave reasonable results. It was shown that classifier works well with two native classes and gets worse drastically for greater number of classes. The classification process was turned into the two class optimization: native against foreign. In such a case the classifier based on Particle Swarm Optimization showed decent accuracy of distinguishing between the two classes.
 
@@ -1565,6 +1576,12 @@ As one could image, because of simplicity of the interface, there is nothing fan
 %---------------------------------------------------------------
 \begin{thebibliography}{1}
     
+    \bibitem{rejector_geo}
+    J. Ciecierski, B. Dybisz, A. Jastrzębska, W. Pedrycz: A Geometrical Approach to Rejecting Option in Pattern Recognition Problem, Proceedings of 14th International Conference on Computer Information System and Industrial Managament Applications (CISIM), pp. 231 - 243 (2015)
+    
+    \bibitem{rejector_clusters}
+    J.Ciecierski, B. Dybisz, W. Homenda, A. Jastrzębska: Clustering as a Tool of Reinforced Rejection in Pattern Recognition Problem, Proceedings of 13th International Conference of Numerical Analysis and Applied Mathematics (ICNAAM 2015)
+    
     \bibitem{pso_origin} 
     Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.
     
@@ -1606,14 +1623,6 @@ As one could image, because of simplicity of the interface, there is nothing fan
     \bibitem{handwritten_digits_intro} Subset of the MNIST Database, found on http://sujitpal.blogspot.com/2014/07/handwritten-digit-recognition-with.html
 
 \end{thebibliography}
-
-
-
-\newpage
-\chapter*{Footer}
-{\bf Legal:} The vectors of features used in this thesis are given by the supervisor and cannot be used without written permission for any aim other than this thesis.
-\newpage
-
 
 \makestatement
 \end{document}
