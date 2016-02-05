@@ -15,7 +15,7 @@ namespace transformation{
                 transformation::transform(patterns, alphabetSize);
 
         std::vector<Similarity> similarites =
-                getSimilarites(languages, alphabetSize);
+                getDistinctSimilarites(languages, alphabetSize);
 
         TotalSimilarity totalSimilarity = getTotalSimilarity(similarites,
                                                              alphabetSize);

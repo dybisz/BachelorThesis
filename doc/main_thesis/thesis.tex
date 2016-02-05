@@ -1235,6 +1235,39 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 % WH/
 %%%%%%%%%%
 
+\section{Synthetic Dataset}
+
+
+\begin{figure}[H]
+    \includegraphics[width=0.8\textwidth]{./images/native_3clouds.png}
+    \caption{Example of synthetic native elements generation in 3 dimensions. Image presents three clouds of 3-dimensional points. Each cloud represents different class of elements. The image has been produces by library developed in~\cite{rejector_geo} and~\cite{rejector_clusters}.}
+    \label{fig:synthetic_clouds}
+\end{figure}
+
+
+&1&0.25&0.29&0.26&0.21&0.14&0.18&0.18&0.17&0.17\\ 
+\hline 
+&0.25&1&0.21&0.25&0.19&0.22&0.2&0.18&0.16&0.12\\ 
+\hline 
+&0.29&0.21&1&0.22&0.2&0.18&0.19&0.13&0.16&0.18\\ 
+\hline 
+&0.25&0.25&0.22&1&0.2&0.19&0.19&0.19&0.18&0.18\\ 
+\hline 
+&0.21&0.19&0.2&0.2&1&0.14&0.13&0.18&0.16&0.12\\ 
+\hline 
+&0.14&0.22&0.18&0.18&0.14&1&0.23&0.18&0.2&0.19\\ 
+\hline 
+&0.18&0.19&0.19&0.19&0.13&0.23&1&0.19&0.15&0.2\\ 
+\hline 
+&0.18&0.18&0.13&0.2&0.18&0.18&0.19&1&0.15&0.16\\ 
+\hline 
+&0.17&0.16&0.16&0.18&0.16&0.2&0.15&0.15&1&0.22\\ 
+\hline 
+&0.17&0.12&0.18&0.18&0.12&0.19&0.2&0.16&0.22&1\\ 
+\hline 
+
+
+
 \section{Dataset}
 
 The experiments are conducted on handwritten digits which images have been collected from MNIST database~\cite{digits_db}. The database contains images of handwritten digits from 0 through 9. The images describing correctly written digits are considered to be native. Moreover, the database also contains foreign elements which have been constructed by modifying the original native ones in different ways. For example the foreign elements were constructed by adding a salt and pepper noise to native digits or by crossing them out with an $"x"$ shape. The experiments in this study were focused on one of the foreign sets, namely the cross out ones. The sample of the images used in this study is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out.
