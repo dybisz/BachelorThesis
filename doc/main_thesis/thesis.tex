@@ -1221,7 +1221,7 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 
 The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Furthermore, two heuristic methods, PSO and Hill-Climber, have been applied. Each of optimization methods is tested with different alphabet sizes and state configurations. Finally the experiments have been divided into synthetic and real datasets. The synthetic data is used to verify potential correctness of the algorithms and hopefully to correlate the results with real data.
 
-\section{Synthetic Dataset}
+\section{Synthetic Data}
 
 The synthetic dataset have been generated based on the method described in~\cite{rejector_geo}. First step of the process is to generate interval for each feature. The synthetic dataset consisted of vectors of 24 features hences, 24 intervals have been generated using uniform distribution. Each of the interval could take values from 0 to 20 inclusively. 
 
@@ -1238,7 +1238,7 @@ By the end of generation process, each cloud consisted of $1000$ vectors of feat
 
 The foreign elements were generated uniformly around the entire feature space - defined by the generated intervals. Foreign class consisted of $10000$ elements.
 
-\section{Real and Semi-Synthetic Dataset}
+\section{Real and Semi-Synthetic Data}
 
 The experiments are conducted on handwritten digits which images have been collected from MNIST database~\cite{digits_db}. The database contains real images of handwritten digits from 0 through 9. The images describing correctly written digits are considered to be native. Moreover, the database also contains foreign elements which have been constructed by modifying the original native ones in different ways, hence we refer to them as semi-synthetic. For example the foreign elements were constructed by adding a salt and pepper noise to native digits or by crossing them out with an $"x"$ shape. The experiments in this study were focused on one of the foreign sets, namely the crossed out ones. The sample of the images used in this study is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out.
 
@@ -1291,6 +1291,14 @@ The chapter begins with synthetic data results. The discussion is immediately tu
 \makeFigureSyntheticTwo
 
 \subsection{HC}
+
+\subsubsection{Multi class}
+
+\makeFigureHCSyntheticMulti
+
+\subsubsection{Two class}
+
+\makeFigureHCSyntheticTwo
 
 \section{Real and Semi-Synthetic Data}
 
@@ -1608,7 +1616,7 @@ As one could image, because of simplicity of the interface, there is nothing fan
     J. Ciecierski, B. Dybisz, A. Jastrzębska, W. Pedrycz: A Geometrical Approach to Rejecting Option in Pattern Recognition Problem, Proceedings of 14th International Conference on Computer Information System and Industrial Managament Applications (CISIM), pp. 231 - 243 (2015)
     
     \bibitem{rejector_clusters}
-    J.Ciecierski, B. Dybisz, W. Homenda, A. Jastrzębska: Clustering as a Tool of Reinforced Rejection in Pattern Recognition Problem, Proceedings of 13th International Conference of Numerical Analysis and Applied Mathematics (ICNAAM 2015)
+    J.Ciecierski, B. Dybisz, W. Homenda, A. Jastrzębska: Clustering as a Tool of Reinforced Rejection in Pattern Recognition Problem, to appear in Proceedings of 13th International Conference of Numerical Analysis and Applied Mathematics (ICNAAM 2015)
     
     \bibitem{pso_origin} 
     Eberhart, R. C. and Kennedy, J. A new optimizer using particle swarm theory. Proceedings of the sixth international symposium on micro machine and human science pp. 39-43. IEEE service center, Piscataway, NJ, Nagoya, Japan, 1995.

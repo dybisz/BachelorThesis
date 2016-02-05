@@ -180,6 +180,9 @@
         major x tick style = transparent, 
         ymajorgrids = true, 
         symbolic x coords={
+            r=2,
+            r=4,
+            r=8,
             r=10,
             r=30,
             r=40,
@@ -1400,45 +1403,45 @@
         % NATIVE VS FOREIGN
         \addplot[color=bblue, very thick] coordinates {
             (1, 1)
-            (2, 0.921519)
-            (3, 0.845819)
-            (4, 0.770206)
-            (5, 0.707979)
-            (6, 0.674419)
-            (7, 0.627442)
-            (8, 0.593737)
-            (9, 0.567073)
-            (10, 0.540638)
-            (11, 0.51516)
-            (12, 0.500617)
-            (13, 0.473994)
-            (14, 0.466706)
-            (15, 0.448025)
-            (16, 0.432535)
-            (17, 0.425823)
-            (18, 0.422446)
-            (19, 0.425875)
-            (20, 0.415787)
-            (21, 0.406265)
-            (22, 0.398181)
-            (23, 0.391427)
-            (24, 0.384067)
-            (25, 0.376077)
-            (26, 0.364594)
-            (27, 0.360883)
-            (28, 0.356398)
-            (29, 0.352073)
-            (30, 0.344083)
-            (31, 0.34219)
-            (32, 0.335838)
-            (33, 0.335206)
-            (34, 0.333765)
-            (35, 0.332225)
-            (36, 0.331335)
-            (37, 0.33046)
-            (38, 0.330175)
-            (39, 0.329163)
-            (40, 0.328463)
+            (2, 0.814956)
+            (3, 0.681302)
+            (4, 0.604188)
+            (5, 0.54966)
+            (6, 0.507502)
+            (7, 0.473677)
+            (8, 0.445481)
+            (9, 0.42379)
+            (10, 0.404521)
+            (11, 0.387975)
+            (12, 0.373725)
+            (13, 0.360194)
+            (14, 0.350692)
+            (15, 0.33959)
+            (16, 0.330565)
+            (17, 0.321844)
+            (18, 0.313846)
+            (19, 0.306956)
+            (20, 0.300569)
+            (21, 0.294312)
+            (22, 0.288483)
+            (23, 0.28356)
+            (24, 0.278427)
+            (25, 0.273473)
+            (26, 0.269169)
+            (27, 0.265069)
+            (28, 0.261398)
+            (29, 0.257608)
+            (30, 0.254121)
+            (31, 0.250667)
+            (32, 0.247885)
+            (33, 0.244746)
+            (34, 0.241387)
+            (35, 0.238921)
+            (36, 0.235992)
+            (37, 0.2338)
+            (38, 0.231237)
+            (39, 0.22839)
+            (40, 0.226377)
         };
         
         \addlegendentry{Multi Class}
@@ -1512,6 +1515,77 @@
         \saveResultsSecond  {0.40}{0.05}{0.17}{0.07}
         \saveResultsThird   {0.36}{0.02}{0.08}{0.04}
         \addBarPlotResults  {r=10}{r=30}{r=40}
+        
+        %%%%%%%%%%%%%%%%%%%%
+        % LEGEND
+        %%%%%%%%%%%%%%%%%%%%
+        \setPlotLegend
+        
+        \end{groupplot}
+        \end{tikzpicture}
+    \end{figure}
+}
+
+
+%%%%%%%%%
+%
+% HC SYNTHETIC ACCURACY DISTICT OPTIMIZATION
+%
+%%%%%%%%
+\newcommand{\makeFigureHCSyntheticMulti}{
+    \begin{figure}[H]
+        \caption{Multi class optimization on synthetic data. $r$ stands for alphabet size. Native states: 20 (2 per class). Foreign states: 20. Optimization Based on Accuracy Distinct fitness. }
+        \label{fig:hc_synthetic_multi}
+        
+        \setPlotStyle
+        \begin{tikzpicture}
+        
+        %%%%%%%%%%%%%%%%%%%%
+        % GROUPPLOT
+        %%%%%%%%%%%%%%%%%%%%
+        
+        \beginGroupPlot
+        
+        \nextgroupplot[title=Fitness Distinct Optimization,  ylabel=Measure]
+        \saveResultsFirst   {0.63}{0.41}{0.74}{0.52}
+        \saveResultsSecond  {0.78}{0.74}{0.81}{0.77}
+        \saveResultsThird   {0.60}{0.30}{0.74}{0.42}
+        \addBarPlotResults  {r=2}{r=4}{r=8}
+        
+        %%%%%%%%%%%%%%%%%%%%
+        % LEGEND
+        %%%%%%%%%%%%%%%%%%%%
+        \setPlotLegend
+        
+        \end{groupplot}
+        \end{tikzpicture}
+    \end{figure}
+}
+
+%%%%%%%%%
+%
+% HC SYNTHETIC ACCURACY INDISTICT OPTIMIZATION
+%
+%%%%%%%%
+\newcommand{\makeFigureHCSyntheticTwo}{
+    \begin{figure}[H]
+        \caption{Two class optimization on synthetic data. $r$ stands for alphabet size. Native states: 20 (2 per class). Foreign states: 20. Optimization Based on Accuracy Indistinct fitness. }
+        \label{fig:hc_synthetic_two}
+        
+        \setPlotStyle
+        \begin{tikzpicture}
+        
+        %%%%%%%%%%%%%%%%%%%%
+        % GROUPPLOT
+        %%%%%%%%%%%%%%%%%%%%
+        
+        \beginGroupPlot
+        
+        \nextgroupplot[title=Fitness Indistinct Optimization,  ylabel=Measure]
+        \saveResultsFirst   {0.70}{0.54}{0.79}{0.64} % DONE 
+        \saveResultsSecond  {0.82}{0.81}{0.82}{0.82} % DONE
+        \saveResultsThird   {0.64}{0.38}{0.79}{0.52} % DONE
+        \addBarPlotResults  {r=2}{r=4}{r=8}
         
         %%%%%%%%%%%%%%%%%%%%
         % LEGEND

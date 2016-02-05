@@ -18,9 +18,7 @@ MAX_ITER=5000
 #################
 ##### WORDS #####
 #################
-ENTRY_WORDS_COUNT=3
-WORDS[0]=250
-WORDS[1]=500
+ENTRY_WORDS_COUNT=1
 WORDS[2]=750
 
 ###################

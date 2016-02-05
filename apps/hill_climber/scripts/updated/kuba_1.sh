@@ -18,10 +18,8 @@ MAX_ITER=5000
 #################
 ##### WORDS #####
 #################
-ENTRY_WORDS_COUNT=3
-WORDS[0]=250
-WORDS[1]=500
-WORDS[2]=750
+ENTRY_WORDS_COUNT=1
+WORDS[0]=750
 
 ###################
 ##### CLASSES #####
@@ -38,20 +36,22 @@ STATES[0]=40
 ##### ALPHABET #####
 ####################
 ENTRY_COUNT_ALPHABET=3
-ALPHABET[0]=10
-ALPHABET[1]=30
-ALPHABET[2]=40
+ALPHABET[0]=2
+ALPHABET[1]=4
+ALPHABET[2]=8
 
 ###################
 ##### NATIVES #####
 ###################
-NATIVE_XLS_PATH="../../../../resources/digits/Natives.xls"
+#NATIVE_XLS_PATH="../../../../resources/digits/Natives.xls"
+NATIVE_XLS_PATH=../../../resources/synthetic/native.xls
 
 #####################
 ##### FOREIGNS ######
 #####################
 ENTRY_COUNT_FOREIGN_XLS_PATH=1
-FOREIGN_XLS_PATH[0]="../../../../resources/digits/Foreigns_CrossedOut.xls"
+FOREIGN_XLS_PATH=../../../resources/synthetic/foreign_homo.xls
+#FOREIGN_XLS_PATH[0]="../../../../resources/digits/Foreigns_CrossedOut.xls"
 
 
 # :::::::::::::::::
@@ -78,7 +78,7 @@ run_optimizer(){
     echo "WORDS : " $5
     echo "---------------------"
 
-    ../../bin/hcc -E 1 \
+    ../bin/hcc -E 1 \
         --log-dir $4 \
         --log-main-dir ${MAIN_DIR_LOG} \
         -I ${MAX_ITER} \
