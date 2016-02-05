@@ -43,15 +43,15 @@ ALPHABET[2]=8
 ###################
 ##### NATIVES #####
 ###################
-#NATIVE_XLS_PATH="../../../../resources/digits/Natives.xls"
-NATIVE_XLS_PATH=../../../resources/synthetic/native.xls
+NATIVE_XLS_PATH="../../../../resources/digits/Natives.xls"
+#NATIVE_XLS_PATH=../../../resources/synthetic/native.xls
 
 #####################
 ##### FOREIGNS ######
 #####################
 ENTRY_COUNT_FOREIGN_XLS_PATH=1
-FOREIGN_XLS_PATH=../../../resources/synthetic/foreign_homo.xls
-#FOREIGN_XLS_PATH[0]="../../../../resources/digits/Foreigns_CrossedOut.xls"
+#FOREIGN_XLS_PATH=../../../resources/synthetic/foreign_homo.xls
+FOREIGN_XLS_PATH[0]="../../../../resources/digits/Foreigns_CrossedOut.xls"
 
 
 # :::::::::::::::::
@@ -78,7 +78,7 @@ run_optimizer(){
     echo "WORDS : " $5
     echo "---------------------"
 
-    ../bin/hcc -E 1 \
+    ../../bin/hcc -E 1 \
         --log-dir $4 \
         --log-main-dir ${MAIN_DIR_LOG} \
         -I ${MAX_ITER} \

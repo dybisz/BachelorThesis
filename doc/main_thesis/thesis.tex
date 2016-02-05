@@ -121,6 +121,30 @@ Chapter~\ref{chap:classifier} gathers all of the concepts defined thus far and p
 
 The implementation details can be found in the appendix~\ref{chap:domain}. The structure of the project and dependencies of all of the modules are explained.
 
+\chapter*{Disparity on Diploma Assumptions }
+%---------------------------------------------------------------
+Research is often a process of constant changes. Studying of unknown area, 
+hopefully results in discovering objects attributes and characteristic, never knew before. 
+In such a case, one needs to be prepared for adapting methods to the ensuing situation or 
+even change the whole direction of studies. Following section resembles a summary of differences, 
+which occured between original expectations and those realized in the following paper. Since each of 
+them was motivated in some particular way, we would like to convince the reader 
+about awareness and justness of our decisions.
+
+First of all, we were obliged to describe methods of transformation from object
+to feature space. Intentionally ommited, it gave us opportunity to generalize 
+our work. In present form, paper emphasizes the fact that classifier construction 
+demands only feature vectors as a training set - without any constraints on generating them. 
+Thustly, one can not bother with establishing whether his or her features vectors
+are appropriate for our method - it works for all of them.
+
+Second discrepancy between realized work and assumed one, emerges in lack of
+automata with inperfect information. Disgarding them was motivated by our desire 
+to in depth investigate Deterministic Finite Automata in terms of separating words
+over an alphabet. Delibarately substituted, missing automata, however interesting, was no longer needed.
+Instead we presented comprehensively described heuristic, broadly known as Hill Climbing. 
+It granted ourself an opportunity to compare two, at a glance completely different approaches 
+and reason about them. 
 
 \chapter{Preliminaries}\label{chap:prelim}
 %---------------------------------------------------------------------
@@ -441,6 +465,8 @@ One can distinguish between 3 main approaches to the learning procedure: supervi
 \pagebreak
 \paragraph{}
 \subsection{Quality Evaluation}\label{evaluation}
+Following section is greatly based on published 
+
 For better understanding of how quality of classification should be measured we adopt parameters and quality measures used in signal detection theory. Since these parameters are widely utilized, we do not refer to original sources here. The following parameters were used in defining several measures outlining classification's quality. These parameters create so called confusion matrix, which is given in Table~\ref{tab:conf_matrix}. The parameters given in the matrix are numbers of elements of a~testing set which have the following meaning:
 \begin{itemize}
   \item $TP$ - the number of elements of the considered class correctly classified to this class,
