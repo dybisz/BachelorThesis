@@ -1218,59 +1218,29 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 
 %---------------------------------------------------------------
 \chapter{Experiments}\label{chap:experiments}
-%%%%%%%%%%%
-% WH
 
-%Experiment is done on vectors of features, vectors represent images.
-%Mapping from the set of images to the space of features to be described.
-
-% WH/
-%%%%%%%%%%
-
-%%%%%%%%%%%
-% WH
-
-%- features vectors: are given by supervisor and cannot be used without written permission for any aim other than this thesis, put this information in footer
-
-% WH/
-%%%%%%%%%%
+The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Furthermore, two heuristic methods, PSO and Hill-Climber, have been applied. Each of optimization methods is tested with different alphabet sizes and state configurations. Finally the experiments have been divided into synthetic and real datasets. The synthetic data is used to verify potential correctness of the algorithms and hopefully to correlate the results with real data.
 
 \section{Synthetic Dataset}
 
+The synthetic dataset have been generated based on the method described in~\cite{rejector_geo}. First step of the process is to generate interval for each feature. The synthetic dataset consisted of vectors of 24 features hences, 24 intervals have been generated using uniform distribution. Each of the interval could take values from 0 to 20 inclusively. 
+
+Having created the interval for all features, we could now generate 10 vectors of 24 features. Each of them represents a center of a single native class. Then, clouds of points were generated around the centers as follows: take the center point and add to all its dimensions value drawn from normal distribution $N(0,1)$. 
+By the end of generation process, each cloud consisted of $1000$ vectors of features. Thus the total of $10000$ native elements. The idea of generating native elements is illustrated in figure~\ref{fig:synthetic_clouds}\footnote{The image together with the generated synthetic dataset used in this thesis have been produced by application developed through out the research done in~\cite{rejector_geo} and~\cite{rejector_clusters}.}
+
+
 
 \begin{figure}[H]
-    \includegraphics[width=0.8\textwidth]{./images/native_3clouds.png}
-    \caption{Example of synthetic native elements generation in 3 dimensions. Image presents three clouds of 3-dimensional points. Each cloud represents different class of elements. The image has been produces by library developed in~\cite{rejector_geo} and~\cite{rejector_clusters}.}
+    \includegraphics[width=0.6\textwidth]{./images/native_3clouds.png}
+    \caption{Example of synthetic native elements generation in 3 dimensions. Image presents three clouds of 3-dimensional points. Each cloud represents different class of elements. }
     \label{fig:synthetic_clouds}
 \end{figure}
 
+The foreign elements were generated uniformly around the entire feature space - defined by the generated intervals. Foreign class consisted of $10000$ elements.
 
-&1&0.25&0.29&0.26&0.21&0.14&0.18&0.18&0.17&0.17\\ 
-\hline 
-&0.25&1&0.21&0.25&0.19&0.22&0.2&0.18&0.16&0.12\\ 
-\hline 
-&0.29&0.21&1&0.22&0.2&0.18&0.19&0.13&0.16&0.18\\ 
-\hline 
-&0.25&0.25&0.22&1&0.2&0.19&0.19&0.19&0.18&0.18\\ 
-\hline 
-&0.21&0.19&0.2&0.2&1&0.14&0.13&0.18&0.16&0.12\\ 
-\hline 
-&0.14&0.22&0.18&0.18&0.14&1&0.23&0.18&0.2&0.19\\ 
-\hline 
-&0.18&0.19&0.19&0.19&0.13&0.23&1&0.19&0.15&0.2\\ 
-\hline 
-&0.18&0.18&0.13&0.2&0.18&0.18&0.19&1&0.15&0.16\\ 
-\hline 
-&0.17&0.16&0.16&0.18&0.16&0.2&0.15&0.15&1&0.22\\ 
-\hline 
-&0.17&0.12&0.18&0.18&0.12&0.19&0.2&0.16&0.22&1\\ 
-\hline 
+\section{Real and Semi-Synthetic Dataset}
 
-
-
-\section{Dataset}
-
-The experiments are conducted on handwritten digits which images have been collected from MNIST database~\cite{digits_db}. The database contains images of handwritten digits from 0 through 9. The images describing correctly written digits are considered to be native. Moreover, the database also contains foreign elements which have been constructed by modifying the original native ones in different ways. For example the foreign elements were constructed by adding a salt and pepper noise to native digits or by crossing them out with an $"x"$ shape. The experiments in this study were focused on one of the foreign sets, namely the cross out ones. The sample of the images used in this study is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out.
+The experiments are conducted on handwritten digits which images have been collected from MNIST database~\cite{digits_db}. The database contains real images of handwritten digits from 0 through 9. The images describing correctly written digits are considered to be native. Moreover, the database also contains foreign elements which have been constructed by modifying the original native ones in different ways, hence we refer to them as semi-synthetic. For example the foreign elements were constructed by adding a salt and pepper noise to native digits or by crossing them out with an $"x"$ shape. The experiments in this study were focused on one of the foreign sets, namely the crossed out ones. The sample of the images used in this study is presented in figure~\ref{fig:native_foreign_png}. The upper image shows sample of original native elements. The foreign elements (bottom image) have been constructed from the native ones by crossing them out.
 
 \begin{figure}[H]
     \includegraphics[width=0.7\textwidth]{./images/native.png}
@@ -1284,15 +1254,17 @@ Vector of features have been constructed by extracting features from the images 
 
 To summarize: the native dataset contained $10$ classes, each representing different handwritten digit. Every class had $900$ vectors of features, totaling $9000$ across all native classes. The foreign data was considered as one class and contained $9000$ vectors of features. Finally each class has been divided into training($60\%$) and testing($40\%$) sets. Training set was used in the optimization process and testing set to calculate quality of the classifier.
 
-The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements.
-
 \section{Transformation Analysis}
 
 Calculating the similarity of languages can potentially determine a correlation between alphabet size and the quality of constructed classifier. The similarity experiment will be done for both multi class and two class classifications. In the former one, the similarity will be computed between all native languages. In the two class classification, all native languages are to be combined into one big and its similarity will be checked against the foreign language. In each case the similarity computation will be ran for alphabet size in the interval: $[1,40]$.
 
 
 \section{PSO}
-The motivation behind these tests is to study the quality of classifier on different alphabet sizes as well as different state configurations. The four distinct fitness functions were used in the multi class optimization. Similarly the two class optimization was experimented using indistinct fitness functions. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes. 
+The motivation behind these tests is to study the quality of classifier on different alphabet sizes as well as different state configurations. 
+
+In the case of real data, four distinct fitness functions were used in the multi class classification. Similarly the two class classification was experimented using indistinct fitness functions. As far as synthetic data is concerned, only the Accuracy based optimization were used for both of classification problems.
+
+All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes. 
 \section{HC}
 Fitness function, described (and referred to as objective function) in section \ref{subsec:obj_func} has been used in both, multi and two class optimization. All experiments have been repeated $3$ times and the results were averaged. Additionally, the multi class classification is tested for different number of classes.
 
@@ -1300,8 +1272,29 @@ Fitness function, described (and referred to as objective function) in section \
 %---------------------------------------------------------------
 \chapter{Results}\label{chap:results}
 
+The chapter begins with synthetic data results. The discussion is immediately turned into results for real data. Each of the datasets consists of results for transformation analysis and two optimization methods for both multi and two class classifications. The chapter ends with summary of all experiments and conclusions.
 
-\section{Transformation Analysis}
+\section{Synthetic Data}
+
+\subsection{Transformation Analysis}
+
+\makeFigureSyntheticAvgSimlarity
+
+\subsection{PSO}
+
+\subsubsection{Multi class}
+
+\makeFigureSyntheticMulti
+
+\subsubsection{Two class}
+
+\makeFigureSyntheticTwo
+
+\subsection{HC}
+
+\section{Real and Semi-Synthetic Data}
+
+\subsection{Transformation Analysis}
 
 The similarity between all native languages is shown in table~\ref{fig:tab_similarity}. Each row defines similarity of corresponding language to all other depicted in columns. For example, $\lanSim{L_0}{L_9} = 0.34$ and $\lanSim{L_9}{L_0} = 0.33$. Recall that introduced similarity measure is asymmetric. However, the similarities between transformed languages are nearly perfectly symmetric.
 
@@ -1312,11 +1305,11 @@ All of the similarities have been averaged and shown in figure~\ref{fig:lang_sim
 \makeFigureAvgSimlarity
 
 
-\section{PSO}
+\subsection{PSO}
 
 Results of classifier construction based on PSO is presented in this section. The results for multi class optimization is shown first, then the discussion turns to two class.
 
-\subsection{Multi Class}
+\subsubsection{Multi Class}
 
 The figure~\ref{fig:fitness_multi} shows results of the multi class classifier for four different fitness functions. In that case, the state configuration was not changed and included $20$ native states -- $2$ per class and $20$ foreign states. The computations were repeated for alphabet sizes: $10$, $30$ and $40$.
 
@@ -1340,7 +1333,7 @@ In all cases, only the required classes were loaded from both native and foreign
 
 
 
-\subsection{Two Class} \label{subsec:pso_two_class}
+\subsubsection{Two Class} \label{subsec:pso_two_class}
 
 The discussion now turns into two class optimization, where all native classes are considered as one. Hence, all of the quality measures have been calculated accordingly.
 The figure~\ref{fig:fitness_two} presents results for different optimization functions. The state and alphabet configurations remains the same as previously. The alphabet size had impact only in the case of Precision Fitness, where again $30$ seemed to yield the best result.
@@ -1360,10 +1353,10 @@ Finally, as in the case of multi class optimization, results for different state
 %
 % HILL CLIMBER RESULTS
 %
-\section{Hill Climber}
+\subsection{Hill Climber}
 This section presents results for building classifier based only on Hill Climbing procedure. We were trying to catch all pros and cons of building DFA, rather naively, based on one heuristic with no interference in states structure. 
 
-\subsection{Multi Class} \label{subsec:multi_class_hc}
+\subsubsection{Multi Class} \label{subsec:multi_class_hc}
 Because the aim was to observe how both heuristic works on parameters close to each other, we will present results of tests similar to ones performed during PSO evaluation. Since Hill Climbing parameters are not significantly different - in most cases we were able to successfully designed such tests.
 
 Hill Climbing, in opposite to PSO,  uses only one fitness (objective) function, hence presenting results as e.g. on figure~\ref{fig:fitness_multi} is impossible. Instead we constrain ourselves to the fitness function described in section~\ref{subsec:obj_func}. What is more, in HC model there is no way of specifying number of states corresponding to native and foreign classes. As presented in section \ref{subsec:smart_labeling}, HC labels states dynamically. Only overall number of states can be set.  
@@ -1386,7 +1379,7 @@ First thing one may notice that in fact Hill Climbing never reaches value 1 for 
 %\makeFigureHCOneClass
 %\makeFigureHCFourClass
 
-\subsection{Two Class} \label{subsec:two_class_hc}
+\subsubsection{Two Class} \label{subsec:two_class_hc}
 In this section we will shortly discuss HC in terms of indistinct native symbols. Corresponding subsection \ref{subsec:pso_two_class}, which performed the same tests for PSO heuristic yield great results, whereas Hill Climbing presents average quality.
 
 First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed (40) and alphabet size has been set to: 10, 30 and 40. First of all, all measures (comparing to the HC's multi class problem) are quite higher. One to be noticed is undoubtedly Sensitivity, which is even 4 times higher than the one presented on figure~\ref{fig:fitness_multiHC}. Still overall results are far worse than in case of Particle Swarm Optimization.
@@ -1396,7 +1389,7 @@ First test is depicted by figure~\ref{fig:fitness_twoHC}. States number is fixed
 Second test (figure \ref{fig:states_two_hc}) is a two class version of one presented on figure~\ref{fig:states_multiHC}. As before it assumes fixed alphabet and different number of states. The results are again no match for PSO in two class version. As in the previous one, all measures were significantly elevated but not to the extent of being good classifier.
 \makeFigureStatesTwoHC
 
-\section{Conclusions}
+\section{Summary}
 
 Language similarity measure was proposed to select an appropriate alphabet size for the transformation process. The outcome of subjecting the transformed languages to similarity test, suggested the alphabet size to be equal $30$. The overall quality of classifiers, were best for that alphabet size. Although, to accept the given similarity measure as correct preprocessing tool, it must be subjected to more empirical tests on different data sets.
 
@@ -1412,6 +1405,8 @@ Furthermore, the state configuration should be subjected to more experiments.
 It could be beneficial to try and establish correlation between number of considered native classes and the number of states to which they correspond.
 
 %It was observed that by increasing number of corresponding foreign states, the precision value would become lower.
+
+\section{Conclusions}
 
 \appendix\label{appendix_a}
 

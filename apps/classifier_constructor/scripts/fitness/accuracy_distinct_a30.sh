@@ -27,7 +27,7 @@ source ${CONFIG_ROOT_PATH}/fitness/common.cfg
 # Settings
 #############################################################
 
-MAIN_DIR_LOG="logs/FITNESS/ACCURACY_DISTINCT_GROUPS"
+MAIN_DIR_LOG="logs/FITNESS/ACCURACY_DISTINCT"
 DIR_LOG="ALPHABET_30"
 FITNESS_TYPE=5
 

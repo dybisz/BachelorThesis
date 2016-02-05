@@ -12,8 +12,8 @@ FOREIGN_XLS_PATH=../../../resources/synthetic/foreign_homo.xls
 #NATIVE_XLS_PATH="../../../resources/digits/Natives.xls"
 #FOREIGN_XLS_PATH="../../../resources/digits/Foreigns_CrossedOut.xls"
 
-MIN_ALPHABET_SIZE=30
-MAX_ALPHABET_SIZE=30
+MIN_ALPHABET_SIZE=1
+MAX_ALPHABET_SIZE=40
 
 LOG_DIR="TRANSFORMATION"
 

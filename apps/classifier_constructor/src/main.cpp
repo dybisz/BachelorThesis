@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
             classification_experiment::runClassification();
             break;
         case 1:
-            experiments::runTransformationAnalysis();
+            experiments::runTransformationAnalysisNativeVersusForeign();
             break;
         default:
             std::string what = "Experiment ID: " +
