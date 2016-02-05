@@ -1278,7 +1278,10 @@ The chapter begins with synthetic data results. The discussion is immediately tu
 
 \subsection{Transformation Analysis}
 
+Similarities between all languages have been averaged and shown in figure~\ref{fig:synthetic_lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In multi class the similarity have been computed between all 10 native languages. In two class, presented similarity is computed between one combined native language and the foreign one. Both scenarios have resulted with almost the same values. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly and stabilizes at alphabet size equal to approximately $15$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $15$ in order to keep a good balance between computational complexity and language similarities.
+
 \makeFigureSyntheticAvgSimlarity
+
 
 \subsection{PSO}
 
@@ -1308,7 +1311,7 @@ The similarity between all native languages is shown in table~\ref{fig:tab_simil
 
 \makeTableMutualSimilarites
 
-All of the similarities have been averaged and shown in figure~\ref{fig:lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In multi class the similarity have been computed between all 10 native languages. In two class, presented similarity is computed between one combined native language and the foreign one. Both scenarios have resulted with almost the same values. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly and stabilizes at alphabet size equal to approximately $30$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $30$ in order to keep a good balance between computational complexity and language similarities.
+The results of language similarities through a alphabet interval is presented in figure~\ref{fig:lang_sim}. Analogically to the results of synthetic data the value of similarities of languages stabilize at alphabet size equal to approximately $30$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $30$ in order to keep a good balance between computational complexity and language similarities.
 
 \makeFigureAvgSimlarity
 
