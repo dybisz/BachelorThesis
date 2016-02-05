@@ -1374,12 +1374,12 @@ Results of classifier construction based on PSO is presented in this section. Th
 The figure~\ref{fig:fitness_multi} shows results of the multi class classifier for four different fitness functions. In that case, the state configuration was not changed and included $20$ native states -- $2$ per class and $20$ foreign states. The computations were repeated for alphabet sizes: $10$, $30$ and $40$.
 
 In all four cases, the classifier did not manage to correctly recognize between native elements, hence the low sensitivity values. Moreover, the accuracy was bellow $0.5$ across all test cases. 
-
+\makeFigureFitnessMulti
 In the case of Accuracy Fitness based optimization the best result was obtained with alphabet size equal to $30$. At this point, the precision was equal to $0.8$ which gives a reasonable result on distinguishing the foreign elements Although, most importantly, this function did not help in constructing accurate classifier. The Precision based optimization, had very similar results. Finally, the Sensitivity and F-Measure optimizations constructed extremely low quality classifier.
 
 Next experiment included tests with different state configuration. The results are presented in figure~\ref{fig:states_multi}. Accuracy based optimization was used as the goal function, the alphabet size was fixed on $30$. In all four cases, each of the native classes corresponded to $2$ states, hence $20$ in total. The foreign class had: $10$, $20$, $40$ and finally $80$ states. In the first two configurations, results were the same. However, by increasing the number of states that govern foreign class we obtained lower precision. Together with the fact that accuracy value remained equal, one can conclude that many of the native elements were incorrectly classified as foreign. Moreover, we can see that the precision was already equal to $0.8$ when the number of foreign states was equal to the half of all natives, as it is depicted in the first test case. It might suggest that the foreign elements were all similar enough so that their class did not require to take up much space. To able to separate foreign elements from native, one should keep state configuration in balance.
 
-\makeFigureFitnessMulti
+
 
 \makeFigureStateConfigurationMulti
 
@@ -1401,15 +1401,10 @@ The figure~\ref{fig:fitness_two} presents results for different optimization fun
 Accuracy and F-Measure optimizations provided decent overall results. Ranging from approximately $0.8$ to $0.9$ for all of the quality measurements. The F-Measure optimization provided slightly higher values of sensitivity.
 
 The Precision and Sensitivity optimizations resulted in almost complementary classifiers. Both of them succeeded in optimizing the classifier in their respective area. The one based on Precision optimization is fully capable of rejecting foreign elements while the Sensitivity one can correctly identify native elements.
-
+\makeFigureFitnessTwo
 
 Finally, as in the case of multi class optimization, results for different state configurations are presented in figure~\ref{fig:states_two}. Similarly to the case of multi class, the results were best when number of foreign states were equal or smaller than number of native states. Thus the conclusions are analogical to the previous ones.
-
-\makeFigureFitnessTwo
 \makeFigureStatesTwo
-
-
-\pagebreak
 %
 % HILL CLIMBER RESULTS
 %
