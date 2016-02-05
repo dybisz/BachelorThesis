@@ -19,7 +19,7 @@ MAX_ITER=5000
 ##### WORDS #####
 #################
 ENTRY_WORDS_COUNT=1
-WORDS[0]=750
+WORDS[0]=250
 
 ###################
 ##### CLASSES #####

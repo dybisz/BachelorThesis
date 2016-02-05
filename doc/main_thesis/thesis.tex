@@ -1247,7 +1247,7 @@ There is no further work needed - Hill Climber, as described in section \ref{sec
 
 The experiments are divided into two main categories: multi class and two class classification. In the former one, all native classes are considered individually. In the latter case, all native classes are combined into one big class. Thus it is a problem of distinguishing between native and foreign elements. Furthermore, two heuristic methods, PSO and Hill-Climber, have been applied. Each of optimization methods is tested with different alphabet sizes and state configurations. Finally the experiments have been divided into synthetic and real datasets. The synthetic data is used to verify potential correctness of the algorithms and hopefully to correlate the results with real data.
 
-\section{Synthetic Data}
+\section{Synthetic Data} \label{section:synthetic_data}
 
 The synthetic dataset have been generated based on the method described in~\cite{rejector_geo}. First step of the process is to generate interval for each feature. The synthetic dataset consisted of vectors of 24 features hences, 24 intervals have been generated using uniform distribution. Each of the interval could take values from 0 to 20 inclusively. 
 
@@ -1304,21 +1304,37 @@ The chapter begins with synthetic data results. The discussion is immediately tu
 
 \subsection{Transformation Analysis}
 
-Similarities between all languages have been averaged and shown in figure~\ref{fig:synthetic_lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In multi class the similarity have been computed between all 10 native languages. In two class, presented similarity is computed between one combined native language and the foreign one. Both scenarios have resulted with almost the same values. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly and stabilizes at alphabet size equal to approximately $15$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $15$ in order to keep a good balance between computational complexity and language similarities.
+Similarities between all languages have been averaged and shown in figure~\ref{fig:synthetic_lang_sim}. The averaged similarities have been computed for the range of alphabet sizes in the interval $[1, 40]$. In multi class the similarity have been computed between all 10 native languages. 
 
 \makeFigureSyntheticAvgSimlarity
 
-
+In two class, presented similarity is computed between one combined native language and the foreign one. Both scenarios have resulted with almost the same values. When the alphabet size is equal to $1$, then obviously the averaged similarity between languages is equal to $1$. Initially, the similarities grow quickly and stabilizes at alphabet size equal to approximately $15$. At this point the differences in similarities between consecutive iterations is very small. One could choose alphabet size of $15$ in order to keep a good balance between computational complexity and language similarities.
+%
+% SYNTHETIC PSO
+%
 \subsection{PSO}
+Subsequent section presents outcomes of tests performed with usage of Particle Swarm Optimization based on synthetically generated data (see section \ref{section:synthetic_data} for a reference). It tackles issues of multi class and two class classifier construction, consecutively.
 
 \subsubsection{Multi class}
+Figure ?? speaks for itself. Results are rather pitiful and discover disutility of the process. For alphabet of size 10 it envinces Accuracy equal to 0.5, which corresponds to classifying an object randomly, hoping it will end in a good class. In this case, other measures are near zero, which additionally ensures us in the conclusion. 
 
+Similar behaviour can be observed for alphabet of size 40. Although with following configuration other measures seem to elevate a little bit, it all happen at the expense of the Accuracy. Again, one is not able to turn a deaf ear to such an issues, hence classifier should never be build in this way.
+
+Last but not least, we have alphabet consisting of 30 elements. Even though it seems to be the best of all considered, there is no way it could be useful. In fact it keeps its F-Measure, Sensitivity and Accuracy on higher levels than the two others, but values of measures are far from proper. 
 \makeFigureSyntheticMulti
 
 \subsubsection{Two class}
 
+On the contrary to the multi class problem, Particle Swarm Optimization produces far more precise classifiers when it comes to the two class problem. Growth of all measures is observable at a glance. Obviously method works better for alphabet of sizes 10 and 30, leaving 40-case a little bit behind.
+
+To start with, what is ad hoc striking is high Sensitivity - in first two cases (alphabet size equal 10 and 30) it is approximately equal to 0.7. Actually second case loses Accuracy and Precision in Sensitivity's favor, when the first one keeps them rather balanced. Speaking of stability, in case of alphabet equal to 40, PSO generates results with relatively the same values of all measures - around 0.6. Due to the fact that all: F-Measure, Precision, Accuracy and Sensitivity, in first configuration are above 0.6 (with latter one around 0.7), one should consider it as a fairly appropriate method for classifier construction.
+
+
 \makeFigureSyntheticTwo
 
+%
+% SYNTHETIC HC
+%
 \subsection{HC}
 
 \subsubsection{Multi class}
